@@ -1,0 +1,234 @@
+/* Custom Application CSS */
+
+:root {
+    --primary: #dc3545;
+    --secondary: rgb(255, 66, 66);
+    --red: #e40303;
+    --gray: #dfdfdf;
+    --green: rgb(0, 91, 0);
+    --orange: rgb(254, 171, 19);
+}
+
+.form-control {
+    border-radius: 2rem;
+}
+
+.input-group-append .input-group-text {
+    border-radius: 2rem;
+    background-color: rgba(0,0,0,0);
+    color: var(--primary);
+}
+
+.btn {
+    border-radius: 2rem;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus{
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-primary.focus, .btn-primary:focus {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 0 rgba(255, 38, 38, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+a {
+    color: var(--primary);
+}
+
+a:hover {
+    border-color: var(--secondary);
+}
+
+.card-primary.card-outline {
+    border-top: 5px solid var(--primary);
+}
+
+.icheck-primary>input:first-child:checked+input[type=hidden]+label::before, .icheck-primary>input:first-child:checked+label::before {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.icheck-primary>input:first-child:not(:checked):not(:disabled):hover+input[type=hidden]+label::before, .icheck-primary>input:first-child:not(:checked):not(:disabled):hover+label::before{
+    border-color: var(--primary);
+}
+
+form .error {
+    color: var(--red);
+}
+
+form .form-control.error {
+    border: 1px solid var(--red);
+}
+
+/** ADMIN LTE Theme Hack **/
+.os-content-arrange,
+.os-content-glue {
+    display: none;
+    height: 0px !important;
+}
+
+.layout-navbar-fixed .wrapper .content-wrapper {
+    margin-top: calc(1.5rem + 1px);
+}
+
+.main-footer {
+    font-size: 13px;
+}
+
+.button--loading .button__text {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.button--loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    border: 4px solid transparent;
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: button-loading-spinner 1s ease infinite;
+}
+
+.products-list .product-info {
+    margin-left: 0;
+}
+
+body .os-viewport.os-viewport-native-scrollbars-overlaid {
+    overflow-x: unset !important;
+}
+
+.pins-display .pin-box{
+    float: left;
+    width: 28px;
+    height: 28px;
+    margin: 2px;
+    text-align: center;
+    background-color: #ffffff;
+    line-height: 28px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 50%;
+    color: rgba(0,0,0,0);
+}
+
+.pins-display div.gray-pin{
+    background-color: var(--gray);
+}
+
+.pins-display div.gray-pin:hover {
+    box-shadow: 0px 1px 2px 1px #d0d0d0;
+}
+
+.pins-display div.green-pin{
+    background-color: var(--green);
+}
+
+.pins-display div.green-pin:hover{
+    box-shadow: 0px 1px 2px 1px #d0d0d0;
+}
+
+.pins-display div.orange-pin{
+    background-color: var(--orange);
+}
+
+.pins-display div.orange-pin:hover{
+    box-shadow: 0px 1px 2px 1px #d0d0d0;
+}
+
+.pins-display div.red-pin{
+    background-color: red;
+}
+
+.pins-display {
+    width: 925px;
+    overflow: hidden;   
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+    background-color: #FFF;
+}
+
+.pins-display-wrapper {
+    overflow: auto;
+    width: 100%;
+    position: relative;
+}
+
+.pins-display .x-axis-line {
+    width: 3px;
+    background-color: var(--gray);
+    height: 32px;
+    float: left;
+    margin: 0 3px ;
+}
+
+.pins-display .y-axis-line {
+    width: 900px;
+    background-color: var(--gray);
+    height: 3px;
+    float: left;
+    margin: 3px 0px ;
+}
+
+table#parts_list_tbl th {
+    background: rgb(63, 103, 145);
+}
+
+.pin-count {
+    background-color: green;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    line-height: 30px;
+    font-size: 11;
+}
+
+form .error {
+    font-weight: 500 !important;
+}
+
+.dark-mode .select2-selection--single, .select2-container--default.select2-container--focus .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--single {
+    border-radius: 35px;
+}
+
+@keyframes button-loading-spinner {
+    from {
+        transform: rotate(0turn);
+    }
+
+    to {
+        transform: rotate(1turn);
+    }
+}

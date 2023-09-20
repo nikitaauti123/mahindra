@@ -2,7 +2,7 @@
 
 return [
     'TotCas' => 'Jobs Completed',
-    'InTAT' => 'Current Jobs',
+    'InTAT' => 'Avg. Cycle Time',
     'OutTAT' => 'OK Jobs',
     'TotPen' => 'Not OK Jobs'
 ];

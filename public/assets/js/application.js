@@ -318,6 +318,127 @@ if ($("#parts_list_tbl").length > 0) {
     });
 }
 
+// Parts
+if ($("#jobs_list_tbl").length > 0) {
+    // table
+    var jobs_table = $("#jobs_list_tbl").DataTable({
+        "ordering": true,
+        'order': [[0, 'asc']],
+        'serverMethod': 'get',
+        'language': {
+            'loadingRecords': '&nbsp;',
+            'processing': 'Loading...',
+            "emptyTable": "There is no record to display"
+        },
+        "dom": 'Bfrtip',
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print"],
+        "lengthMenu": [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All'],
+        ],
+        "ajax": {
+            "url": base_url + "api/parts/list",
+            "dataSrc": "",
+        },
+        "columns": [
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "data": "part_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "part_name",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "model",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "pins",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        let count = data.split(","); 
+                        return  '<div class="pin-count" title="'+data+'">'+count.length+'</div>';
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return '1';
+                }
+            },
+            {
+                "data": "is_active",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        return data == 1 ? 'Completed' : 'In Progress';
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "created_at",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        return (data);
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "updated_at",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        return (data);
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    let html = '-';
+                    //let html = '<a href="'+base_url+'admin/parts/edit/'+row['id']+'"   class="edit_part" data-id="'+row['id']+'"><i class="fa fa-edit text-info"></i></a>';
+                    //html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="delete_part" data-id="'+row['id']+'" ><i class="fa fa-trash text-danger"></i></a>';
+                    return html;
+                }
+            }
+        ]
+    });
+}
+
 function reload_parts_tbl() {
     parts_table.ajax.url(base_url + "api/parts/list").load();
 }
@@ -568,3 +689,50 @@ if($("#start_jobs_data").length>0) {
         }        
     });
 }
+
+
+$(document).ready(function() {
+    if($('.digital-clock').length>0) {
+        var interval = ''; 
+        $("#start_time").on('click', function(e) {
+            e.preventDefault();
+            clockUpdate();
+            //if(interval != '') {
+                interval = setInterval(clockUpdate, 1000);
+            //}
+            
+        });
+        $("#stop_time").on('click', function(e) {
+            e.preventDefault();
+            clearInterval(interval);
+        });
+    }
+  });
+  
+  function clockUpdate() {
+    var date = new Date();
+    //$('.digital-clock').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
+    function addZero(x) {
+      if (x < 10) {
+        return x = '0' + x;
+      } else {
+        return x;
+      }
+    }
+  
+    function twelveHour(x) {
+      if (x > 12) {
+        return x = x - 12;
+      } else if (x == 0) {
+        return x = 12;
+      } else {
+        return x;
+      }
+    }
+  
+    var h = addZero(twelveHour(date.getHours()));
+    var m = addZero(date.getMinutes());
+    var s = addZero(date.getSeconds());
+  
+    $('.digital-clock').text(h + ':' + m + ':' + s)
+  }

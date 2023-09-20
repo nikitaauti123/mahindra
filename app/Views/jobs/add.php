@@ -30,10 +30,19 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <h5 class="card-title"><?php echo lang('Jobs.Add'); ?></h5>                                       
                                     </div>
-                                    <div class="col-6 text-right">
+                                    <div class="col-4 text-center">
+                                        <div class="digital-clock">00:00:00</div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                            <a href="javascript:void(0)" class="btn btn-primary" id="start_time">
+                                                Start 
+                                            </a>
+                                            <a href="javascript:void(0)" class="btn btn-secondary"  id="stop_time">
+                                                Stop 
+                                            </a>
                                         <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary" >Jobs List</a>
                                     </div>
                                 </div>
@@ -44,7 +53,7 @@
                                         <div class="col-md-12">
                                             <form id="start_jobs_data">
                                                 <div class="row">
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label for="part_name">Part Name</label>
                                                             <select name="part_name" id="part_name" class="form-control">
@@ -55,16 +64,22 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label for="part_name">Part No</label>
                                                             <input type="text" class="form-control" name="part_no" placeholder="Part No" >
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label for="part_name">Model</label>
                                                             <input type="text" class="form-control" name="model" placeholder="Model" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="part_name">Bed No</label>
+                                                            <input type="text" class="form-control" name="bed_no" placeholder="Bed No" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -101,9 +116,7 @@
                                                 <div class="row">
                                                     <div class="col-12 text-center">
                                                         <input type="hidden" class="" name="is_active" value="1">
-                                                        <!-- <button class="btn btn-primary">
-                                                            Save
-                                                        </button> -->
+                                                        
                                                     </div>
                                                 </div>
                                             </form>

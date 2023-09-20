@@ -59,12 +59,12 @@
                     <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box mb-3">
                             <span class="info-box-icon bg-warning elevation-1">
-                                <i class="fas fa-cogs"></i>
+                                <i class="fas fa-clock"></i>
                             </span>
 
                             <div class="info-box-content">
                                 <span class="info-box-text"><?php echo lang('Dashboard.InTAT'); ?></span>
-                                <span class="info-box-number">41,410</span>
+                                <span class="info-box-number">6.5 hrs</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -75,35 +75,35 @@
                     <!-- fix for small devices only -->
                     <div class="clearfix hidden-md-up"></div>
 
-                    <div class="col-12 col-sm-6 col-md-3">
+                    <!-- <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box mb-3">
                             <span class="info-box-icon bg-success elevation-1">
                                 <i class="fas fa-cogs"></i>
                             </span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text"><?php echo lang('Dashboard.OutTAT'); ?></span>
+                                <span class="info-box-text"><?php //echo lang('Dashboard.OutTAT'); ?></span>
                                 <span class="info-box-number">760</span>
                             </div>
-                            <!-- /.info-box-content -->
+                            /.info-box-content
                         </div>
-                        <!-- /.info-box -->
-                    </div>
+                        /.info-box
+                    </div> -->
                     <!-- /.col -->
-                    <div class="col-12 col-sm-6 col-md-3">
+                    <!-- <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box mb-3">
                             <span class="info-box-icon bg-danger elevation-1">
                                 <i class="fas fa-bug"></i>
                             </span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text"><?php echo lang('Dashboard.TotPen'); ?></span>
+                                <span class="info-box-text"><?php //echo lang('Dashboard.TotPen'); ?></span>
                                 <span class="info-box-number">2,000</span>
                             </div>
-                            <!-- /.info-box-content -->
+                            /.info-box-content
                         </div>
-                        <!-- /.info-box -->
-                    </div>
+                        /.info-box
+                    </div> -->
                     <!-- /.col -->
                 </div>
                 <!-- /.row -->
@@ -152,7 +152,7 @@
                                             <tr>
                                                 <td><a href="#">PT1848</a></td>
                                                 <td>RIGHT DOOR</td>
-                                                <td><span class="badge badge-warning">Pending</span></td>
+                                                <td><span class="badge badge-success">Completed</span></td>
                                                 <td>
                                                     <div class="sparkbar" data-color="#f39c12" data-height="20"><button class="btn btn-primary">View</button></div>
                                                 </td>
@@ -160,7 +160,7 @@
                                             <tr>
                                                 <td><a href="#">PT7429</a></td>
                                                 <td>FRONT PANEL</td>
-                                                <td><span class="badge badge-danger">Issue</span></td>
+                                                <td><span class="badge badge-success">Completed</span></td>
                                                 <td>
                                                     <div class="sparkbar" data-color="#f56954" data-height="20"><button class="btn btn-primary">View</button></div>
                                                 </td>
@@ -176,7 +176,7 @@
                                             <tr>
                                                 <td><a href="#">PT1848</a></td>
                                                 <td>LEFT SIDE PANEL</td>
-                                                <td><span class="badge badge-warning">Pending</span></td>
+                                                <td><span class="badge badge-success">Completed</span></td>
                                                 <td>
                                                     <div class="sparkbar" data-color="#f39c12" data-height="20"><button class="btn btn-primary">View</button></div>
                                                 </td>
@@ -184,7 +184,7 @@
                                             <tr>
                                                 <td><a href="#">PT7429</a></td>
                                                 <td>RIGTH SIDE PANEL</td>
-                                                <td><span class="badge badge-danger">Issue</span></td>
+                                                <td><span class="badge badge-success">Completed</span></td>
                                                 <td>
                                                     <div class="sparkbar" data-color="#f56954" data-height="20"><button class="btn btn-primary">View</button></div>
                                                 </td>

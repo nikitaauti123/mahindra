@@ -10,7 +10,9 @@ return [
         'Permissions' => 'Permissions',
         'Jobs' => 'Jobs',
         'Parts' => 'Parts',
-        'AddJob' => 'Add Job',
-        'AddPart' => 'Add Part'
+        'StartJob' => 'Start Job',
+        'AddPart' => 'Add Part',
+        'JobsHistory' => 'Jobs History',
+        'Reports' => 'Reports'
     ]
 ];

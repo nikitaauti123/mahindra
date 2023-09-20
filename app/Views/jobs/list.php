@@ -43,7 +43,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive">
-                                            <table id="parts_list_tbl" class="table table-bordered table-striped dataTable dtr-inline">
+                                            <table id="jobs_list_tbl" class="table table-bordered table-striped dataTable dtr-inline">
                                                 <thead>
                                                     <tr>
                                                         <th>Sr.No</th>
@@ -51,9 +51,10 @@
                                                         <th>Part Name</th>
                                                         <th>Model</th>
                                                         <th>Pins</th>
-                                                        <th>Is Active?</th>
-                                                        <th>Created Date</th>
-                                                        <th>Updated Date</th>
+                                                        <th>Bed No</th>
+                                                        <th>Status</th>
+                                                        <th>Start Time</th>
+                                                        <th>End Time</th>
                                                         <th>Actions</th>
                                                     </tr>             
                                                 </thead>
@@ -67,9 +68,10 @@
                                                         <th>Part Name</th>
                                                         <th>Model</th>
                                                         <th>Pins</th>
-                                                        <th>Is Active?</th>
-                                                        <th>Created Date</th>
-                                                        <th>Updated Date</th>
+                                                        <th>Bed No</th>
+                                                        <th>Status</th>
+                                                        <th>Start Time</th>
+                                                        <th>End Time</th>
                                                         <th>Actions</th>
                                                     </tr>             
                                                 </tfoot>

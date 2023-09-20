@@ -47,6 +47,72 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="#" class="nav-link <?php echo isset($current_page_url['segment'][0]) && $current_page_url['segment'][0]=='admin' && in_array($current_page_url['segment'][1], ['jobs']) ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-car"></i>
+                        <p>
+                            <?php echo lang('Left-sidebar.Menu.Jobs'); ?>
+                            <i class="fas fa-angle-left right"></i>
+                            <!-- <span class="badge badge-info right">5</span> -->
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/list'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.Jobs'); ?></p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/admin/jobs/add'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.StartJob'); ?></p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link <?php echo isset($current_page_url['segment'][0]) && $current_page_url['segment'][0]=='admin' && in_array($current_page_url['segment'][1], ['parts']) ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>
+                            <?php echo lang('Left-sidebar.Menu.Parts'); ?>
+                            <i class="fas fa-angle-left right"></i>
+                            <!-- <span class="badge badge-info right">5</span> -->
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/admin/parts/list'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/list'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.Parts'); ?></p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/admin/parts/add'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/add'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.AddPart'); ?></p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>   
+                <li class="nav-item">
+                    <a href="#" class="nav-link <?php echo isset($current_page_url['segment'][0]) && $current_page_url['segment'][0]=='admin' && in_array($current_page_url['segment'][1], ['reports']) ? 'active' : ''; ?>">
+                        <i class="nav-icon fas fa-file"></i>
+                        <p>
+                            <?php echo lang('Left-sidebar.Menu.Reports'); ?>
+                            <i class="fas fa-angle-left right"></i>
+                            <!-- <span class="badge badge-info right">5</span> -->
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/admin/parts/list'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/list'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.JobsHistory'); ?></p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link <?php echo isset($current_page_url['segment'][0]) && $current_page_url['segment'][0]=='admin' && in_array($current_page_url['segment'][1], ['users', 'roles', 'parmissions']) ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
@@ -75,55 +141,7 @@
                             </a>
                         </li>
                     </ul>
-                </li> 
-                <li class="nav-item">
-                    <a href="#" class="nav-link <?php echo isset($current_page_url['segment'][0]) && $current_page_url['segment'][0]=='admin' && in_array($current_page_url['segment'][1], ['jobs']) ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-cogs"></i>
-                        <p>
-                            <?php echo lang('Left-sidebar.Menu.Jobs'); ?>
-                            <i class="fas fa-angle-left right"></i>
-                            <!-- <span class="badge badge-info right">5</span> -->
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/list'?'active':''; ?>">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p><?php echo lang('Left-sidebar.Menu.Jobs'); ?></p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/jobs/add'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add'?'active':''; ?>">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p><?php echo lang('Left-sidebar.Menu.AddJob'); ?></p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link <?php echo isset($current_page_url['segment'][0]) && $current_page_url['segment'][0]=='admin' && in_array($current_page_url['segment'][1], ['parts']) ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-cogs"></i>
-                        <p>
-                            <?php echo lang('Left-sidebar.Menu.Parts'); ?>
-                            <i class="fas fa-angle-left right"></i>
-                            <!-- <span class="badge badge-info right">5</span> -->
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/parts/list'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/list'?'active':''; ?>">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p><?php echo lang('Left-sidebar.Menu.Parts'); ?></p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/parts/add'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/add'?'active':''; ?>">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p><?php echo lang('Left-sidebar.Menu.AddPart'); ?></p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>                
+                </li>               
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

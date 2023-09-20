@@ -9,7 +9,7 @@ return [
         'Roles' => 'Roles',
         'Permissions' => 'Permissions',
         'Jobs' => 'Jobs',
-        'Parts' => 'Parts',
+        'Parts' => 'Parts Master',
         'StartJob' => 'Start Job',
         'AddPart' => 'Add Part',
         'JobsHistory' => 'Jobs History',

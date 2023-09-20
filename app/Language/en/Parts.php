@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'List' => 'Parts List',
+    'List' => 'Parts Master',
     'Add' => 'Add Part',
     'Update' => 'Update Part'
 ];

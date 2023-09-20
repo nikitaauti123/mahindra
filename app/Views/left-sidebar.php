@@ -48,7 +48,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link <?php echo isset($current_page_url['segment'][0]) && $current_page_url['segment'][0]=='admin' && in_array($current_page_url['segment'][1], ['jobs']) ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-car"></i>
+                        <i class="nav-icon fas fa-cogs"></i>
                         <p>
                             <?php echo lang('Left-sidebar.Menu.Jobs'); ?>
                             <i class="fas fa-angle-left right"></i>
@@ -72,7 +72,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link <?php echo isset($current_page_url['segment'][0]) && $current_page_url['segment'][0]=='admin' && in_array($current_page_url['segment'][1], ['parts']) ? 'active' : ''; ?>">
-                        <i class="nav-icon fas fa-cogs"></i>
+                        <i class="nav-icon fas fa-car"></i>
                         <p>
                             <?php echo lang('Left-sidebar.Menu.Parts'); ?>
                             <i class="fas fa-angle-left right"></i>

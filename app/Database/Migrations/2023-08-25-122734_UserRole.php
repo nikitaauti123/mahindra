@@ -11,11 +11,13 @@ class UserRole extends Migration
         $this->forge->addField([
             'user_id' => [
                 'type'           => 'INT',
-                'constraint'     => 11
+                'constraint'     => 11,
+                'unsigned'       => true
             ],
             'role_id' => [
                 'type'           => 'INT',
-                'constraint'     => 11
+                'constraint'     => 11,
+                'unsigned'       => true
             ]
         ]);
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE', 'fk_users_tbl');

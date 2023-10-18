@@ -566,7 +566,7 @@ if($("#update_parts_data").length>0) {
         $("#update_parts_data").find("input[name='model']").val(data.model);
 
         var pins_array = data.pins.split(",");
-
+alert(pins_array);
         for(let i in pins_array) {
             var pin_address = pins_array[i];
             $(".pins-display").find(".pin-box").each(function(index){
@@ -645,49 +645,235 @@ if($("#update_parts_data").length>0) {
         });
     });    
 }
+if($("#start_jobs_data_left").length>0) {
+    // alert('ok');
+    var dataToSend = {
+         job_id: "pt2012",
+            pins: {
+              "02": "0",
+              "03": "1",
+              "A1": "1",
+              "E2": "1",
+              "F2": "1",
+              "G2": "0",
+              "H2": "0",
+              "I1": "0",
+              "K2": "0",
+              "E3": "1",
+              "A2": "1",
+              "E4":"0",
+              "F3":"1",
+              "G4":"1",
+            },
+      };
+        
+
+      var dataToSend1 = {
+        job_id: "pt2012",
+        side: "left",
+    };
+    
+
+$.ajax({
+    type: 'POST', // or 'GET', depending on your needs
+    url: base_url + 'api/apiparts/add',
+    data:{ part_id: dataToSend.job_id,
+        pins: dataToSend.pins,
+        part_ids: dataToSend1.job_id,
+        side: dataToSend1.side}, // Pass the JSON data as a string
+  beforeSend: function (xhr) {
+    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+  },
+  success: function(response) {
+    successMsg(response.msg);
+
+
+       $.ajax({
+        type: 'POST', // or 'GET', depending on your needs
+        url: base_url + 'api/apiparts/get_api_data',
+        data:{ part_id: dataToSend.job_id,
+            pins: dataToSend.pins}, // Pass the JSON data as a string
+       // contentType: 'application/json', // Set the content type to JSON
+        beforeSend: function (xhr) {
+            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+        },
+    }).done(function (data) {
+        var inputValue = data.model['id']; // Assuming this contains the value you want to select
+
+        $("#part_name").val(inputValue);
+       // $("#start_jobs_data_left").find("input[name='part_name']").val(data.model['id']);
+        $("#start_jobs_data_left").find("input[name='part_no']").val(data.result['part_id']);
+        $("#start_jobs_data_left").find("input[name='model']").val(data.model['model']);
+
+         var pins_array = data.formattedData['keys'].split(",");
+         var pins_color = data.formattedData['values'].split(",");
+
+        $(".pins-display").find(".pin-box").each(function(index) {
+            if($(this).hasClass('orange-pin')) {  
+                $(this).removeClass('orange-pin').addClass('gray-pin');
+            }
+        });
+
+        for(let i in pins_array) {
+            var pin_address = pins_array[i]; 
+            var pin_color = pins_color[i];
+                           
+            $(".pins-display").find(".pin-box").each(function(index){
+              //  console.log("pins address::", pin_address);
+                if ($(this).attr('title') == pin_address) {
+                    if (pin_color === '0') {
+                        $(this).addClass('red-pin');
+                    } else if (pin_color === '1') {
+                        $(this).addClass('green-pin');
+                    } else {
+                        // Handle other cases if needed
+                    }
+                }
+            });
+        }
+
+    }).fail(function (data) {
+        console.log("Not found");
+    });
+
+ 
+
+    // Handle the response from the server
+  }
+});
+
+
+
+   }
 
 if($("#start_jobs_data").length>0) {
     $("#start_jobs_data").find("#part_name").select2();
 
-    $("#start_jobs_data #part_name").on('change', function(){
-        let id = $(this).val();
 
-        if(id>0) {
-            $.ajax({
-                url: base_url + 'api/parts/get_one/'+id,
-                method: "GET",
-                dataType: "json",
-                beforeSend: function (xhr) {
-                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-                },
-            }).done(function (data) {
-                $("#start_jobs_data").find("input[name='part_name']").val(data.part_name);
-                $("#start_jobs_data").find("input[name='part_no']").val(data.part_no);
-                $("#start_jobs_data").find("input[name='model']").val(data.model);
+     
+$.ajax({
+   type: 'POST', // or 'GET', depending on your needs
+   url: base_url + 'api/apiparts/add',
+   data:{ }, // Pass the JSON data as a string
+ beforeSend: function (xhr) {
+   //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+ },
+}).done(function (data) {
+   successMsg(response.msg);
+
+
+      $.ajax({
+       type: 'POST', // or 'GET', depending on your needs
+       url: base_url + 'api/apiparts/get_api_data',
+       data:{}, // Pass the JSON data as a string
+      // contentType: 'application/json', // Set the content type to JSON
+       beforeSend: function (xhr) {
+           //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+       },
+   }).done(function (data) {
+      var inputValue = data.model['id'];
+      
+               $("#part_name").val('');
+             //  $("#part_name").val(inputValue);
+ 
+             if ($("#part_name").length > 0) {
+                alert("Selected value: " + inputValue);
+             }
+       $("#start_jobs_data").find("input[name='part_name']").val(inputValue);
+       $("#start_jobs_data").find("input[name='part_no']").val(data.result['part_id']);
+       $("#start_jobs_data").find("input[name='model']").val(data.model['model']);
+
+        var pins_array = data.formattedData['keys'].split(",");
+        var pins_color = data.formattedData['values'].split(",");
+
+       $(".pins-display").find(".pin-box").each(function(index) {
+           if($(this).hasClass('orange-pin')) {  
+               $(this).removeClass('orange-pin').addClass('gray-pin');
+           }
+       });
+
+       for(let i in pins_array) {
+           var pin_address = pins_array[i]; 
+           var pin_color = pins_color[i];
+                          
+           $(".pins-display").find(".pin-box").each(function(index){
+             //  console.log("pins address::", pin_address);
+               if ($(this).attr('title') == pin_address) {
+                   if (pin_color === '0') {
+                       $(this).addClass('red-pin');
+                   } else if (pin_color === '1') {
+                       $(this).addClass('green-pin');
+                   } else {
+                       // Handle other cases if needed
+                   }
+               }
+           });
+       }
+
+   }).fail(function (data) {
+   // $(btn_id).removeClass('button--loading').attr('disabled', false);
+   
+});
+
+
+
+   // Handle the response from the server
+ }).fail(function (data) {
+    // $(btn_id).removeClass('button--loading').attr('disabled', false);
+     if (typeof data.responseJSON.messages === 'object') {
+         for (let i in data.responseJSON.messages) {
+             failMsg(data.responseJSON.messages[i]);
+         }
+     } else {
+         let msg = data.responseJSON.messages.msg;
+         failMsg(msg);
+     }
+ 
+ });
+// });
+
+
+
+
+    // $("#start_jobs_data #part_name").on('change', function(){
+    //     let id = $(this).val();
+       
+    //     // if(id>0) {
+    //     //     $.ajax({
+    //     //         url: base_url + 'api/parts/get_one/'+id,
+    //     //         method: "GET",
+    //     //         dataType: "json",
+    //     //         beforeSend: function (xhr) {
+    //     //             //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+    //     //         },
+    //     //     }).done(function (data) {
+             
+    //     //         $("#start_jobs_data").find("input[name='part_name']").val(data.part_name);
+    //     //         $("#start_jobs_data").find("input[name='part_no']").val(data.part_no);
+    //     //         $("#start_jobs_data").find("input[name='model']").val(data.model);
         
-                var pins_array = data.pins.split(",");
-    
-                $(".pins-display").find(".pin-box").each(function(index) {
-                    if($(this).hasClass('orange-pin')) {  
-                        $(this).removeClass('orange-pin').addClass('gray-pin');
-                    }
-                });
+    //     //         var pins_array = data.pins.split(",");
+    //     //         $(".pins-display").find(".pin-box").each(function(index) {
+    //     //             if($(this).hasClass('orange-pin')) {  
+    //     //                 $(this).removeClass('orange-pin').addClass('gray-pin');
+    //     //             }
+    //     //         });
         
-                for(let i in pins_array) {
-                    var pin_address = pins_array[i];                
-                    $(".pins-display").find(".pin-box").each(function(index){
-                        console.log("pins address::", pin_address);
-                        if($(this).attr('title') == pin_address) {                    
-                            $(this).addClass('orange-pin');
-                        }
-                    });
-                }
+    //     //         for(let i in pins_array) {
+    //     //             var pin_address = pins_array[i];                
+    //     //             $(".pins-display").find(".pin-box").each(function(index){
+    //     //                 console.log("pins address::", pin_address);
+    //     //                 if($(this).attr('title') == pin_address) {                    
+    //     //                     $(this).addClass('orange-pin');
+    //     //                 }
+    //     //             });
+    //     //         }
         
-            }).fail(function (data) {
-                console.log("Not found");
-            });
-        }        
-    });
+    //     //     }).fail(function (data) {
+    //     //         console.log("Not found");
+    //     //     });
+    //     // }        
+    // });
 }
 
 

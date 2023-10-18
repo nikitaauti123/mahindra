@@ -46,13 +46,16 @@ $routes->get('/admin/parts/edit/(:num)', 'Parts\\PartsController::Edit/$1');
 
 $routes->get('/api/parts/list', 'Parts\\Api\\PartsApiController::list');
 $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');
+
 $routes->post('/api/parts/update/(:num)', 'Parts\\Api\\PartsApiController::update/$1');
 $routes->post('/api/parts/delete/(:num)', 'Parts\\Api\\PartsApiController::delete/$1');
 $routes->get('/api/parts/get_one/(:num)', 'Parts\\Api\\PartsApiController::getOne/$1');
-
+$routes->post('/api/apiparts/add', 'Parts\\Api\\ApiPartsApiController::add');
+$routes->post('/api/apiparts/get_api_data', 'Parts\\Api\\ApiPartsApiController::get_api_data');
 
 $routes->get('/admin/jobs/list', 'Jobs\\JobsController::List');
 $routes->get('/admin/jobs/add', 'Jobs\\JobsController::Create');
+$routes->get('/admin/jobs/add_left', 'Jobs\\JobsController::Create_left');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
 
 $routes->get('/api/jobs/list', 'Jobs\\Api\\JobsApiController::list');

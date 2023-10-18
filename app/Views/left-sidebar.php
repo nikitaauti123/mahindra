@@ -65,7 +65,13 @@
                         <li class="nav-item">
                             <a href="<?php echo base_url('/admin/jobs/add'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p><?php echo lang('Left-sidebar.Menu.StartJob'); ?></p>
+                                <p><?php echo lang('Left-sidebar.Menu.StartJobRight'); ?></p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/admin/jobs/add_left'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add_left'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.StartJobLeft'); ?></p>
                             </a>
                         </li>
                     </ul>

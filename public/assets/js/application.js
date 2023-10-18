@@ -566,7 +566,7 @@ if($("#update_parts_data").length>0) {
         $("#update_parts_data").find("input[name='model']").val(data.model);
 
         var pins_array = data.pins.split(",");
-alert(pins_array);
+
         for(let i in pins_array) {
             var pin_address = pins_array[i];
             $(".pins-display").find(".pin-box").each(function(index){
@@ -647,40 +647,14 @@ alert(pins_array);
 }
 if($("#start_jobs_data_left").length>0) {
     // alert('ok');
-    var dataToSend = {
-         job_id: "pt2012",
-            pins: {
-              "02": "0",
-              "03": "1",
-              "A1": "1",
-              "E2": "1",
-              "F2": "1",
-              "G2": "0",
-              "H2": "0",
-              "I1": "0",
-              "K2": "0",
-              "E3": "1",
-              "A2": "1",
-              "E4":"0",
-              "F3":"1",
-              "G4":"1",
-            },
-      };
-        
+   
 
-      var dataToSend1 = {
-        job_id: "pt2012",
-        side: "left",
-    };
-    
+     
 
 $.ajax({
     type: 'POST', // or 'GET', depending on your needs
     url: base_url + 'api/apiparts/add',
-    data:{ part_id: dataToSend.job_id,
-        pins: dataToSend.pins,
-        part_ids: dataToSend1.job_id,
-        side: dataToSend1.side}, // Pass the JSON data as a string
+    data:{}, // Pass the JSON data as a string
   beforeSend: function (xhr) {
     //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
   },
@@ -759,7 +733,7 @@ $.ajax({
    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
  },
 }).done(function (data) {
-   successMsg(response.msg);
+   successMsg(data.msg);
 
 
       $.ajax({
@@ -777,7 +751,7 @@ $.ajax({
              //  $("#part_name").val(inputValue);
  
              if ($("#part_name").length > 0) {
-                alert("Selected value: " + inputValue);
+               // alert("Selected value: " + inputValue);
              }
        $("#start_jobs_data").find("input[name='part_name']").val(inputValue);
        $("#start_jobs_data").find("input[name='part_no']").val(data.result['part_id']);

@@ -75,7 +75,9 @@ if(!empty($part_id)){
             return $this->respond($result, 200);
         }else{
            // return $this->fail"($this->validator->getErrors(), 400, true);
-            throw new Exception("Api parts don't have data");
+           // throw new Exception("");
+            $result['msg'] = "Api parts don't have data";
+            return $this->respond($result, 200);
           
         }
         } catch (\Exception $e) {

@@ -62,6 +62,24 @@
                                                             <input type="text" class="form-control" name="model" placeholder="Model" >
                                                         </div>
                                                     </div>
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label for="die_no">Die No</label>
+                                                            <input type="text" class="form-control" name="die_no" placeholder="Die No" >
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-4">
+                                                    <div class="form-group">
+                                            <label for="is_active" class="col-sm-4 control-label">Is active?</label>
+                                            <div class="col-sm-8">
+                                                <div class="checkbox">
+                                                    <label>
+                                                    <input type="checkbox"  name="is_active">
+   </label>
+                                                </div>
+                                            </div>
+                                        </div></div>
                                                 </div>
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">
@@ -88,7 +106,10 @@
                                                                         <?php
                                                                     }
                                                                 ?>
-                                                            </div>
+                                                                 <div class="arrow">⇧</div>
+                                                           
+                                                              </div>
+                                                             
                                                         </div>                                                        
                                                     </div>
                                                 </div>

@@ -8,12 +8,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0"><?php echo lang('Parts.Add'); ?></h1>
+                        <h1 class="m-0"><?php echo lang('Parts.View'); ?></h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#"><?php echo lang('Left-sidebar.Menu.Home'); ?></a></li>
-                            <li class="breadcrumb-item active"><?php echo lang('Parts.Add'); ?></li>
+                            <li class="breadcrumb-item active"><?php echo lang('Parts.View'); ?></li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -31,7 +31,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-6">
-                                        <h5 class="card-title"><?php echo lang('Parts.Add'); ?></h5>                                       
+                                        <h5 class="card-title"><?php echo lang('Parts.View'); ?></h5>                                       
                                     </div>
                                     <div class="col-6 text-right">
                                         <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary" >Parts List</a>
@@ -42,31 +42,32 @@
                             <div class="card-body">
                                 <div class="row">
                                         <div class="col-md-12">
-                                            <form id="add_parts_data">
+                                            <form id="update_parts_data">
                                                 <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-group">
                                                             <label for="part_name">Part Name</label>
-                                                            <input type="text" class="form-control" name="part_name" placeholder="Part Name" >
-                                                        </div>
+                                                            :<?php if(!empty($single)) { echo 
+                                                           $single['part_name'];};?>
+                                                          </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label>
-                                                            <input type="text" class="form-control" name="part_no" placeholder="Part No" >
-                                                        </div>
+                                                            <label for="part_name">Part No</label> :
+                                                            <?php if(!empty($single)) { echo 
+                                                           $single['part_no'];};?> </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model</label>
-                                                            <input type="text" class="form-control" name="model" placeholder="Model" >
-                                                        </div>
+                                                            <label for="part_name">Model</label> :
+                                                            <?php if(!empty($single)) { echo 
+                                                           $single['model'];};?></div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="die_no">Die No</label>
-                                                            <input type="text" class="form-control" name="die_no" placeholder="Die No" >
-                                                        </div>
+                                                            <label for="die_no">Die No</label> :
+                                                            <?php if(!empty($single)) { echo 
+                                                           $single['die_no'];};?></div>
                                                     </div>
 
                                                     <div class="col-4">
@@ -75,7 +76,12 @@
                                             <div class="col-sm-8">
                                                 <div class="checkbox">
                                                     <label>
-                                                    <input type="checkbox"  name="is_active">
+                                                    <?php if(!empty($single)) { if($single['die_no']==1){;};?>
+                                                    <input type="checkbox"  name="is_active" checked>
+                                                    <?php }else{?>
+                                                        <input type="checkbox"  name="is_active" checked>
+                                                   
+                                                        <?php } ?>
    </label>
                                                 </div>
                                             </div>
@@ -83,7 +89,7 @@
                                                 </div>
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">
-                                                        <div class="pins-display-wrapper">
+                                                        <div class="pins-display-wrapper no-click" >
                                                             <div class="pins-display">
                                                                 <?php 
 
@@ -106,19 +112,16 @@
                                                                         <?php
                                                                     }
                                                                 ?>
-                                                             <div class="arrow">⇧</div>
- </div>
-                                                        </div>
-                                                                                                                
+                                                            </div>
+                                                        </div>                                                        
                                                     </div>
                                                 </div>
 
                                                 <div class="row">
                                                     <div class="col-12 text-center">
-                                                        <!-- <input type="hidden" class="" name="is_active" value="1"> -->
-                                                        <button class="btn btn-primary">
-                                                            Save
-                                                        </button>
+                                                        <input type="hidden" class="" name="id" value="<?php echo $id; ?>">
+                                                        <!-- <input type="text" class="" name="is_active" value="1"> -->
+                                                        
                                                     </div>
                                                 </div>
                                             </form>

@@ -42,7 +42,13 @@ $routes->post('/api/users/update/(:num)', 'Users\\Api\\UsersApiController::updat
 
 $routes->get('/admin/parts/list', 'Parts\\PartsController::List');
 $routes->get('/admin/parts/add', 'Parts\\PartsController::Create');
+$routes->get('/admin/parts/import', 'Parts\\PartsController::Import');
+$routes->post('/admin/parts/bulk_import_parts', 'Parts\\PartsController::bulk_import_parts');
+
+$routes->get('admin/parts/export_part', 'Parts\\PartsController::export_part');
+
 $routes->get('/admin/parts/edit/(:num)', 'Parts\\PartsController::Edit/$1');
+$routes->get('/admin/parts/view/(:num)', 'Parts\\PartsController::View/$1');
 
 $routes->get('/api/parts/list', 'Parts\\Api\\PartsApiController::list');
 $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');

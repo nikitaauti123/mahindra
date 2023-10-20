@@ -18,6 +18,8 @@ class PartsModel extends Model
         'part_no',
         'model',
         'pins',
+        'die_no',
+        'part_id',
         'is_active',
         'created_by',
         'updated_by',

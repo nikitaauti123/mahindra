@@ -30,10 +30,16 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-3">
                                         <h5 class="card-title"><?php echo lang('Parts.List'); ?></h5>                                       
                                     </div>
-                                    <div class="col-6 text-right">
+                                    <div class="col-3 text-right">
+                                        <a href="<?php echo base_url('/admin/parts/import'); ?>" class="btn btn-primary" ><?php echo lang('Parts.Imports'); ?></a>
+                                    </div>
+                                    <div class="col-xs-3 col-md-2">
+                                <button type="button" id="part-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;Export</button>
+                            </div>
+                                    <div class="col-3 text-right">
                                         <a href="<?php echo base_url('/admin/parts/add'); ?>" class="btn btn-primary" >Add New Part</a>
                                     </div>
                                 </div>
@@ -51,6 +57,7 @@
                                                         <th>Part Name</th>
                                                         <th>Model</th>
                                                         <th>Pins</th>
+                                                        <th>Die No</th>
                                                         <th>Is Active?</th>
                                                         <th>Created Date</th>
                                                         <th>Updated Date</th>
@@ -67,6 +74,7 @@
                                                         <th>Part Name</th>
                                                         <th>Model</th>
                                                         <th>Pins</th>
+                                                        <th>Die No</th>
                                                         <th>Is Active?</th>
                                                         <th>Created Date</th>
                                                         <th>Updated Date</th>

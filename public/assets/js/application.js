@@ -193,14 +193,14 @@ if ($("#users_list_tbl").length > 0) {
 }
 
 //dashboard page
-if($("#from_date").length>0) {
+if ($("#from_date").length > 0) {
     $("#from_date").daterangepicker({
         "startDate": moment(),
-        "endDate":  moment().add(1, 'month')
-    }, function(start, end, label) {
-      console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+        "endDate": moment().add(1, 'month')
+    }, function (start, end, label) {
+        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
 
-      $("#from_date").val( start.format('YYYY-MM-DD') + " - " + end.format('YYYY-MM-DD'));
+        $("#from_date").val(start.format('YYYY-MM-DD') + " - " + end.format('YYYY-MM-DD'));
     });
 }
 
@@ -265,17 +265,29 @@ if ($("#parts_list_tbl").length > 0) {
                     }
                 }
             },
+            
             {
                 "data": "pins",
                 "render": function (data, type, row, meta) {
                     if (data) {
-                        let count = data.split(","); 
-                        return  '<div class="pin-count" title="'+data+'">'+count.length+'</div>';
+                        let count = data.split(",");
+                        return '<div class="pin-count" title="' + data + '">' + count.length + '</div>';
                     } else {
                         return '-';
                     }
                 }
             },
+            {
+                "data": "die_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            
             {
                 "data": "is_active",
                 "render": function (data, type, row, meta) {
@@ -309,8 +321,11 @@ if ($("#parts_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    let html = '<a href="'+base_url+'admin/parts/edit/'+row['id']+'"   class="edit_part" data-id="'+row['id']+'"><i class="fa fa-edit text-info"></i></a>';
-                    html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="delete_part" data-id="'+row['id']+'" ><i class="fa fa-trash text-danger"></i></a>';
+                    let html = '<a href="' + base_url + 'admin/parts/edit/' + row['id'] + '"   class="edit_part" data-id="' + row['id'] + '"><i class="fa fa-edit text-info"></i></a>';
+                    html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="view_part" data-id="' + row['id'] + '" ><i class="fa fa-eye text-primary"></i></a>';
+                   
+                    html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="delete_part" data-id="' + row['id'] + '" ><i class="fa fa-trash text-danger"></i></a>';
+                    
                     return html;
                 }
             }
@@ -383,8 +398,8 @@ if ($("#jobs_list_tbl").length > 0) {
                 "data": "pins",
                 "render": function (data, type, row, meta) {
                     if (data) {
-                        let count = data.split(","); 
-                        return  '<div class="pin-count" title="'+data+'">'+count.length+'</div>';
+                        let count = data.split(",");
+                        return '<div class="pin-count" title="' + data + '">' + count.length + '</div>';
                     } else {
                         return '-';
                     }
@@ -443,14 +458,19 @@ function reload_parts_tbl() {
     parts_table.ajax.url(base_url + "api/parts/list").load();
 }
 
-$(document).on('click', '.delete_part', function(){
+
+$(document).on('click', '.view_part', function () {
+    let id = $(this).data('id');
+    location.href = base_url + 'admin/parts/view/'+id;
+});
+$(document).on('click', '.delete_part', function () {
     let id = $(this).data('id');
 
     var con = confirm("Do you really want to delete this record?");
 
     if (con) {
         $.ajax({
-            url: base_url + 'api/parts/delete/'+id,
+            url: base_url + 'api/parts/delete/' + id,
             method: "POST",
             dataType: "json",
             beforeSend: function (xhr) {
@@ -467,62 +487,66 @@ $(document).on('click', '.delete_part', function(){
             } else {
                 let msg = data.responseJSON.messages.msg;
                 failMsg(msg);
-            }    
+            }
         });
-    }    
+    }
 });
 
 //pins
-if($(".pins-display .pin-box").length>0) {
-    $(".pins-display .pin-box").on('click', function(){
-        if($(this).hasClass('gray-pin')) {
+if ($(".pins-display .pin-box").length > 0) {
+    $(".pins-display .pin-box").on('click', function () {
+        if ($(this).hasClass('gray-pin')) {
             $(this).removeClass('gray-pin');
             $(this).addClass('green-pin');
         } else {
             $(this).removeClass('green-pin');
             $(this).addClass('gray-pin');
-        }        
+        }
     });
 }
 
-if($("#add_parts_data").length>0) {
+if ($("#add_parts_data").length > 0) {
     $("#add_parts_data").validate({
         rules: {
-            'part_name' : {required: true},
-            'part_no' : {required: true},
-            'model' : {required: true},
+            'part_name': { required: true,
+             },
+            'part_no': { required: true },
+            'die_no': { required: true },
+            'model': { required: true },
         },
         messages: {
-            'part_name' : {required:'Please enter Part Name'},
-            'part_no' : {required:'Please enter Part No'},
-            'model' : {required:'Please enter Model'},
+            'part_name': { required: 'Please enter Part Name',
+        },
+            'part_no': { required: 'Please enter Part No' },
+            'die_no': { required: 'Please enter Die No' },
+            'model': { required: 'Please enter Model' },
         }
     });
 
-    $("#add_parts_data button").on('click',function(e){
+    $("#add_parts_data button").on('click', function (e) {
         e.preventDefault();
 
         let pins_selected = [];
-        let i=0;
+        let i = 0;
 
-        $(".pins-display .pin-box").each(function(index){
-            if($(this).hasClass('green-pin')) {
+        $(".pins-display .pin-box").each(function (index) {
+            if ($(this).hasClass('green-pin')) {
                 pins_selected[i++] = $(this).attr('title');
             }
         });
 
         let form_data = $("#add_parts_data").serialize();
-        form_data += '&selected_pins='+ pins_selected;    
+        form_data += '&selected_pins=' + pins_selected;
         console.log(form_data);
 
         if (!$("#add_parts_data").valid()) {
             return false;
         }
 
-        let btn = $(this); 
+        let btn = $(this);
 
         btn.addClass('button--loading').attr('disabled', true);
-    
+
         $.ajax({
             url: base_url + 'api/parts/add',
             method: "POST",
@@ -545,16 +569,16 @@ if($("#add_parts_data").length>0) {
                 let msg = data.responseJSON.messages.msg;
                 failMsg(msg);
             }
-    
+
         });
-    });    
+    });
 }
 
-if($("#update_parts_data").length>0) {
+if ($("#update_parts_data").length > 0) {
 
     let id = $("#update_parts_data").find("input[name='id']").val();
     $.ajax({
-        url: base_url + 'api/parts/get_one/'+id,
+        url: base_url + 'api/parts/get_one/' + id,
         method: "GET",
         dataType: "json",
         beforeSend: function (xhr) {
@@ -564,14 +588,15 @@ if($("#update_parts_data").length>0) {
         $("#update_parts_data").find("input[name='part_name']").val(data.part_name);
         $("#update_parts_data").find("input[name='part_no']").val(data.part_no);
         $("#update_parts_data").find("input[name='model']").val(data.model);
+        $("#update_parts_data").find("input[name='die_no']").val(data.die_no);
 
         var pins_array = data.pins.split(",");
 
-        for(let i in pins_array) {
+        for (let i in pins_array) {
             var pin_address = pins_array[i];
-            $(".pins-display").find(".pin-box").each(function(index){
+            $(".pins-display").find(".pin-box").each(function (index) {
                 console.log("pins address::", pin_address);
-                if($(this).attr('title') == pin_address) {                    
+                if ($(this).attr('title') == pin_address) {
                     $(this).addClass('green-pin');
                 }
             });
@@ -584,43 +609,47 @@ if($("#update_parts_data").length>0) {
 
     $("#update_parts_data").validate({
         rules: {
-            'part_name' : {required: true},
-            'part_no' : {required: true},
-            'model' : {required: true},
+            'part_name': { required: true },
+            'part_no': { required: true },
+            'model': { required: true },
+            'die_no': { required: true },
+            'model': { required: true },
         },
         messages: {
-            'part_name' : {required:'Please enter Part Name'},
-            'part_no' : {required:'Please enter Part No'},
-            'model' : {required:'Please enter Model'},
+            'part_name': { required: 'Please enter Part Name' },
+            'part_no': { required: 'Please enter Part No' },
+            'model': { required: 'Please enter Model' },
+            'die_no': { required: 'Please enter Die No' },
+            'model': { required: 'Please enter Model' },
         }
     });
 
-    $("#update_parts_data button").on('click',function(e){
+    $("#update_parts_data button").on('click', function (e) {
         e.preventDefault();
 
         let pins_selected = [];
-        let i=0;
+        let i = 0;
 
-        $(".pins-display .pin-box").each(function(index){
-            if($(this).hasClass('green-pin')) {
+        $(".pins-display .pin-box").each(function (index) {
+            if ($(this).hasClass('green-pin')) {
                 pins_selected[i++] = $(this).attr('title');
             }
         });
 
         let form_data = $("#update_parts_data").serialize();
-        form_data += '&selected_pins='+ pins_selected;    
+        form_data += '&selected_pins=' + pins_selected;
         console.log(form_data);
 
         if (!$("#update_parts_data").valid()) {
             return false;
         }
 
-        let btn = $(this); 
+        let btn = $(this);
 
         btn.addClass('button--loading').attr('disabled', true);
-    
+
         $.ajax({
-            url: base_url + 'api/parts/update/'+id,
+            url: base_url + 'api/parts/update/' + id,
             method: "POST",
             data: form_data,
             dataType: "json",
@@ -641,177 +670,238 @@ if($("#update_parts_data").length>0) {
                 let msg = data.responseJSON.messages.msg;
                 failMsg(msg);
             }
-    
+
         });
-    });    
+    });
 }
-if($("#start_jobs_data_left").length>0) {
-    // alert('ok');
-   
-
-     
-
-$.ajax({
-    type: 'POST', // or 'GET', depending on your needs
-    url: base_url + 'api/apiparts/add',
-    data:{}, // Pass the JSON data as a string
-  beforeSend: function (xhr) {
-    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-  },
-  success: function(response) {
-    successMsg(response.msg);
+// if ($("#start_jobs_data_left").length > 0) {
+//     $.ajax({
+//         type: 'POST', 
+//         url: base_url + 'api/apiparts/add',
+//         data: {},
+//         beforeSend: function (xhr) {
+//              },
+//             }).done(function (data) {
+//             successMsg(response.msg);
 
 
-       $.ajax({
-        type: 'POST', // or 'GET', depending on your needs
-        url: base_url + 'api/apiparts/get_api_data',
-        data:{ part_id: dataToSend.job_id,
-            pins: dataToSend.pins}, // Pass the JSON data as a string
-       // contentType: 'application/json', // Set the content type to JSON
+//             $.ajax({
+//                 type: 'POST', // or 'GET', depending on your needs
+//                 url: base_url + 'api/apiparts/get_api_data',
+//                 data: {
+//                     part_id: dataToSend.job_id,
+//                     pins: dataToSend.pins
+//                 },  
+//                   beforeSend: function (xhr) {
+//                         },
+//             }).done(function (data) {
+//                 var inputValue = data.model['id']; 
+//                 $("#part_name").val(inputValue);
+//                  $("#start_jobs_data_left").find("input[name='part_no']").val(data.result['part_id']);
+//                 $("#start_jobs_data_left").find("input[name='model']").val(data.model['model']);
+
+//                 var pins_array = data.formattedData['keys'].split(",");
+//                 var pins_color = data.formattedData['values'].split(",");
+
+//                 $(".pins-display").find(".pin-box").each(function (index) {
+//                     if ($(this).hasClass('orange-pin')) {
+//                         $(this).removeClass('orange-pin').addClass('gray-pin');
+//                     }
+//                 });
+
+//                 for (let i in pins_array) {
+//                     var pin_address = pins_array[i];
+//                     var pin_color = pins_color[i];
+
+//                     $(".pins-display").find(".pin-box").each(function (index) {
+//                         //  console.log("pins address::", pin_address);
+//                         if ($(this).attr('title') == pin_address) {
+//                             if (pin_color === '0') {
+//                                 $(this).addClass('red-pin');
+//                             } else if (pin_color === '1') {
+//                                 $(this).addClass('green-pin');
+//                             } else {
+                               
+//                             }
+//                         }
+//                     });
+//                 }
+
+//             }).fail(function (data) {
+//                 console.log("Not found");
+//             });
+//         }).fail(function (data) {
+//             btn.removeClass('button--loading').attr('disabled', false);
+//             if (typeof data.responseJSON.messages === 'object') {
+//                 for (let i in data.responseJSON.messages) {
+//                     failMsg(data.responseJSON.messages[i]);
+//                 }
+//             } else {
+//                 let msg = data.responseJSON.messages.msg;
+//                 failMsg(msg);
+//             }
+
+//         });
+//     // });
+
+
+
+// }
+
+
+if ($("#start_jobs_data_left").length > 0) {
+    $("#start_jobs_data_left").find("#part_name").select2();
+    $.ajax({
+        type: 'POST', 
+        url: base_url + 'api/apiparts/add',
+        data: {}, 
         beforeSend: function (xhr) {
-            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-        },
+              },
     }).done(function (data) {
-        var inputValue = data.model['id']; // Assuming this contains the value you want to select
+        successMsg(data.msg);
 
-        $("#part_name").val(inputValue);
-       // $("#start_jobs_data_left").find("input[name='part_name']").val(data.model['id']);
-        $("#start_jobs_data_left").find("input[name='part_no']").val(data.result['part_id']);
-        $("#start_jobs_data_left").find("input[name='model']").val(data.model['model']);
 
-         var pins_array = data.formattedData['keys'].split(",");
-         var pins_color = data.formattedData['values'].split(",");
+        $.ajax({
+            type: 'POST', // or 'GET', depending on your needs
+            url: base_url + 'api/apiparts/get_api_data',
+            data: {},
+            beforeSend: function (xhr) {
+            },
+        }).done(function (data) {
+            var inputValue = data.model['id'];
 
-        $(".pins-display").find(".pin-box").each(function(index) {
-            if($(this).hasClass('orange-pin')) {  
-                $(this).removeClass('orange-pin').addClass('gray-pin');
+            $("#part_name").val('');
+            if ($("#part_name").length > 0) {
             }
-        });
+            $("#start_jobs_data_left").find("input[name='part_name']").val(inputValue);
+            $("#start_jobs_data_left").find("input[name='part_no']").val(data.result['part_id']);
+            $("#start_jobs_data_left").find("input[name='model']").val(data.model['model']);
 
-        for(let i in pins_array) {
-            var pin_address = pins_array[i]; 
-            var pin_color = pins_color[i];
-                           
-            $(".pins-display").find(".pin-box").each(function(index){
-              //  console.log("pins address::", pin_address);
-                if ($(this).attr('title') == pin_address) {
-                    if (pin_color === '0') {
-                        $(this).addClass('red-pin');
-                    } else if (pin_color === '1') {
-                        $(this).addClass('green-pin');
-                    } else {
-                        // Handle other cases if needed
-                    }
+            var pins_array = data.formattedData['keys'].split(",");
+            var pins_color = data.formattedData['values'].split(",");
+
+            $(".pins-display").find(".pin-box").each(function (index) {
+                if ($(this).hasClass('orange-pin')) {
+                    $(this).removeClass('orange-pin').addClass('gray-pin');
                 }
             });
-        }
+
+            for (let i in pins_array) {
+                var pin_address = pins_array[i];
+                var pin_color = pins_color[i];
+
+                $(".pins-display").find(".pin-box").each(function (index) {
+                    //  console.log("pins address::", pin_address);
+                    if ($(this).attr('title') == pin_address) {
+                        if (pin_color === '0') {
+                            $(this).addClass('red-pin');
+                        } else if (pin_color === '1') {
+                            $(this).addClass('green-pin');
+                        } else {
+                           
+                        }
+                    }
+                });
+            }
+
+        }).fail(function (data) {
+            // $(btn_id).removeClass('button--loading').attr('disabled', false);
+
+        });
 
     }).fail(function (data) {
-        console.log("Not found");
+        if (typeof data.responseJSON.messages === 'object') {
+            for (let i in data.responseJSON.messages) {
+                failMsg(data.responseJSON.messages[i]);
+            }
+        } else {
+            let msg = data.responseJSON.messages.msg;
+            failMsg(msg);
+        }
+
     });
 
- 
+}
 
-    // Handle the response from the server
-  }
-});
-
-
-
-   }
-
-if($("#start_jobs_data").length>0) {
+if ($("#start_jobs_data").length > 0) {
     $("#start_jobs_data").find("#part_name").select2();
+    $.ajax({
+        type: 'POST', 
+        url: base_url + 'api/apiparts/add',
+        data: {}, 
+        beforeSend: function (xhr) {
+              },
+    }).done(function (data) {
+        successMsg(data.msg);
 
 
-     
-$.ajax({
-   type: 'POST', // or 'GET', depending on your needs
-   url: base_url + 'api/apiparts/add',
-   data:{ }, // Pass the JSON data as a string
- beforeSend: function (xhr) {
-   //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
- },
-}).done(function (data) {
-   successMsg(data.msg);
+        $.ajax({
+            type: 'POST', // or 'GET', depending on your needs
+            url: base_url + 'api/apiparts/get_api_data',
+            data: {},
+            beforeSend: function (xhr) {
+            },
+        }).done(function (data) {
+            var inputValue = data.model['id'];
 
+            $("#part_name").val('');
+            if ($("#part_name").length > 0) {
+            }
+            $("#start_jobs_data").find("input[name='part_name']").val(inputValue);
+            $("#start_jobs_data").find("input[name='part_no']").val(data.result['part_id']);
+            $("#start_jobs_data").find("input[name='model']").val(data.model['model']);
 
-      $.ajax({
-       type: 'POST', // or 'GET', depending on your needs
-       url: base_url + 'api/apiparts/get_api_data',
-       data:{}, // Pass the JSON data as a string
-      // contentType: 'application/json', // Set the content type to JSON
-       beforeSend: function (xhr) {
-           //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-       },
-   }).done(function (data) {
-      var inputValue = data.model['id'];
-      
-               $("#part_name").val('');
-             //  $("#part_name").val(inputValue);
- 
-             if ($("#part_name").length > 0) {
-               // alert("Selected value: " + inputValue);
-             }
-       $("#start_jobs_data").find("input[name='part_name']").val(inputValue);
-       $("#start_jobs_data").find("input[name='part_no']").val(data.result['part_id']);
-       $("#start_jobs_data").find("input[name='model']").val(data.model['model']);
+            var pins_array = data.formattedData['keys'].split(",");
+            var pins_color = data.formattedData['values'].split(",");
 
-        var pins_array = data.formattedData['keys'].split(",");
-        var pins_color = data.formattedData['values'].split(",");
+            $(".pins-display").find(".pin-box").each(function (index) {
+                if ($(this).hasClass('orange-pin')) {
+                    $(this).removeClass('orange-pin').addClass('gray-pin');
+                }
+            });
 
-       $(".pins-display").find(".pin-box").each(function(index) {
-           if($(this).hasClass('orange-pin')) {  
-               $(this).removeClass('orange-pin').addClass('gray-pin');
-           }
-       });
+            for (let i in pins_array) {
+                var pin_address = pins_array[i];
+                var pin_color = pins_color[i];
 
-       for(let i in pins_array) {
-           var pin_address = pins_array[i]; 
-           var pin_color = pins_color[i];
-                          
-           $(".pins-display").find(".pin-box").each(function(index){
-             //  console.log("pins address::", pin_address);
-               if ($(this).attr('title') == pin_address) {
-                   if (pin_color === '0') {
-                       $(this).addClass('red-pin');
-                   } else if (pin_color === '1') {
-                       $(this).addClass('green-pin');
-                   } else {
-                       // Handle other cases if needed
-                   }
-               }
-           });
-       }
+                $(".pins-display").find(".pin-box").each(function (index) {
+                    //  console.log("pins address::", pin_address);
+                    if ($(this).attr('title') == pin_address) {
+                        if (pin_color === '0') {
+                            $(this).addClass('red-pin');
+                        } else if (pin_color === '1') {
+                            $(this).addClass('green-pin');
+                        } else {
+                           
+                        }
+                    }
+                });
+            }
 
-   }).fail(function (data) {
-   // $(btn_id).removeClass('button--loading').attr('disabled', false);
-   
-});
+        }).fail(function (data) {
+            // $(btn_id).removeClass('button--loading').attr('disabled', false);
 
+        });
 
+    }).fail(function (data) {
+        if (typeof data.responseJSON.messages === 'object') {
+            for (let i in data.responseJSON.messages) {
+                failMsg(data.responseJSON.messages[i]);
+            }
+        } else {
+            let msg = data.responseJSON.messages.msg;
+            failMsg(msg);
+        }
 
-   // Handle the response from the server
- }).fail(function (data) {
-    // $(btn_id).removeClass('button--loading').attr('disabled', false);
-     if (typeof data.responseJSON.messages === 'object') {
-         for (let i in data.responseJSON.messages) {
-             failMsg(data.responseJSON.messages[i]);
-         }
-     } else {
-         let msg = data.responseJSON.messages.msg;
-         failMsg(msg);
-     }
- 
- });
-// });
+    });
+
 
 
 
 
     // $("#start_jobs_data #part_name").on('change', function(){
     //     let id = $(this).val();
-       
+
     //     // if(id>0) {
     //     //     $.ajax({
     //     //         url: base_url + 'api/parts/get_one/'+id,
@@ -821,18 +911,18 @@ $.ajax({
     //     //             //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
     //     //         },
     //     //     }).done(function (data) {
-             
+
     //     //         $("#start_jobs_data").find("input[name='part_name']").val(data.part_name);
     //     //         $("#start_jobs_data").find("input[name='part_no']").val(data.part_no);
     //     //         $("#start_jobs_data").find("input[name='model']").val(data.model);
-        
+
     //     //         var pins_array = data.pins.split(",");
     //     //         $(".pins-display").find(".pin-box").each(function(index) {
     //     //             if($(this).hasClass('orange-pin')) {  
     //     //                 $(this).removeClass('orange-pin').addClass('gray-pin');
     //     //             }
     //     //         });
-        
+
     //     //         for(let i in pins_array) {
     //     //             var pin_address = pins_array[i];                
     //     //             $(".pins-display").find(".pin-box").each(function(index){
@@ -842,7 +932,7 @@ $.ajax({
     //     //                 }
     //     //             });
     //     //         }
-        
+
     //     //     }).fail(function (data) {
     //     //         console.log("Not found");
     //     //     });
@@ -851,48 +941,64 @@ $.ajax({
 }
 
 
-$(document).ready(function() {
-    if($('.digital-clock').length>0) {
-        var interval = ''; 
-        $("#start_time").on('click', function(e) {
+$(document).ready(function () {
+    if ($('.digital-clock').length > 0) {
+        var interval = '';
+        $("#start_time").on('click', function (e) {
             e.preventDefault();
             clockUpdate();
             //if(interval != '') {
-                interval = setInterval(clockUpdate, 1000);
+            interval = setInterval(clockUpdate, 1000);
             //}
-            
+
         });
-        $("#stop_time").on('click', function(e) {
+        $("#stop_time").on('click', function (e) {
             e.preventDefault();
             clearInterval(interval);
         });
     }
-  });
-  
-  function clockUpdate() {
+});
+
+function clockUpdate() {
     var date = new Date();
     //$('.digital-clock').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
     function addZero(x) {
-      if (x < 10) {
-        return x = '0' + x;
-      } else {
-        return x;
-      }
+        if (x < 10) {
+            return x = '0' + x;
+        } else {
+            return x;
+        }
     }
-  
+
     function twelveHour(x) {
-      if (x > 12) {
-        return x = x - 12;
-      } else if (x == 0) {
-        return x = 12;
-      } else {
-        return x;
-      }
+        if (x > 12) {
+            return x = x - 12;
+        } else if (x == 0) {
+            return x = 12;
+        } else {
+            return x;
+        }
     }
-  
+
     var h = addZero(twelveHour(date.getHours()));
     var m = addZero(date.getMinutes());
     var s = addZero(date.getSeconds());
-  
+
     $('.digital-clock').text(h + ':' + m + ':' + s)
-  }
+}
+
+
+$("#part-export").on('click', function(){
+//     is_active = $("#is_active").val();
+//     part_no = $("#part_no").val();
+// var  = $("#v_id").val();
+// var emp_id = $("#em_id").val();
+// var role_id = $("#role_ids").val();
+// var contractor_id = $("#contractor_ids").val();
+// var e_id = $("#e_id").val();
+// var role_category_id = $("#role_category_ids").val();
+// var department_id = $("#department_ids").val(); 
+
+
+    window.location.href =  base_url + 'admin/parts/export_part';
+});

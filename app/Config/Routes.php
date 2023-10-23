@@ -44,6 +44,7 @@ $routes->post('/api/users/update_is_active', 'Users\\Api\\UsersApiController::up
 $routes->post('/api/users/update/(:num)', 'Users\\Api\\UsersApiController::update/$1');
 // $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');
 $routes->get('/api/users/get_one/(:num)', 'Users\\Api\\UsersApiController::getOne/$1');
+$routes->post('/api/users/delete/(:num)', 'Users\\Api\\UsersApiController::delete/$1');
 
 $routes->get('/admin/parts/list', 'Parts\\PartsController::List');
 $routes->get('/admin/parts/add', 'Parts\\PartsController::Create');

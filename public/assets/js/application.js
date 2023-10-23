@@ -192,7 +192,7 @@ if ($("#users_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return '<a href="' + base_url + 'admin/users/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" class="user-delete" ><i class="fa fa-trash"></i></a>';
+                    return '<a href="' + base_url + 'admin/users/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_user" ><i class="fa fa-trash"></i></a>';
                 }
             }
         ]
@@ -535,6 +535,36 @@ $(document).on('click', '.delete_part', function () {
         }).done(function (data) {
             successMsg(data.msg);
             reload_parts_tbl();
+        }).fail(function (data) {
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+        });
+    }
+});
+
+
+$(document).on('click', '.delete_user', function () {
+    let id = $(this).data('id');
+
+    var con = confirm("Do you really want to delete this record?");
+
+    if (con) {
+        $.ajax({
+            url: base_url + 'api/users/delete/' + id,
+            method: "POST",
+            dataType: "json",
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            successMsg(data.msg);
+            reload_users_tbl();
         }).fail(function (data) {
             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {

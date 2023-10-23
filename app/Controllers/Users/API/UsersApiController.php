@@ -187,4 +187,22 @@ Class UsersApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
+    public function delete($id){
+
+        try {
+            helper(['form']);
+
+            if(!$id) {
+                return $this->fail('Please provide valid id', 400, true);
+            }
+
+            $result['is_deleted'] = $this->usersModel->delete($id);
+            $result['msg'] = "Users deleted successfully!";
+            return $this->respond($result, 200);
+
+        } catch (\Exception $e){
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }    
+    }
 }

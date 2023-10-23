@@ -8,12 +8,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0"><?php echo lang('Parts.Add'); ?></h1>
+                        <h1 class="m-0"><?php echo lang('Parts.View'); ?></h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#"><?php echo lang('Left-sidebar.Menu.Home'); ?></a></li>
-                            <li class="breadcrumb-item active"><?php echo lang('Parts.Add'); ?></li>
+                            <li class="breadcrumb-item active"><?php echo lang('Parts.View'); ?></li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -31,7 +31,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-6">
-                                        <h5 class="card-title"><?php echo lang('Parts.Add'); ?></h5>                                       
+                                        <h5 class="card-title"><?php echo lang('Parts.View'); ?></h5>                                       
                                     </div>
                                     <div class="col-6 text-right">
                                         <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary" >Parts List</a>
@@ -42,37 +42,38 @@
                             <div class="card-body">
                                 <div class="row">
                                         <div class="col-md-12">
-                                            <form id="add_parts_data">
+                                            <form id="view_parts_data">
+                                                <input type="hidden" class="" name="id" value="<?php echo $id; ?>">
                                                 <div class="row">
-                                                    <div class="col-md-4 col-4">
+                                                    <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name<span class="ast">*</span>:</label>
-                                                            <input type="text" class="form-control" name="part_name" placeholder="Part Name" >
+                                                            <label for="part_name">Part Name:</label>
+                                                            <?php echo isset($part_details['part_name'])?$part_details['part_name']:''; ?>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4 col-4">
+                                                    <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No<span class="ast">*</span>:</label>
-                                                            <input type="text" class="form-control" name="part_no" placeholder="Part No" >
+                                                            <label for="part_name">Part No:</label>
+                                                            <?php echo isset($part_details['part_no'])?$part_details['part_no']:''; ?>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4 col-4">
+                                                    <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model<span class="ast">*</span>:</label>
-                                                            <input type="text" class="form-control" name="model" placeholder="Model" >
+                                                            <label for="part_model">Model:</label>
+                                                            <?php echo isset($part_details['model'])?$part_details['model']:''; ?>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-4 col-4">
                                                         <div class="form-group">
-                                                            <label for="die_no">Die No<span class="ast">*</span>:</label>
-                                                            <input type="text" class="form-control" name="die_no" placeholder="Die No" >
+                                                            <label for="die_no">Die No:</label>
+                                                            <?php echo isset($part_details['die_no'])?$part_details['die_no']:''; ?>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4 col-4 mt-3 d-flex align-items-center">
+                                                    <div class="col-md-4 col-4">
                                                         <div class="">
-                                                            <input type="checkbox" class="checkbox" name="is_active" checked="checked" >   <label for="die_no">Is Active?</label>
+                                                            <label for="die_no">Is Active? </label> <?php echo (isset($part_details['is_active']) && $part_details['is_active']==1)?'Yes':'No'; ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -106,14 +107,6 @@
                                                                 <i class="fa fa-arrow-alt-circle-up"></i>
                                                             </div>
                                                         </div>                                                        
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-12 text-center">
-                                                        <button class="btn btn-primary">
-                                                            Save
-                                                        </button>
                                                     </div>
                                                 </div>
                                             </form>

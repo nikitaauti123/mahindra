@@ -43,9 +43,10 @@ Class PartsApiController extends BaseController
             helper(['form']);
             
             $rules = [
-                'part_name'  => 'required|min_length[2]|max_length[10]',
+                'part_name'  => 'required|min_length[2]|max_length[100]',
                 'part_no'  => 'required|min_length[3]|max_length[100]',
                 'model'  => 'required|min_length[3]|max_length[100]',
+                'die_no'  => 'required|min_length[2]|max_length[100]',
                 'is_active'  => 'required'
             ];
 
@@ -56,7 +57,8 @@ Class PartsApiController extends BaseController
             $data['part_name']  = $this->request->getVar('part_name');
             $data['part_no']    = $this->request->getVar('part_no');
             $data['model']      = $this->request->getVar('model');
-            $data['is_active']  = $this->request->getVar('is_active')?$this->request->getVar('is_active'):0;
+            $data['die_no']      = $this->request->getVar('die_no');
+            $data['is_active']  = $this->request->getVar('is_active');
             $data['pins']      =  $this->request->getVar('selected_pins');
             
             $result['id'] = $this->partsModel->insert($data, true);
@@ -79,9 +81,10 @@ Class PartsApiController extends BaseController
             }
             
             $rules = [
-                'part_name'  => 'required|min_length[2]|max_length[10]',
+                'part_name'  => 'required|min_length[2]|max_length[100]',
                 'part_no'  => 'required|min_length[3]|max_length[100]',
                 'model'  => 'required|min_length[3]|max_length[100]',
+                'die_no'  => 'required|min_length[2]|max_length[100]',
                 'is_active'  => 'required'
             ];
 
@@ -92,7 +95,8 @@ Class PartsApiController extends BaseController
             $data['part_name'] = $this->request->getVar('part_name');
             $data['part_no']   = $this->request->getVar('part_no');
             $data['model']     = $this->request->getVar('model');
-            $data['is_active'] = $this->request->getVar('is_active')?$this->request->getVar('is_active'):0;
+            $data['die_no']      = $this->request->getVar('die_no');
+            $data['is_active'] = $this->request->getVar('is_active');
             $data['pins']      =  $this->request->getVar('selected_pins');
             
             $result['is_updated'] = $this->partsModel->update($id, $data);

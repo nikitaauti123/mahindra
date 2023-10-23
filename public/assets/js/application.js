@@ -277,6 +277,16 @@ if ($("#parts_list_tbl").length > 0) {
                 }
             },
             {
+                "data": "die_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
                 "data": "is_active",
                 "render": function (data, type, row, meta) {
                     if (data && data != '-') {
@@ -309,8 +319,10 @@ if ($("#parts_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    let html = '<a href="'+base_url+'admin/parts/edit/'+row['id']+'"   class="edit_part" data-id="'+row['id']+'"><i class="fa fa-edit text-info"></i></a>';
+                    let html = '<a href="'+base_url+'admin/parts/view/'+row['id']+'"   class="view_part" data-id="'+row['id']+'"><i class="fa fa-eye text-success"></i></a>';
+                    html += '&nbsp;&nbsp;<a href="'+base_url+'admin/parts/edit/'+row['id']+'"   class="edit_part" data-id="'+row['id']+'"><i class="fa fa-edit text-info"></i></a>';
                     html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="delete_part" data-id="'+row['id']+'" ><i class="fa fa-trash text-danger"></i></a>';
+                    
                     return html;
                 }
             }
@@ -491,11 +503,13 @@ if($("#add_parts_data").length>0) {
             'part_name' : {required: true},
             'part_no' : {required: true},
             'model' : {required: true},
+            'die_no' : {required: true}
         },
         messages: {
             'part_name' : {required:'Please enter Part Name'},
             'part_no' : {required:'Please enter Part No'},
             'model' : {required:'Please enter Model'},
+            'die_no' : {required:'Please enter Die No.'},
         }
     });
 
@@ -505,6 +519,8 @@ if($("#add_parts_data").length>0) {
         let pins_selected = [];
         let i=0;
 
+        var is_active = $("input[name='is_active']:checked").length;
+
         $(".pins-display .pin-box").each(function(index){
             if($(this).hasClass('green-pin')) {
                 pins_selected[i++] = $(this).attr('title');
@@ -512,8 +528,7 @@ if($("#add_parts_data").length>0) {
         });
 
         let form_data = $("#add_parts_data").serialize();
-        form_data += '&selected_pins='+ pins_selected;    
-        console.log(form_data);
+        form_data += '&selected_pins='+ pins_selected+"&is_active="+is_active;    
 
         if (!$("#add_parts_data").valid()) {
             return false;
@@ -564,6 +579,10 @@ if($("#update_parts_data").length>0) {
         $("#update_parts_data").find("input[name='part_name']").val(data.part_name);
         $("#update_parts_data").find("input[name='part_no']").val(data.part_no);
         $("#update_parts_data").find("input[name='model']").val(data.model);
+        $("#update_parts_data").find("input[name='die_no']").val(data.die_no);
+        if(data.is_active == 1) {
+            $("#update_parts_data").find("input[name='is_active']").attr("checked", true);
+        }
 
         var pins_array = data.pins.split(",");
 
@@ -587,16 +606,20 @@ if($("#update_parts_data").length>0) {
             'part_name' : {required: true},
             'part_no' : {required: true},
             'model' : {required: true},
+            'die_no' : {required: true},
         },
         messages: {
             'part_name' : {required:'Please enter Part Name'},
-            'part_no' : {required:'Please enter Part No'},
+            'part_no' : {required:'Please enter Part No.'},
             'model' : {required:'Please enter Model'},
+            'die_no' : {required:'Please enter Die No.'},
         }
     });
 
     $("#update_parts_data button").on('click',function(e){
         e.preventDefault();
+
+        var is_active = $("input[name='is_active']:checked").length;
 
         let pins_selected = [];
         let i=0;
@@ -608,8 +631,8 @@ if($("#update_parts_data").length>0) {
         });
 
         let form_data = $("#update_parts_data").serialize();
-        form_data += '&selected_pins='+ pins_selected;    
-        console.log(form_data);
+        form_data += '&selected_pins='+ pins_selected+"&is_active="+is_active;    
+
 
         if (!$("#update_parts_data").valid()) {
             return false;
@@ -644,6 +667,35 @@ if($("#update_parts_data").length>0) {
     
         });
     });    
+}
+
+if($("#view_parts_data").length>0) {
+
+    let id = $("#view_parts_data").find("input[name='id']").val();
+    $.ajax({
+        url: base_url + 'api/parts/get_one/'+id,
+        method: "GET",
+        dataType: "json",
+        beforeSend: function (xhr) {
+            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+        },
+    }).done(function (data) {
+
+        var pins_array = data.pins.split(",");
+
+        for(let i in pins_array) {
+            var pin_address = pins_array[i];
+            $(".pins-display").find(".pin-box").each(function(index){
+                console.log("pins address::", pin_address);
+                if($(this).attr('title') == pin_address) {                    
+                    $(this).addClass('green-pin');
+                }
+            });
+        }
+
+    }).fail(function (data) {
+        console.log("Not found");
+    });  
 }
 
 if($("#start_jobs_data").length>0) {

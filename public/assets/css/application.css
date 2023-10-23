@@ -7,6 +7,7 @@
     --gray: #dfdfdf;
     --green: rgb(0, 91, 0);
     --orange: rgb(254, 171, 19);
+    --drak-gray:#202020;
 }
 
 .form-control {
@@ -186,7 +187,7 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 
 .pins-display .x-axis-line {
     width: 3px;
-    background-color: var(--gray);
+    background-color: var(--drak-gray);
     height: 32px;
     float: left;
     margin: 0 3px ;
@@ -194,7 +195,7 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 
 .pins-display .y-axis-line {
     width: 900px;
-    background-color: var(--gray);
+    background-color: var(--drak-gray);
     height: 3px;
     float: left;
     margin: 3px 0px ;
@@ -221,6 +222,23 @@ form .error {
 
 .dark-mode .select2-selection--single, .select2-container--default.select2-container--focus .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--single {
     border-radius: 35px;
+}
+
+.arrow-center {
+    margin: 0 auto;
+    width: 925px;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+}
+
+.arrow-center .fa-arrow-alt-circle-up:before{
+    color: var(--red);
+    font-size: 30px;
+}
+
+.ast {
+    color: red;
 }
 
 @keyframes button-loading-spinner {

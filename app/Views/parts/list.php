@@ -47,10 +47,11 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Sr.No</th>
-                                                        <th>Part No</th>
+                                                        <th>Part No.</th>
                                                         <th>Part Name</th>
                                                         <th>Model</th>
                                                         <th>Pins</th>
+                                                        <th>Die No.</th>
                                                         <th>Is Active?</th>
                                                         <th>Created Date</th>
                                                         <th>Updated Date</th>
@@ -67,6 +68,7 @@
                                                         <th>Part Name</th>
                                                         <th>Model</th>
                                                         <th>Pins</th>
+                                                        <th>Die No.</th>
                                                         <th>Is Active?</th>
                                                         <th>Created Date</th>
                                                         <th>Updated Date</th>

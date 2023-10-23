@@ -3,6 +3,7 @@
 namespace App\Controllers\Parts;
 
 use App\Controllers\BaseController;
+use App\Models\PartsModel;
 
 class PartsController extends BaseController
 {
@@ -23,6 +24,17 @@ class PartsController extends BaseController
         $data['request'] = $this->request;
         $data['id'] = $id;
         return view('parts/edit', $data);
+    }
+
+    public function View($id)
+    {
+        $partsModel = new PartsModel();
+
+        $data['request'] = $this->request;
+        $data['id'] = $id;
+        $result = $partsModel->find($id);
+        $data['part_details'] = $result;
+        return view('parts/view', $data);
     }
 
     public function Remove()

@@ -123,4 +123,21 @@ Class JobsApiController extends BaseController
             return $this->fail($result, 400, true);
         }    
     }
+    public function update_is_active(){
+        try {
+            $id = $this->request->getVar('id');
+            $is_Active = $this->request->getVar('is_active');
+            if (($is_Active) == 1) {
+                $data['is_active'] = '0';
+            } else {
+                $data['is_active'] = '1';
+            }
+            $result['msg'] =  lang('Users.StatusUpdateMsg');
+            $result['id'] = $this->jobsModel->update($id, $data);
+            return $this->respond($result, 200);
+        } catch (\Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
+    }
 }

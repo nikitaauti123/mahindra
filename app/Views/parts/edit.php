@@ -74,10 +74,15 @@
                                             <label for="is_active" class="col-sm-4 control-label">Is active?</label>
                                             <div class="col-sm-8">
                                                 <div class="checkbox">
-                                                    <label>
-                                                    <input type="checkbox"  name="is_active">
-   </label>
-                                                </div>
+                                                <div class="toggle-switch">
+                                                                <label for="cb-switch">
+                                                                    <input type="checkbox" id="cb-switch" id="is_active" name="is_active" value="">
+                                                                    <span>
+                                                                        <small></small>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+                 </div>
                                             </div>
                                         </div></div>
                                                 </div>

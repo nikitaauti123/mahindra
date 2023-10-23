@@ -5,6 +5,10 @@ namespace App\Controllers\Parts\Api;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\PartsModel;
+use PhpOffice\PhpSpreadsheet;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Exception;
 
 Class PartsApiController extends BaseController
@@ -121,5 +125,23 @@ Class PartsApiController extends BaseController
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }    
+    }
+
+    public function update_is_active(){
+        try {
+            $id = $this->request->getVar('id');
+            $is_Active = $this->request->getVar('is_active');
+            if (($is_Active) == 1) {
+                $data['is_active'] = '0';
+            } else {
+                $data['is_active'] = '1';
+            }
+            $result['msg'] =  lang('Users.StatusUpdateMsg');
+            $result['id'] = $this->partsModel->update($id, $data);
+            return $this->respond($result, 200);
+        } catch (\Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
     }
 }

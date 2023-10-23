@@ -54,7 +54,7 @@ $("#login_btn").on('click', function (e) {
 
 if ($("#users_list_tbl").length > 0) {
     // table
-    $("#users_list_tbl").DataTable({
+    var users_table = $("#users_list_tbl").DataTable({
         "ordering": true,
         'order': [[1, 'asc']],
         'serverMethod': 'get',
@@ -156,12 +156,19 @@ if ($("#users_list_tbl").length > 0) {
                 "data": "is_active",
                 "render": function (data, type, row, meta) {
                     if (data && data != '-') {
-                        return data == 1 ? 'Yes' : 'No';
+                        // Assuming "cb-switch" is the ID of the checkbox input element
+                        var checkboxId = "cb-switch"; // Create a unique ID for each checkbox
+                        if (data == 1) {
+                            return '<div class="toggle-switch user_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value="" checked><span><small></small></span></label></div>';
+                        } else {
+                            return '<div class="toggle-switch user_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value=""><span><small></small></span></label></div>';
+                        }
                     } else {
                         return '-';
                     }
                 }
             },
+            
             {
                 "data": "created_at",
                 "render": function (data, type, row, meta) {
@@ -185,13 +192,38 @@ if ($("#users_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return '<a href="javascript:void(0)"   class="edit_role" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" class="user-delete" ><i class="fa fa-trash"></i></a>';
+                    return '<a href="' + base_url + 'admin/users/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" class="user-delete" ><i class="fa fa-trash"></i></a>';
                 }
             }
         ]
     });
+    $("#users_list_tbl tbody").on("click", ".user_active_inactive", function () {
+    var rowData = users_table.row($(this).closest("tr")).data();
+    user_active_inactive(rowData.id, rowData.is_active);
+});
+
 }
 
+function user_active_inactive(id, is_active) {
+    var res = confirm("Do you want to update this User status?");
+    if (res == true) {
+        $.ajax({
+            url: base_url + 'api/users/update_is_active',
+            method: "POST",
+            data: { id: id, is_active: is_active },
+            dataType: "json",
+            success: function (data) {
+                successMsg(data.msg);
+                $('#users_list_tbl').DataTable().ajax.reload();
+            },
+            error: function (xhr, status, error) {
+
+                console.error("Error:", error);
+            }
+        });
+    }
+
+}
 //dashboard page
 if ($("#from_date").length > 0) {
     $("#from_date").daterangepicker({
@@ -286,13 +318,18 @@ if ($("#parts_list_tbl").length > 0) {
                         return '-';
                     }
                 }
-            },
-            
+            },            
             {
                 "data": "is_active",
                 "render": function (data, type, row, meta) {
                     if (data && data != '-') {
-                        return data == 1 ? 'Yes' : 'No';
+                        // Assuming "cb-switch" is the ID of the checkbox input element
+                        var checkboxId = "cb-switch"; // Create a unique ID for each checkbox
+                        if (data == 1) {
+                            return '<div class="toggle-switch part_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value="" checked><span><small></small></span></label></div>';
+                        } else {
+                            return '<div class="toggle-switch part_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value=""><span><small></small></span></label></div>';
+                        }
                     } else {
                         return '-';
                     }
@@ -331,6 +368,11 @@ if ($("#parts_list_tbl").length > 0) {
             }
         ]
     });
+
+    $("#parts_list_tbl tbody").on("click", ".part_active_inactive", function () {
+        var rowData = parts_table.row($(this).closest("tr")).data();
+        part_active_inactive(rowData.id, rowData.is_active);
+    });
 }
 
 // Parts
@@ -354,7 +396,7 @@ if ($("#jobs_list_tbl").length > 0) {
             [10, 25, 50, 100, 'All'],
         ],
         "ajax": {
-            "url": base_url + "api/parts/list",
+            "url": base_url + "api/jobs/list",
             "dataSrc": "",
         },
         "columns": [
@@ -415,7 +457,13 @@ if ($("#jobs_list_tbl").length > 0) {
                 "data": "is_active",
                 "render": function (data, type, row, meta) {
                     if (data && data != '-') {
-                        return data == 1 ? 'Completed' : 'In Progress';
+                        // Assuming "cb-switch" is the ID of the checkbox input element
+                        var checkboxId = "cb-switch"; // Create a unique ID for each checkbox
+                        if (data == 1) {
+                            return '<div class="toggle-switch job_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value="" checked><span><small></small></span></label></div>';
+                        } else {
+                            return '<div class="toggle-switch job_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value=""><span><small></small></span></label></div>';
+                        }
                     } else {
                         return '-';
                     }
@@ -452,10 +500,18 @@ if ($("#jobs_list_tbl").length > 0) {
             }
         ]
     });
+    $("#jobs_list_tbl tbody").on("click", ".job_active_inactive", function () {
+        var rowData = parts_table.row($(this).closest("tr")).data();
+        job_active_inactive(rowData.id, rowData.is_active);
+    });
 }
 
 function reload_parts_tbl() {
     parts_table.ajax.url(base_url + "api/parts/list").load();
+}
+
+function reload_users_tbl() {
+    users_table.ajax.url(base_url + "api/users/list").load();
 }
 
 
@@ -539,7 +595,15 @@ if ($("#add_parts_data").length > 0) {
         form_data += '&selected_pins=' + pins_selected;
         console.log(form_data);
 
-        if (!$("#add_parts_data").valid()) {
+        if ($("#add_parts_data").valid()) {
+            if (pins_selected.length === 0) {
+                // If it's empty, prevent the form submission and show an error message
+                e.preventDefault();
+                alert('Please select at least one pin.');
+            } else {
+                // Continue with form submission or other actions
+            }
+        } else {
             return false;
         }
 
@@ -589,7 +653,18 @@ if ($("#update_parts_data").length > 0) {
         $("#update_parts_data").find("input[name='part_no']").val(data.part_no);
         $("#update_parts_data").find("input[name='model']").val(data.model);
         $("#update_parts_data").find("input[name='die_no']").val(data.die_no);
-
+        var is_active = data.is_active;
+        var checkbox = $("#is_active");
+        if (is_active == 1) {
+        
+            $("#update_parts_data").find("input[name='is_active']").val('on');
+            $("#update_parts_data").find("input[name='is_active']").prop("checked", true); // Check the checkbo
+            checkbox.prop("checked", true); // Check the checkbox
+        } else if(is_active == 0){
+        
+            $("#update_parts_data").find("input[name='is_active']").val('off');
+            $("#update_parts_data").find("input[name='is_active']").prop("checked", false); // Check the checkbo
+        }
         var pins_array = data.pins.split(",");
 
         for (let i in pins_array) {
@@ -636,11 +711,19 @@ if ($("#update_parts_data").length > 0) {
             }
         });
 
+       
         let form_data = $("#update_parts_data").serialize();
         form_data += '&selected_pins=' + pins_selected;
         console.log(form_data);
 
-        if (!$("#update_parts_data").valid()) {
+        if ($("#update_parts_data").valid()) {
+            if (pins_selected.length === 0) {
+                // If it's empty, prevent the form submission and show an error message
+                e.preventDefault();
+                alert('Please select at least one pin.');
+                return false;
+              }
+        }else{
             return false;
         }
 
@@ -1002,3 +1085,237 @@ $("#part-export").on('click', function(){
 
     window.location.href =  base_url + 'admin/parts/export_part';
 });
+
+
+
+
+
+
+if ($("#update_users").length > 0) {
+
+    let id = $("#update_users").find("input[name='id']").val();
+    $.ajax({
+        url: base_url + 'api/users/get_one/' + id,
+        method: "GET",
+        dataType: "json",
+        beforeSend: function (xhr) {
+            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+        },
+    }).done(function (data) {
+        $("#update_users").find("input[name='first_name']").val(data.first_name);
+        $("#update_users").find("input[name='last_name']").val(data.last_name);
+      
+        $("#update_users").find("input[name='email']").val(data.email);
+        $("#update_users").find("input[name='phone_number']").val(data.phone);
+        $("#update_users").find("input[name='employee_id']").val(data.emp_id);
+        $("#update_users").find("input[name='username']").val(data.username);
+        // $("#update_users").find("input[name='is_active']").val(data.is_active);
+        var is_active = data.is_active;
+        var checkbox = $("#is_active");
+        if (is_active == 1) {
+        
+            $("#update_users").find("input[name='is_active']").val('on');
+            $("#update_users").find("input[name='is_active']").prop("checked", true); // Check the checkbo
+            checkbox.prop("checked", true); // Check the checkbox
+        } else if(is_active == 0){
+        
+            $("#update_users").find("input[name='is_active']").val('off');
+            $("#update_users").find("input[name='is_active']").prop("checked", false); // Check the checkbo
+        }
+    }).fail(function (data) {
+        console.log("Not found");
+    });
+    $("#update_users").validate({
+        rules: {
+            'first_name': { required: true,
+             },
+            'last_name': { required: true },
+            'email': { required: true },
+            'phone_number': {  required: true, minlength: 10,
+                maxlength: 12, },
+            'username': { required: true },
+            'password': {  minlength: 5 },
+            'confirm_password': { 
+                equalTo: "#password" },
+            'email': { required: true ,
+                email: true},
+            'employee_id': { required: true },
+        },
+        messages: {
+            'first_name': { required: 'Please enter first Name',
+        },
+            'last_name': { required: 'Please enter last Name' },
+            'email': { required: 'Please enter Die No' },
+            'phone_number': { required: 'Please enter Phone Number' },
+            'username': { required: 'Please enter User Name' },
+            
+            'employee_id': { required: 'Please enter employee Id' },
+        }
+    });
+
+    $("#update_users button").on('click', function (e) {
+        e.preventDefault();
+
+        
+        if (!$("#update_users").valid()) {
+            return false;
+        }
+        let i = 0;
+        var is_Active_val = $("#update_users").find("input[name='is_active']").prop('checked') ? 'on' : '';
+        var form_data = $('#update_users').serialize();
+        form_data += '&is_active=' +is_Active_val;
+
+        
+        console.log(form_data);
+
+        // let btn = $(this);
+
+        // btn.addClass('button--loading').attr('disabled', true);
+
+        $.ajax({
+            url: base_url + 'api/users/update/' + id,
+            method: "POST",
+            data: form_data,
+            dataType: "json",            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+           // btn.removeClass('button--loading').attr('disabled', false);
+            successMsg(data.msg);
+            location.href = base_url + 'admin/users/list';
+            reload_users_tbl();
+        }).fail(function (data) {
+           // btn.removeClass('button--loading').attr('disabled', false);
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+
+        });
+    });
+}
+
+
+if ($("#add_users").length > 0) {
+    $("#add_users").validate({
+        rules: {
+            'first_name': { required: true,
+             },
+            'last_name': { required: true },
+            'email': { required: true },
+            'phone_number': { required: true, minlength: 10,
+                maxlength: 12, },
+            'username': { required: true },
+            'password': {  required: true,minlength: 5 },
+            'confirm_password': {  required: true,
+                equalTo: "#password" },
+            'email': { required: true ,
+                email: true},
+            'employee_id': { required: true },
+        },
+        messages: {
+            'first_name': { required: 'Please enter first Name',
+        },
+            'last_name': { required: 'Please enter last Name' },
+            'email': { required: 'Please enter email' },
+            'phone_number': { required: 'Please enter Phone Number' },
+            'username': { required: 'Please enter User Name' },  
+            'password': { required: 'Please enter password' },
+          
+            'confirm_password': { required: 'Please enter confirm password' },  
+          
+            'employee_id': { required: 'Please enter employee Id' },
+        }
+    });
+
+    $("#add_users button").on('click', function (e) {
+        e.preventDefault();
+
+        
+        let form_data = $("#add_users").serialize();
+        console.log(form_data);
+
+        if (!$("#add_users").valid()) {
+            return false;
+        }
+
+        let btn = $(this);
+
+        btn.addClass('button--loading').attr('disabled', true);
+
+        $.ajax({
+            url: base_url + 'api/users/add/',
+            method: "POST",
+            data: form_data,
+            dataType: "json",
+
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            successMsg(data.msg);
+            location.href = base_url + 'admin/users/list';
+            reload_users_tbl();
+        }).fail(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+
+        });
+    });
+}
+
+
+function part_active_inactive(id, is_active) {
+    var res = confirm("Do you want to update this part status?");
+    if (res == true) {
+        $.ajax({
+            url: base_url + 'api/parts/update_is_active',
+            method: "POST",
+            data: { id: id, is_active: is_active },
+            dataType: "json",
+            success: function (data) {
+                successMsg(data.msg);
+                $('#parts_list_tbl').DataTable().ajax.reload();
+            },
+            error: function (xhr, status, error) {
+
+                console.error("Error:", error);
+            }
+        });
+    }
+
+}
+
+
+function job_active_inactive(id, is_active) {
+    var res = confirm("Do you want to update this job status?");
+    if (res == true) {
+        $.ajax({
+            url: base_url + 'api/jobs/update_is_active',
+            method: "POST",
+            data: { id: id, is_active: is_active },
+            dataType: "json",
+            success: function (data) {
+                successMsg(data.msg);
+                $('#jobs_list_tbl').DataTable().ajax.reload();
+            },
+            error: function (xhr, status, error) {
+
+                console.error("Error:", error);
+            }
+        });
+    }
+
+}

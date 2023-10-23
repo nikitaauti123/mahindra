@@ -1,10 +1,15 @@
 <?php
 
 namespace App\Controllers\Parts;
+require_once('../phpspreadsheet.php');
 
 use Exception;
 use App\Controllers\BaseController;
 use App\Models\PartsModel;
+use phpOffice\PhpSpreadsheet;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class PartsController extends BaseController
 {
@@ -50,6 +55,8 @@ class PartsController extends BaseController
         return view('parts/bulk_import_parts', $data);
     }
     public function export_part(){
+        $spreadsheet = new Spreadsheet();
+        
         $data['request'] = $this->request;
         return view('parts/export_part', $data);
        

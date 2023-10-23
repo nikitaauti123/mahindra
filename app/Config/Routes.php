@@ -34,11 +34,16 @@ $routes->get('/logout', 'Users\\UsersController::logout');
 $routes->get('/admin/dashboard', 'Users\\UsersController::dashboard');
 
 $routes->get('/admin/users/list', 'Users\\UsersController::list');
+$routes->get('/admin/users/edit/(:num)', 'Users\\UsersController::Edit/$1');
+$routes->get('/admin/users/add', 'Users\\UsersController::Create/$1');
 
 $routes->post('/api/user/login', 'Users\\Api\\UsersApiController::check_login');
 $routes->get('/api/users/list', 'Users\\Api\\UsersApiController::list');
 $routes->post('/api/users/add', 'Users\\Api\\UsersApiController::add');
+$routes->post('/api/users/update_is_active', 'Users\\Api\\UsersApiController::update_is_active');
 $routes->post('/api/users/update/(:num)', 'Users\\Api\\UsersApiController::update/$1');
+// $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');
+$routes->get('/api/users/get_one/(:num)', 'Users\\Api\\UsersApiController::getOne/$1');
 
 $routes->get('/admin/parts/list', 'Parts\\PartsController::List');
 $routes->get('/admin/parts/add', 'Parts\\PartsController::Create');
@@ -46,12 +51,14 @@ $routes->get('/admin/parts/import', 'Parts\\PartsController::Import');
 $routes->post('/admin/parts/bulk_import_parts', 'Parts\\PartsController::bulk_import_parts');
 
 $routes->get('admin/parts/export_part', 'Parts\\PartsController::export_part');
+$routes->get('admin/parts/edit/(:num)', 'Parts\\PartsController::Edit/$1');
 
-$routes->get('/admin/parts/edit/(:num)', 'Parts\\PartsController::Edit/$1');
+
 $routes->get('/admin/parts/view/(:num)', 'Parts\\PartsController::View/$1');
 
 $routes->get('/api/parts/list', 'Parts\\Api\\PartsApiController::list');
 $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');
+$routes->post('/api/parts/update_is_active', 'Parts\\Api\\PartsApiController::update_is_active');
 
 $routes->post('/api/parts/update/(:num)', 'Parts\\Api\\PartsApiController::update/$1');
 $routes->post('/api/parts/delete/(:num)', 'Parts\\Api\\PartsApiController::delete/$1');
@@ -63,6 +70,7 @@ $routes->get('/admin/jobs/list', 'Jobs\\JobsController::List');
 $routes->get('/admin/jobs/add', 'Jobs\\JobsController::Create');
 $routes->get('/admin/jobs/add_left', 'Jobs\\JobsController::Create_left');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
+$routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
 
 $routes->get('/api/jobs/list', 'Jobs\\Api\\JobsApiController::list');
 $routes->post('/api/jobs/add', 'Jobs\\Api\\JobsApiController::add');

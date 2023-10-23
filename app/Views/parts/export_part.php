@@ -2,13 +2,12 @@
 
 <?= $this->section('content') ?>
 <?php  
-require_once(__DIR__ . '/vendor/phpspreadsheet/phpspreadsheet.php');
-
 
 use App\Models\PartsModel;
+
 function findObjectLpn($array, $lpn) {        
-    foreach ( $array as $element ) {
-        if ( strtolower($lpn) == strtolower($element->lpn) ) {
+    foreach ($array as $element) {
+        if (strtolower($lpn) == strtolower($element->lpn)) {
             return $element;
         }
     }
@@ -19,40 +18,30 @@ $pdf_data = array();
 $file_name = "Part List";
 $pdf_data['title'] = $file_name;
 
-
 $col[] = 'Part No';
 $col[] = 'Part Name';
 $col[] = 'Model';
-$col[] = 'Pins';
-
+$col[] = 'Die No';
 $col[] = 'Status'; 
 
 $headers = excel_columns($col);
-  
-
 $pdf_data['headers'] = $headers;
 
-$is_active = $_REQUEST['is_active'];
-$where = '';
-
 $part = new PartsModel();
-
 $part_data = $part->findAll();
 
 $data = array();
-
+$i = 1;
 if (count($part_data) > 0) {
-    foreach ($part_data as $row) {         
-        $data[$i][] = ((isset($row['part_no'])&&!empty($row['part_no'])) ? $row['emp_id'] : " ");
-        $data[$i][] = ((isset($row['part_name'])&&!empty($row['part_name'])) ? $row['email_address'] : " ");
+    foreach ($part_data as $row) { 
+        $data[$i][] = ((isset($row['part_no'])&&!empty($row['part_no'])) ? $row['part_no'] : " ");
+        $data[$i][] = ((isset($row['part_name'])&&!empty($row['part_name'])) ? $row['part_name'] : " ");
       
-        $data[$i][] = $row['model'];
-        $data[$i][] = $row['pins'];
-        
-        $data[$i][] = ($row['v_active']==1 )?'Active':'Deactivated';
-         
+        $data[$i][] = ((isset($row['model'])&&!empty($row['model'])) ? $row['model'] : " ");
+        $data[$i][] = ((isset($row['die_no'])&&!empty($row['die_no'])) ? $row['die_no'] : " ");
+        $data[$i][] = ($row['is_active']==1 )?'Active':'Deactivated';
         $i++;
-    }  
+    }
 } 
 
 $body = excel_columns($data, 2);
@@ -73,4 +62,4 @@ $pdf_data['file_name'] = $file_name.'.xlsx';
 
 $obj = new phpspreadsheet();
 $obj->set_data($pdf_data);
- ?>
+?>

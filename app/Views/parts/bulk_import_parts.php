@@ -20,8 +20,11 @@ function check_part_exists($array) {
 
     $part = new PartsModel();
     $row = $part->where('LOWER(part_no)', strtolower($array['part_no']))->first();
-    $count = count($row);
+    if ($row !== null && is_array($row) && count($row) > 0) {
+    $count =count($row) ;
+   
     return $count;
+    }
 }
 
 if (!(in_array($_FILES['file']['type'], $arr_file_types))) {

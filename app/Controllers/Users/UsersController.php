@@ -48,4 +48,15 @@ Class UsersController extends BaseController
         $data['request'] = $this->request;
         return view('users/list', $data);
     }
+    public function Edit($id)
+    {
+        $data['request'] = $this->request;
+        $data['id'] = $id;
+        return view('users/edit', $data);
+    }
+    public function Create()
+    {
+        $data['request'] = $this->request;
+        return view('users/add', $data);
+    }
 }

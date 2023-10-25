@@ -5,16 +5,29 @@ namespace App\Controllers\Users\Api;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UsersModel;
+use App\Models\RolesPermissionModel;
+use App\Models\UsersRolesModel;
+use App\Models\RolesModel;
+
+
 use Exception;
 
 Class UsersApiController extends BaseController
 {
     use ResponseTrait;
     private $usersModel;
+    private $usersRoleModel;
+    private $rolespermissionModel;
+    private $roleModel;
 
     public function __construct()
     {
         $this->usersModel = new UsersModel();
+        $this->rolespermissionModel = new RolesPermissionModel();
+        $this->usersRoleModel = new UsersRolesModel();
+        $this->roleModel = new RolesModel();
+        
+        
     }
     public function getOne($id)
     {
@@ -87,8 +100,28 @@ Class UsersApiController extends BaseController
 
     public function list()
     {
-        $result = $this->usersModel->findAll();
-        return $this->respond($result, 200);
+        $users = $this->usersModel->findAll();
+
+        $combinedData = [];
+        helper('common_helper');
+        foreach ($users as $user) {
+               $user_id = $user['id'];
+            $this->usersRoleModel->where('user_id', $user_id); // Filter by user_id
+            $userRoles = $this->usersRoleModel->findAll();
+            $roleNames = [];
+            foreach ($userRoles as $userRole) {
+                $role_id = $userRole['role_id'];
+                $role = $this->roleModel->find($role_id);
+                if ($role) {
+                    $roleNames[] = $role['name'];
+                }
+            }
+           // print_r($roleNames);
+            $user['roles'] = implode(', ', $roleNames);
+            $combinedData[] = $user;
+        }
+        return $this->respond($combinedData, 200);
+       // return $this->respond($result, 200);
     }
 
     public function add(){
@@ -115,14 +148,15 @@ Class UsersApiController extends BaseController
             $data['first_name']      = $this->request->getVar('first_name');
             $data['last_name']       = $this->request->getVar('last_name');
             $data['is_active']       = $isactive;
-          
-            // $data['profile_photo']   =  isset($cropped_img) ? $cropped_img : '';
-          
-            // Remove attribute if value is null or blank
-            $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
+            $user_role['role_id'] =  $this->request->getVar('role_id');
+           
+             $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
             $result['msg'] = lang('Users.UsersSuccessMsg');
            
             $result['id'] = $this->usersModel->insert($data, true);
+            $user_role['user_id'] = $result['id'];
+            $result['role_id'] = $this->usersRoleModel->insert($user_role, true);
+           
             return $this->respond($result, 200);
 
         } catch (\Exception $e){
@@ -157,12 +191,16 @@ Class UsersApiController extends BaseController
             $data['first_name']      = $this->request->getVar('first_name');
             $data['last_name']       = $this->request->getVar('last_name');
             $data['is_active']       = $isactive;
+            $user_role['role_id'] =  $this->request->getVar('role_id');
            
             $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
-            $result['msg'] = lang('Users.UsersUpdateMsg');
-           
+            
+            $user_role['user_id'] = $id;
+            $this->usersRoleModel->where('user_id', $id)->delete();
+            $result['role_id'] = $this->usersRoleModel->insert($user_role, true);            
 
             $result['id'] = $this->usersModel->update($id, $data);
+            $result['msg'] = lang('Users.UsersUpdateMsg');
             return $this->respond($result, 200);
 
         } catch (\Exception $e){
@@ -204,5 +242,28 @@ Class UsersApiController extends BaseController
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }    
+    }
+
+    public function get_permission_names(){
+        $id = $this->request->getVar('role_id');
+        $this->rolespermissionModel->where('role_id', $id);
+        $result = $this->rolespermissionModel->findAll();      
+        return $this->respond($result, 200);    
+    }
+
+    public  function get_role_names()
+    {
+        $id = $this->request->getVar('user_id');
+
+
+        $result['role_id']  = $this->usersRoleModel->Where('user_id', $id)
+        ->first();
+
+        if (isset($result['role_id'] ) && (!empty($result['role_id']))) {
+            $result['role_name']  = $this->roleModel->Where('id', $result['role_id']['role_id'])
+            ->first();
+        }
+    
+        return $this->respond($result, 200);
     }
 }

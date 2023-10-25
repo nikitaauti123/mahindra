@@ -49,37 +49,37 @@
                                         <div class="row mt-3 mb-3">
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="first_name"><?php echo lang('Users.FirstName'); ?></label>
+                                                    <label for="first_name"><?php echo lang('Users.FirstName'); ?><span class="red_text">*</span></label>
                                                     <input type="text" class="form-control" name="first_name" placeholder=" <?php echo lang('Users.FirstName'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="last_name"><?php echo lang('Users.LastName'); ?></label>
+                                                    <label for="last_name"><?php echo lang('Users.LastName'); ?><span class="red_text">*</span></label>
                                                     <input type="text" class="form-control" name="last_name" placeholder="<?php echo lang('Users.LastName'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="email"><?php echo lang('Users.Email'); ?></label>
+                                                    <label for="email"><?php echo lang('Users.Email'); ?><span class="red_text">*</span></label>
                                                     <input type="text" class="form-control" name="email" autocomplete="off" placeholder="<?php echo lang('Users.Email'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="phone_number"><?php echo lang('Users.PhoneNumber'); ?></label>
+                                                    <label for="phone_number"><?php echo lang('Users.PhoneNumber'); ?><span class="red_text">*</span></label>
                                                     <input type="text" class="form-control" name="phone_number" placeholder="<?php echo lang('Users.PhoneNumber'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="username"><?php echo lang('Users.UserName'); ?></label>
+                                                    <label for="username"><?php echo lang('Users.UserName'); ?><span class="red_text">*</span></label>
                                                     <input type="text" class="form-control" name="username" autocomplete="off" placeholder="<?php echo lang('Users.UserName'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="employee_id"><?php echo lang('Users.EmployeeId'); ?></label>
+                                                    <label for="employee_id"><?php echo lang('Users.EmployeeId'); ?><span class="red_text">*</span></label>
                                                     <input type="text" class="form-control" name="employee_id" placeholder="<?php echo lang('Users.EmployeeId'); ?>">
                                                 </div>
                                             </div>
@@ -95,6 +95,18 @@
                                                     <input type="password" class="form-control" name="confirm_password" autocomplete="off" placeholder="<?php echo lang('Users.ConfirmPassword'); ?>">
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="role"><?php echo lang('Users.Role'); ?><span class="red_text">*</span></label>
+                                            <select name="role_id" id="role_id" class="form-control" >
+                                            <option value="">All <?php echo lang('Users.Role'); ?></option>
+                                            <?php
+                                        foreach ($role as $roles) {
+                                              echo '<option value="' . $roles['id'] . '">' . $roles['name'] . '</option>';
+                                            }
+                                            ?>
+                                        </select>  </div>
+                                    </div>
 
                                             <div class="col-4">
                                                 <div class="form-group">

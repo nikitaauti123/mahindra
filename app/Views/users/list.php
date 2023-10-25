@@ -56,6 +56,8 @@
                                                     <th><?php echo lang('Users.PhoneNumber'); ?></th>
                                                     <th><?php echo lang('Users.UserName'); ?></th>
                                                     <th><?php echo lang('Users.EmployeeId'); ?></th>
+                                                    <th><?php echo lang('Roles.Roles'); ?></th>
+                                                   
                                                     <th><?php echo lang('Users.IsActive'); ?>?</th>
                                                     <th><?php echo lang('Users.CreatedDate'); ?></th>
                                                     <th><?php echo lang('Users.UpdatedDate'); ?></th>
@@ -74,6 +76,7 @@
                                                     <th><?php echo lang('Users.PhoneNumber'); ?></th>
                                                     <th><?php echo lang('Users.UserName'); ?></th>
                                                     <th><?php echo lang('Users.EmployeeId'); ?></th>
+                                                    <th><?php echo lang('Roles.Roles'); ?></th>
                                                     <th><?php echo lang('Users.IsActive'); ?>?</th>
                                                     <th><?php echo lang('Users.CreatedDate'); ?></th>
                                                     <th><?php echo lang('Users.UpdatedDate'); ?></th>

@@ -41,10 +41,16 @@ $routes->post('/api/user/login', 'Users\\Api\\UsersApiController::check_login');
 $routes->get('/api/users/list', 'Users\\Api\\UsersApiController::list');
 $routes->post('/api/users/add', 'Users\\Api\\UsersApiController::add');
 $routes->post('/api/users/update_is_active', 'Users\\Api\\UsersApiController::update_is_active');
+$routes->post('api/users/get_role_names', 'Users\\Api\\UsersApiController::get_role_names');
 $routes->post('/api/users/update/(:num)', 'Users\\Api\\UsersApiController::update/$1');
 // $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');
 $routes->get('/api/users/get_one/(:num)', 'Users\\Api\\UsersApiController::getOne/$1');
 $routes->post('/api/users/delete/(:num)', 'Users\\Api\\UsersApiController::delete/$1');
+
+
+
+$routes->post('/api/users/get_permission_names', 'Users\\Api\\UsersApiController::get_permission_names');
+
 
 $routes->get('/admin/parts/list', 'Parts\\PartsController::List');
 $routes->get('/admin/parts/add', 'Parts\\PartsController::Create');
@@ -78,6 +84,36 @@ $routes->post('/api/jobs/add', 'Jobs\\Api\\JobsApiController::add');
 $routes->post('/api/jobs/update/(:num)', 'Jobs\\Api\\JobsApiController::update/$1');
 $routes->post('/api/jobs/delete/(:num)', 'Jobs\\Api\\JobsApiController::delete/$1');
 $routes->get('/api/jobs/get_one/(:num)', 'Jobs\\Api\\JobsApiController::getOne/$1');
+
+
+
+
+$routes->get('/admin/roles/list', 'Roles\\RolesController::List');
+$routes->get('/admin/roles/add', 'Roles\\RolesController::Create');
+$routes->get('/admin/roles/edit/(:num)', 'Roles\\RolesController::Edit/$1');
+
+$routes->get('/api/roles/list', 'Roles\\Api\\RolesApiController::list');
+$routes->post('/api/roles/add', 'Roles\\Api\\RolesApiController::add');
+$routes->post('/api/roles/update_is_active', 'Roles\\Api\\RolesApiController::update_is_active');
+$routes->post('/api/roles/delete/(:num)', 'Roles\\Api\\RolesApiController::delete/$1');
+$routes->get('/api/roles/get_one/(:num)', 'Roles\\Api\\RolesApiController::getOne/$1');
+$routes->post('/api/roles/update/(:num)', 'Roles\\Api\\RolesApiController::update/$1');
+
+
+
+
+$routes->get('/admin/permissions/list', 'Permission\\PermissionController::List');
+$routes->get('/admin/permissions/add', 'Permission\\PermissionController::Create');
+$routes->get('/admin/permissions/edit/(:num)', 'Permission\\PermissionController::Edit/$1');
+
+ $routes->get('/api/permissions/list', 'Permission\\Api\\PermissionApiController::list');
+$routes->post('/api/permissions/add', 'Permission\\Api\\PermissionApiController::add');
+$routes->post('/api/permissions/update_is_active', 'Permission\\Api\\PermissionApiController::update_is_active');
+$routes->post('/api/permissions/delete/(:num)', 'Permission\\Api\\PermissionApiController::delete/$1');
+$routes->get('/api/permissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
+$routes->post('/api/permissions/update/(:num)', 'Permission\\Api\\PermissionApiController::update/$1');
+$routes->get('api/pemissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
+
 
 /*
  * --------------------------------------------------------------------

@@ -407,3 +407,6 @@ form .error {
   .toggle-switch label input:checked + span:after {
     opacity: 1;
   }
+  .red_text{
+    color: red;
+  }

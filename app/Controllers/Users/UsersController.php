@@ -3,9 +3,15 @@
 namespace App\Controllers\Users;
 
 use App\Controllers\BaseController;
-
+use App\Models\RolesModel;
 Class UsersController extends BaseController
 {
+    private $rolesModel;
+    function __construct()
+    {
+        $this->rolesModel = new RolesModel();
+        
+    }
     /**
      *  route - /
      * 
@@ -50,12 +56,16 @@ Class UsersController extends BaseController
     }
     public function Edit($id)
     {
+        $data['role'] = $this->rolesModel->findAll(); // Access roles data
+      
         $data['request'] = $this->request;
         $data['id'] = $id;
         return view('users/edit', $data);
     }
     public function Create()
     {
+        $data['role'] = $this->rolesModel->findAll(); // Access roles data
+      
         $data['request'] = $this->request;
         return view('users/add', $data);
     }

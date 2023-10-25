@@ -153,22 +153,36 @@ if ($("#users_list_tbl").length > 0) {
                 }
             },
             {
-                "data": "is_active",
+                "data": "roles",
                 "render": function (data, type, row, meta) {
-                    if (data && data != '-') {
-                        // Assuming "cb-switch" is the ID of the checkbox input element
-                        var checkboxId = "cb-switch"; // Create a unique ID for each checkbox
-                        if (data == 1) {
-                            return '<div class="toggle-switch user_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value="" checked><span><small></small></span></label></div>';
-                        } else {
-                            return '<div class="toggle-switch user_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value=""><span><small></small></span></label></div>';
-                        }
+                    if (data) {
+                        return data;
                     } else {
                         return '-';
                     }
                 }
             },
-            
+            {
+                "data": "is_active",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        // Assuming "cb-switch" is the ID of the checkbox input element
+                        var checkboxId = "cb-switch";
+                        // Create a unique ID for each checkbox
+                        var dynamicHTML = '<div class="toggle-switch user_active_inactive" id="' + checkboxId + '" >';
+                        if (data == 1) {
+                            dynamicHTML += '<label for="' + checkboxId + '"><input  style="display:none"  type="checkbox" name="is_active" value="" checked><span><small></small></span></label></div>';
+                        } else {
+                            dynamicHTML += '<label for="' + checkboxId + '"><input   style="display:none"  type="checkbox"  name="is_active" value=""><span><small></small></span></label></div>';
+                        }
+                        return dynamicHTML;
+                        
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+
             {
                 "data": "created_at",
                 "render": function (data, type, row, meta) {
@@ -198,9 +212,9 @@ if ($("#users_list_tbl").length > 0) {
         ]
     });
     $("#users_list_tbl tbody").on("click", ".user_active_inactive", function () {
-    var rowData = users_table.row($(this).closest("tr")).data();
-    user_active_inactive(rowData.id, rowData.is_active);
-});
+        var rowData = users_table.row($(this).closest("tr")).data();
+        user_active_inactive(rowData.id, rowData.is_active);
+    });
 
 }
 
@@ -297,7 +311,7 @@ if ($("#parts_list_tbl").length > 0) {
                     }
                 }
             },
-            
+
             {
                 "data": "pins",
                 "render": function (data, type, row, meta) {
@@ -318,18 +332,22 @@ if ($("#parts_list_tbl").length > 0) {
                         return '-';
                     }
                 }
-            },            
+            },
             {
                 "data": "is_active",
                 "render": function (data, type, row, meta) {
                     if (data && data != '-') {
                         // Assuming "cb-switch" is the ID of the checkbox input element
-                        var checkboxId = "cb-switch"; // Create a unique ID for each checkbox
+                        var checkboxId = "cb-switch";
+                        // Create a unique ID for each checkbox
+                        var dynamicHTML = '<div class="toggle-switch part_active_inactive" id="' + checkboxId + '" >';
                         if (data == 1) {
-                            return '<div class="toggle-switch part_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value="" checked><span><small></small></span></label></div>';
+                            dynamicHTML += '<label for="' + checkboxId + '"><input  style="display:none"  type="checkbox" name="is_active" value="" checked><span><small></small></span></label></div>';
                         } else {
-                            return '<div class="toggle-switch part_active_inactive"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value=""><span><small></small></span></label></div>';
+                            dynamicHTML += '<label for="' + checkboxId + '"><input   style="display:none"  type="checkbox"  name="is_active" value=""><span><small></small></span></label></div>';
                         }
+                        return dynamicHTML;
+                        
                     } else {
                         return '-';
                     }
@@ -360,9 +378,9 @@ if ($("#parts_list_tbl").length > 0) {
                 "render": function (data, type, row, meta) {
                     let html = '<a href="' + base_url + 'admin/parts/edit/' + row['id'] + '"   class="edit_part" data-id="' + row['id'] + '"><i class="fa fa-edit text-info"></i></a>';
                     html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="view_part" data-id="' + row['id'] + '" ><i class="fa fa-eye text-primary"></i></a>';
-                   
+
                     html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="delete_part" data-id="' + row['id'] + '" ><i class="fa fa-trash text-danger"></i></a>';
-                    
+
                     return html;
                 }
             }
@@ -510,14 +528,21 @@ function reload_parts_tbl() {
     parts_table.ajax.url(base_url + "api/parts/list").load();
 }
 
+function reload_roles_tbl() {
+    roles_table.ajax.url(base_url + "api/roles/list").load();
+}
+
 function reload_users_tbl() {
     users_table.ajax.url(base_url + "api/users/list").load();
+}
+function reload_permission_tbl() {
+    permission_table.ajax.url(base_url + "api/permissions/list").load();
 }
 
 
 $(document).on('click', '.view_part', function () {
     let id = $(this).data('id');
-    location.href = base_url + 'admin/parts/view/'+id;
+    location.href = base_url + 'admin/parts/view/' + id;
 });
 $(document).on('click', '.delete_part', function () {
     let id = $(this).data('id');
@@ -594,15 +619,17 @@ if ($(".pins-display .pin-box").length > 0) {
 if ($("#add_parts_data").length > 0) {
     $("#add_parts_data").validate({
         rules: {
-            'part_name': { required: true,
-             },
+            'part_name': {
+                required: true,
+            },
             'part_no': { required: true },
             'die_no': { required: true },
             'model': { required: true },
         },
         messages: {
-            'part_name': { required: 'Please enter Part Name',
-        },
+            'part_name': {
+                required: 'Please enter Part Name',
+            },
             'part_no': { required: 'Please enter Part No' },
             'die_no': { required: 'Please enter Die No' },
             'model': { required: 'Please enter Model' },
@@ -686,12 +713,12 @@ if ($("#update_parts_data").length > 0) {
         var is_active = data.is_active;
         var checkbox = $("#is_active");
         if (is_active == 1) {
-        
+
             $("#update_parts_data").find("input[name='is_active']").val('on');
             $("#update_parts_data").find("input[name='is_active']").prop("checked", true); // Check the checkbo
             checkbox.prop("checked", true); // Check the checkbox
-        } else if(is_active == 0){
-        
+        } else if (is_active == 0) {
+
             $("#update_parts_data").find("input[name='is_active']").val('off');
             $("#update_parts_data").find("input[name='is_active']").prop("checked", false); // Check the checkbo
         }
@@ -741,7 +768,7 @@ if ($("#update_parts_data").length > 0) {
             }
         });
 
-       
+
         let form_data = $("#update_parts_data").serialize();
         form_data += '&selected_pins=' + pins_selected;
         console.log(form_data);
@@ -752,8 +779,8 @@ if ($("#update_parts_data").length > 0) {
                 e.preventDefault();
                 alert('Please select at least one pin.');
                 return false;
-              }
-        }else{
+            }
+        } else {
             return false;
         }
 
@@ -834,7 +861,7 @@ if ($("#update_parts_data").length > 0) {
 //                             } else if (pin_color === '1') {
 //                                 $(this).addClass('green-pin');
 //                             } else {
-                               
+
 //                             }
 //                         }
 //                     });
@@ -865,11 +892,11 @@ if ($("#update_parts_data").length > 0) {
 if ($("#start_jobs_data_left").length > 0) {
     $("#start_jobs_data_left").find("#part_name").select2();
     $.ajax({
-        type: 'POST', 
+        type: 'POST',
         url: base_url + 'api/apiparts/add',
-        data: {}, 
+        data: {},
         beforeSend: function (xhr) {
-              },
+        },
     }).done(function (data) {
         successMsg(data.msg);
 
@@ -911,7 +938,7 @@ if ($("#start_jobs_data_left").length > 0) {
                         } else if (pin_color === '1') {
                             $(this).addClass('green-pin');
                         } else {
-                           
+
                         }
                     }
                 });
@@ -939,11 +966,11 @@ if ($("#start_jobs_data_left").length > 0) {
 if ($("#start_jobs_data").length > 0) {
     $("#start_jobs_data").find("#part_name").select2();
     $.ajax({
-        type: 'POST', 
+        type: 'POST',
         url: base_url + 'api/apiparts/add',
-        data: {}, 
+        data: {},
         beforeSend: function (xhr) {
-              },
+        },
     }).done(function (data) {
         successMsg(data.msg);
 
@@ -985,7 +1012,7 @@ if ($("#start_jobs_data").length > 0) {
                         } else if (pin_color === '1') {
                             $(this).addClass('green-pin');
                         } else {
-                           
+
                         }
                     }
                 });
@@ -1101,19 +1128,19 @@ function clockUpdate() {
 }
 
 
-$("#part-export").on('click', function(){
-//     is_active = $("#is_active").val();
-//     part_no = $("#part_no").val();
-// var  = $("#v_id").val();
-// var emp_id = $("#em_id").val();
-// var role_id = $("#role_ids").val();
-// var contractor_id = $("#contractor_ids").val();
-// var e_id = $("#e_id").val();
-// var role_category_id = $("#role_category_ids").val();
-// var department_id = $("#department_ids").val(); 
+$("#part-export").on('click', function () {
+    //     is_active = $("#is_active").val();
+    //     part_no = $("#part_no").val();
+    // var  = $("#v_id").val();
+    // var emp_id = $("#em_id").val();
+    // var role_id = $("#role_ids").val();
+    // var contractor_id = $("#contractor_ids").val();
+    // var e_id = $("#e_id").val();
+    // var role_category_id = $("#role_category_ids").val();
+    // var department_id = $("#department_ids").val(); 
 
 
-    window.location.href =  base_url + 'admin/parts/export_part';
+    window.location.href = base_url + 'admin/parts/export_part';
 });
 
 
@@ -1134,7 +1161,7 @@ if ($("#update_users").length > 0) {
     }).done(function (data) {
         $("#update_users").find("input[name='first_name']").val(data.first_name);
         $("#update_users").find("input[name='last_name']").val(data.last_name);
-      
+
         $("#update_users").find("input[name='email']").val(data.email);
         $("#update_users").find("input[name='phone_number']").val(data.phone);
         $("#update_users").find("input[name='employee_id']").val(data.emp_id);
@@ -1143,42 +1170,69 @@ if ($("#update_users").length > 0) {
         var is_active = data.is_active;
         var checkbox = $("#is_active");
         if (is_active == 1) {
-        
+
             $("#update_users").find("input[name='is_active']").val('on');
             $("#update_users").find("input[name='is_active']").prop("checked", true); // Check the checkbo
             checkbox.prop("checked", true); // Check the checkbox
-        } else if(is_active == 0){
-        
+        } else if (is_active == 0) {
+
             $("#update_users").find("input[name='is_active']").val('off');
             $("#update_users").find("input[name='is_active']").prop("checked", false); // Check the checkbo
         }
+
+        $.ajax({
+            url: base_url + 'api/users/get_role_names',
+            method: "POST",
+            dataType: "json",
+            data: {
+                user_id: data.id
+            }, //v_mac: v_mac,
+            success: function (user_data) {
+              //  alert(user_data.role_id['role_id'])
+            $("#role_id").val(user_data.role_id['role_id']);
+              
+            },
+            error: function (error) {
+                console.error("Error:", error);
+                //   console.error("Error fetching employees:", error);
+            },
+
+        });
+
     }).fail(function (data) {
         console.log("Not found");
     });
     $("#update_users").validate({
         rules: {
-            'first_name': { required: true,
-             },
+            'first_name': {
+                required: true,
+            },
             'last_name': { required: true },
             'email': { required: true },
-            'phone_number': {  required: true, minlength: 10,
-                maxlength: 12, },
+            'phone_number': {
+                required: true, minlength: 10,
+                maxlength: 12,
+            },
             'username': { required: true },
-            'password': {  minlength: 5 },
-            'confirm_password': { 
-                equalTo: "#password" },
-            'email': { required: true ,
-                email: true},
+            'password': { minlength: 5 },
+            'confirm_password': {
+                equalTo: "#password"
+            },
+            'email': {
+                required: true,
+                email: true
+            },
             'employee_id': { required: true },
         },
         messages: {
-            'first_name': { required: 'Please enter first Name',
-        },
+            'first_name': {
+                required: 'Please enter first Name',
+            },
             'last_name': { required: 'Please enter last Name' },
             'email': { required: 'Please enter Die No' },
             'phone_number': { required: 'Please enter Phone Number' },
             'username': { required: 'Please enter User Name' },
-            
+
             'employee_id': { required: 'Please enter employee Id' },
         }
     });
@@ -1186,16 +1240,16 @@ if ($("#update_users").length > 0) {
     $("#update_users button").on('click', function (e) {
         e.preventDefault();
 
-        
+
         if (!$("#update_users").valid()) {
             return false;
         }
         let i = 0;
         var is_Active_val = $("#update_users").find("input[name='is_active']").prop('checked') ? 'on' : '';
         var form_data = $('#update_users').serialize();
-        form_data += '&is_active=' +is_Active_val;
+        form_data += '&is_active=' + is_Active_val;
 
-        
+
         console.log(form_data);
 
         // let btn = $(this);
@@ -1206,16 +1260,16 @@ if ($("#update_users").length > 0) {
             url: base_url + 'api/users/update/' + id,
             method: "POST",
             data: form_data,
-            dataType: "json",            beforeSend: function (xhr) {
+            dataType: "json", beforeSend: function (xhr) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-           // btn.removeClass('button--loading').attr('disabled', false);
+            // btn.removeClass('button--loading').attr('disabled', false);
             successMsg(data.msg);
             location.href = base_url + 'admin/users/list';
             reload_users_tbl();
         }).fail(function (data) {
-           // btn.removeClass('button--loading').attr('disabled', false);
+            // btn.removeClass('button--loading').attr('disabled', false);
             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
@@ -1233,31 +1287,39 @@ if ($("#update_users").length > 0) {
 if ($("#add_users").length > 0) {
     $("#add_users").validate({
         rules: {
-            'first_name': { required: true,
-             },
+            'first_name': {
+                required: true,
+            },
             'last_name': { required: true },
             'email': { required: true },
-            'phone_number': { required: true, minlength: 10,
-                maxlength: 12, },
+            'phone_number': {
+                required: true, minlength: 10,
+                maxlength: 12,
+            },
             'username': { required: true },
-            'password': {  required: true,minlength: 5 },
-            'confirm_password': {  required: true,
-                equalTo: "#password" },
-            'email': { required: true ,
-                email: true},
+            'password': { required: true, minlength: 5 },
+            'confirm_password': {
+                required: true,
+                equalTo: "#password"
+            },
+            'email': {
+                required: true,
+                email: true
+            },
             'employee_id': { required: true },
         },
         messages: {
-            'first_name': { required: 'Please enter first Name',
-        },
+            'first_name': {
+                required: 'Please enter first Name',
+            },
             'last_name': { required: 'Please enter last Name' },
             'email': { required: 'Please enter email' },
             'phone_number': { required: 'Please enter Phone Number' },
-            'username': { required: 'Please enter User Name' },  
+            'username': { required: 'Please enter User Name' },
             'password': { required: 'Please enter password' },
-          
-            'confirm_password': { required: 'Please enter confirm password' },  
-          
+
+            'confirm_password': { required: 'Please enter confirm password' },
+
             'employee_id': { required: 'Please enter employee Id' },
         }
     });
@@ -1265,7 +1327,7 @@ if ($("#add_users").length > 0) {
     $("#add_users button").on('click', function (e) {
         e.preventDefault();
 
-        
+
         let form_data = $("#add_users").serialize();
         console.log(form_data);
 
@@ -1349,3 +1411,665 @@ function job_active_inactive(id, is_active) {
     }
 
 }
+
+
+
+
+if ($("#roles_list_tbl").length > 0) {
+    // table
+    var roles_table = $("#roles_list_tbl").DataTable({
+        "ordering": true,
+        'order': [[0, 'asc']],
+        'serverMethod': 'get',
+        'language': {
+            'loadingRecords': '&nbsp;',
+            'processing': 'Loading...',
+            "emptyTable": "There is no record to display"
+        },
+        "dom": 'Bfrtip',
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print"],
+        "lengthMenu": [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All'],
+        ],
+        "ajax": {
+            "url": base_url + "api/roles/list",
+            "dataSrc": "",
+        },
+        "columns": [
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "data": "name",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+          
+            {
+                "data": "role",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "is_active",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        // Assuming "cb-switch" is the ID of the checkbox input element
+                        var checkboxId = "cb-switch";
+                        // Create a unique ID for each checkbox
+                        var dynamicHTML = '<div class="toggle-switch roles_active_inactive" id="' + checkboxId + '" >';
+                        if (data == 1) {
+                            dynamicHTML += '<label for="' + checkboxId + '"><input  style="display:none"  type="checkbox" name="is_active" value="" checked><span><small></small></span></label></div>';
+                        } else {
+                            dynamicHTML += '<label for="' + checkboxId + '"><input   style="display:none"  type="checkbox"  name="is_active" value=""><span><small></small></span></label></div>';
+                        }
+                        return dynamicHTML;
+                        
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return '<a href="' + base_url + 'admin/roles/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_roles" ><i class="fa fa-trash"></i></a>';
+                }
+            }
+
+        ]
+    });
+    $("#roles_list_tbl tbody").on("click", ".roles_active_inactive", function () {
+        var rowData = roles_table.row($(this).closest("tr")).data();
+        roles_active_inactive(rowData.id, rowData.is_active);
+    });
+}
+
+
+if ($("#add_roles").length > 0) {
+    $("#add_roles").validate({
+        rules: {
+            'name': {
+                required: true,
+            },
+            "permission_id[]": {
+                required: true,
+            },
+        },
+        messages: {
+            'name': {
+                required: 'Please enter role Name',
+            },
+            "permission_id[]": {
+                required: 'Please enter permission',
+            },
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        },
+    });
+
+    $("#add_roles button").on('click', function (e) {
+        e.preventDefault();
+
+
+        let form_data = $("#add_roles").serialize();
+        console.log(form_data);
+
+        if (!$("#add_roles").valid()) {
+            return false;
+        }
+
+        let btn = $(this);
+
+        btn.addClass('button--loading').attr('disabled', true);
+
+        $.ajax({
+            url: base_url + 'api/roles/add/',
+            method: "POST",
+            data: form_data,
+            dataType: "json",
+
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            successMsg(data.msg);
+            location.href = base_url + 'admin/roles/list';
+            reload_roles_tbl();
+        }).fail(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+
+        });
+    });
+}
+
+
+function roles_active_inactive(id, is_active) {
+    var res = confirm("Do you want to update this Roles status?");
+    if (res == true) {
+        $.ajax({
+            url: base_url + 'api/roles/update_is_active',
+            method: "POST",
+            data: { id: id, is_active: is_active },
+            dataType: "json",
+            success: function (data) {
+                successMsg(data.msg);
+                $('#roles_list_tbl').DataTable().ajax.reload();
+            },
+            error: function (xhr, status, error) {
+
+                console.error("Error:", error);
+            }
+        });
+    }
+
+}
+
+$(document).on('click', '.delete_roles', function () {
+    let id = $(this).data('id');
+
+    var con = confirm("Do you really want to delete this record?");
+
+    if (con) {
+        $.ajax({
+            url: base_url + 'api/roles/delete/' + id,
+            method: "POST",
+            dataType: "json",
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            successMsg(data.msg);
+            reload_roles_tbl();
+        }).fail(function (data) {
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+        });
+    }
+});
+
+
+
+
+if ($("#update_roles").length > 0) {
+    let id = $("#update_roles").find("input[name='id']").val();
+    $.ajax({
+        url: base_url + 'api/roles/get_one/' + id,
+        method: "GET",
+        dataType: "json",
+        beforeSend: function (xhr) {
+            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+        },
+    }).done(function (data) {
+        $("#update_roles").find("input[name='name']").val(data.name);
+
+        var is_active = data.is_active;
+        var checkbox = $("#is_active");
+        if (is_active == 1) {
+           // $("#update_roles").find("input[name='is_active']").val('on');
+            $("#update_roles").find("input[name='is_active']").prop("checked", true); // Check the checkbo
+            checkbox.prop("checked", true); // Check the checkbox
+        } else if (is_active == 0) {
+
+          ///  $("#update_roles").find("input[name='is_active']").val('off');
+            $("#update_roles").find("input[name='is_active']").prop("checked", false); // Check the checkbo
+        }
+
+
+        $.ajax({
+            url: base_url + 'api/users/get_permission_names',
+            method: "POST",
+            dataType: "json",
+            data: {
+                role_id: data.id
+            }, //v_mac: v_mac,
+            success: function (user_data) {
+                              var permissionIds = user_data.map(function (user) {
+                    return user.permission_id;
+                });
+                $.each(permissionIds, function (index, value) {
+                    var checkbox = $('input[name="permission_id[]"][value="' + value + '"]');
+                    if (checkbox.length) {
+                        checkbox.prop('checked', true);
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error:", error);
+                //   console.error("Error fetching employees:", error);
+            },
+
+        });
+
+    }).fail(function (data) {
+        console.log("Not found");
+    });
+
+    $("#update_roles").validate({
+        rules: {
+            'name': {
+                required: true,
+            },
+            "permission_id[]": {
+                required: true,
+            },
+        },
+        messages: {
+            'name': {
+                required: 'Please enter role Name',
+            },
+            "permission_id[]": {
+                required: 'Please select permission',
+            },
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            error.addClass('invalid-feedback');
+            element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        },
+    });
+
+    $("#update_roles button").on('click', function (e) {
+        e.preventDefault();
+
+        let id = $("#update_roles").find("input[name='id']").val();
+
+        let form_data = $("#update_roles").serialize();
+        console.log(form_data);
+
+        if (!$("#update_roles").valid()) {
+            return false;
+        }
+
+        let btn = $(this);
+
+        btn.addClass('button--loading').attr('disabled', true);
+
+        $.ajax({
+            url: base_url + 'api/roles/update/' + id,
+            method: "POST",
+            data: form_data,
+            dataType: "json",
+
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            successMsg(data.msg);
+            location.href = base_url + 'admin/roles/list';
+            reload_roles_tbl();
+        }).fail(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+
+        });
+    });
+}
+
+
+if ($("#permission_list_tbl").length > 0) {
+    // table
+    var permission_table = $("#permission_list_tbl").DataTable({
+        "ordering": true,
+        'order': [[0, 'asc']],
+        'serverMethod': 'get',
+        'language': {
+            'loadingRecords': '&nbsp;',
+            'processing': 'Loading...',
+            "emptyTable": "There is no record to display"
+        },
+        "dom": 'Bfrtip',
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print"],
+        "lengthMenu": [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All'],
+        ],
+        "ajax": {
+            "url": base_url + "api/permissions/list",
+            "dataSrc": "",
+        },
+        "columns": [
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "data": "permission_id",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "description",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "is_active",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        // Assuming "cb-switch" is the ID of the checkbox input element
+                        var checkboxId = "cb-switch";
+                        // Create a unique ID for each checkbox
+                        var dynamicHTML = '<div class="toggle-switch permission_active_inactive" id="' + checkboxId + '" >';
+                        if (data == 1) {
+                            dynamicHTML += '<label for="' + checkboxId + '"><input  style="display:none"  type="checkbox" name="is_active" value="" checked><span><small></small></span></label></div>';
+                        } else {
+                            dynamicHTML += '<label for="' + checkboxId + '"><input   style="display:none"  type="checkbox"  name="is_active" value=""><span><small></small></span></label></div>';
+                        }
+                        return dynamicHTML;
+                        
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return '<a href="' + base_url + 'admin/permissions/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_permission" ><i class="fa fa-trash"></i></a>';
+                }
+            }
+
+        ]
+    });
+    $("#permission_list_tbl tbody").on("click", ".permission_active_inactive", function () {
+        var rowData = permission_table.row($(this).closest("tr")).data();
+        permission_active_inactive(rowData.id, rowData.is_active);
+    });
+}
+
+
+function permission_active_inactive(id, is_active) {
+    var res = confirm("Do you want to update this permission status?");
+    if (res == true) {
+        $.ajax({
+            url: base_url + 'api/permissions/update_is_active',
+            method: "POST",
+            data: { id: id, is_active: is_active },
+            dataType: "json",
+            success: function (data) {
+                successMsg(data.msg);
+                $('#permission_list_tbl').DataTable().ajax.reload();
+            },
+            error: function (xhr, status, error) {
+
+                console.error("Error:", error);
+            }
+        });
+    }
+
+}
+
+
+
+
+if ($("#add_permission").length > 0) {
+    
+    jQuery.validator.addMethod("letterswithbasicpunc", function (value, element) {
+        return this.optional(element) || /^[a-z_-]+$/i.test(value);
+    }, "Enter A-z Letters AND (-_) only");
+
+    $("#add_permission").validate({
+        rules: {
+            'permission_id': {
+                required: true,
+                letterswithbasicpunc: true,
+            },
+            'description': {
+                required: true,
+            },
+        },
+        messages: {
+            'permission_id': {
+                required: 'Please enter permission',
+            },
+            'description': {
+                required: 'Please enter description',
+            },
+        }
+    });
+
+    $("#add_permission button").on('click', function (e) {
+        e.preventDefault();
+
+
+        let form_data = $("#add_permission").serialize();
+        console.log(form_data);
+
+        if (!$("#add_permission").valid()) {
+            return false;
+        }
+
+        let btn = $(this);
+
+        btn.addClass('button--loading').attr('disabled', true);
+
+        $.ajax({
+            url: base_url + 'api/permissions/add/',
+            method: "POST",
+            data: form_data,
+            dataType: "json",
+
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            successMsg(data.msg);
+            location.href = base_url + 'admin/permissions/list';
+            reload_permission_tbl();
+        }).fail(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+
+        });
+    });
+}
+
+
+$(document).on('click', '.delete_permission', function () {
+    let id = $(this).data('id');
+
+    var con = confirm("Do you really want to delete this record?");
+
+    if (con) {
+        $.ajax({
+            url: base_url + 'api/permissions/delete/' + id,
+            method: "POST",
+            dataType: "json",
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            successMsg(data.msg);
+            reload_permission_tbl();
+        }).fail(function (data) {
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+        });
+    }
+});
+
+
+if ($("#update_permission").length > 0) {
+    let id = $("#update_permission").find("input[name='id']").val();
+    $.ajax({
+        url: base_url + 'api/pemissions/get_one/' + id,
+        method: "GET",
+        dataType: "json",
+        beforeSend: function (xhr) {
+            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+        },
+    }).done(function (data) {
+    
+        $("#update_permission").find("input[name='permission_id']").val(data.permission_id);
+        $("#update_permission").find("input[name='description']").val(data.description);
+
+        var is_active = data.is_active;
+        var checkbox = $("#is_active");
+        if (is_active == 1) {
+            //$("#update_permission").find("input[name='is_active']").val('on');
+            $("#update_permission").find("input[name='is_active']").prop("checked", true); // Check the checkbo
+            checkbox.prop("checked", true); // Check the checkbox
+        } else if (is_active == 0) {
+
+            //$("#update_permission").find("input[name='is_active']").val('off');
+            $("#update_permission").find("input[name='is_active']").prop("checked", false); // Check the checkbo
+        }
+    }).fail(function (data) {
+        console.log("Not found");
+    });
+
+    $("#update_permission").validate({
+        rules: {
+            'permission_id': {
+                required: true,
+            },
+            'description': {
+                required: true,
+            },
+        },
+        messages: {
+            'permission_id': {
+                required: 'Please enter permission',
+            },
+            'description': {
+                required: 'Please enter description',
+            },
+        }
+    });
+
+    $("#update_permission button").on('click', function (e) {
+        e.preventDefault();
+
+        let id = $("#update_permission").find("input[name='id']").val();
+
+        let form_data = $("#update_permission").serialize();
+        console.log(form_data);
+
+        if (!$("#update_permission").valid()) {
+            return false;
+        }
+
+        let btn = $(this);
+
+        btn.addClass('button--loading').attr('disabled', true);
+
+        $.ajax({
+            url: base_url + 'api/permissions/update/' + id,
+            method: "POST",
+            data: form_data,
+            dataType: "json",
+
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            successMsg(data.msg);
+            location.href = base_url + 'admin/permissions/list';
+            reload_permission_tbl();
+        }).fail(function (data) {
+            btn.removeClass('button--loading').attr('disabled', false);
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+
+        });
+    });
+}
+
+
+$(document).on("click", "#select_all", function () {
+    if ($(this).is(":checked") == true) {
+        $("input[name='permission_id[]']").attr("checked", "checked");
+    } else {
+        $("input[name='permission_id[]']").attr("checked", false);
+    }
+});

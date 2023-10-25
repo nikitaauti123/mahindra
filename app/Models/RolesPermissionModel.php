@@ -4,32 +4,20 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class RolesModel extends Model
+class RolesPermissionModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'roles';
-    protected $primaryKey       = 'id';
+    protected $table            = 'roles_permission';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'name',
-        'is_active',
-        'created_by',
-        'updated_by',
-        'created_at',
-        'updated_at',
-        'deleted_at'
+        'permission_id',
+        'role_id',
     ];
-
-
-    // Dates
-    protected $useTimestamps = true;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    protected $useTimestamps = false;
+   
 
     // Validation
     protected $validationRules      = [];
@@ -48,5 +36,4 @@ class RolesModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-   
 }

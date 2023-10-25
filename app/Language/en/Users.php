@@ -25,6 +25,7 @@ return [
     'ProfilePhoto' => 'Profile Photo',
     
     'Edit' => 'Edit',
+    'Role' => 'Role',
     'UsersList' => 'Users List',
     'UsersSuccessMsg' => 'Users Added Successfully',
     'UsersUpdateMsg' => 'Users Updated Successfully',

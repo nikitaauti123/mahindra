@@ -7,5 +7,7 @@ return [
     'View' => 'View Part',
 
     'Imports' => 'Import',
-    'Export' => 'Export'
+    'Export' => 'Export',
+    
+    'PartList' => 'PartList',
 ];

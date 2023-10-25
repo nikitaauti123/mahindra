@@ -31,10 +31,10 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-6">
-                                    <h5 class="card-title"><?php echo lang('Parts.Add'); ?></h5>
+                                    <h5 class="card-title"><?php echo lang('Parts.Imports'); ?></h5>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary">Parts List</a>
+                                    <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary"><?php echo lang('Parts.PartList'); ?></a>
                                 </div>
                             </div>
                         </div>

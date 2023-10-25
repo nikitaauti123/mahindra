@@ -10,6 +10,7 @@ return [
     'Export' => 'Export',
     'Roles' => 'Roles',
     'Permission' => 'Permission',
+    'PermissionList' =>'Permission List',
     'Description' => 'Description',
     'IsActive' => 'Is Active',
     'Action' => 'Action',

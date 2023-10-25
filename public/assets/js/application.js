@@ -1457,7 +1457,7 @@ if ($("#roles_list_tbl").length > 0) {
             },
           
             {
-                "data": "role",
+                "data": "permission",
                 "render": function (data, type, row, meta) {
                     if (data) {
                         return data;

@@ -8,12 +8,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0"><?php echo lang('Parts.Update'); ?></h1>
+                        <h1 class="m-0"><?php echo lang('Jobs.Add'); ?></h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#"><?php echo lang('Left-sidebar.Menu.Home'); ?></a></li>
-                            <li class="breadcrumb-item active"><?php echo lang('Parts.Update'); ?></li>
+                            <li class="breadcrumb-item active"><?php echo lang('Jobs.Add'); ?></li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -30,11 +30,20 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <h5 class="card-title"><?php echo lang('Parts.Update'); ?></h5>                                       
+                                    <div class="col-4">
+                                        <h5 class="card-title"><?php echo lang('Jobs.Add'); ?></h5>                                       
                                     </div>
-                                    <div class="col-6 text-right">
-                                        <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary" >Parts List</a>
+                                    <div class="col-4 text-center">
+                                        <div class="digital-clock">00:00:00</div>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                            <a href="javascript:void(0)" class="btn btn-primary" id="start_time">
+                                                Start 
+                                            </a>
+                                            <a href="javascript:void(0)" class="btn btn-secondary"  id="stop_time">
+                                                Stop 
+                                            </a>
+                                        <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary" >Jobs List</a>
                                     </div>
                                 </div>
                             </div>
@@ -42,24 +51,35 @@
                             <div class="card-body">
                                 <div class="row">
                                         <div class="col-md-12">
-                                            <form id="update_parts_data">
+                                            <form id="start_jobs_data">
                                                 <div class="row">
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label for="part_name">Part Name</label>
-                                                            <input type="text" class="form-control" name="part_name" placeholder="Part Name" >
+                                                            <select name="part_name" id="part_name" class="form-control">
+                                                                <option value=""> - Select - </option>
+                                                                <?php foreach($parts as $part): ?>
+                                                                <option value="<?php echo $part['id']; ?>"><?php echo $part['part_name']; ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label for="part_name">Part No</label>
                                                             <input type="text" class="form-control" name="part_no" placeholder="Part No" >
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="form-group">
                                                             <label for="part_name">Model</label>
                                                             <input type="text" class="form-control" name="model" placeholder="Model" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="part_name">Bed No</label>
+                                                            <input type="text" class="form-control" name="bed_no" placeholder="Bed No" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -89,20 +109,14 @@
                                                                     }
                                                                 ?>
                                                             </div>
-                                                            <div class="arrow-center">
-                                                                <i class="fa fa-arrow-alt-circle-up"></i>
-                                                            </div>
                                                         </div>                                                        
                                                     </div>
                                                 </div>
 
                                                 <div class="row">
                                                     <div class="col-12 text-center">
-                                                        <input type="hidden" class="" name="id" value="<?php echo $id; ?>">
                                                         <input type="hidden" class="" name="is_active" value="1">
-                                                        <button class="btn btn-primary">
-                                                            Update
-                                                        </button>
+                                                        
                                                     </div>
                                                 </div>
                                             </form>

@@ -814,111 +814,27 @@ if ($("#update_parts_data").length > 0) {
         });
     });
 }
-// if ($("#start_jobs_data_left").length > 0) {
-//     $.ajax({
-//         type: 'POST', 
-//         url: base_url + 'api/apiparts/add',
-//         data: {},
-//         beforeSend: function (xhr) {
-//              },
-//             }).done(function (data) {
-//             successMsg(response.msg);
-
-
-//             $.ajax({
-//                 type: 'POST', // or 'GET', depending on your needs
-//                 url: base_url + 'api/apiparts/get_api_data',
-//                 data: {
-//                     part_id: dataToSend.job_id,
-//                     pins: dataToSend.pins
-//                 },  
-//                   beforeSend: function (xhr) {
-//                         },
-//             }).done(function (data) {
-//                 var inputValue = data.model['id']; 
-//                 $("#part_name").val(inputValue);
-//                  $("#start_jobs_data_left").find("input[name='part_no']").val(data.result['part_id']);
-//                 $("#start_jobs_data_left").find("input[name='model']").val(data.model['model']);
-
-//                 var pins_array = data.formattedData['keys'].split(",");
-//                 var pins_color = data.formattedData['values'].split(",");
-
-//                 $(".pins-display").find(".pin-box").each(function (index) {
-//                     if ($(this).hasClass('orange-pin')) {
-//                         $(this).removeClass('orange-pin').addClass('gray-pin');
-//                     }
-//                 });
-
-//                 for (let i in pins_array) {
-//                     var pin_address = pins_array[i];
-//                     var pin_color = pins_color[i];
-
-//                     $(".pins-display").find(".pin-box").each(function (index) {
-//                         //  console.log("pins address::", pin_address);
-//                         if ($(this).attr('title') == pin_address) {
-//                             if (pin_color === '0') {
-//                                 $(this).addClass('red-pin');
-//                             } else if (pin_color === '1') {
-//                                 $(this).addClass('green-pin');
-//                             } else {
-
-//                             }
-//                         }
-//                     });
-//                 }
-
-//             }).fail(function (data) {
-//                 console.log("Not found");
-//             });
-//         }).fail(function (data) {
-//             btn.removeClass('button--loading').attr('disabled', false);
-//             if (typeof data.responseJSON.messages === 'object') {
-//                 for (let i in data.responseJSON.messages) {
-//                     failMsg(data.responseJSON.messages[i]);
-//                 }
-//             } else {
-//                 let msg = data.responseJSON.messages.msg;
-//                 failMsg(msg);
-//             }
-
-//         });
-//     // });
-
-
-
-// }
-
 
 if ($("#start_jobs_data_left").length > 0) {
     $("#start_jobs_data_left").find("#part_name").select2();
-    $.ajax({
-        type: 'POST',
-        url: base_url + 'api/apiparts/add',
-        data: {},
-        beforeSend: function (xhr) {
-        },
-    }).done(function (data) {
-        successMsg(data.msg);
-
-
         $.ajax({
             type: 'POST', // or 'GET', depending on your needs
-            url: base_url + 'api/apiparts/get_api_data',
-            data: {},
+            url: base_url + 'api/jobs/get_api_data',
+            data: {side:'left'},
             beforeSend: function (xhr) {
             },
         }).done(function (data) {
-            var inputValue = data.model['id'];
-
             $("#part_name").val('');
             if ($("#part_name").length > 0) {
             }
-            $("#start_jobs_data_left").find("input[name='part_name']").val(inputValue);
-            $("#start_jobs_data_left").find("input[name='part_no']").val(data.result['part_id']);
-            $("#start_jobs_data_left").find("input[name='model']").val(data.model['model']);
 
-            var pins_array = data.formattedData['keys'].split(",");
-            var pins_color = data.formattedData['values'].split(",");
+$(".part_name").text(data['part_name']);
+$("#part_no").text(data['part_no']);
+$("#model").text(data['model']);
+$("#die_no").text(data['die_no']);
+          
+            var pins_array = data['keys'].split(",");
+            var pins_color = data['values'].split(",");
 
             $(".pins-display").find(".pin-box").each(function (index) {
                 if ($(this).hasClass('orange-pin')) {
@@ -949,136 +865,114 @@ if ($("#start_jobs_data_left").length > 0) {
 
         });
 
-    }).fail(function (data) {
-        if (typeof data.responseJSON.messages === 'object') {
-            for (let i in data.responseJSON.messages) {
-                failMsg(data.responseJSON.messages[i]);
-            }
-        } else {
-            let msg = data.responseJSON.messages.msg;
-            failMsg(msg);
-        }
-
-    });
-
 }
 
-if ($("#start_jobs_data").length > 0) {
-    $("#start_jobs_data").find("#part_name").select2();
+
+if ($("#start_jobs_data_right").length > 0) {
+    $("#start_jobs_data_right").find("#part_name").select2();
+  
     $.ajax({
-        type: 'POST',
-        url: base_url + 'api/apiparts/add',
-        data: {},
+        type: 'POST', // or 'GET', depending on your needs
+        url: base_url + 'api/jobs/get_api_data',
+        data: {side:'right'},
         beforeSend: function (xhr) {
         },
     }).done(function (data) {
-        successMsg(data.msg);
+      //  var inputValue = data.formattedData['id'];
 
+        $("#part_name").val('');
+        if ($("#part_name").length > 0) {
+        }
+      
+$(".part_name").text(data['part_name']);
+$("#part_no").text(data['part_no']);
+$("#model").text(data['model']);
+$("#die_no").text(data['die_no']);
+        var pins_array = data['keys'].split(",");
+        var pins_color = data['values'].split(",");
 
-        $.ajax({
-            type: 'POST', // or 'GET', depending on your needs
-            url: base_url + 'api/apiparts/get_api_data',
-            data: {},
-            beforeSend: function (xhr) {
-            },
-        }).done(function (data) {
-            var inputValue = data.model['id'];
-
-            $("#part_name").val('');
-            if ($("#part_name").length > 0) {
+        $(".pins-display").find(".pin-box").each(function (index) {
+            if ($(this).hasClass('orange-pin')) {
+                $(this).removeClass('orange-pin').addClass('gray-pin');
             }
-            $("#start_jobs_data").find("input[name='part_name']").val(inputValue);
-            $("#start_jobs_data").find("input[name='part_no']").val(data.result['part_id']);
-            $("#start_jobs_data").find("input[name='model']").val(data.model['model']);
-
-            var pins_array = data.formattedData['keys'].split(",");
-            var pins_color = data.formattedData['values'].split(",");
-
-            $(".pins-display").find(".pin-box").each(function (index) {
-                if ($(this).hasClass('orange-pin')) {
-                    $(this).removeClass('orange-pin').addClass('gray-pin');
-                }
-            });
-
-            for (let i in pins_array) {
-                var pin_address = pins_array[i];
-                var pin_color = pins_color[i];
-
-                $(".pins-display").find(".pin-box").each(function (index) {
-                    //  console.log("pins address::", pin_address);
-                    if ($(this).attr('title') == pin_address) {
-                        if (pin_color === '0') {
-                            $(this).addClass('red-pin');
-                        } else if (pin_color === '1') {
-                            $(this).addClass('green-pin');
-                        } else {
-
-                        }
-                    }
-                });
-            }
-
-        }).fail(function (data) {
-            // $(btn_id).removeClass('button--loading').attr('disabled', false);
-
         });
 
-    }).fail(function (data) {
-        if (typeof data.responseJSON.messages === 'object') {
-            for (let i in data.responseJSON.messages) {
-                failMsg(data.responseJSON.messages[i]);
-            }
-        } else {
-            let msg = data.responseJSON.messages.msg;
-            failMsg(msg);
+        for (let i in pins_array) {
+            var pin_address = pins_array[i];
+            var pin_color = pins_color[i];
+
+            $(".pins-display").find(".pin-box").each(function (index) {
+                //  console.log("pins address::", pin_address);
+                if ($(this).attr('title') == pin_address) {
+                    if (pin_color === '0') {
+                        $(this).addClass('red-pin');
+                    } else if (pin_color === '1') {
+                        $(this).addClass('green-pin');
+                    } else {
+
+                    }
+                }
+            });
         }
 
+    }).fail(function (data) {
+        // $(btn_id).removeClass('button--loading').attr('disabled', false);
+
     });
-
-
-
-
-
-    // $("#start_jobs_data #part_name").on('change', function(){
-    //     let id = $(this).val();
-
-    //     // if(id>0) {
-    //     //     $.ajax({
-    //     //         url: base_url + 'api/parts/get_one/'+id,
-    //     //         method: "GET",
-    //     //         dataType: "json",
-    //     //         beforeSend: function (xhr) {
-    //     //             //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-    //     //         },
-    //     //     }).done(function (data) {
-
-    //     //         $("#start_jobs_data").find("input[name='part_name']").val(data.part_name);
-    //     //         $("#start_jobs_data").find("input[name='part_no']").val(data.part_no);
-    //     //         $("#start_jobs_data").find("input[name='model']").val(data.model);
-
-    //     //         var pins_array = data.pins.split(",");
-    //     //         $(".pins-display").find(".pin-box").each(function(index) {
-    //     //             if($(this).hasClass('orange-pin')) {  
-    //     //                 $(this).removeClass('orange-pin').addClass('gray-pin');
-    //     //             }
-    //     //         });
-
-    //     //         for(let i in pins_array) {
-    //     //             var pin_address = pins_array[i];                
-    //     //             $(".pins-display").find(".pin-box").each(function(index){
-    //     //                 console.log("pins address::", pin_address);
-    //     //                 if($(this).attr('title') == pin_address) {                    
-    //     //                     $(this).addClass('orange-pin');
-    //     //                 }
-    //     //             });
-    //     //         }
-
-    //     //     }).fail(function (data) {
-    //     //         console.log("Not found");
-    //     //     });
-    //     // }        
-    // });
 }
+
+// if ($("#start_jobs_data").length > 0) {
+//     $("#start_jobs_data").find("#part_name").select2();
+  
+//     $.ajax({
+//         type: 'POST', // or 'GET', depending on your needs
+//         url: base_url + 'api/jobs/get_api_data',
+//         data: {side:'right'},
+//         beforeSend: function (xhr) {
+//         },
+//     }).done(function (data) {
+//       //  var inputValue = data.formattedData['id'];
+
+//         $("#part_name").val('');
+//         if ($("#part_name").length > 0) {
+//         }
+      
+// $(".part_name").text(data['part_name']);
+// $("#part_no").text(data['part_no']);
+// $("#model").text(data['model']);
+// $("#die_no").text(data['die_no']);
+//         var pins_array = data['keys'].split(",");
+//         var pins_color = data['values'].split(",");
+
+//         $(".pins-display").find(".pin-box").each(function (index) {
+//             if ($(this).hasClass('orange-pin')) {
+//                 $(this).removeClass('orange-pin').addClass('gray-pin');
+//             }
+//         });
+
+//         for (let i in pins_array) {
+//             var pin_address = pins_array[i];
+//             var pin_color = pins_color[i];
+
+//             $(".pins-display").find(".pin-box").each(function (index) {
+//                 //  console.log("pins address::", pin_address);
+//                 if ($(this).attr('title') == pin_address) {
+//                     if (pin_color === '0') {
+//                         $(this).addClass('red-pin');
+//                     } else if (pin_color === '1') {
+//                         $(this).addClass('green-pin');
+//                     } else {
+
+//                     }
+//                 }
+//             });
+//         }
+
+//     }).fail(function (data) {
+//         // $(btn_id).removeClass('button--loading').attr('disabled', false);
+
+//     });
+// }
 
 
 $(document).ready(function () {

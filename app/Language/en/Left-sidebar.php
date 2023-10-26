@@ -14,8 +14,8 @@ return [
         'AddPart' => 'Add Part',
         'JobsHistory' => 'Jobs History',
         'Reports' => 'Reports',
-        'StartJobRight' => 'Start Job Right',
-        'StartJobLeft' => 'Start Job Left',
+        'StartJobRight' => 'Start Right Side Job',
+        'StartJobLeft' => 'Start Left Side Job',
         
     ]
 ];

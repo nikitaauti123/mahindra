@@ -37,12 +37,12 @@
                                         <div class="digital-clock">00:00:00</div>
                                     </div>
                                     <div class="col-4 text-right">
-                                            <a href="javascript:void(0)" class="btn btn-primary" id="start_time">
+                                            <!-- <a href="javascript:void(0)" class="btn btn-primary" id="start_time">
                                                 Start 
                                             </a>
                                             <a href="javascript:void(0)" class="btn btn-secondary"  id="stop_time">
                                                 Stop 
-                                            </a>
+                                            </a> -->
                                         <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary" >Jobs List</a>
                                     </div>
                                 </div>
@@ -53,34 +53,26 @@
                                         <div class="col-md-12">
                                             <form id="start_jobs_data_left">
                                                 <div class="row">
+                                                    
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name</label>
-                                                            <select name="part_name" id="part_name" class="form-control">
-                                                                <option value=""> - Select - </option>
-                                                                <?php foreach($parts as $part): ?>
-                                                                <option value="<?php echo $part['id']; ?>"><?php echo $part['part_name']; ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
-                                                        </div>
+                                                            <label for="part_name">Part No</label> : 
+                                                            <span class="part_name"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label>
-                                                            <input type="text" class="form-control" name="part_no" placeholder="Part No" >
-                                                        </div>
+                                                            <label for="part_name">Part No</label> : 
+                                                            <span id="part_no"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model</label>
-                                                            <input type="text" class="form-control" name="model" placeholder="Model" >
-                                                        </div>
+                                                            <label for="part_name">Model</label> : 
+                                                            <span id="model"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Bed No</label>
-                                                            <input type="text" class="form-control" name="bed_no" placeholder="Bed No" >
-                                                        </div>
+                                                            <label for="part_name">Die No</label> : 
+                                                            <span id="die_no"></span></div>
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3 mb-3">
@@ -108,6 +100,9 @@
                                                                         <?php
                                                                     }
                                                                 ?>
+                                                            </div>
+                                                            <div class="arrow-center">
+                                                                <i class="fa fa-arrow-alt-circle-up"></i>
                                                             </div>
                                                         </div>                                                        
                                                     </div>

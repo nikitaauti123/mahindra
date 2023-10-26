@@ -54,7 +54,7 @@ class PartsController extends BaseController
     }
     public function export_part(){
        // $spreadsheet = new Spreadsheet();
-        
+      
         $data['request'] = $this->request;
         return view('parts/export_part', $data);
        

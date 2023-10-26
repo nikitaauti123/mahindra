@@ -5,16 +5,19 @@ namespace App\Controllers\Jobs\Api;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\JobsModel;
+use App\Models\PartsModel;
 use Exception;
 
 Class JobsApiController extends BaseController
 {
     use ResponseTrait;
     private $jobsModel;
+    private $PartsModel;
 
     public function __construct()
     {
         $this->jobsModel = new JobsModel();
+        $this->PartsModel = new PartsModel();
     }
 
     public function list()
@@ -139,5 +142,47 @@ Class JobsApiController extends BaseController
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }
+    }
+    public function get_api_data(){
+        
+       
+        $result = $this->jobsModel
+        ->select('jobs.*, parts.die_no,parts.part_name,parts.part_no,parts.model')
+        ->join('parts', 'parts.id = jobs.part_id')
+        ->orderBy('jobs.id', 'DESC')
+        ->where('jobs.side', $this->request->getVar('side'))
+        ->limit(1) // Set the limit to 1 to fetch only one row
+        ->get()
+        ->getRow();
+     /// return $this->respond($result, 200);
+        //joins with part table fetch other details 
+      
+    //    $model = $this->PartsModel
+    //    ->where('part_no', $result->part_id) // Order the results by 'id' in descending order (assuming 'id' is the primary key)
+    //    ->first();
+        
+        if ($result) {
+             $pins = json_decode($result->pins, true);
+            
+            if (is_array($pins)) {
+                // Separate keys and values into comma-separated strings
+                $keys = implode(',', array_keys($pins));
+                $values = implode(',', $pins);
+        
+                // Create an associative array to store the formatted data
+                $result = [
+                    'keys' => $keys,
+                    'values' => $values,
+                    'part_no'=>$result->part_no,
+                    'part_name'=>$result->part_name,
+                    'die_no'=>$result->die_no,
+                    'model'=>$result->model,
+                ];
+        
+        
+                return $this->respond($result, 200);
+            }
+        }
+        return $this->respond(['error' => 'No data available'], 404);
     }
 }

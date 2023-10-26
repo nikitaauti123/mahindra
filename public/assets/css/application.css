@@ -349,7 +349,7 @@ form .error {
   /*------------ CHECKBOX -------------*/
   .toggle-switch {
     margin: 0 auto;
-    width: 241px;
+    /* width: 241px; */
     margin-top: 20px;
     position: relative;
   }

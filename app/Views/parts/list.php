@@ -30,14 +30,11 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-3">
+                                    <div class="col-6">
                                         <h5 class="card-title"><?php echo lang('Parts.List'); ?></h5>                                       
                                     </div>
-                                    <div class="col-3 text-right">
-                                      </div>
-                                    <div class="col-xs-3 col-md-2 text-right">
-                                </div>
-                                    <div class="col-3 text-right">
+                                   
+                                    <div class="col-6 text-right">
                                     <a style="display:none" href="<?php echo base_url('/admin/parts/import'); ?>" class="btn btn-primary" ><?php echo lang('Parts.Imports'); ?></a>
                                     <button type="button" style="display:none" id="part-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;Export</button>
                            

@@ -135,7 +135,7 @@ Class JobsApiController extends BaseController
             } else {
                 $data['is_active'] = '1';
             }
-            $result['msg'] =  lang('Users.StatusUpdateMsg');
+            $result['msg'] =  lang('Jobs.StatusUpdateMsg');
             $result['id'] = $this->jobsModel->update($id, $data);
             return $this->respond($result, 200);
         } catch (\Exception $e) {

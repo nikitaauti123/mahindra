@@ -66,7 +66,7 @@
                                             <label for="is_active" class="col-sm-4 control-label"><?php echo lang('Users.IsActive'); ?>?</label>
                                             <div class="col-sm-8">
                                                 <div class="checkbox">
-                                                <div class="toggle-switch">
+                                                <div class="toggle-switch mt-1">
                                                                 <label for="cb-switch">
                                                                     <input type="checkbox" id="cb-switch"  name="is_active" >
                                                                     <span>
@@ -83,7 +83,7 @@
                                                     <div class="col-12 text-center">
                                                     <button class="btn btn-primary">
                                                       
-                                                         <?php echo lang('Users.Add'); ?>
+                                                         <?php echo lang('Add'); ?>
                                                         </button>  
                                                     </div>
                                                 </div>

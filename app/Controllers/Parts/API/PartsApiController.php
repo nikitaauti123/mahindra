@@ -48,8 +48,7 @@ Class PartsApiController extends BaseController
             
             $rules = [
                 'part_name'  => 'required|min_length[2]|max_length[10]',
-                'part_no'  => 'required|min_length[3]|max_length[100]',
-                'model'  => 'required|min_length[3]|max_length[100]',
+                 'model'  => 'required|min_length[3]|max_length[100]',
                  ];
 
             if(!$this->validate($rules)) {
@@ -83,8 +82,7 @@ Class PartsApiController extends BaseController
             
             $rules = [
                 'part_name'  => 'required|min_length[2]|max_length[10]',
-                'part_no'  => 'required|min_length[3]|max_length[100]',
-                'model'  => 'required|min_length[3]|max_length[100]',
+                 'model'  => 'required|min_length[3]|max_length[100]',
             ];
 
             if(!$this->validate($rules)) {
@@ -136,7 +134,7 @@ Class PartsApiController extends BaseController
             } else {
                 $data['is_active'] = '1';
             }
-            $result['msg'] =  lang('Users.StatusUpdateMsg');
+            $result['msg'] =  lang('Msg');
             $result['id'] = $this->partsModel->update($id, $data);
             return $this->respond($result, 200);
         } catch (\Exception $e) {

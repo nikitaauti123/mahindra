@@ -32,7 +32,7 @@ return [
     'CreatedDate' => 'Created Date',
     'UpdatedDate' => 'Updated Date',
     'Action' => 'Action',
-    
+    'StatusUpdateMsg'=>'Users Status Updated Successfully',
     'AddNewUsers' => 'Add New Users',
     
 ];

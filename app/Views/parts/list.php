@@ -34,12 +34,13 @@
                                         <h5 class="card-title"><?php echo lang('Parts.List'); ?></h5>                                       
                                     </div>
                                     <div class="col-3 text-right">
-                                        <a href="<?php echo base_url('/admin/parts/import'); ?>" class="btn btn-primary" ><?php echo lang('Parts.Imports'); ?></a>
-                                    </div>
-                                    <div class="col-xs-3 col-md-2">
-                                <button type="button" id="part-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;Export</button>
-                            </div>
+                                      </div>
+                                    <div class="col-xs-3 col-md-2 text-right">
+                                </div>
                                     <div class="col-3 text-right">
+                                    <a style="display:none" href="<?php echo base_url('/admin/parts/import'); ?>" class="btn btn-primary" ><?php echo lang('Parts.Imports'); ?></a>
+                                    <button type="button" style="display:none" id="part-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;Export</button>
+                           
                                         <a href="<?php echo base_url('/admin/parts/add'); ?>" class="btn btn-primary" >Add New Part</a>
                                     </div>
                                 </div>
@@ -67,20 +68,7 @@
                                                 <tbody>
 
                                                 </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>Sr.No</th>
-                                                        <th>Part No</th>
-                                                        <th>Part Name</th>
-                                                        <th>Model</th>
-                                                        <th>Pins</th>
-                                                        <th>Die No</th>
-                                                        <th>Is Active?</th>
-                                                        <th>Created Date</th>
-                                                        <th>Updated Date</th>
-                                                        <th>Actions</th>
-                                                    </tr>             
-                                                </tfoot>
+                                               
                                             </table>
                                         </div>
                                     </div>

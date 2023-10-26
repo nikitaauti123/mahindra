@@ -622,7 +622,7 @@ if ($("#add_parts_data").length > 0) {
             'part_name': {
                 required: true,
             },
-            'part_no': { required: true },
+            
             'die_no': { required: true },
             'model': { required: true },
         },
@@ -630,8 +630,7 @@ if ($("#add_parts_data").length > 0) {
             'part_name': {
                 required: 'Please enter Part Name',
             },
-            'part_no': { required: 'Please enter Part No' },
-            'die_no': { required: 'Please enter Die No' },
+              'die_no': { required: 'Please enter Die No' },
             'model': { required: 'Please enter Model' },
         }
     });
@@ -742,14 +741,12 @@ if ($("#update_parts_data").length > 0) {
     $("#update_parts_data").validate({
         rules: {
             'part_name': { required: true },
-            'part_no': { required: true },
             'model': { required: true },
             'die_no': { required: true },
             'model': { required: true },
         },
         messages: {
             'part_name': { required: 'Please enter Part Name' },
-            'part_no': { required: 'Please enter Part No' },
             'model': { required: 'Please enter Model' },
             'die_no': { required: 'Please enter Die No' },
             'model': { required: 'Please enter Model' },
@@ -1083,7 +1080,9 @@ if ($("#update_users").length > 0) {
             }, //v_mac: v_mac,
             success: function (user_data) {
                 //  alert(user_data.role_id['role_id'])
-                $("#role_id").val(user_data.role_id['role_id']);
+                if(user_data.role_id !== null){
+               $("#role_id").val(user_data.role_id['role_id']);
+                }
 
             },
             error: function (error) {

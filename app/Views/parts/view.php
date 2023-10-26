@@ -113,6 +113,9 @@
                                                                     }
                                                                 ?>
                                                             </div>
+                                                            <div class="arrow-center">
+                                                                <i class="fa fa-arrow-alt-circle-up"></i>
+                                                            </div>
                                                         </div>                                                        
                                                     </div>
                                                 </div>

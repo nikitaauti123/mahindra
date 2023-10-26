@@ -46,7 +46,7 @@
                                                 <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name</label>
+                                                            <label for="part_name">Part Name<span class="red_text">*</span></label>
                                                             <input type="text" class="form-control" name="part_name" placeholder="Part Name" >
                                                         </div>
                                                     </div>
@@ -58,13 +58,13 @@
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model</label>
+                                                            <label for="part_name">Model<span class="red_text">*</span></label>
                                                             <input type="text" class="form-control" name="model" placeholder="Model" >
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="die_no">Die No</label>
+                                                            <label for="die_no">Die No<span class="red_text">*</span></label>
                                                             <input type="text" class="form-control" name="die_no" placeholder="Die No" >
                                                         </div>
                                                     </div>
@@ -74,7 +74,7 @@
                                             <label for="is_active" class="col-sm-4 control-label">Is active?</label>
                                             <div class="col-sm-8">
                                                 <div class="checkbox">
-                                                <div class="toggle-switch">
+                                                <div class="toggle-switch mt-1">
                                                                 <label for="cb-switch">
                                                                     <input type="checkbox" id="cb-switch" id="is_active" name="is_active" value="">
                                                                     <span>
@@ -112,12 +112,14 @@
                                                                         <?php
                                                                     }
                                                                 ?>
-                                                             <div class="arrow">⇧</div>
- </div>
+                                                            
                                                         </div>
-                                                                                                                
+                                                        <div class="arrow-center">
+                                                                <i class="fa fa-arrow-alt-circle-up"></i>
+                                                            </div>                                                   
                                                     </div>
                                                 </div>
+                                                                </div>
 
                                                 <div class="row">
                                                     <div class="col-12 text-center">

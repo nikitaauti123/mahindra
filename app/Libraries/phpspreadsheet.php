@@ -1,16 +1,10 @@
 <?php
-//require 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Phpspreadsheet
 {
-
-  function __construct()
-  {
-  }
-  // Properties
 
   // Methods
   function set_data($pdf_data)

@@ -55,7 +55,7 @@
                                                 <div class="row">
                                                 <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label> : 
+                                                            <label for="part_name">Part Name</label> : 
                                                             <span class="part_name"></span></div>
                                                     </div>
                                                     <div class="col-3">

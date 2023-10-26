@@ -46,32 +46,37 @@
                                                 <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name</label>
-                                                            :<?php if(!empty($single)) { echo 
-                                                           $single['part_name'];};?>
+                                                            <label for="part_name">Part Name</label> : <?php if(!empty($single['part_name'])) { echo 
+                                                           $single['part_name'];}else{ echo "-";};?>
                                                           </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label> :
-                                                            <?php if(!empty($single)) { echo 
-                                                           $single['part_no'];};?> </div>
+                                                            <label for="part_name">Part No</label> : 
+                                                            <?php if(!empty($single['part_no'])) { echo 
+                                                           $single['part_no'];}else{
+                                                           echo "-";
+                                                           };?> </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model</label> :
-                                                            <?php if(!empty($single)) { echo 
-                                                           $single['model'];};?></div>
+                                                            <label for="part_name">Model</label> : 
+                                                            <?php if(!empty($single['model'])) { echo 
+                                                           $single['model'];}else{
+                                                            echo "-";
+                                                           }?></div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="die_no">Die No</label> :
-                                                            <?php if(!empty($single)) { echo 
-                                                           $single['die_no'];};?></div>
+                                                            <label for="die_no">Die No</label> : 
+                                                            <?php if(!empty($single['die_no'])) { echo 
+                                                           $single['die_no'];}else{
+                                                            echo "-";
+                                                           };?></div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="die_no">Is active?</label> :
+                                                            <label for="die_no">Is active?</label> : 
                                                                 <?php if(!empty($single)) { if($single['is_active']==1){ echo "Active";}else{
                                                         echo "Deactive";?>
                                                      <?php }}  ?></div>

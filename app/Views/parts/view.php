@@ -90,6 +90,9 @@
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">
                                                         <div class="pins-display-wrapper no-click" >
+                                                        <div class="arrow-center">
+                                                                <i>sd</i>
+                                                            </div>
                                                             <div class="pins-display">
                                                                 <?php 
 

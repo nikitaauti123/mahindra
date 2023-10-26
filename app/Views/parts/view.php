@@ -69,23 +69,15 @@
                                                             <?php if(!empty($single)) { echo 
                                                            $single['die_no'];};?></div>
                                                     </div>
-
                                                     <div class="col-4">
-                                                    <div class="form-group">
-                                            <label for="is_active" class="col-sm-4 control-label">Is active?</label>
-                                            <div class="col-sm-8">
-                                                <div class="checkbox">
-                                                    <label>
-                                                    <?php if(!empty($single)) { if($single['die_no']==1){;};?>
-                                                    <input type="checkbox"  name="is_active" checked>
-                                                    <?php }else{?>
-                                                        <input type="checkbox"  name="is_active" checked>
+                                                        <div class="form-group">
+                                                            <label for="die_no">Is active?</label> :
+                                                                <?php if(!empty($single)) { if($single['is_active']==1){ echo "Active";}else{
+                                                        echo "Deactive";?>
+                                                     <?php }}  ?></div>
+
                                                    
-                                                        <?php } ?>
-   </label>
-                                                </div>
-                                            </div>
-                                        </div></div>
+                                                                </div>
                                                 </div>
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">

@@ -436,7 +436,7 @@ form .error {
   }
   .toggle-switch label input:checked + span {
     background-color: #ff8800;
-    height: 26px;
+    height: 24px;
     width: 50px;
 }
 .toggle-switch label input:checked + span small {
@@ -459,7 +459,7 @@ form .error {
     display: inline-block;
     margin-right: 10px;
     width: 50px;
-    height: 26px;
+    height: 24px;
     background: #bdc1c8;
     border: 1px solid #eee;
     border-radius: 50px;

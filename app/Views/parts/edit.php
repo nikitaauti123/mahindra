@@ -76,7 +76,7 @@
                                                 <div class="checkbox">
                                                 <div class="toggle-switch mt-1">
                                                                 <label for="cb-switch">
-                                                                    <input type="checkbox" id="cb-switch" id="is_active" name="is_active" value="">
+                                                                    <input type="checkbox" id="cb-switch" id="is_active" name="is_active" >
                                                                     <span>
                                                                         <small></small>
                                                                     </span>
@@ -114,9 +114,11 @@
                                                                         <?php
                                                                     }
                                                                 ?>
-                                                                 <div class="arrow">⇧</div>
-                                                           
+                                                                
                                                               </div>
+                                                              <div class="arrow-center">
+                                                                <i class="fa fa-arrow-alt-circle-up"></i>
+                                                            </div>
                                                              
                                                         </div>                                                        
                                                     </div>
@@ -125,7 +127,6 @@
                                                 <div class="row">
                                                     <div class="col-12 text-center">
                                                         <input type="hidden" class="" name="id" value="<?php echo $id; ?>">
-                                                        <input type="hidden" class="" name="is_active" value="1">
                                                         <button class="btn btn-primary">
                                                             Update
                                                         </button>

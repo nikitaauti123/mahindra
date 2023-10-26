@@ -54,12 +54,18 @@ Class PartsApiController extends BaseController
             if(!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
+            $isactive = 0;
+            if ($this->request->getVar('is_active') == 'on') {
+               
+                $isactive = 1;
+            }
+
 
             $data['part_name']  = $this->request->getVar('part_name');
             $data['part_no']    = $this->request->getVar('part_no');
             $data['model']      = $this->request->getVar('model');
             $data['die_no']      = $this->request->getVar('die_no');          
-            $data['is_active']  = $this->request->getVar('is_active')?$this->request->getVar('is_active'):0;
+            $data['is_active']  = $isactive;
             $data['pins']      =  $this->request->getVar('selected_pins');
             $result['id'] = $this->partsModel->insert($data, true);
             $result['msg'] = "Part added successfully!";
@@ -88,12 +94,17 @@ Class PartsApiController extends BaseController
             if(!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
+            $isactive = 0;
+            if ($this->request->getVar('is_active') == 'on') {
+               
+                $isactive = 1;
+            }
 
             $data['part_name'] = $this->request->getVar('part_name');
             $data['part_no']   = $this->request->getVar('part_no');
             $data['model']     = $this->request->getVar('model'); 
             $data['die_no']      = $this->request->getVar('die_no');          
-            $data['is_active']  = $this->request->getVar('is_active')?$this->request->getVar('is_active'):0;
+            $data['is_active']  = $isactive;
             $data['pins']      =  $this->request->getVar('selected_pins');
             
             $result['is_updated'] = $this->partsModel->update($id, $data);
@@ -134,7 +145,7 @@ Class PartsApiController extends BaseController
             } else {
                 $data['is_active'] = '1';
             }
-            $result['msg'] =  lang('Msg');
+            $result['msg'] =   lang('Parts.StatusUpdateMsg');
             $result['id'] = $this->partsModel->update($id, $data);
             return $this->respond($result, 200);
         } catch (\Exception $e) {

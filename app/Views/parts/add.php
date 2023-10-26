@@ -76,7 +76,7 @@
                                                 <div class="checkbox">
                                                 <div class="toggle-switch mt-1">
                                                                 <label for="cb-switch">
-                                                                    <input type="checkbox" id="cb-switch" id="is_active" name="is_active" value="">
+                                                                    <input type="checkbox" id="cb-switch" id="is_active" name="is_active" >
                                                                     <span>
                                                                         <small></small>
                                                                     </span>

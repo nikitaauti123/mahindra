@@ -713,13 +713,11 @@ if ($("#update_parts_data").length > 0) {
         var checkbox = $("#is_active");
         if (is_active == 1) {
 
-            $("#update_parts_data").find("input[name='is_active']").val('on');
             $("#update_parts_data").find("input[name='is_active']").prop("checked", true); // Check the checkbo
             checkbox.prop("checked", true); // Check the checkbox
         } else if (is_active == 0) {
 
-            $("#update_parts_data").find("input[name='is_active']").val('off');
-            $("#update_parts_data").find("input[name='is_active']").prop("checked", false); // Check the checkbo
+             $("#update_parts_data").find("input[name='is_active']").prop("checked", false); // Check the checkbo
         }
         var pins_array = data.pins.split(",");
 
@@ -1062,12 +1060,12 @@ if ($("#update_users").length > 0) {
         var checkbox = $("#is_active");
         if (is_active == 1) {
 
-            $("#update_users").find("input[name='is_active']").val('on');
+            //$("#update_users").find("input[name='is_active']").val('on');
             $("#update_users").find("input[name='is_active']").prop("checked", true); // Check the checkbo
             checkbox.prop("checked", true); // Check the checkbox
         } else if (is_active == 0) {
 
-            $("#update_users").find("input[name='is_active']").val('off');
+            //$("#update_users").find("input[name='is_active']").val('off');
             $("#update_users").find("input[name='is_active']").prop("checked", false); // Check the checkbo
         }
 

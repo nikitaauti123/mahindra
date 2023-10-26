@@ -76,13 +76,11 @@
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="die_no">Is active?</label> : 
-                                                                <?php if(!empty($single)) { if($single['is_active']==1){ echo "Active";}else{
-                                                        echo "Deactive";?>
+                                                            <label for="die_no">Is active</label> : 
+                                                                <?php if(!empty($single)) { if($single['is_active']==1){ echo "Yes";}else{
+                                                        echo "No";?>
                                                      <?php }}  ?></div>
-
-                                                   
-                                                                </div>
+                             </div>
                                                 </div>
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">

@@ -8,6 +8,7 @@ return [
 
     'Imports' => 'Import',
     'Export' => 'Export',
-    
+    'StatusUpdateMsg'=>'Parts Status Updated Successfully',
+  
     'PartList' => 'PartList',
 ];

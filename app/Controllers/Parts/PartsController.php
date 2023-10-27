@@ -45,17 +45,6 @@ class PartsController extends BaseController
         return view('parts/edit', $data);
     }
 
-    public function View($id)
-    {
-        $partsModel = new PartsModel();
-
-        $data['request'] = $this->request;
-        $data['id'] = $id;
-        $result = $partsModel->find($id);
-        $data['part_details'] = $result;
-        return view('parts/view', $data);
-    }
-
     public function Remove()
     {
         $data['request'] = $this->request;

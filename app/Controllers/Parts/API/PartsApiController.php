@@ -47,7 +47,7 @@ Class PartsApiController extends BaseController
             helper(['form']);
             
             $rules = [
-                'part_name'  => 'required|min_length[2]|max_length[10]',
+                'part_name'  => 'required|min_length[2]|max_length[100]',
                  'model'  => 'required|min_length[3]|max_length[100]',
                  ];
 
@@ -87,7 +87,7 @@ Class PartsApiController extends BaseController
             }
             
             $rules = [
-                'part_name'  => 'required|min_length[2]|max_length[10]',
+                'part_name'  => 'required|min_length[2]|max_length[100]',
                  'model'  => 'required|min_length[3]|max_length[100]',
             ];
 

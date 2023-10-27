@@ -334,16 +334,6 @@ if ($("#parts_list_tbl").length > 0) {
                 }
             },
             {
-                "data": "die_no",
-                "render": function (data, type, row, meta) {
-                    if (data) {
-                        return data;
-                    } else {
-                        return '-';
-                    }
-                }
-            },
-            {
                 "data": "is_active",
                 "render": function (data, type, row, meta) {
                     if (data && data != '-') {

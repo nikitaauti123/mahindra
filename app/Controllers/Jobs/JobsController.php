@@ -20,6 +20,27 @@ class JobsController extends BaseController
         $data['request'] = $this->request;
         return view('jobs/add', $data);
     }
+    public function Create_left()
+    {
+        $partsModel = new PartsModel();
+        $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+        $data['request'] = $this->request;
+        return view('jobs/add_left', $data);
+    }
+    public function Right_job()
+    {
+        $partsModel = new PartsModel();
+        $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+        $data['request'] = $this->request;
+        return view('jobs/right_job', $data);
+    }
+    public function Left_job()
+    {
+        $partsModel = new PartsModel();
+        $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+        $data['request'] = $this->request;
+        return view('jobs/left_job', $data);
+    }
 
     public function Edit($id)
     {

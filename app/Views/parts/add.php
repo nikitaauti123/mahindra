@@ -46,7 +46,7 @@
                                                 <div class="row">
                                                     <div class="col-md-4 col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name<span class="ast">*</span>:</label>
+                                                            <label for="part_name">Part Name<span class="red_text">*</span></label>
                                                             <input type="text" class="form-control" name="part_name" placeholder="Part Name" >
                                                         </div>
                                                     </div>
@@ -58,10 +58,34 @@
                                                     </div>
                                                     <div class="col-md-4 col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model<span class="ast">*</span>:</label>
+                                                            <label for="part_name">Model<span class="red_text">*</span></label>
                                                             <input type="text" class="form-control" name="model" placeholder="Model" >
                                                         </div>
                                                     </div>
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label for="die_no">Die No<span class="red_text">*</span></label>
+                                                            <input type="text" class="form-control" name="die_no" placeholder="Die No" >
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-4">
+                                                    <div class="form-group">
+                                            <label for="is_active" class="col-sm-4 control-label">Is active?</label>
+                                            <div class="col-sm-8">
+                                                <div class="checkbox">
+                                                <div class="toggle-switch mt-1">
+                                                                <label for="cb-switch">
+                                                                    <input type="checkbox" id="cb-switch" id="is_active" name="is_active" >
+                                                                    <span>
+                                                                        <small></small>
+                                                                    </span>
+                                                                </label>
+                                                            </div>
+
+                                                </div>
+                                            </div>
+                                        </div></div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-4 col-4">
@@ -79,6 +103,9 @@
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">
                                                         <div class="pins-display-wrapper">
+                                                        <div class="arrow-center">
+                                                                <i>sd</i>
+                                                            </div>
                                                             <div class="pins-display">
                                                                 <?php 
 
@@ -101,16 +128,18 @@
                                                                         <?php
                                                                     }
                                                                 ?>
-                                                            </div>
-                                                            <div class="arrow-center">
+                                                            
+                                                        </div>
+                                                        <div class="arrow-center">
                                                                 <i class="fa fa-arrow-alt-circle-up"></i>
-                                                            </div>
-                                                        </div>                                                        
+                                                            </div>                                                   
                                                     </div>
                                                 </div>
+                                                                </div>
 
                                                 <div class="row">
                                                     <div class="col-12 text-center">
+                                                        <!-- <input type="hidden" class="" name="is_active" value="1"> -->
                                                         <button class="btn btn-primary">
                                                             Save
                                                         </button>

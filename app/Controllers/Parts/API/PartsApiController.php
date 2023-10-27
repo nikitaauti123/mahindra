@@ -5,6 +5,10 @@ namespace App\Controllers\Parts\Api;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\PartsModel;
+use PhpOffice\PhpSpreadsheet;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Exception;
 
 Class PartsApiController extends BaseController
@@ -43,24 +47,26 @@ Class PartsApiController extends BaseController
             helper(['form']);
             
             $rules = [
-                'part_name'  => 'required|min_length[2]|max_length[100]',
-                'part_no'  => 'required|min_length[3]|max_length[100]',
-                'model'  => 'required|min_length[3]|max_length[100]',
-                'die_no'  => 'required|min_length[2]|max_length[100]',
-                'is_active'  => 'required'
-            ];
+                'part_name'  => 'required|min_length[2]|max_length[10]',
+                 'model'  => 'required|min_length[3]|max_length[100]',
+                 ];
 
             if(!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
+            $isactive = 0;
+            if ($this->request->getVar('is_active') == 'on') {
+               
+                $isactive = 1;
+            }
+
 
             $data['part_name']  = $this->request->getVar('part_name');
             $data['part_no']    = $this->request->getVar('part_no');
             $data['model']      = $this->request->getVar('model');
-            $data['die_no']      = $this->request->getVar('die_no');
-            $data['is_active']  = $this->request->getVar('is_active');
+            $data['die_no']      = $this->request->getVar('die_no');          
+            $data['is_active']  = $isactive;
             $data['pins']      =  $this->request->getVar('selected_pins');
-            
             $result['id'] = $this->partsModel->insert($data, true);
             $result['msg'] = "Part added successfully!";
             return $this->respond($result, 200);
@@ -81,22 +87,24 @@ Class PartsApiController extends BaseController
             }
             
             $rules = [
-                'part_name'  => 'required|min_length[2]|max_length[100]',
-                'part_no'  => 'required|min_length[3]|max_length[100]',
-                'model'  => 'required|min_length[3]|max_length[100]',
-                'die_no'  => 'required|min_length[2]|max_length[100]',
-                'is_active'  => 'required'
+                'part_name'  => 'required|min_length[2]|max_length[10]',
+                 'model'  => 'required|min_length[3]|max_length[100]',
             ];
 
             if(!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
+            $isactive = 0;
+            if ($this->request->getVar('is_active') == 'on') {
+               
+                $isactive = 1;
+            }
 
             $data['part_name'] = $this->request->getVar('part_name');
             $data['part_no']   = $this->request->getVar('part_no');
-            $data['model']     = $this->request->getVar('model');
-            $data['die_no']      = $this->request->getVar('die_no');
-            $data['is_active'] = $this->request->getVar('is_active');
+            $data['model']     = $this->request->getVar('model'); 
+            $data['die_no']      = $this->request->getVar('die_no');          
+            $data['is_active']  = $isactive;
             $data['pins']      =  $this->request->getVar('selected_pins');
             
             $result['is_updated'] = $this->partsModel->update($id, $data);
@@ -126,5 +134,23 @@ Class PartsApiController extends BaseController
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }    
+    }
+
+    public function update_is_active(){
+        try {
+            $id = $this->request->getVar('id');
+            $is_Active = $this->request->getVar('is_active');
+            if (($is_Active) == 1) {
+                $data['is_active'] = '0';
+            } else {
+                $data['is_active'] = '1';
+            }
+            $result['msg'] =   lang('Parts.StatusUpdateMsg');
+            $result['id'] = $this->partsModel->update($id, $data);
+            return $this->respond($result, 200);
+        } catch (\Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
     }
 }

@@ -187,15 +187,15 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 
 .pins-display .x-axis-line {
     width: 3px;
-    background-color: var(--drak-gray);
-    height: 32px;
+    height: 30px;
     float: left;
-    margin: 0 3px ;
+    margin-bottom: -11px;
+    margin: 0 3px;
 }
 
 .pins-display .y-axis-line {
     width: 900px;
-    background-color: var(--drak-gray);
+    background-color:black;
     height: 3px;
     float: left;
     margin: 3px 0px ;
@@ -277,3 +277,225 @@ form .error {
     font: 40px/48px 'DIGITAL', Helvetica;
     background: linear-gradient(90deg, #000, #555);
   }
+  #drag_upload_file #selectfile {
+    display: none;
+}
+#drop_file_zone {
+    border: #999 5px dashed;
+    width: 100%;
+    height: 200px;
+    padding: 8px;
+    font-size: 18px;
+}
+#drag_upload_file {
+    width: 23%;
+    margin: 15px auto;
+}
+
+
+
+
+.arrow {
+    color: red; 
+    font-size: 50px;
+    margin-top: 10px; 
+    background: white;
+    text-align: center;
+  
+} 
+
+
+.no-click {
+    pointer-events: none;
+}
+
+
+/*----------- BUTTON ----------*/
+.btn-holder {
+    width: 400px;
+    height: 300px;
+    margin: 50px auto 0;
+  }
+  .btn-lg.btn-toggle {
+    padding: 0;
+    margin: 0 5rem;
+    position: relative;
+    height: 2.5rem;
+    width: 6rem;
+    border-radius: 3rem;
+    color: #6b7381;
+    background: #bdc1c8;
+    margin-bottom: 30px;
+  }
+  .btn-toggle.btn-lg > .switch {
+      position: absolute;
+      top: 0.2rem;
+      left: 0.1rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 1.875rem;
+      background: #fff;
+      transition: left .25s;
+  }
+  .btn-toggle.active {
+      background-color: #ff8800;
+  }
+  .btn-toggle.btn-lg.active > .switch {
+      left: 3.75rem;
+      transition: left .25s;
+  }
+  
+  .btn-lg.btn-toggle:after {
+      content: "Active";
+      right: -5rem;
+      opacity: 0.5;
+      line-height: 2.5rem;
+      width: 5rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      position: absolute;
+      bottom: 0;
+      transition: opacity .25s;
+  }
+  
+  .btn-lg.btn-toggle.active:after {
+    opacity: 1;
+  }
+  
+  /*------------ CHECKBOX -------------*/
+  .toggle-switch {
+    margin: 0 auto;
+    /* width: 241px; */
+    margin-top: 20px;
+    position: relative;
+  }
+  .toggle-switch label {
+    padding: 0;
+  }
+  input#cb-switch {
+    display: none;
+  }
+  .toggle-switch label input + span {
+        position: relative;
+      display: inline-block;
+      margin-right: 10px;
+      width: 6rem;
+      height: 2.5rem;
+      background: #bdc1c8;
+      border: 1px solid #eee;
+      border-radius: 50px;
+      transition: all 0.3s ease-in-out;
+      box-shadow: inset 0 0 5px #828282;
+  }
+  .toggle-switch label input + span small {
+      position: absolute;
+      display: block;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 1.875rem;
+      background: #fff;
+      transition: all 0.3s ease-in-out;
+      top: 0.2rem;
+      left: 0.2rem;
+  }
+  .toggle-switch label input:checked + span {
+    background-color: #ff8800;
+  }
+  .toggle-switch label input:checked + span small{
+      left: 3.7rem;
+      transition: left .25s;
+  }
+  .toggle-switch span:after {
+    content: "Active";
+    line-height: 2.5rem;
+      width: 5rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      position: absolute;
+      bottom: 0;
+      transition: opacity .25s;
+      left: 6rem;
+      opacity: 0.5;
+      color: #6b7381;
+  }
+  .toggle-switch label input:checked + span:after {
+    opacity: 1;
+  }
+  .red_text{
+    color: red;
+  }
+
+  .arrow-center {
+    margin: 0 auto;
+    width: 925px;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+}
+
+
+.arrow-center .fa-arrow-alt-circle-up:before {
+    color: var(--red);
+    font-size: 30px;
+}
+
+
+  .toggle-switch label {
+    height: 20px; /* Adjust the height as needed */
+  }
+
+  .toggle-switch label span {
+    height: 16px; /* Adjust the height as needed */
+    width: 32px; /* Adjust the width as needed */
+  }
+  .toggle-switch label input:checked + span {
+    background-color: #ff8800;
+    height: 24px;
+    width: 50px;
+}
+.toggle-switch label input:checked + span small {
+    left: 1.7rem;
+    transition: left .25s;
+}
+.toggle-switch label input + span small {
+    position: absolute;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 1.875rem;
+    background: #fff;
+    transition: all 0.3s ease-in-out;
+    top: 0.2rem;
+    left: 0.2rem;
+}
+.toggle-switch label input + span {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    width: 50px;
+    height: 24px;
+    background: #bdc1c8;
+    border: 1px solid #eee;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: inset 0 0 5px #828282;
+}
+
+.toggle-switch span:after {
+    content: "";
+   
+}
+.x-axis-line:after {
+    content: "";
+    background: #000;
+    width: 3px;
+    height: 32px;
+    position: absolute;
+}
+.toggle-switch  {
+
+    margin-top:5px}

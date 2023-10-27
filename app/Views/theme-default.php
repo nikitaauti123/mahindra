@@ -93,6 +93,8 @@
 <script src="<?php echo base_url('assets/plugins/jquery-validation/jquery.validate.min.js'); ?>"></script>
 
 <!-- Application Javascript File -->
+<script  src="<?php echo base_url('assets/js/file_upload.js'); ?>"></script>
+
 <script type="module" src="<?php echo base_url('assets/js/application.js'); ?>"></script>
 </body>
 </html>

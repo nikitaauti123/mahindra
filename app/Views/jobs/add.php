@@ -51,7 +51,7 @@
                             <div class="card-body">
                                 <div class="row">
                                         <div class="col-md-12">
-                                            <form id="start_jobs_data">
+                                            <form id="add_parts_data" method="post">
                                                 <div class="row">
                                                     <div class="col-3">
                                                         <div class="form-group">
@@ -78,14 +78,17 @@
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Bed No</label>
-                                                            <input type="text" class="form-control" name="bed_no" placeholder="Bed No" >
+                                                            <label for="part_name">Die No</label>
+                                                            <input type="text" class="form-control" name="die_no" placeholder="Die No" >
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">
                                                         <div class="pins-display-wrapper">
+                                                        <div class="arrow-center">
+                                                                <i>sd</i>
+                                                            </div>
                                                             <div class="pins-display">
                                                                 <?php 
 
@@ -119,7 +122,9 @@
                                                 <div class="row">
                                                     <div class="col-12 text-center">
                                                         <input type="hidden" class="" name="is_active" value="1">
-                                                        
+                                                        <button class="btn btn-primary">
+                                                            Save
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </form>

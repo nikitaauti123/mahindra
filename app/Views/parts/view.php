@@ -42,44 +42,52 @@
                             <div class="card-body">
                                 <div class="row">
                                         <div class="col-md-12">
-                                            <form id="view_parts_data">
-                                                <input type="hidden" class="" name="id" value="<?php echo $id; ?>">
+                                            <form id="update_parts_data">
                                                 <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name:</label>
-                                                            <?php echo isset($part_details['part_name'])?$part_details['part_name']:''; ?>
-                                                        </div>
+                                                            <label for="part_name">Part Name</label> : <?php if(!empty($single['part_name'])) { echo 
+                                                           $single['part_name'];}else{ echo "-";};?>
+                                                          </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No:</label>
-                                                            <?php echo isset($part_details['part_no'])?$part_details['part_no']:''; ?>
-                                                        </div>
+                                                            <label for="part_name">Part No</label> : 
+                                                            <?php if(!empty($single['part_no'])) { echo 
+                                                           $single['part_no'];}else{
+                                                           echo "-";
+                                                           };?> </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_model">Model:</label>
-                                                            <?php echo isset($part_details['model'])?$part_details['model']:''; ?>
-                                                        </div>
+                                                            <label for="part_name">Model</label> : 
+                                                            <?php if(!empty($single['model'])) { echo 
+                                                           $single['model'];}else{
+                                                            echo "-";
+                                                           }?></div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4 col-4">
+                                                    <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="die_no">Die No:</label>
-                                                            <?php echo isset($part_details['die_no'])?$part_details['die_no']:''; ?>
-                                                        </div>
+                                                            <label for="die_no">Die No</label> : 
+                                                            <?php if(!empty($single['die_no'])) { echo 
+                                                           $single['die_no'];}else{
+                                                            echo "-";
+                                                           };?></div>
                                                     </div>
-                                                    <div class="col-md-4 col-4">
-                                                        <div class="">
-                                                            <label for="die_no">Is Active? </label> <?php echo (isset($part_details['is_active']) && $part_details['is_active']==1)?'Yes':'No'; ?>
-                                                        </div>
-                                                    </div>
+                                                    <div class="col-4">
+                                                        <div class="form-group">
+                                                            <label for="die_no">Is active</label> : 
+                                                                <?php if(!empty($single)) { if($single['is_active']==1){ echo "Yes";}else{
+                                                        echo "No";?>
+                                                     <?php }}  ?></div>
+                             </div>
                                                 </div>
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">
-                                                        <div class="pins-display-wrapper">
+                                                        <div class="pins-display-wrapper no-click" >
+                                                        <div class="arrow-center">
+                                                                <i>sd</i>
+                                                            </div>
                                                             <div class="pins-display">
                                                                 <?php 
 
@@ -107,6 +115,14 @@
                                                                 <i class="fa fa-arrow-alt-circle-up"></i>
                                                             </div>
                                                         </div>                                                        
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <input type="hidden" class="" name="id" value="<?php echo $id; ?>">
+                                                        <!-- <input type="text" class="" name="is_active" value="1"> -->
+                                                        
                                                     </div>
                                                 </div>
                                             </form>

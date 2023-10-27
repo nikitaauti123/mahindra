@@ -47,15 +47,9 @@ Class PartsApiController extends BaseController
             helper(['form']);
             
             $rules = [
-<<<<<<< HEAD
                 'part_name'  => 'required|min_length[2]|max_length[100]',
                  'model'  => 'required|min_length[3]|max_length[100]',
                  ];
-=======
-                 'part_name'  => 'required|min_length[2]|max_length[100]',
-                 'model'  => 'required|min_length[2]|max_length[100]',
-                ];
->>>>>>> b67dfed618337a02c89f2b2fdde44a461ca2ed78
 
             if(!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
@@ -94,11 +88,7 @@ Class PartsApiController extends BaseController
             
             $rules = [
                 'part_name'  => 'required|min_length[2]|max_length[100]',
-<<<<<<< HEAD
                  'model'  => 'required|min_length[3]|max_length[100]',
-=======
-                'model'  => 'required|min_length[2]|max_length[100]',
->>>>>>> b67dfed618337a02c89f2b2fdde44a461ca2ed78
             ];
 
             if(!$this->validate($rules)) {

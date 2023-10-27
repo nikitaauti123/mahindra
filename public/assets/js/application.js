@@ -867,7 +867,7 @@ for (let i in pins_array) {
       
     $.ajax({
         type: 'GET', // or 'GET', depending on your needs
-        url: base_url + 'api/parts/get_one/' +part_id,
+        url: base_url + 'api/parts/get_one/'+part_id,
         data: { },
         beforeSend: function (xhr) {
         },

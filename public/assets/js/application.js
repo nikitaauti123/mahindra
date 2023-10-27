@@ -754,6 +754,8 @@ if ($("#update_parts_data").length > 0) {
     $("#update_parts_data button").on('click', function (e) {
         e.preventDefault();
 
+        var is_active = $("input[name='is_active']:checked").length;
+
         let pins_selected = [];
         let i = 0;
 

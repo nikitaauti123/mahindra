@@ -4,16 +4,16 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AlterParts extends Migration
+class AddPartsTblColumn extends Migration
 {
     public function up()
     {
         $fields = [
-            'pins' => ['type' => 'TEXT', 'after' => 'model'],
+            'die_no' => ['type' => 'VARCHAR', 'constraint' => 100, 'after' => 'pins', 'null' => true],
+            'part_id' => ['type' => 'VARCHAR', 'constraint' => 100, 'after' => 'pins', 'null' => true],
         ];
 
         $this->forge->addColumn('parts', $fields);
-
     }
 
     public function down()

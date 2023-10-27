@@ -44,19 +44,19 @@
                                         <div class="col-md-12">
                                             <form id="add_parts_data">
                                                 <div class="row">
-                                                    <div class="col-4">
+                                                    <div class="col-md-4 col-4">
                                                         <div class="form-group">
                                                             <label for="part_name">Part Name<span class="red_text">*</span></label>
                                                             <input type="text" class="form-control" name="part_name" placeholder="Part Name" >
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-md-4 col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label>
+                                                            <label for="part_name">Part No<span class="ast">*</span>:</label>
                                                             <input type="text" class="form-control" name="part_no" placeholder="Part No" >
                                                         </div>
                                                     </div>
-                                                    <div class="col-4">
+                                                    <div class="col-md-4 col-4">
                                                         <div class="form-group">
                                                             <label for="part_name">Model<span class="red_text">*</span></label>
                                                             <input type="text" class="form-control" name="model" placeholder="Model" >
@@ -86,6 +86,19 @@
                                                 </div>
                                             </div>
                                         </div></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-4">
+                                                        <div class="form-group">
+                                                            <label for="die_no">Die No<span class="ast">*</span>:</label>
+                                                            <input type="text" class="form-control" name="die_no" placeholder="Die No" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-4 mt-3 d-flex align-items-center">
+                                                        <div class="">
+                                                            <input type="checkbox" class="checkbox" name="is_active" checked="checked" >   <label for="die_no">Is Active?</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">

@@ -51,7 +51,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Sr.No</th>
-                                                        <th>Part No</th>
+                                                        <th>Part No.</th>
                                                         <th>Part Name</th>
                                                         <th>Model</th>
                                                         <th>Pins</th>

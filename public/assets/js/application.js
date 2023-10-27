@@ -334,6 +334,16 @@ if ($("#parts_list_tbl").length > 0) {
                 }
             },
             {
+                "data": "die_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
                 "data": "is_active",
                 "render": function (data, type, row, meta) {
                     if (data && data != '-') {
@@ -753,6 +763,8 @@ if ($("#update_parts_data").length > 0) {
 
     $("#update_parts_data button").on('click', function (e) {
         e.preventDefault();
+
+        var is_active = $("input[name='is_active']:checked").length;
 
         let pins_selected = [];
         let i = 0;

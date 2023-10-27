@@ -1,3 +1,7 @@
+<script>
+    <?= websocket_js_code() ?>
+    alert(websocket_js_code());
+</script>
 <?= $this->extend('theme-default') ?>
 
 <?= $this->section('content') ?>

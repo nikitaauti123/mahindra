@@ -75,3 +75,10 @@ if (!function_exists('crop_image')) {
         return $filename;
     }
 }
+if (!function_exists('websocket_js_code')) {
+    function websocket_js_code()
+    {
+        $webSocketURL = $_ENV['WEBSOCKET_URL'];
+        return "const webSocketURL = '$webSocketURL';";
+    }
+}

@@ -622,7 +622,7 @@ if ($("#add_parts_data").length > 0) {
             'part_name': {
                 required: true,
             },
-            
+
             'die_no': { required: true },
             'model': { required: true },
         },
@@ -630,7 +630,7 @@ if ($("#add_parts_data").length > 0) {
             'part_name': {
                 required: 'Please enter Part Name',
             },
-              'die_no': { required: 'Please enter Die No' },
+            'die_no': { required: 'Please enter Die No' },
             'model': { required: 'Please enter Model' },
         }
     });
@@ -717,7 +717,7 @@ if ($("#update_parts_data").length > 0) {
             checkbox.prop("checked", true); // Check the checkbox
         } else if (is_active == 0) {
 
-             $("#update_parts_data").find("input[name='is_active']").prop("checked", false); // Check the checkbo
+            $("#update_parts_data").find("input[name='is_active']").prop("checked", false); // Check the checkbo
         }
         var pins_array = data.pins.split(",");
 
@@ -814,189 +814,209 @@ if ($("#update_parts_data").length > 0) {
 
 if ($("#start_jobs_data_left").length > 0) {
     $("#start_jobs_data_left").find("#part_name").select2();
-
-    const ws = new WebSocket("ws://localhost:8000/ws/left/");  // Replace with your server URL
-
-    var part_id = '';
-    const event_part_id = '';
-    var data = '';
-    ws.onmessage = (event) => {
-        var jsonData = JSON.parse(event.data);
-   part_id = jsonData.part_id;
-  data = jsonData.pin_status;
-    // }
-  let values='';
-  let correctInsertedValues = '';
-  for (const key in data) {
-    if (data.hasOwnProperty(key)) {
-        if (values !== "") {
-            values += ", "; // Add a comma and space if values is not empty
-            correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
-        }
-        values += key;
-        correctInsertedValues += data[key].correct_inserted;
-    }
-}
-
-
-var pins_array = values.split(",");
-var pins_color = correctInsertedValues.split(",");
-
-for (let i in pins_array) {
-   
-    var pin_address = pins_array[i];
-    var pin_color = pins_color[i];
-    $(".pins-display").find(".pin-box").each(function (index) {
-        var title = $(this).attr('title');
-        var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
-    
-        if (pattern.test(title)) {
-            if (pin_color == ' true') {
-                 $(this).addClass('green-pin');
-              } else if (pin_color == ' false') {
-                  $(this).addClass('red-pin');
-              }else if(pin_address=='A1'){
-                if (pin_color == 'true') {
-                    $(this).addClass('green-pin');
-                }else if(pin_color == 'false'){
-                    $(this).addClass('red-pin');
-                }
-                console.log(pin_color + '=' + pin_address);
-               
-              }
-        }
-    });
-   
-}
-
-      
     $.ajax({
-        type: 'GET', // or 'GET', depending on your needs
-        url: base_url + 'api/parts/get_one/'+part_id,
-        data: { },
-        beforeSend: function (xhr) {
-        },
-    }).done(function (data) {
-    
-        $("#part_name").val('');
-        if ($("#part_name").length > 0) {
+        url: base_url + 'api/parts/get_api_url',
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            //alert(data.WEBSOCKET_URL);
+            const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
+
+            $("#result").html("Title: " + data.title);
+             var part_id = '';
+            const event_part_id = '';
+            var data = '';
+            ws.onmessage = (event) => {
+                var jsonData = JSON.parse(event.data);
+                part_id = jsonData.part_id;
+                data = jsonData.pin_status;
+                // }
+                if (part_id != event_part_id) {
+                    let values = '';
+                    let correctInsertedValues = '';
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            if (values !== "") {
+                                values += ", "; // Add a comma and space if values is not empty
+                                correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
+                            }
+                            values += key;
+                            correctInsertedValues += data[key].correct_inserted;
+                        }
+                    }
+
+
+                    var pins_array = values.split(",");
+                    var pins_color = correctInsertedValues.split(",");
+
+                    for (let i in pins_array) {
+
+                        var pin_address = pins_array[i];
+                        var pin_color = pins_color[i];
+                        $(".pins-display").find(".pin-box").each(function (index) {
+                            var title = $(this).attr('title');
+                            var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
+
+                            if (pattern.test(title)) {
+                                if (pin_color == ' true') {
+                                    $(this).addClass('green-pin');
+                                } else if (pin_color == ' false') {
+                                    $(this).addClass('red-pin');
+                                } else if (pin_address == 'A1') {
+                                    if (pin_color == 'true') {
+                                        $(this).addClass('green-pin');
+                                    } else if (pin_color == 'false') {
+                                        $(this).addClass('red-pin');
+                                    }
+                                    //console.log(pin_color + '=' + pin_address);
+
+                                }
+                            }
+                        });
+
+                    }
+
+
+                    $.ajax({
+                        type: 'GET', // or 'GET', depending on your needs
+                        url: base_url + 'api/parts/get_one/' + part_id,
+                        data: {},
+                        beforeSend: function (xhr) {
+                        },
+                    }).done(function (data) {
+
+                        $("#part_name").val('');
+                        if ($("#part_name").length > 0) {
+                        }
+
+                        $(".part_name").text(data['part_name']);
+                        $("#part_no").text(data['part_no']);
+                        $("#model").text(data['model']);
+                        $("#die_no").text(data['die_no']);
+
+
+                        $(".pins-display").find(".pin-box").each(function (index) {
+                            if ($(this).hasClass('orange-pin')) {
+                                $(this).removeClass('orange-pin').addClass('gray-pin');
+                            }
+                        });
+
+
+
+                    }).fail(function (data) {
+                        // $(btn_id).removeClass('button--loading').attr('disabled', false);
+
+                    });
+                }
+            }
         }
 
-        $(".part_name").text(data['part_name']);
-        $("#part_no").text(data['part_no']);
-        $("#model").text(data['model']);
-        $("#die_no").text(data['die_no']);
-
-     
-        $(".pins-display").find(".pin-box").each(function (index) {
-            if ($(this).hasClass('orange-pin')) {
-                $(this).removeClass('orange-pin').addClass('gray-pin');
-            }
-        });
-
-       
-
-    }).fail(function (data) {
-        // $(btn_id).removeClass('button--loading').attr('disabled', false);
-
-    });
-   }
+    })
 }
-
-
 
 
 if ($("#start_jobs_data_right").length > 0) {
     $("#start_jobs_data_right").find("#part_name").select2();
 
-    const ws = new WebSocket("ws://localhost:8000/ws/left/");  // Replace with your server URL
-
-    var part_id = '';
-    const event_part_id = '';
-    var data = '';
-    ws.onmessage = (event) => {
-        var jsonData = JSON.parse(event.data);
-   part_id = jsonData.part_id;
-  data = jsonData.pin_status;
-    // }
-  let values='';
-  let correctInsertedValues = '';
-  for (const key in data) {
-    if (data.hasOwnProperty(key)) {
-        if (values !== "") {
-            values += ", "; // Add a comma and space if values is not empty
-            correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
-        }
-        values += key;
-        correctInsertedValues += data[key].correct_inserted;
-    }
-}
-
-
-var pins_array = values.split(",");
-var pins_color = correctInsertedValues.split(",");
-
-for (let i in pins_array) {
-   
-    var pin_address = pins_array[i];
-    var pin_color = pins_color[i];
-    $(".pins-display").find(".pin-box").each(function (index) {
-        var title = $(this).attr('title');
-        var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
-    
-        if (pattern.test(title)) {
-            if (pin_color == ' true') {
-                 $(this).addClass('green-pin');
-              } else if (pin_color == ' false') {
-                  $(this).addClass('red-pin');
-              }else if(pin_address=='A1'){
-                if (pin_color == 'true') {
-                    $(this).addClass('green-pin');
-                }else if(pin_color == 'false'){
-                    $(this).addClass('red-pin');
-                }
-                console.log(pin_color + '=' + pin_address);
-               
-              }
-        }
-    });
-   
-}
-
-      
     $.ajax({
-        type: 'GET', // or 'GET', depending on your needs
-        url: base_url + 'api/parts/get_one/'+part_id,
-        data: { },
-        beforeSend: function (xhr) {
-        },
-    }).done(function (data) {
-    
-        $("#part_name").val('');
-        if ($("#part_name").length > 0) {
+        url: base_url + 'api/parts/get_api_url',
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            // alert(data.WEBSOCKET_URL);
+            const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
+
+            $("#result").html("Title: " + data.title);
+          var part_id = '';
+            const event_part_id = '';
+            var data = '';
+            ws.onmessage = (event) => {
+                var jsonData = JSON.parse(event.data);
+                part_id = jsonData.part_id;
+                data = jsonData.pin_status;
+                // }
+                if (part_id != event_part_id) {
+                    let values = '';
+                    let correctInsertedValues = '';
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            if (values !== "") {
+                                values += ", "; // Add a comma and space if values is not empty
+                                correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
+                            }
+                            values += key;
+                            correctInsertedValues += data[key].correct_inserted;
+                        }
+                    }
+
+
+                    var pins_array = values.split(",");
+                    var pins_color = correctInsertedValues.split(",");
+
+                    for (let i in pins_array) {
+
+                        var pin_address = pins_array[i];
+                        var pin_color = pins_color[i];
+                        $(".pins-display").find(".pin-box").each(function (index) {
+                            var title = $(this).attr('title');
+                            var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
+
+                            if (pattern.test(title)) {
+                                if (pin_color == ' true') {
+                                    $(this).addClass('green-pin');
+                                } else if (pin_color == ' false') {
+                                    $(this).addClass('red-pin');
+                                } else if (pin_address == 'A1') {
+                                    if (pin_color == 'true') {
+                                        $(this).addClass('green-pin');
+                                    } else if (pin_color == 'false') {
+                                        $(this).addClass('red-pin');
+                                    }
+                                    //console.log(pin_color + '=' + pin_address);
+
+                                }
+                            }
+                        });
+
+                    }
+
+
+                    $.ajax({
+                        type: 'GET', // or 'GET', depending on your needs
+                        url: base_url + 'api/parts/get_one/' + part_id,
+                        data: {},
+                        beforeSend: function (xhr) {
+                        },
+                    }).done(function (data) {
+
+                        $("#part_name").val('');
+                        if ($("#part_name").length > 0) {
+                        }
+
+                        $(".part_name").text(data['part_name']);
+                        $("#part_no").text(data['part_no']);
+                        $("#model").text(data['model']);
+                        $("#die_no").text(data['die_no']);
+
+
+                        $(".pins-display").find(".pin-box").each(function (index) {
+                            if ($(this).hasClass('orange-pin')) {
+                                $(this).removeClass('orange-pin').addClass('gray-pin');
+                            }
+                        });
+
+
+
+                    }).fail(function (data) {
+                        // $(btn_id).removeClass('button--loading').attr('disabled', false);
+
+                    });
+                }
+            }
         }
 
-        $(".part_name").text(data['part_name']);
-        $("#part_no").text(data['part_no']);
-        $("#model").text(data['model']);
-        $("#die_no").text(data['die_no']);
-
-     
-        $(".pins-display").find(".pin-box").each(function (index) {
-            if ($(this).hasClass('orange-pin')) {
-                $(this).removeClass('orange-pin').addClass('gray-pin');
-            }
-        });
-
-       
-
-    }).fail(function (data) {
-        // $(btn_id).removeClass('button--loading').attr('disabled', false);
-
-    });
-   }
+    })
 }
-
 // if ($("#start_jobs_data").length > 0) {
 //     $("#start_jobs_data").find("#part_name").select2();
 
@@ -1095,6 +1115,7 @@ function clockUpdate() {
     var s = addZero(date.getSeconds());
 
     $('.digital-clock').text(h + ':' + m + ':' + s)
+
 }
 
 
@@ -1159,8 +1180,8 @@ if ($("#update_users").length > 0) {
             }, //v_mac: v_mac,
             success: function (user_data) {
                 //  alert(user_data.role_id['role_id'])
-                if(user_data.role_id !== null){
-               $("#role_id").val(user_data.role_id['role_id']);
+                if (user_data.role_id !== null) {
+                    $("#role_id").val(user_data.role_id['role_id']);
                 }
 
             },

@@ -153,4 +153,14 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
+    public  function  get_api_url(){
+    //   print_r($_ENV['WEBSOCKET_URL']);
+    //     exit;
+        $envVariables = [
+            'WEBSOCKET_URL' => $_ENV['WEBSOCKET_URL'],
+            // Add other variables as needed
+        ];
+        return $this->respond($envVariables, 200);
+      //  return $this->response->setJSON($envVariables);
+    }
 }

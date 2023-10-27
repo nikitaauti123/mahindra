@@ -29,6 +29,7 @@ class JobsController extends BaseController
     }
     public function Right_job()
     {
+        helper('WebSocketHelper');
         $partsModel = new PartsModel();
         $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
         $data['request'] = $this->request;
@@ -36,6 +37,7 @@ class JobsController extends BaseController
     }
     public function Left_job()
     {
+        helper('WebSocketHelper');
         $partsModel = new PartsModel();
         $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
         $data['request'] = $this->request;

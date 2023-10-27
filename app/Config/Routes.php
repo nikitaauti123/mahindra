@@ -70,6 +70,9 @@ $routes->post('/api/parts/update_is_active', 'Parts\\Api\\PartsApiController::up
 $routes->post('/api/parts/update/(:num)', 'Parts\\Api\\PartsApiController::update/$1');
 $routes->post('/api/parts/delete/(:num)', 'Parts\\Api\\PartsApiController::delete/$1');
 $routes->get('/api/parts/get_one/(:num)', 'Parts\\Api\\PartsApiController::getOne/$1');
+$routes->get('/api/parts/get_api_url', 'Parts\\Api\\PartsApiController::get_api_url');
+
+
 $routes->post('/api/apiparts/add', 'Parts\\Api\\ApiPartsApiController::add');
 $routes->post('/api/apiparts/get_api_data', 'Parts\\Api\\ApiPartsApiController::get_api_data');
 

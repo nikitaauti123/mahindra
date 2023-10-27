@@ -851,19 +851,24 @@ for (let i in pins_array) {
         var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
     
         if (pattern.test(title)) {
-               // Check pin_address and pin_color as boolean values
-          if (pin_color === 'true') {
-            console.log(pin_color + '=' + pin_address);
-         
-            $(this).addClass('green-pin');
-          } else if (pin_color === 'false') {
-            console.log(pin_color + '=' + pin_address);
-         
-            $(this).addClass('red-pin');
-          }
+            if (pin_color == ' true') {
+                 $(this).addClass('green-pin');
+              } else if (pin_color == ' false') {
+                  $(this).addClass('red-pin');
+              }else if(pin_address=='A1'){
+                if (pin_color == 'true') {
+                    $(this).addClass('green-pin');
+                }else if(pin_color == 'false'){
+                    $(this).addClass('red-pin');
+                }
+                console.log(pin_color + '=' + pin_address);
+               
+              }
         }
     });
+   
 }
+
       
     $.ajax({
         type: 'GET', // or 'GET', depending on your needs
@@ -904,15 +909,69 @@ for (let i in pins_array) {
 if ($("#start_jobs_data_right").length > 0) {
     $("#start_jobs_data_right").find("#part_name").select2();
 
+    const ws = new WebSocket("ws://localhost:8000/ws/left/");  // Replace with your server URL
+
+    var part_id = '';
+    const event_part_id = '';
+    var data = '';
+    ws.onmessage = (event) => {
+        var jsonData = JSON.parse(event.data);
+   part_id = jsonData.part_id;
+  data = jsonData.pin_status;
+    // }
+  let values='';
+  let correctInsertedValues = '';
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+        if (values !== "") {
+            values += ", "; // Add a comma and space if values is not empty
+            correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
+        }
+        values += key;
+        correctInsertedValues += data[key].correct_inserted;
+    }
+}
+
+
+var pins_array = values.split(",");
+var pins_color = correctInsertedValues.split(",");
+
+for (let i in pins_array) {
+   
+    var pin_address = pins_array[i];
+    var pin_color = pins_color[i];
+    $(".pins-display").find(".pin-box").each(function (index) {
+        var title = $(this).attr('title');
+        var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
+    
+        if (pattern.test(title)) {
+            if (pin_color == ' true') {
+                 $(this).addClass('green-pin');
+              } else if (pin_color == ' false') {
+                  $(this).addClass('red-pin');
+              }else if(pin_address=='A1'){
+                if (pin_color == 'true') {
+                    $(this).addClass('green-pin');
+                }else if(pin_color == 'false'){
+                    $(this).addClass('red-pin');
+                }
+                console.log(pin_color + '=' + pin_address);
+               
+              }
+        }
+    });
+   
+}
+
+      
     $.ajax({
-        type: 'POST', // or 'GET', depending on your needs
-        url: base_url + 'api/parts/get_one/' + id,
-        data: {},
+        type: 'GET', // or 'GET', depending on your needs
+        url: base_url + 'api/parts/get_one/'+part_id,
+        data: { },
         beforeSend: function (xhr) {
         },
     }).done(function (data) {
-        //  var inputValue = data.formattedData['id'];
-alert(data.part_no);
+    
         $("#part_name").val('');
         if ($("#part_name").length > 0) {
         }
@@ -921,37 +980,21 @@ alert(data.part_no);
         $("#part_no").text(data['part_no']);
         $("#model").text(data['model']);
         $("#die_no").text(data['die_no']);
-        var pins_array = data['keys'].split(",");
-        var pins_color = data['values'].split(",");
 
+     
         $(".pins-display").find(".pin-box").each(function (index) {
             if ($(this).hasClass('orange-pin')) {
                 $(this).removeClass('orange-pin').addClass('gray-pin');
             }
         });
 
-        for (let i in pins_array) {
-            var pin_address = pins_array[i];
-            var pin_color = pins_color[i];
-
-            $(".pins-display").find(".pin-box").each(function (index) {
-                //  console.log("pins address::", pin_address);
-                if ($(this).attr('title') == pin_address) {
-                    if (pin_color === '0') {
-                        $(this).addClass('red-pin');
-                    } else if (pin_color === '1') {
-                        $(this).addClass('green-pin');
-                    } else {
-
-                    }
-                }
-            });
-        }
+       
 
     }).fail(function (data) {
         // $(btn_id).removeClass('button--loading').attr('disabled', false);
 
     });
+   }
 }
 
 // if ($("#start_jobs_data").length > 0) {

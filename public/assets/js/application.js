@@ -852,7 +852,7 @@ for (let i in pins_array) {
     
         if (pattern.test(title)) {
                // Check pin_address and pin_color as boolean values
-          if (pin_address === 'true') {
+          if (pin_color === 'true') {
             console.log(pin_color + '=' + pin_address);
          
             $(this).addClass('green-pin');

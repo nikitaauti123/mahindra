@@ -42,7 +42,7 @@ Class PartsApiController extends BaseController
     }
 
     public function add(){
-
+       
         try {
             helper(['form']);
             
@@ -153,14 +153,10 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-    public  function  get_api_url(){
-    //   print_r($_ENV['WEBSOCKET_URL']);
-    //     exit;
+    public  function  get_api_url(){   
         $envVariables = [
-            'WEBSOCKET_URL' => $_ENV['WEBSOCKET_URL'],
-            // Add other variables as needed
+            'WEBSOCKET_URL' => $_ENV['WEBSOCKET_URL'],          
         ];
-        return $this->respond($envVariables, 200);
-      //  return $this->response->setJSON($envVariables);
+        return $this->respond($envVariables, 200);      
     }
 }

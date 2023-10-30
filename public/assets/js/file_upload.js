@@ -24,15 +24,10 @@ function ajax_file_upload(file_obj, import_file, redirect_path = '') {
         document.getElementById("drag_upload_msg").style.display = "block";
         xhttp.onload = function (event) {
             console.log(xhttp.response);
-           alert(xhttp.response);
             var res = JSON.parse(xhttp.response);
             alert(res.message);
            console.log(res);
-        // if(res.error== true){
-        //   alert(res.message);
-        // }
-            //oOutput = document.querySelector('.img-content');
-            if (xhttp.status == 200) {
+             if (xhttp.status == 200) {
                 document.getElementById("drag_upload_file").style.display = "block";
                 document.getElementById("drag_upload_msg").style.display = "none";
 

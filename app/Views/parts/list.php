@@ -35,8 +35,8 @@
                                     </div>
                                    
                                     <div class="col-6 text-right">
-                                    <a style="display:none" href="<?php echo base_url('/admin/parts/import'); ?>" class="btn btn-primary" ><?php echo lang('Parts.Imports'); ?></a>
-                                    <button type="button" style="display:none" id="part-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;Export</button>
+                                    <a href="<?php echo base_url('/admin/parts/import'); ?>" class="btn btn-primary" ><?php echo lang('Parts.Imports'); ?></a>
+                                    <button type="button" id="part-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;Export</button>
                            
                                         <a href="<?php echo base_url('/admin/parts/add'); ?>" class="btn btn-primary" >Add New Part</a>
                                     </div>

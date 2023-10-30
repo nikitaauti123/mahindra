@@ -84,13 +84,13 @@
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="password"><?php echo lang('Users.Password'); ?><span class="red_text">*</span></label>
-                                                    <input type="text" class="form-control" name="password" id="password" placeholder="<?php echo lang('Users.Password'); ?>">
+                                                    <input type="password" class="form-control" name="password" id="password" placeholder="<?php echo lang('Users.Password'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="employee_id"><?php echo lang('Users.ConfirmPassword'); ?><span class="red_text">*</span></label>
-                                                    <input type="text" class="form-control" name="confirm_password" placeholder="<?php echo lang('Users.ConfirmPassword'); ?>">
+                                                    <input type="password" class="form-control" name="confirm_password" placeholder="<?php echo lang('Users.ConfirmPassword'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -113,7 +113,7 @@
                                                 <div class="checkbox">
                                                 <div class="toggle-switch mt-1">
                                                                 <label for="cb-switch">
-                                                                    <input type="checkbox" id="cb-switch" id="is_active" name="is_active" value="">
+                                                                    <input type="checkbox" id="cb-switch" name="is_active" >
                                                                     <span>
                                                                         <small></small>
                                                                     </span>

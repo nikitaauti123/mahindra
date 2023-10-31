@@ -186,21 +186,16 @@ Class JobsApiController extends BaseController
         return $this->respond(['error' => 'No data available'], 404);
     }
     public  function completed_list(){
-      //  print_r($this->request->getVar('part_name'));
-      $fromDate = date_create_from_format('d-m-Y', $this->request->getVar('from_date'));
-      $toDate = date_create_from_format('d-m-Y', $this->request->getVar('to_date'));
-
-    //   print_r($this->request);
-      if ($fromDate && $toDate) {
-       
-          $formattedFromDate = $fromDate->format('Y-m-d');
-          $formattedToDate = $toDate->format('Y-m-d');
-
-          $this->jobsModel->where("DATE(created_at) >= DATE('" . $formattedFromDate . "')", null, false);
-          $this->jobsModel->where("DATE(created_at) <= DATE('" . $formattedToDate . "')", null, false);
-      }
-
-
+        //   print_r($this->request);
+        if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+            $from_date = $this->request->getVar('from_date');
+            $f_date = date("Y-m-d", strtotime($from_date));
+            $to_date = $this->request->getVar('to_date');
+            $t_date = date("Y-m-d", strtotime($to_date));
+            $date = date("Y-m-d", strtotime('2023-10-31 00:00:00'));
+            $this->jobsModel->where("DATE_FORMAT(created_at, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
+            $this->jobsModel->where("DATE_FORMAT(created_at, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
+        }
         if (!empty($this->request->getVar('part_name'))) {
             $this->jobsModel->where('part_id', $this->request->getVar('part_name'));
         }

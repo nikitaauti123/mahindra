@@ -2051,14 +2051,50 @@ $(document).on("click", "#select_all", function () {
     }
 });
 
+
+
+var date_formate = 'DD-MM-YYYY';
+var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
+$('input[name="f_date"]').daterangepicker({
+    locale: {
+        format: date_formate
+    },
+    startDate: defaultStartDate,
+
+});
+
+$('#f_date').change(function () {
+    hide_show_complete_job();
+});
+
+$('#part_name_filter').change(function () {
+    hide_show_complete_job();
+});
+
+$('#part_no_filter').change(function () {
+    hide_show_complete_job();   
+});
+$('#part_model_filter').change(function () {
+    hide_show_complete_job();    
+});
+$('#part_die_no_filter').change(function () {
+    hide_show_complete_job();    
+});
+
+function hide_show_complete_job() {    
+   reload_complete_tbl();
+    $("#completed_list_tbl").show();
+}
 var completed_table;
 $(document).ready(function () {
     completed_table = generate_table();
 });
 
-function generate_table() {
-if ($("#completed_list_tbl").length > 0) {
+ 
 
+function generate_table() {
+
+if ($("#completed_list_tbl").length > 0) {
     var part_no = $("#part_no_filter").val();
     var from_to_date = $("#f_date").val();
     var dateParts = from_to_date.split(" - ");
@@ -2066,12 +2102,9 @@ if ($("#completed_list_tbl").length > 0) {
     var from_date = dateParts[0];
     var to_date =  dateParts[1];
     var part_name = $("#part_name_filter").val();
-    // table
-    alert(from_date);
-    alert(to_date);
     var model = $("#part_model_filter").val();   
-    var die_no = $("#is_die_no_filter").val(); 
-    var completed_table = $("#completed_list_tbl").DataTable({
+    var die_no = $("#part_die_no_filter").val(); 
+    var dataTable = $("#completed_list_tbl").DataTable({
         "ordering": true,
         'order': [[0, 'asc']],
         'serverMethod': 'get',
@@ -2179,28 +2212,7 @@ if ($("#completed_list_tbl").length > 0) {
         ]
     });
 }
-}
-
-$('#f_date').change(function () {
-    hide_show_complete_job();
-});
-
-$('#part_name_filter').change(function () {
-    hide_show_complete_job();
-});
-
-$('#part_no_filter').change(function () {
-    hide_show_complete_job();
-});
-$('#part_model_filter').change(function () {
-    hide_show_complete_job();
-});
-$('#part_die_no_filter').change(function () {
-    hide_show_complete_job();
-});
-function hide_show_complete_job() {
-    reload_complete_tbl();
-    $("#completed_list_tbl").show();
+return dataTable;
 }
 
 function reload_complete_tbl() {
@@ -2214,7 +2226,7 @@ function reload_complete_tbl() {
     var part_name = $("#part_name_filter").val();  
     // alert(to_date); 
     var model = $("#part_model_filter").val();   
-    var die_no = $("#is_die_no_filter").val(); 
+    var die_no = $("#part_die_no_filter").val(); 
     completed_table.ajax.url(base_url + "api/jobs/completed_list?from_date=" +
         from_date +
         "&to_date=" +
@@ -2229,13 +2241,4 @@ function reload_complete_tbl() {
         die_no).load();
 }
 
-var date_formate = 'DD-MM-YYYY';
-var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
-$('input[name="f_date"]').daterangepicker({
-    locale: {
-        format: date_formate
-    },
-    startDate: defaultStartDate,
-
-});
 

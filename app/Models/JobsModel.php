@@ -11,7 +11,7 @@ class JobsModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
         'part_id',
@@ -19,8 +19,6 @@ class JobsModel extends Model
         'is_active',
         'created_by',
         'updated_by',
-        'created_at',
-        'updated_at',
         'deleted_at'
     ];
 

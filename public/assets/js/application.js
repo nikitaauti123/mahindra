@@ -2193,22 +2193,6 @@ if ($("#completed_list_tbl").length > 0) {
                 }
             },
 
-            {
-                "data": "is_active",
-                "render": function (data, type, row, meta) {
-                    if (data && data != '-') {
-                        // Assuming "cb-switch" is the ID of the checkbox input element
-                        var checkboxId = "cb-switch"; // Create a unique ID for each checkbox
-                        if (data == 1) {
-                            return '<div style="  pointer-events: none;" class="toggle-switch "><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value="" checked><span><small></small></span></label></div>';
-                        } else {
-                            return '<div style="  pointer-events: none;" class="toggle-switch"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value=""><span><small></small></span></label></div>';
-                        }
-                    } else {
-                        return '-';
-                    }
-                }
-            },
         ]
     });
 }

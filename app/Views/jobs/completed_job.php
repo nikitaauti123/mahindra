@@ -118,8 +118,7 @@
                                                     <th><?php echo lang('Parts.DieNo'); ?></th>
                                                     <th><?php echo lang('Parts.StartTime'); ?></th>
                                                     <th><?php echo lang('Parts.EndTime'); ?></th>
-                                                    <th><?php echo lang('Parts.Status'); ?></th>
-
+                                                   
                                                     <!-- <th>Actions</th> -->
                                                 </tr>
                                             </thead>
@@ -128,16 +127,15 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <th>Sr.No</th>
-                                                    <th>Part No</th>
-                                                    <th>Part Name</th>
-                                                    <th>Model</th>
-
-                                                    <th>Die No</th>
-                                                    <th>Start Time</th>
-                                                    <th>End Time</th>
-                                                    <th>Status</th>
-
+                                                <th><?php echo lang('Parts.SrNo'); ?></th>
+                                                    <th><?php echo lang('Parts.PartName'); ?></th>
+                                                    <th><?php echo lang('Parts.PartNo'); ?></th>
+                                                    <th><?php echo lang('Parts.Model'); ?></th>
+                                                    <th><?php echo lang('Parts.DieNo'); ?></th>
+                                                    <th><?php echo lang('Parts.StartTime'); ?></th>
+                                                    <th><?php echo lang('Parts.EndTime'); ?></th>
+                                                   
+                                                   
                                                     <!-- <th>Actions</th> -->
                                                 </tr>
                                             </tfoot>

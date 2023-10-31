@@ -858,11 +858,16 @@ if ($("#start_jobs_data_left").length > 0) {
                             var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
 
                             if (pattern.test(title)) {
+                                // if (pin_color.trim().toLowerCase() === 'true') {
+                                //     $(this).addClass('green-pin');
+                                // } else if (pin_color.trim().toLowerCase() === 'false') {
+                                //     $(this).addClass('red-pin');
+                                // } 
                                 if (pin_color.trim().toLowerCase() === 'true') {
-                                    $(this).addClass('green-pin');
+                                    $(this).removeClass('red-pin').addClass('green-pin');
                                 } else if (pin_color.trim().toLowerCase() === 'false') {
-                                    $(this).addClass('red-pin');
-                                } 
+                                    $(this).removeClass('green-pin').addClass('red-pin');
+                                }
                             }
                         });
 
@@ -955,10 +960,10 @@ if ($("#start_jobs_data_right").length > 0) {
 
                             if (pattern.test(title)) {
                                 if (pin_color.trim().toLowerCase() === 'true') {
-                                    $(this).addClass('green-pin');
+                                    $(this).removeClass('red-pin').addClass('green-pin');
                                 } else if (pin_color.trim().toLowerCase() === 'false') {
-                                    $(this).addClass('red-pin');
-                                } 
+                                    $(this).removeClass('green-pin').addClass('red-pin');
+                                }
                             }
                         });
 

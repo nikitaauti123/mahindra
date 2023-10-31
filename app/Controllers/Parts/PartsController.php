@@ -129,6 +129,8 @@ class PartsController extends BaseController
                     $part_no = isset($rows[$i]['part no']) ? trim($rows[$i]['part no']) : '';
                     $model = isset($rows[$i]['model']) ? trim($rows[$i]['model']) : '';
                     $pins = isset($rows[$i]['pins']) ? trim($rows[$i]['pins']) : '';
+                    $die_no = isset($rows[$i]['die_no']) ? trim($rows[$i]['die_no']) : '';
+                  
                     $is_active = isset($rows[$i]['status']) && trim(strtolower($rows[$i]['status'])) == 'active' ? 1 : 0;
 
                     $check_part_id = 0;
@@ -139,6 +141,7 @@ class PartsController extends BaseController
                         'part_no' => $part_no,
                         'model' => $model,
                         'pins' => $pins,
+                        'die_no' => $die_no,
                         'is_active' => $is_active
                     ];
 
@@ -188,11 +191,14 @@ class PartsController extends BaseController
     public function export_part()
     {
         $pdf_data = array();
-        $file_name = "Part List";
+        $date = date('Y-m-d H:i:s');
+        $file_name = "Part-List-$date";
+        $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
         $pdf_data['title'] = $file_name;
         $col[] = 'Part No';
         $col[] = 'Part Name';
         $col[] = 'Model';
+        $col[] = 'Pins';
         $col[] = 'Die No';
         $col[] = 'Status';
         $headers = excel_columns($col);
@@ -202,13 +208,15 @@ class PartsController extends BaseController
         $part_data = $part->findAll();
 
         $data = array();
-        $i = 1;
+        $i = 0;
         if (count($part_data) > 0) {
             foreach ($part_data as $row) {
                 $data[$i][] = ((isset($row['part_no']) && !empty($row['part_no'])) ? $row['part_no'] : " ");
                 $data[$i][] = ((isset($row['part_name']) && !empty($row['part_name'])) ? $row['part_name'] : " ");
 
                 $data[$i][] = ((isset($row['model']) && !empty($row['model'])) ? $row['model'] : " ");
+                $data[$i][] = ((isset($row['pins']) && !empty($row['pins'])) ? $row['pins'] : " ");
+             
                 $data[$i][] = ((isset($row['die_no']) && !empty($row['die_no'])) ? $row['die_no'] : " ");
                 $data[$i][] = ($row['is_active'] == 1) ? 'Active' : 'Deactivated';
                 $i++;

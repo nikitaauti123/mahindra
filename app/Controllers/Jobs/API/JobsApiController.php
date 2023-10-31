@@ -185,4 +185,49 @@ Class JobsApiController extends BaseController
         }
         return $this->respond(['error' => 'No data available'], 404);
     }
+    public  function completed_list(){
+      //  print_r($this->request->getVar('part_name'));
+      $fromDate = date_create_from_format('d-m-Y', $this->request->getVar('from_date'));
+      $toDate = date_create_from_format('d-m-Y', $this->request->getVar('to_date'));
+
+    //   print_r($this->request);
+      if ($fromDate && $toDate) {
+       
+          $formattedFromDate = $fromDate->format('Y-m-d');
+          $formattedToDate = $toDate->format('Y-m-d');
+
+          $this->jobsModel->where("DATE(created_at) >= DATE('" . $formattedFromDate . "')", null, false);
+          $this->jobsModel->where("DATE(created_at) <= DATE('" . $formattedToDate . "')", null, false);
+      }
+
+
+        if (!empty($this->request->getVar('part_name'))) {
+            $this->jobsModel->where('part_id', $this->request->getVar('part_name'));
+        }
+
+        if (!empty($this->request->getVar('part_no'))) {
+            $this->jobsModel->where('part_id', $this->request->getVar('part_no'));
+        }
+        if (!empty($this->request->getVar('model'))) {
+            $this->jobsModel->where('part_id', $this->request->getVar('model'));
+        }
+        if (!empty($this->request->getVar('die_no'))) {
+            $this->jobsModel->where('part_id', $this->request->getVar('die_no'));
+        }
+        $result = $this->jobsModel->findAll();
+       // print_r($this->jobsModel->findAll());
+        $combinedResults  =array();
+        foreach($result as $result_arr){
+            $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
+            $this->PartsModel->where('id',$result_arr['part_id']);
+            $partData = $this->PartsModel->first();
+            if ($partData) {
+                // Combine the data from the two tables and store it in the results array.
+                $combinedResult = array_merge($result_arr, $partData);
+                $combinedResults[] = $combinedResult;
+            }
+        }
+      
+        return $this->respond($combinedResults, 200);
+    }
 }

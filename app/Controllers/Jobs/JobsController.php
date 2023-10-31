@@ -7,6 +7,11 @@ use App\Models\PartsModel;
 
 class JobsController extends BaseController
 {
+    protected $partModel;
+    function __construct()
+    {
+        $this->partModel = new PartsModel();
+    }
     public function List()
     {
         $data['request'] = $this->request;
@@ -15,8 +20,7 @@ class JobsController extends BaseController
 
     public function Create()
     {
-        $partsModel = new PartsModel();
-        $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+         $data['parts'] =$this->partModel->where('is_active', '1')->findAll(); 
         $data['request'] = $this->request;
         return view('jobs/add', $data);
     }
@@ -55,5 +59,12 @@ class JobsController extends BaseController
     {
         $data['request'] = $this->request;
         return view('jobs/remove', $data);
+    }
+    public function completed_jobs(){
+        $data['request'] = $this->request;
+        $data['part'] = $this->partModel
+        ->select('parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')      
+        ->join('jobs', 'jobs.part_id=parts.id')->findAll();  
+        return view('jobs/completed_job', $data);
     }
 }

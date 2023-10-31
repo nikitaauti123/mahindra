@@ -858,19 +858,11 @@ if ($("#start_jobs_data_left").length > 0) {
                             var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
 
                             if (pattern.test(title)) {
-                                if (pin_color == ' true') {
+                                if (pin_color.trim().toLowerCase() === 'true') {
                                     $(this).addClass('green-pin');
-                                } else if (pin_color == ' false') {
+                                } else if (pin_color.trim().toLowerCase() === 'false') {
                                     $(this).addClass('red-pin');
-                                } else if (pin_address == 'A1') {
-                                    if (pin_color == 'true') {
-                                        $(this).addClass('green-pin');
-                                    } else if (pin_color == 'false') {
-                                        $(this).addClass('red-pin');
-                                    }
-                                    //console.log(pin_color + '=' + pin_address);
-
-                                }
+                                } 
                             }
                         });
 
@@ -962,19 +954,11 @@ if ($("#start_jobs_data_right").length > 0) {
                             var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
 
                             if (pattern.test(title)) {
-                                if (pin_color == ' true') {
+                                if (pin_color.trim().toLowerCase() === 'true') {
                                     $(this).addClass('green-pin');
-                                } else if (pin_color == ' false') {
+                                } else if (pin_color.trim().toLowerCase() === 'false') {
                                     $(this).addClass('red-pin');
-                                } else if (pin_address == 'A1') {
-                                    if (pin_color == 'true') {
-                                        $(this).addClass('green-pin');
-                                    } else if (pin_color == 'false') {
-                                        $(this).addClass('red-pin');
-                                    }
-                                    //console.log(pin_color + '=' + pin_address);
-
-                                }
+                                } 
                             }
                         });
 
@@ -2066,3 +2050,192 @@ $(document).on("click", "#select_all", function () {
         $("input[name='permission_id[]']").attr("checked", false);
     }
 });
+
+var completed_table;
+$(document).ready(function () {
+    completed_table = generate_table();
+});
+
+function generate_table() {
+if ($("#completed_list_tbl").length > 0) {
+
+    var part_no = $("#part_no_filter").val();
+    var from_to_date = $("#f_date").val();
+    var dateParts = from_to_date.split(" - ");
+    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
+    var from_date = dateParts[0];
+    var to_date =  dateParts[1];
+    var part_name = $("#part_name_filter").val();
+    // table
+    alert(from_date);
+    alert(to_date);
+    var model = $("#part_model_filter").val();   
+    var die_no = $("#is_die_no_filter").val(); 
+    var completed_table = $("#completed_list_tbl").DataTable({
+        "ordering": true,
+        'order': [[0, 'asc']],
+        'serverMethod': 'get',
+        'language': {
+            'loadingRecords': '&nbsp;',
+            'processing': 'Loading...',
+            "emptyTable": "There is no record to display"
+        },
+        "dom": 'Bfrtip',
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print"],
+        "lengthMenu": [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All'],
+        ],
+        "ajax": {
+            "url": base_url + "api/jobs/completed_list?from_date=" + from_date + "&to_date=" + to_date + "&part_no=" + part_no + "&part_name=" + part_name + "&model=" + model + "&die_no=" + die_no,
+            "dataSrc": "",
+        },
+        "columns": [
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "data": "part_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "part_name",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "model",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "die_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "created_at",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        return (data);
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "updated_at",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        return (data);
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+
+            {
+                "data": "is_active",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        // Assuming "cb-switch" is the ID of the checkbox input element
+                        var checkboxId = "cb-switch"; // Create a unique ID for each checkbox
+                        if (data == 1) {
+                            return '<div style="  pointer-events: none;" class="toggle-switch "><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value="" checked><span><small></small></span></label></div>';
+                        } else {
+                            return '<div style="  pointer-events: none;" class="toggle-switch"><label for="' + checkboxId + '"><input type="checkbox" id="' + checkboxId + '" name="is_active" value=""><span><small></small></span></label></div>';
+                        }
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+        ]
+    });
+}
+}
+
+$('#f_date').change(function () {
+    hide_show_complete_job();
+});
+
+$('#part_name_filter').change(function () {
+    hide_show_complete_job();
+});
+
+$('#part_no_filter').change(function () {
+    hide_show_complete_job();
+});
+$('#part_model_filter').change(function () {
+    hide_show_complete_job();
+});
+$('#part_die_no_filter').change(function () {
+    hide_show_complete_job();
+});
+function hide_show_complete_job() {
+    reload_complete_tbl();
+    $("#completed_list_tbl").show();
+}
+
+function reload_complete_tbl() {
+    
+    var part_no = $("#part_no_filter").val();
+    var from_to_date = $("#f_date").val();
+    var dateParts = from_to_date.split(" - ");
+    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
+    var from_date = dateParts[0];
+    var to_date =  dateParts[1];
+    var part_name = $("#part_name_filter").val();  
+    // alert(to_date); 
+    var model = $("#part_model_filter").val();   
+    var die_no = $("#is_die_no_filter").val(); 
+    completed_table.ajax.url(base_url + "api/jobs/completed_list?from_date=" +
+        from_date +
+        "&to_date=" +
+        to_date +
+        "&part_no=" +
+        part_no +
+        "&part_name=" +
+        part_name +
+        "&model=" +
+        model +        
+        "&die_no=" +
+        die_no).load();
+}
+
+var date_formate = 'DD-MM-YYYY';
+var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
+$('input[name="f_date"]').daterangepicker({
+    locale: {
+        format: date_formate
+    },
+    startDate: defaultStartDate,
+
+});
+

@@ -82,6 +82,8 @@ $routes->get('/admin/jobs/add_left', 'Jobs\\JobsController::Create_left');
 $routes->get('/admin/jobs/right_job', 'Jobs\\JobsController::Right_job');
 $routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::Left_job');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
+$routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completed_jobs');
+
 $routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
 
 $routes->get('/api/jobs/list', 'Jobs\\Api\\JobsApiController::list');
@@ -89,7 +91,7 @@ $routes->post('/api/jobs/add', 'Jobs\\Api\\JobsApiController::add');
 $routes->post('/api/jobs/update/(:num)', 'Jobs\\Api\\JobsApiController::update/$1');
 $routes->post('/api/jobs/delete/(:num)', 'Jobs\\Api\\JobsApiController::delete/$1');
 $routes->get('/api/jobs/get_one/(:num)', 'Jobs\\Api\\JobsApiController::getOne/$1');
-
+$routes->get('/api/jobs/completed_list', 'Jobs\\Api\\JobsApiController::completed_list');
 
 $routes->post('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
 

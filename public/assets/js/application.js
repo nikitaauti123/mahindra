@@ -830,7 +830,7 @@ if ($("#start_jobs_data_left").length > 0) {
                 var jsonData = JSON.parse(event.data);
                 part_id = jsonData.part_id;
                 data = jsonData.pin_status;
-                event_part_id = part_id
+               
                 // }
               
                     let values = '';
@@ -875,6 +875,7 @@ if ($("#start_jobs_data_left").length > 0) {
                     }
 
                     if (part_id != event_part_id) {
+                        event_part_id = part_id
                     $.ajax({
                         type: 'GET', // or 'GET', depending on your needs
                         url: base_url + 'api/parts/get_one/' + part_id,
@@ -933,7 +934,7 @@ if ($("#start_jobs_data_right").length > 0) {
                 var jsonData = JSON.parse(event.data);
                 part_id = jsonData.part_id;
                 data = jsonData.pin_status;
-                event_part_id =part_id
+               
                 // }
              
                     let values = '';
@@ -973,6 +974,7 @@ if ($("#start_jobs_data_right").length > 0) {
                     }
 
                     if (part_id != event_part_id) {
+                        event_part_id =part_id
                     $.ajax({
                         type: 'GET', // or 'GET', depending on your needs
                         url: base_url + 'api/parts/get_one/' + part_id,

@@ -824,14 +824,15 @@ if ($("#start_jobs_data_left").length > 0) {
 
             $("#result").html("Title: " + data.title);
              var part_id = '';
-            const event_part_id = '';
+            var event_part_id = '';
             var data = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
                 part_id = jsonData.part_id;
                 data = jsonData.pin_status;
+                event_part_id = part_id
                 // }
-                if (part_id != event_part_id) {
+              
                     let values = '';
                     let correctInsertedValues = '';
                     for (const key in data) {
@@ -873,7 +874,7 @@ if ($("#start_jobs_data_left").length > 0) {
 
                     }
 
-
+                    if (part_id != event_part_id) {
                     $.ajax({
                         type: 'GET', // or 'GET', depending on your needs
                         url: base_url + 'api/parts/get_one/' + part_id,
@@ -925,14 +926,16 @@ if ($("#start_jobs_data_right").length > 0) {
 
             $("#result").html("Title: " + data.title);
           var part_id = '';
-            const event_part_id = '';
+            var event_part_id = '';
             var data = '';
             ws.onmessage = (event) => {
+            
                 var jsonData = JSON.parse(event.data);
                 part_id = jsonData.part_id;
                 data = jsonData.pin_status;
+                event_part_id =part_id
                 // }
-                if (part_id != event_part_id) {
+             
                     let values = '';
                     let correctInsertedValues = '';
                     for (const key in data) {
@@ -969,7 +972,7 @@ if ($("#start_jobs_data_right").length > 0) {
 
                     }
 
-
+                    if (part_id != event_part_id) {
                     $.ajax({
                         type: 'GET', // or 'GET', depending on your needs
                         url: base_url + 'api/parts/get_one/' + part_id,

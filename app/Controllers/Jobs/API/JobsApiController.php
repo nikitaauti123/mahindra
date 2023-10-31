@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\JobsModel;
 use App\Models\PartsModel;
+use App\Models\JobsHistoryModel;
 use Exception;
 
 Class JobsApiController extends BaseController
@@ -13,11 +14,13 @@ Class JobsApiController extends BaseController
     use ResponseTrait;
     private $jobsModel;
     private $PartsModel;
+    private $jobshistoryModel;
 
     public function __construct()
     {
         $this->jobsModel = new JobsModel();
         $this->PartsModel = new PartsModel();
+        $this->jobshistoryModel= new JobsHistoryModel();
     }
 
     public function list()
@@ -225,4 +228,33 @@ Class JobsApiController extends BaseController
       
         return $this->respond($combinedResults, 200);
     }
+    public function history_list(){
+        if (!empty($this->request->getVar('die_no'))) {
+            $this->jobshistoryModel->where('jobs_history.part_id', $this->request->getVar('die_no'));
+        }
+        if (!empty($this->request->getVar('part_no'))) {
+            $this->jobshistoryModel->where('jobs_history.part_id', $this->request->getVar('part_no'));
+        }
+        if (!empty($this->request->getVar('model'))) {
+            $this->jobshistoryModel->where('jobs_history.part_id', $this->request->getVar('model'));
+        }
+        if (!empty($this->request->getVar('part_name'))) {
+            $this->jobshistoryModel->where('jobs_history.part_id', $this->request->getVar('part_name'));
+        }
+
+        if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+            $from_date = $this->request->getVar('from_date');
+            $f_date = date("Y-m-d", strtotime($from_date));
+            $to_date = $this->request->getVar('to_date');
+            $t_date = date("Y-m-d", strtotime($to_date));
+            $this->jobshistoryModel->where("DATE_FORMAT(parts.created_at, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
+            $this->jobshistoryModel->where("DATE_FORMAT(parts.created_at, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
+        }
+       
+        $this->jobshistoryModel->select('parts.*');
+        $this->jobshistoryModel->join('parts', 'jobs_history.part_id = parts.id');
+        $result = $this->jobshistoryModel->findAll();
+        return $this->respond($result, 200);
+    //    return $result;
+        }
 }

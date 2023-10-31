@@ -15,6 +15,7 @@ class JobsHistoryModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'part_id',
+        'job_id',
         'pins',
         'is_active',
         'created_by',

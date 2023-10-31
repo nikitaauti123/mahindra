@@ -2226,3 +2226,203 @@ function reload_complete_tbl() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var date_formate = 'DD-MM-YYYY';
+var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
+$('input[name="f_date_history"]').daterangepicker({
+    locale: {
+        format: date_formate
+    },
+    startDate: defaultStartDate,
+
+});
+
+$('#f_date_history').change(function () {
+    hide_show_complete_history();
+});
+
+$('#part_name_filter_history').change(function () {
+    hide_show_complete_history();
+});
+
+$('#part_no_filter_history').change(function () {
+    hide_show_complete_history();   
+});
+$('#part_model_filter_history').change(function () {
+    hide_show_complete_history();    
+});
+$('#part_die_no_filter_history').change(function () {
+    hide_show_complete_history();    alert('change_die');
+});
+
+function hide_show_complete_history() {    
+    reload_history_tbl();
+    $("#history_list_tbl").show();
+}
+var history_table;
+
+    history_table = generate_table_history();
+
+function generate_table_history() {
+
+if ($("#history_list_tbl").length > 0) {
+    
+    var part_no = $("#part_no_filter_history").val();
+    var from_to_date = $("#f_date_history").val();
+    var dateParts = from_to_date.split(" - ");
+    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
+    var from_date = dateParts[0];
+    var to_date =  dateParts[1];
+    var part_name = $("#part_name_filter_history").val();  
+    // alert(to_date); 
+    
+    var model = $("#part_model_filter_history").val();   
+    var die_no = $("#part_die_no_filter_history").val(); 
+    var dataTable = $("#history_list_tbl").DataTable({
+        "ordering": true,
+        'order': [[0, 'asc']],
+        'serverMethod': 'get',
+        'language': {
+            'loadingRecords': '&nbsp;',
+            'processing': 'Loading...',
+            "emptyTable": "There is no record to display"
+        },
+        "dom": 'Bfrtip',
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print"],
+        "lengthMenu": [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All'],
+        ],
+        "ajax": {
+            "url": base_url + "api/jobs/history_list?from_date=" + from_date + "&to_date=" + to_date + "&part_no=" + part_no + "&part_name=" + part_name + "&model=" + model + "&die_no=" + die_no,
+            "dataSrc": "",
+        },
+        "columns": [
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
+            {
+                "data": "part_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "part_name",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "model",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "die_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "created_at",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        return (data);
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "updated_at",
+                "render": function (data, type, row, meta) {
+                    if (data && data != '-') {
+                        return (data);
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+
+        ]
+    });
+}
+return dataTable;
+}
+
+function reload_history_tbl() {
+    
+    var part_no = $("#part_no_filter_history").val();
+    var from_to_date = $("#f_date_history").val();
+    var dateParts = from_to_date.split(" - ");
+    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
+    var from_date = dateParts[0];
+    var to_date =  dateParts[1];
+    var part_name = $("#part_name_filter_history").val();  
+    // alert(to_date); 
+    var model = $("#part_model_filter_history").val();   
+    var die_no = $("#part_die_no_filter_history").val(); 
+    history_table.ajax.url(base_url + "api/jobs/history_list?from_date=" +
+        from_date +
+        "&to_date=" +
+        to_date +
+        "&part_no=" +
+        part_no +
+        "&part_name=" +
+        part_name +
+        "&model=" +
+        model +        
+        "&die_no=" +
+        die_no).load();
+}
+
+
+
+

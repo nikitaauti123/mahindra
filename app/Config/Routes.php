@@ -83,6 +83,7 @@ $routes->get('/admin/jobs/right_job', 'Jobs\\JobsController::Right_job');
 $routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::Left_job');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
 $routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completed_jobs');
+$routes->get('/admin/jobs/job_history', 'Jobs\\JobsController::job_history');
 
 $routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
 
@@ -94,8 +95,7 @@ $routes->get('/api/jobs/get_one/(:num)', 'Jobs\\Api\\JobsApiController::getOne/$
 $routes->get('/api/jobs/completed_list', 'Jobs\\Api\\JobsApiController::completed_list');
 
 $routes->post('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
-
-
+$routes->get('/api/jobs/history_list', 'Jobs\\Api\\JobsApiController::history_list');
 
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');
 $routes->get('/admin/roles/add', 'Roles\\RolesController::Create');

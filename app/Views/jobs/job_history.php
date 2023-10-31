@@ -44,7 +44,7 @@
                             <div class="col-md-3 ">
                             <div class="form-group">
                                         <label for="sel1"><?php echo lang('Parts.FromDate'); ?>:</label>
-                                             <input type="text" class="form-control" id="f_date" name="f_date" placeholder="Select <?php echo lang('Parts.FromDate'); ?>" >
+                                             <input type="text" class="form-control" id="f_date_history" name="f_date_history" placeholder="Select <?php echo lang('Parts.FromDate'); ?>" >
                                             <div class="input-group-addon  calender-icon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
@@ -52,7 +52,7 @@
                                 <div class="col-md-3 ">
                                     <div class="form-group">
                                         <label for="sel1"><?php echo lang('Parts.PartName'); ?>:</label>
-                                        <select name="part_name_filter" id="part_name_filter" class="form-control" required="">
+                                        <select name="part_name_filter_history" id="part_name_filter_history" class="form-control" required="">
                                             <option value="">All <?php echo lang('Parts.PartName'); ?></option>
                                             <?php
                                             // print_r($s);exit;
@@ -66,7 +66,7 @@
                                 <div class="col-md-3 ">
                                     <div class="form-group">
                                         <label for="sel1"><?php echo lang('Parts.PartNo'); ?>:</label>
-                                        <select name="part_no_filter" id="part_no_filter" class="form-control">
+                                        <select name="part_no_filter_history" id="part_no_filter_history" class="form-control">
                                             <option value="">All <?php echo lang('Parts.PartNo'); ?></option>
                                             <?php
                                             // print_r($s);exit;
@@ -80,7 +80,7 @@
                                 <div class="col-md-3 ">
                                     <div class="form-group">
                                         <label for="sel1"><?php echo lang('Parts.Model'); ?>:</label>
-                                        <select name="part_model_filter" id="part_model_filter" class="form-control">
+                                        <select name="part_model_filter_history" id="part_model_filter_history" class="form-control">
                                             <option value="">All <?php echo lang('Parts.Model'); ?></option>
                                             <?php
                                             // print_r($s);exit;
@@ -94,7 +94,7 @@
                                 <div class="col-md-3 ">
                                     <div class="form-group">
                                         <label for="sel1"><?php echo lang('Parts.DieNo'); ?>:</label>
-                                        <select name="part_die_no_filter" id="part_die_no_filter" class="form-control">
+                                        <select name="part_die_no_filter_history" id="part_die_no_filter_history" class="form-control">
                                             <option value="">All <?php echo lang('Parts.DieNo'); ?></option>
                                             <?php
                                             // print_r($s);exit;
@@ -108,14 +108,14 @@
                                 <div class="col-md-6"></div>
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table id="completed_list_tbl" class="table table-bordered table-striped dataTable dtr-inline">
+                                        <table id="history_list_tbl" class="table table-bordered table-striped dataTable dtr-inline">
                                             <thead>
                                                 <tr>
                                                     <th><?php echo lang('Parts.SrNo'); ?></th>
-                                                     <th><?php echo lang('Parts.PartNo'); ?></th>
-                                                     <th><?php echo lang('Parts.PartName'); ?></th>
-                                                  
-                                                     <th><?php echo lang('Parts.Model'); ?></th>
+                                                    
+                                                    <th><?php echo lang('Parts.PartNo'); ?></th>
+                                                    <th><?php echo lang('Parts.PartName'); ?></th>
+                                                    <th><?php echo lang('Parts.Model'); ?></th>
                                                     <th><?php echo lang('Parts.DieNo'); ?></th>
                                                     <th><?php echo lang('Parts.StartTime'); ?></th>
                                                     <th><?php echo lang('Parts.EndTime'); ?></th>
@@ -129,9 +129,9 @@
                                             <tfoot>
                                                 <tr>
                                                 <th><?php echo lang('Parts.SrNo'); ?></th>
-                                                  <th><?php echo lang('Parts.PartNo'); ?></th>
+                                                    
+                                                    <th><?php echo lang('Parts.PartNo'); ?></th>
                                                     <th><?php echo lang('Parts.PartName'); ?></th>
-                                                  
                                                     <th><?php echo lang('Parts.Model'); ?></th>
                                                     <th><?php echo lang('Parts.DieNo'); ?></th>
                                                     <th><?php echo lang('Parts.StartTime'); ?></th>

@@ -111,7 +111,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/list'?'active':''; ?>">
+                            <a href="<?php echo base_url('/admin/jobs/job_history'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/list'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.JobsHistory'); ?></p>
                             </a>

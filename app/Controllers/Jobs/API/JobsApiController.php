@@ -241,8 +241,8 @@ class JobsApiController extends BaseController
             $f_date = date("Y-m-d", strtotime($from_date));
             $to_date = $this->request->getVar('to_date');
             $t_date = date("Y-m-d", strtotime($to_date));
-            $this->jobshistoryModel->where("DATE_FORMAT(parts.created_at, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
-            $this->jobshistoryModel->where("DATE_FORMAT(parts.created_at, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
+            $this->jobshistoryModel->where("DATE_FORMAT(jobs_history.created_at, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
+            $this->jobshistoryModel->where("DATE_FORMAT(jobs_history.created_at, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
         }
 
         $this->jobshistoryModel->select('parts.*');

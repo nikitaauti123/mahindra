@@ -18,6 +18,16 @@ return [
   'StartTime'=>'Start Time',
   'EndTime'=>'End Time',
     'Status' => 'Status',
+    'IsActive' => 'Is active',
+    'PartsList' => 'Parts List',
+    'Status' => 'Status',
+    'Status' => 'Status',
+    'Status' => 'Status',
     'FromDate' => 'Filter by From Date To To Date',
+    'CreatedDate'=>'Created Date',
+    'CreatedDate'=>'Created Date',
+    'UpdatedDate'=>'Updated Date',
+    'Actions'=>'Actions',
+    
   
 ];

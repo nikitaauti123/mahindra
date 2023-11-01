@@ -7,20 +7,23 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\JobsModel;
 use App\Models\PartsModel;
 use App\Models\JobsHistoryModel;
+
 use Exception;
 
-Class JobsApiController extends BaseController
+class JobsApiController extends BaseController
 {
     use ResponseTrait;
     private $jobsModel;
     private $PartsModel;
+    private $session;
     private $jobshistoryModel;
 
     public function __construct()
     {
         $this->jobsModel = new JobsModel();
         $this->PartsModel = new PartsModel();
-        $this->jobshistoryModel= new JobsHistoryModel();
+        $this->jobshistoryModel = new JobsHistoryModel();
+        $this->session = \Config\Services::session();
     }
 
     public function list()
@@ -33,21 +36,22 @@ Class JobsApiController extends BaseController
     {
         try {
             $result = $this->jobsModel->find($id);
-            if(!empty($result)) {
+            if (!empty($result)) {
                 return $this->respond($result, 200);
-            } 
+            }
             return $this->respond([], 200);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }
     }
 
-    public function add(){
+    public function add()
+    {
 
         try {
             helper(['form']);
-            
+
             $rules = [
                 'part_name'  => 'required|min_length[2]|max_length[100]',
                 'part_no'  => 'required|min_length[3]|max_length[100]',
@@ -55,35 +59,36 @@ Class JobsApiController extends BaseController
                 'is_active'  => 'required'
             ];
 
-            if(!$this->validate($rules)) {
+            if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
 
             $data['part_name']  = $this->request->getVar('part_name');
             $data['part_no']    = $this->request->getVar('part_no');
             $data['model']      = $this->request->getVar('model');
-            $data['is_active']  = $this->request->getVar('is_active')?$this->request->getVar('is_active'):0;
+            $data['is_active']  = $this->request->getVar('is_active') ? $this->request->getVar('is_active') : 0;
             $data['pins']      =  $this->request->getVar('selected_pins');
-            
-            $result['id'] = $this->jobsModel->insert($data, true);
-            $result['msg'] = "Job added successfully!";
-            return $this->respond($result, 200);
 
-        } catch (\Exception $e){
+            $result['id'] = $this->jobsModel->insert($data, true);
+            $result['msg'] = lang('Jobs.JobsSuccessMsg');
+
+            return $this->respond($result, 200);
+        } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
-        }    
+        }
     }
 
-    public function update($id){
+    public function update($id)
+    {
 
         try {
             helper(['form']);
 
-            if(!$id) {
+            if (!$id) {
                 return $this->fail('Please provide valid id', 400, true);
             }
-            
+
             $rules = [
                 'part_name'  => 'required|min_length[2]|max_length[100]',
                 'part_no'  => 'required|min_length[3]|max_length[100]',
@@ -91,45 +96,44 @@ Class JobsApiController extends BaseController
                 'is_active'  => 'required'
             ];
 
-            if(!$this->validate($rules)) {
+            if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
 
             $data['part_name'] = $this->request->getVar('part_name');
             $data['part_no']   = $this->request->getVar('part_no');
             $data['model']     = $this->request->getVar('model');
-            $data['is_active'] = $this->request->getVar('is_active')?$this->request->getVar('is_active'):0;
+            $data['is_active'] = $this->request->getVar('is_active') ? $this->request->getVar('is_active') : 0;
             $data['pins']      =  $this->request->getVar('selected_pins');
-            
-            $result['is_updated'] = $this->jobsModel->update($id, $data);
-            $result['msg'] = "Job updated successfully!";
-            return $this->respond($result, 200);
 
-        } catch (\Exception $e){
+            $result['is_updated'] = $this->jobsModel->update($id, $data);
+            $result['msg'] = lang('Jobs.JobsSuccessUpdateMsg');
+            return $this->respond($result, 200);
+        } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
-        }    
+        }
     }
 
-    public function delete($id){
-
+    public function delete($id)
+    {
         try {
             helper(['form']);
 
-            if(!$id) {
+            if (!$id) {
                 return $this->fail('Please provide valid id', 400, true);
             }
 
             $result['is_deleted'] = $this->jobsModel->delete($id);
             $result['msg'] = "Job deleted successfully!";
             return $this->respond($result, 200);
-
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
-        }    
+        }
     }
-    public function update_is_active(){
+    public function update_is_active()
+    {
         try {
             $id = $this->request->getVar('id');
             $is_Active = $this->request->getVar('is_active');
@@ -146,50 +150,40 @@ Class JobsApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-    public function get_api_data(){
-        
-       
+    public function get_api_data()
+    {
         $result = $this->jobsModel
-        ->select('jobs.*, parts.die_no,parts.part_name,parts.part_no,parts.model')
-        ->join('parts', 'parts.id = jobs.part_id')
-        ->orderBy('jobs.id', 'DESC')
-        ->where('jobs.side', $this->request->getVar('side'))
-        ->limit(1) // Set the limit to 1 to fetch only one row
-        ->get()
-        ->getRow();
-     /// return $this->respond($result, 200);
-        //joins with part table fetch other details 
-      
-    //    $model = $this->PartsModel
-    //    ->where('part_no', $result->part_id) // Order the results by 'id' in descending order (assuming 'id' is the primary key)
-    //    ->first();
-        
+            ->select('jobs.*, parts.die_no,parts.part_name,parts.part_no,parts.model')
+            ->join('parts', 'parts.id = jobs.part_id')
+            ->orderBy('jobs.id', 'DESC')
+            ->where('jobs.side', $this->request->getVar('side'))
+            ->limit(1) // Set the limit to 1 to fetch only one row
+            ->get()
+            ->getRow();
         if ($result) {
-             $pins = json_decode($result->pins, true);
-            
+            $pins = json_decode($result->pins, true);
+
             if (is_array($pins)) {
                 // Separate keys and values into comma-separated strings
                 $keys = implode(',', array_keys($pins));
                 $values = implode(',', $pins);
-        
-                // Create an associative array to store the formatted data
                 $result = [
                     'keys' => $keys,
                     'values' => $values,
-                    'part_no'=>$result->part_no,
-                    'part_name'=>$result->part_name,
-                    'die_no'=>$result->die_no,
-                    'model'=>$result->model,
+                    'part_no' => $result->part_no,
+                    'part_name' => $result->part_name,
+                    'die_no' => $result->die_no,
+                    'model' => $result->model,
                 ];
-        
-        
+
+
                 return $this->respond($result, 200);
             }
         }
         return $this->respond(['error' => 'No data available'], 404);
     }
-    public  function completed_list(){
-        //   print_r($this->request);
+    public  function completed_list()
+    {
         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
             $from_date = $this->request->getVar('from_date');
             $f_date = date("Y-m-d", strtotime($from_date));
@@ -213,11 +207,10 @@ Class JobsApiController extends BaseController
             $this->jobsModel->where('part_id', $this->request->getVar('die_no'));
         }
         $result = $this->jobsModel->findAll();
-       // print_r($this->jobsModel->findAll());
-        $combinedResults  =array();
-        foreach($result as $result_arr){
+        $combinedResults  = array();
+        foreach ($result as $result_arr) {
             $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
-            $this->PartsModel->where('id',$result_arr['part_id']);
+            $this->PartsModel->where('id', $result_arr['part_id']);
             $partData = $this->PartsModel->first();
             if ($partData) {
                 // Combine the data from the two tables and store it in the results array.
@@ -225,10 +218,11 @@ Class JobsApiController extends BaseController
                 $combinedResults[] = $combinedResult;
             }
         }
-      
+
         return $this->respond($combinedResults, 200);
     }
-    public function history_list(){
+    public function history_list()
+    {
         if (!empty($this->request->getVar('die_no'))) {
             $this->jobshistoryModel->where('jobs_history.part_id', $this->request->getVar('die_no'));
         }
@@ -250,11 +244,63 @@ Class JobsApiController extends BaseController
             $this->jobshistoryModel->where("DATE_FORMAT(parts.created_at, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
             $this->jobshistoryModel->where("DATE_FORMAT(parts.created_at, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
         }
-       
+
         $this->jobshistoryModel->select('parts.*');
         $this->jobshistoryModel->join('parts', 'jobs_history.part_id = parts.id');
         $result = $this->jobshistoryModel->findAll();
         return $this->respond($result, 200);
-    //    return $result;
+        //    return $result;
+    }
+    public function set_api_jobs()
+    {
+        $array = $this->request->getVar('pins');
+        $result = array();
+        foreach ($array as $key => $value) {
+            $correct_inserted = trim($value['correct_inserted']);
+            $correct_inserted_value = ($correct_inserted === 'true') ? 1 : 0;
+            $result[$key] = $correct_inserted_value;
         }
+        ksort($result);
+        $json_pins = json_encode($result);
+       
+        $this->jobsModel->where('part_id', $this->request->getVar('part_id'));
+        $jobs =  $this->jobsModel->first();
+        if (empty($jobs)) {
+            $data = [
+                'part_id' => $this->request->getVar('part_id'),
+                'side' => $this->request->getVar('side'),
+                'pins' => $json_pins,
+                'created_by'=>$this->session->get('id'),
+                'start_time'=>date('Y-m-d H:i:s')    
+            ];
+            $result_arr['id'] = $this->jobsModel->insert($data, true);
+            $history_data = [
+                'part_id' => $this->request->getVar('part_id'),
+                'job_id' => $result_arr['id'],
+                'pins' => $json_pins,
+                'is_active' => '1',
+            ];
+            $result_history['id'] = $this->jobshistoryModel->insert($history_data, true);
+            $result_history['msg'] =  lang('Jobs.JobsapiSuccessMsg');
+        } else {
+            $data = [
+                'part_id' => $this->request->getVar('part_id'),
+                'side' => $this->request->getVar('side'),
+                'pins' => $json_pins,
+                'updated_by'=>$this->session->get('id'),
+                'end_time'=>date('Y-m-d H:i:s')    
+            ];
+            $id = $jobs['id'];
+            $result_arr['id'] = $this->jobsModel->update($id, $data);
+            $history_data = [
+                'part_id' => $this->request->getVar('part_id'),
+                'job_id' => $result_arr['id'],
+                'pins' => $json_pins,
+                'is_active' => '1',
+            ];
+            $result_history['id'] = $this->jobshistoryModel->insert($history_data, true);
+            $result_history['msg'] =  lang('Jobs.JobsapiSuccessUpdateMsg');
+        }
+        return $this->respond($result_history, 200);
+    }
 }

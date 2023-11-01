@@ -34,7 +34,7 @@
                                         <h5 class="card-title"><?php echo lang('Parts.Update'); ?></h5>                                       
                                     </div>
                                     <div class="col-6 text-right">
-                                        <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary" >Parts List</a>
+                                        <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary" ><?php echo lang('Jobs.JobsList'); ?> </a>
                                     </div>
                                 </div>
                             </div>
@@ -46,20 +46,20 @@
                                                 <div class="row">
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name</label>
-                                                            <input type="text" class="form-control" name="part_name" placeholder="Part Name" >
+                                                            <label for="part_name"><?php echo lang('Jobs.PartName'); ?> </label>
+                                                            <input type="text" class="form-control" name="part_name" placeholder="<?php echo lang('Jobs.PartName'); ?>" >
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label>
-                                                            <input type="text" class="form-control" name="part_no" placeholder="Part No" >
+                                                            <label for="part_name"><?php echo lang('Jobs.PartNo'); ?></label>
+                                                            <input type="text" class="form-control" name="part_no" placeholder="<?php echo lang('Jobs.PartNo'); ?>" >
                                                         </div>
                                                     </div>
                                                     <div class="col-4">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model</label>
-                                                            <input type="text" class="form-control" name="model" placeholder="Model" >
+                                                            <label for="part_name"><?php echo lang('Jobs.Model'); ?></label>
+                                                            <input type="text" class="form-control" name="model" placeholder="<?php echo lang('Jobs.Model'); ?>" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -104,7 +104,7 @@
                                                         <input type="hidden" class="" name="id" value="<?php echo $id; ?>">
                                                         <input type="hidden" class="" name="is_active" value="1">
                                                         <button class="btn btn-primary">
-                                                            Update
+                                                        <?php echo lang('Jobs.Update'); ?>
                                                         </button>
                                                     </div>
                                                 </div>

@@ -43,7 +43,7 @@
                                             <a href="javascript:void(0)" class="btn btn-secondary"  id="stop_time">
                                                 Stop 
                                             </a>
-                                        <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary" >Jobs List</a>
+                                        <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary" ><?php echo lang('Jobs.JobsList'); ?></a>
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                                 <div class="row">
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name</label>
+                                                            <label for="part_name"><?php echo lang('Jobs.PartName'); ?></label>
                                                             <select name="part_name" id="part_name" class="form-control">
                                                                 <option value=""> - Select - </option>
                                                                 <?php foreach($parts as $part): ?>
@@ -66,20 +66,20 @@
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label>
-                                                            <input type="text" class="form-control" name="part_no" placeholder="Part No" >
+                                                            <label for="part_name"><?php echo lang('Jobs.PartNo'); ?></label>
+                                                            <input type="text" class="form-control" name="part_no" placeholder="<?php echo lang('Jobs.PartNo'); ?>" >
                                                         </div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model</label>
-                                                            <input type="text" class="form-control" name="model" placeholder="Model" >
+                                                            <label for="part_name"><?php echo lang('Jobs.Model'); ?></label>
+                                                            <input type="text" class="form-control" name="model" placeholder="<?php echo lang('Jobs.Model'); ?>" >
                                                         </div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Die No</label>
-                                                            <input type="text" class="form-control" name="die_no" placeholder="Die No" >
+                                                            <label for="part_name"><?php echo lang('Jobs.DieNo'); ?></label>
+                                                            <input type="text" class="form-control" name="die_no" placeholder="<?php echo lang('Jobs.DieNo'); ?>" >
                                                         </div>
                                                     </div>
                                                 </div>
@@ -123,7 +123,7 @@
                                                     <div class="col-12 text-center">
                                                         <input type="hidden" class="" name="is_active" value="1">
                                                         <button class="btn btn-primary">
-                                                            Save
+                                                        <?php echo lang('Jobs.Save'); ?>
                                                         </button>
                                                     </div>
                                                 </div>

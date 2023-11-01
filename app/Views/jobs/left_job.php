@@ -43,7 +43,7 @@
                                             <a href="javascript:void(0)" class="btn btn-secondary"  id="stop_time">
                                                 Stop 
                                             </a> -->
-                                        <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary" >Jobs List</a>
+                                        <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary" ><?php echo lang('Jobs.JobsList'); ?></a>
                                     </div>
                                 </div>
                             </div>
@@ -56,22 +56,22 @@
                                                     
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name</label> : 
+                                                            <label for="part_name"><?php echo lang('Jobs.PartName'); ?></label> : 
                                                             <span class="part_name"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label> : 
+                                                            <label for="part_name"><?php echo lang('Jobs.PartNo'); ?></label> : 
                                                             <span id="part_no"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model</label> : 
+                                                            <label for="part_name"><?php echo lang('Jobs.Model'); ?></label> : 
                                                             <span id="model"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Die No</label> : 
+                                                            <label for="part_name"><?php echo lang('Jobs.DieNo'); ?></label> : 
                                                             <span id="die_no"></span></div>
                                                     </div>
                                                 </div>

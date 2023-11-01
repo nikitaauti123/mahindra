@@ -57,7 +57,7 @@
                                                 <label class="col-md-4" for="role"><?php echo lang('Roles.Permission'); ?><span class="red_text">*</span></label>
                                                 <div class="col-md-8 form-group">
                                                     <div class="permision-list  ">
-                                                        <input type="checkbox" class="form-check-input" id="select_all">&nbsp;<b>Select All</b>
+                                                        <input type="checkbox" class="form-check-input" id="select_all">&nbsp;<b><?php echo lang('Roles.SelectAll'); ?></b>
                                                         <?php foreach ($permission as $perm) { ?>
                                                             <div><input type="checkbox" class="form-check-input" value="<?php echo $perm['id']; ?>" name="permission_id[]" id="permission_id[]">&nbsp;<?php echo $perm['permission_id']; ?></div>
                                                         <?php

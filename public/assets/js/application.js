@@ -825,9 +825,13 @@ if ($("#start_jobs_data_left").length > 0) {
             var part_id = '';
             var event_part_id = '';
             var data = '';
+            var pins = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
                 part_id = jsonData.part_id;
+              //  pin_status = jsonData.pin_status;
+                 pins=jsonData.pin_status
+                console.log(pins);
                 data = jsonData.pin_status;
                 let values = '';
                 let correctInsertedValues = '';
@@ -858,6 +862,28 @@ if ($("#start_jobs_data_left").length > 0) {
                         }
                     });
                 }
+
+                $.ajax({
+                    type: 'POSt', // or 'GET', depending on your needs
+                    url: base_url + 'api/jobs/set_api_jobs',
+                    data: {part_id:part_id,pins:pins,side:'left'},
+                    beforeSend: function (xhr) {
+                    },
+                }).done(function (data) {
+                    $("#part_name").val('');
+                    $(".part_name").text(data['part_name']);
+                    $("#part_no").text(data['part_no']);
+                    $("#model").text(data['model']);
+                    $("#die_no").text(data['die_no']);
+                    $(".pins-display").find(".pin-box").each(function (index) {
+                        if ($(this).hasClass('orange-pin')) {
+                            $(this).removeClass('orange-pin').addClass('gray-pin');
+                        }
+                    });
+                }).fail(function (data) {
+
+                });
+
                 if (part_id != event_part_id) {
                     event_part_id = part_id
                     $.ajax({
@@ -900,9 +926,11 @@ if ($("#start_jobs_data_right").length > 0) {
             var part_id = '';
             var event_part_id = '';
             var data = '';
+            var pins = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
                 part_id = jsonData.part_id;
+                pins=jsonData.pin_status
                 data = jsonData.pin_status;
                 let values = '';
                 let correctInsertedValues = '';
@@ -933,6 +961,28 @@ if ($("#start_jobs_data_right").length > 0) {
                         }
                     });
                 }
+
+                $.ajax({
+                    type: 'POSt', // or 'GET', depending on your needs
+                    url: base_url + 'api/jobs/set_api_jobs',
+                    data: {part_id:part_id,pins:pins,side:'right'},
+                    beforeSend: function (xhr) {
+                    },
+                }).done(function (data) {
+                    $("#part_name").val('');
+                    $(".part_name").text(data['part_name']);
+                    $("#part_no").text(data['part_no']);
+                    $("#model").text(data['model']);
+                    $("#die_no").text(data['die_no']);
+                    $(".pins-display").find(".pin-box").each(function (index) {
+                        if ($(this).hasClass('orange-pin')) {
+                            $(this).removeClass('orange-pin').addClass('gray-pin');
+                        }
+                    });
+                }).fail(function (data) {
+
+                });
+
                 if (part_id != event_part_id) {
                     event_part_id = part_id
                     $.ajax({

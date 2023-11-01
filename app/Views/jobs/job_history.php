@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"><?php echo lang('Jobs.CompletedList'); ?></h1>
+                    <h1 class="m-0"><?php echo lang('Jobs.JobsHistory'); ?></h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#"><?php echo lang('Left-sidebar.Menu.Home'); ?></a></li>
-                        <li class="breadcrumb-item active"><?php echo lang('Jobs.CompletedList'); ?></li>
+                        <li class="breadcrumb-item active"><?php echo lang('Jobs.JobsHistory'); ?></li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -31,11 +31,9 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-6">
-                                    <h5 class="card-title"><?php echo lang('Jobs.CompletedList'); ?></h5>
+                                    <h5 class="card-title"><?php echo lang('Jobs.JobsHistory'); ?></h5>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <a href="<?php echo base_url('/admin/jobs/add'); ?>" class="btn btn-primary">Add New Job</a>
-                                </div>
+                                
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -111,14 +109,14 @@
                                         <table id="history_list_tbl" class="table table-bordered table-striped dataTable dtr-inline">
                                             <thead>
                                                 <tr>
-                                                    <th><?php echo lang('Parts.SrNo'); ?></th>
+                                                    <th><?php echo lang('jobs.SrNo'); ?></th>
                                                     
-                                                    <th><?php echo lang('Parts.PartNo'); ?></th>
-                                                    <th><?php echo lang('Parts.PartName'); ?></th>
-                                                    <th><?php echo lang('Parts.Model'); ?></th>
-                                                    <th><?php echo lang('Parts.DieNo'); ?></th>
-                                                    <th><?php echo lang('Parts.StartTime'); ?></th>
-                                                    <th><?php echo lang('Parts.EndTime'); ?></th>
+                                                    <th><?php echo lang('jobs.PartNo'); ?></th>
+                                                    <th><?php echo lang('jobs.PartName'); ?></th>
+                                                    <th><?php echo lang('jobs.Model'); ?></th>
+                                                    <th><?php echo lang('jobs.DieNo'); ?></th>
+                                                    <th><?php echo lang('jobs.StartTime'); ?></th>
+                                                    <th><?php echo lang('jobs.EndTime'); ?></th>
                                                    
                                                     <!-- <th>Actions</th> -->
                                                 </tr>
@@ -128,14 +126,14 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                <th><?php echo lang('Parts.SrNo'); ?></th>
+                                                <th><?php echo lang('jobs.SrNo'); ?></th>
                                                     
-                                                    <th><?php echo lang('Parts.PartNo'); ?></th>
-                                                    <th><?php echo lang('Parts.PartName'); ?></th>
-                                                    <th><?php echo lang('Parts.Model'); ?></th>
-                                                    <th><?php echo lang('Parts.DieNo'); ?></th>
-                                                    <th><?php echo lang('Parts.StartTime'); ?></th>
-                                                    <th><?php echo lang('Parts.EndTime'); ?></th>
+                                                    <th><?php echo lang('jobs.PartNo'); ?></th>
+                                                    <th><?php echo lang('jobs.PartName'); ?></th>
+                                                    <th><?php echo lang('jobs.Model'); ?></th>
+                                                    <th><?php echo lang('jobs.DieNo'); ?></th>
+                                                    <th><?php echo lang('jobs.StartTime'); ?></th>
+                                                    <th><?php echo lang('jobs.EndTime'); ?></th>
                                                    
                                                    
                                                     <!-- <th>Actions</th> -->

@@ -21,6 +21,7 @@ return [
     'Permission' => 'Permission',
     'Roles' => 'Roles',
     'RolesList' => 'Roles List',
+    'SelectAll'=>'Select All',
 
     'AddNew'=>'Add New Roles',
     'RolesSuccessMsg' => 'Roles Added Successfully !',

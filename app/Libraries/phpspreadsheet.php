@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Libraries;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -51,7 +51,7 @@ class Phpspreadsheet
     }
 
     // Fill data in the each worksheet in the sequence.
-    foreach($excel_data['data'] as $key=>$exl_data) {
+    foreach ($excel_data['data'] as $key => $exl_data) {
       //echo $key;
       $sheet = $spreadsheet->getSheet($key);
       // set header row data
@@ -60,15 +60,15 @@ class Phpspreadsheet
         $sheet->setCellValue($key, $value);
       }
     }
-    
+
     $writer = new Xlsx($spreadsheet);
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment; filename="' . $excel_data['file_name'] . '"');
     $writer->save('php://output');
-
   }
 
-  function set_header($sheet, $header_data){
+  function set_header($sheet, $header_data)
+  {
     $first_key = $last_key = '';
     $i = 0;
     foreach ($header_data as $key => $value) {
@@ -82,5 +82,4 @@ class Phpspreadsheet
     $sheet->getStyle("$first_key:$last_key")->getFont()->setBold(true);
     return $sheet;
   }
-
 }

@@ -35,8 +35,8 @@
                                     </div>
                                    
                                     <div class="col-6 text-right">
-                                    <a style="display:none" href="<?php echo base_url('/admin/parts/import'); ?>" class="btn btn-primary" ><?php echo lang('Parts.Imports'); ?></a>
-                                    <button type="button" style="display:none" id="part-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;Export</button>
+                                    <a href="<?php echo base_url('/admin/parts/import'); ?>" class="btn btn-primary" ><?php echo lang('Parts.Imports'); ?></a>
+                                    <button type="button" id="part-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;Export</button>
                            
                                         <a href="<?php echo base_url('/admin/parts/add'); ?>" class="btn btn-primary" >Add New Part</a>
                                     </div>
@@ -50,16 +50,16 @@
                                             <table id="parts_list_tbl" class="table table-bordered table-striped dataTable dtr-inline">
                                                 <thead>
                                                     <tr>
-                                                        <th>Sr.No</th>
-                                                        <th>Part No.</th>
-                                                        <th>Part Name</th>
-                                                        <th>Model</th>
-                                                        <th>Pins</th>
-                                                        <th>Die No</th>
-                                                        <th>Is Active?</th>
-                                                        <th>Created Date</th>
-                                                        <th>Updated Date</th>
-                                                        <th>Actions</th>
+                                                        <th><?php echo lang('Parts.SrNo'); ?>Sr.No</th>
+                                                        <th><?php echo lang('Parts.PartNo'); ?></th>
+                                                        <th><?php echo lang('Parts.PartName'); ?>Name</th>
+                                                        <th><?php echo lang('Parts.Model'); ?></th>
+                                                        <th><?php echo lang('Parts.Pins'); ?></th>
+                                                        <th><?php echo lang('Parts.DieNo'); ?></th>
+                                                        <th><?php echo lang('Parts.IsActive'); ?></th>
+                                                        <th><?php echo lang('Parts.CreatedDate'); ?></th>
+                                                        <th><?php echo lang('Parts.UpdatedDate'); ?></th>
+                                                        <th><?php echo lang('Parts.Actions'); ?></th>
                                                     </tr>             
                                                 </thead>
                                                 <tbody>

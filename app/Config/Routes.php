@@ -70,6 +70,9 @@ $routes->post('/api/parts/update_is_active', 'Parts\\Api\\PartsApiController::up
 $routes->post('/api/parts/update/(:num)', 'Parts\\Api\\PartsApiController::update/$1');
 $routes->post('/api/parts/delete/(:num)', 'Parts\\Api\\PartsApiController::delete/$1');
 $routes->get('/api/parts/get_one/(:num)', 'Parts\\Api\\PartsApiController::getOne/$1');
+$routes->get('/api/parts/get_api_url', 'Parts\\Api\\PartsApiController::get_api_url');
+
+
 $routes->post('/api/apiparts/add', 'Parts\\Api\\ApiPartsApiController::add');
 $routes->post('/api/apiparts/get_api_data', 'Parts\\Api\\ApiPartsApiController::get_api_data');
 
@@ -79,6 +82,9 @@ $routes->get('/admin/jobs/add_left', 'Jobs\\JobsController::Create_left');
 $routes->get('/admin/jobs/right_job', 'Jobs\\JobsController::Right_job');
 $routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::Left_job');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
+$routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completed_jobs');
+$routes->get('/admin/jobs/job_history', 'Jobs\\JobsController::job_history');
+
 $routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
 
 $routes->get('/api/jobs/list', 'Jobs\\Api\\JobsApiController::list');
@@ -86,10 +92,11 @@ $routes->post('/api/jobs/add', 'Jobs\\Api\\JobsApiController::add');
 $routes->post('/api/jobs/update/(:num)', 'Jobs\\Api\\JobsApiController::update/$1');
 $routes->post('/api/jobs/delete/(:num)', 'Jobs\\Api\\JobsApiController::delete/$1');
 $routes->get('/api/jobs/get_one/(:num)', 'Jobs\\Api\\JobsApiController::getOne/$1');
-
+$routes->get('/api/jobs/completed_list', 'Jobs\\Api\\JobsApiController::completed_list');
 
 $routes->post('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
-
+$routes->get('/api/jobs/history_list', 'Jobs\\Api\\JobsApiController::history_list');
+$routes->post('/api/jobs/set_api_jobs', 'Jobs\\Api\\JobsApiController::set_api_jobs');
 
 
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');

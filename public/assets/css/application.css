@@ -496,6 +496,12 @@ form .error {
     height: 32px;
     position: absolute;
 }
-.toggle-switch  {
+.toggle-switch {
 
-    margin-top:5px}
+    margin-top: 5px
+}
+.calender-icon {
+    position: absolute;
+    bottom: 23px;
+    left: 316px;
+}

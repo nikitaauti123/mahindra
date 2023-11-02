@@ -1,3 +1,7 @@
+<script>
+    <?= websocket_js_code() ?>
+    alert(websocket_js_code());
+</script>
 <?= $this->extend('theme-default') ?>
 
 <?= $this->section('content') ?>
@@ -55,22 +59,22 @@
                                                 <div class="row">
                                                 <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part Name</label> : 
+                                                            <label for="part_name"><?php echo lang('Jobs.PartName'); ?></label> : 
                                                             <span class="part_name"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Part No</label> : 
+                                                            <label for="part_name"><?php echo lang('Jobs.PartNo'); ?></label> : 
                                                             <span id="part_no"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Model</label> : 
+                                                            <label for="part_name"><?php echo lang('Jobs.Model'); ?></label> : 
                                                             <span id="model"></span></div>
                                                     </div>
                                                     <div class="col-3">
                                                         <div class="form-group">
-                                                            <label for="part_name">Die No</label> : 
+                                                            <label for="part_name"><?php echo lang('Jobs.DieNo'); ?></label> : 
                                                             <span id="die_no"></span></div>
                                                     </div>
                                                 </div>

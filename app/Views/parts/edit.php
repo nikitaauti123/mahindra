@@ -34,7 +34,7 @@
                                     <h5 class="card-title"><?php echo lang('Parts.Update'); ?></h5>
                                 </div>
                                 <div class="col-6 text-right">
-                                    <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary">Parts List</a>
+                                    <a href="<?php echo base_url('/admin/parts/list'); ?>" class="btn btn-primary"><?php echo lang('Parts.PartsList'); ?></a>
                                 </div>
                             </div>
                         </div>
@@ -46,32 +46,32 @@
                                         <div class="row">
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="part_name">Part Name<span class="red_text">*</span></label>
-                                                    <input type="text" class="form-control" name="part_name" placeholder="Part Name">
+                                                    <label for="part_name"><?php echo lang('Parts.PartName'); ?><span class="red_text">*</span></label>
+                                                    <input type="text" class="form-control" name="part_name" placeholder="<?php echo lang('Parts.PartName'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="part_name">Part No</label>
-                                                    <input type="text" class="form-control" name="part_no" placeholder="Part No">
+                                                    <label for="part_name"><?php echo lang('Parts.PartNo'); ?></label>
+                                                    <input type="text" class="form-control" name="part_no" placeholder="<?php echo lang('Parts.PartNo'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="part_name">Model<span class="red_text">*</span></label>
-                                                    <input type="text" class="form-control" name="model" placeholder="Model">
+                                                    <label for="part_name"><?php echo lang('Parts.Model'); ?><span class="red_text">*</span></label>
+                                                    <input type="text" class="form-control" name="model" placeholder="<?php echo lang('Parts.Model'); ?>">
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="die_no">Die No<span class="red_text">*</span></label>
-                                                    <input type="text" class="form-control" name="die_no" placeholder="Die No">
+                                                    <label for="die_no"><?php echo lang('Parts.DieNo'); ?><span class="red_text">*</span></label>
+                                                    <input type="text" class="form-control" name="die_no" placeholder="<?php echo lang('Parts.DieNo'); ?>">
                                                 </div>
                                             </div>
 
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="is_active" class="col-sm-4 control-label">Is active?</label>
+                                                    <label for="is_active" class="col-sm-4 control-label"><?php echo lang('Parts.IsActive'); ?>?</label>
                                                     <div class="col-sm-8">
                                                         <div class="checkbox">
                                                             <div class="toggle-switch mt-1">

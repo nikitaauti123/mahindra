@@ -34,7 +34,7 @@
                                         <h5 class="card-title"><?php echo lang('Jobs.List'); ?></h5>                                       
                                     </div>
                                     <div class="col-6 text-right">
-                                        <a href="<?php echo base_url('/admin/jobs/add'); ?>" class="btn btn-primary" >Add New Job</a>
+                                        <a href="<?php echo base_url('/admin/jobs/add'); ?>" class="btn btn-primary" ><?php echo lang('Jobs.AddNewJob'); ?> </a>
                                     </div>
                                 </div>
                             </div>
@@ -46,16 +46,16 @@
                                             <table id="jobs_list_tbl" class="table table-bordered table-striped dataTable dtr-inline">
                                                 <thead>
                                                     <tr>
-                                                        <th>Sr.No</th>
-                                                        <th>Part No</th>
-                                                        <th>Part Name</th>
-                                                        <th>Model</th>
-                                                        <th>Pins</th>
-                                                        <th>Bed No</th>
-                                                        <th>Status</th>
-                                                        <th>Start Time</th>
-                                                        <th>End Time</th>
-                                                        <th>Actions</th>
+                                                        <th><?php echo lang('Jobs.SrNo'); ?></th>
+                                                        <th><?php echo lang('Jobs.PartNo'); ?> </th>
+                                                        <th><?php echo lang('Jobs.PartName'); ?></th>
+                                                        <th><?php echo lang('Jobs.Model'); ?></th>
+                                                        <th><?php echo lang('Jobs.Pins'); ?></th>
+                                                        <th><?php echo lang('Jobs.DieNo'); ?> </th>
+                                                        <th><?php echo lang('Jobs.Status'); ?></th>
+                                                        <th><?php echo lang('Jobs.StartTime'); ?></th>
+                                                        <th><?php echo lang('Jobs.EndTime'); ?></th>
+                                                        <th><?php echo lang('Jobs.Actions'); ?></th>
                                                     </tr>             
                                                 </thead>
                                                 <tbody>
@@ -63,16 +63,16 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Sr.No</th>
-                                                        <th>Part No</th>
-                                                        <th>Part Name</th>
-                                                        <th>Model</th>
-                                                        <th>Pins</th>
-                                                        <th>Bed No</th>
-                                                        <th>Status</th>
-                                                        <th>Start Time</th>
-                                                        <th>End Time</th>
-                                                        <th>Actions</th>
+                                                    <th><?php echo lang('Jobs.SrNo'); ?></th>
+                                                        <th><?php echo lang('Jobs.PartNo'); ?> </th>
+                                                        <th><?php echo lang('Jobs.PartName'); ?></th>
+                                                        <th><?php echo lang('Jobs.Model'); ?></th>
+                                                        <th><?php echo lang('Jobs.Pins'); ?></th>
+                                                        <th><?php echo lang('Jobs.DieNo'); ?> </th>
+                                                        <th><?php echo lang('Jobs.Status'); ?></th>
+                                                        <th><?php echo lang('Jobs.StartTime'); ?></th>
+                                                        <th><?php echo lang('Jobs.EndTime'); ?></th>
+                                                        <th><?php echo lang('Jobs.Actions'); ?></th>
                                                     </tr>             
                                                 </tfoot>
                                             </table>

@@ -42,14 +42,14 @@ Class PartsApiController extends BaseController
     }
 
     public function add(){
-
+       
         try {
             helper(['form']);
             
             $rules = [
-                 'part_name'  => 'required|min_length[2]|max_length[100]',
-                 'model'  => 'required|min_length[2]|max_length[100]',
-                ];
+                'part_name'  => 'required|min_length[2]|max_length[100]',
+                 'model'  => 'required|min_length[3]|max_length[100]',
+                 ];
 
             if(!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
@@ -88,7 +88,7 @@ Class PartsApiController extends BaseController
             
             $rules = [
                 'part_name'  => 'required|min_length[2]|max_length[100]',
-                'model'  => 'required|min_length[2]|max_length[100]',
+                 'model'  => 'required|min_length[3]|max_length[100]',
             ];
 
             if(!$this->validate($rules)) {
@@ -152,5 +152,11 @@ Class PartsApiController extends BaseController
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }
+    }
+    public  function  get_api_url(){   
+        $envVariables = [
+            'WEBSOCKET_URL' => $_ENV['WEBSOCKET_URL'],          
+        ];
+        return $this->respond($envVariables, 200);      
     }
 }

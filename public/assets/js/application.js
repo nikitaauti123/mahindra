@@ -814,103 +814,123 @@ if ($("#update_parts_data").length > 0) {
 
 if ($("#start_jobs_data_left").length > 0) {
     $("#start_jobs_data_left").find("#part_name").select2();
-    $.ajax({
-        url: base_url + 'api/parts/get_api_url',
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            //alert(data.WEBSOCKET_URL);
-            const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
-            $("#result").html("Title: " + data.title);
-            var part_id = '';
-            var event_part_id = '';
-            var data = '';
-            var pins = '';
-            ws.onmessage = (event) => {
-                var jsonData = JSON.parse(event.data);
-                part_id = jsonData.part_id;
-              //  pin_status = jsonData.pin_status;
-                 pins=jsonData.pin_status
-                console.log(pins);
-                data = jsonData.pin_status;
-                let values = '';
-                let correctInsertedValues = '';
-                for (const key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        if (values !== "") {
-                            values += ", "; // Add a comma and space if values is not empty
-                            correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
-                        }
-                        values += key;
-                        correctInsertedValues += data[key].correct_inserted;
-                    }
-                }
-                var pins_array = values.split(",");
-                var pins_color = correctInsertedValues.split(",");
-                for (let i in pins_array) {
-                    var pin_address = pins_array[i];
-                    var pin_color = pins_color[i];
-                    $(".pins-display").find(".pin-box").each(function (index) {
-                        var title = $(this).attr('title');
-                        var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
-                        if (pattern.test(title)) {
-                            if (pin_color.trim().toLowerCase() === 'true') {
-                                $(this).removeClass('red-pin').addClass('green-pin');
-                            } else if (pin_color.trim().toLowerCase() === 'false') {
-                                $(this).removeClass('green-pin').addClass('red-pin');
+
+    function get_part_data_from_socket() {
+        $.ajax({
+            url: base_url + 'api/parts/get_api_url',
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                //alert(data.WEBSOCKET_URL);
+                try {
+                    const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
+                    $("#result").html("Title: " + data.title);
+                    var part_id = '';
+                    var event_part_id = '';
+                    var data = '';
+                    var pins = '';
+                    ws.onmessage = (event) => {
+                        var jsonData = JSON.parse(event.data);
+                        part_id = jsonData.part_id;
+                        //pin_status = jsonData.pin_status;
+                        pins=jsonData.pin_status
+                        console.log(pins);
+                        data = jsonData.pin_status;
+                        console.log("data::", jsonData);
+                        let values = '';
+                        let correctInsertedValues = '';
+                        for (const key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                if (values !== "") {
+                                    values += ", "; // Add a comma and space if values is not empty
+                                    correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
+                                }
+                                values += key;
+                                correctInsertedValues += data[key].correct_inserted;
                             }
                         }
-                    });
-                }
-
-                $.ajax({
-                    type: 'POSt', // or 'GET', depending on your needs
-                    url: base_url + 'api/jobs/set_api_jobs',
-                    data: {part_id:part_id,pins:pins,side:'left'},
-                    beforeSend: function (xhr) {
-                    },
-                }).done(function (data) {
-                    $("#part_name").val('');
-                    $(".part_name").text(data['part_name']);
-                    $("#part_no").text(data['part_no']);
-                    $("#model").text(data['model']);
-                    $("#die_no").text(data['die_no']);
-                    $(".pins-display").find(".pin-box").each(function (index) {
-                        if ($(this).hasClass('orange-pin')) {
-                            $(this).removeClass('orange-pin').addClass('gray-pin');
+                        var pins_array = values.split(",");
+                        var pins_color = correctInsertedValues.split(",");
+                        for (let i in pins_array) {
+                            var pin_address = pins_array[i];
+                            var pin_color = pins_color[i];
+                            $(".pins-display").find(".pin-box").each(function (index) {
+                                var title = $(this).attr('title');
+                                var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
+                                if (pattern.test(title)) {
+                                    if (pin_color.trim().toLowerCase() === 'true') {
+                                        $(this).removeClass('red-pin').addClass('green-pin');
+                                    } else if (pin_color.trim().toLowerCase() === 'false') {
+                                        $(this).removeClass('green-pin').addClass('red-pin');
+                                    }
+                                }
+                            });
                         }
-                    });
-                }).fail(function (data) {
 
-                });
+                        $.ajax({
+                            type: 'POSt', // or 'GET', depending on your needs
+                            url: base_url + 'api/jobs/set_api_jobs',
+                            data: {part_id:part_id,pins:pins,side:'left'},
+                            beforeSend: function (xhr) {
+                            },
+                        }).done(function (data) {
+                            $("#part_name").val('');
+                            $(".part_name").text(data['part_name']);
+                            $("#part_no").text(data['part_no']);
+                            $("#model").text(data['model']);
+                            $("#die_no").text(data['die_no']);
+                            $(".pins-display").find(".pin-box").each(function (index) {
+                                if ($(this).hasClass('orange-pin')) {
+                                    $(this).removeClass('orange-pin').addClass('gray-pin');
+                                }
+                            });
+                        }).fail(function (data) {
 
-                if (part_id != event_part_id) {
-                    event_part_id = part_id
-                    $.ajax({
-                        type: 'GET', // or 'GET', depending on your needs
-                        url: base_url + 'api/parts/get_one/' + part_id,
-                        data: {},
-                        beforeSend: function (xhr) {
-                        },
-                    }).done(function (data) {
-                        $("#part_name").val('');
-                        $(".part_name").text(data['part_name']);
-                        $("#part_no").text(data['part_no']);
-                        $("#model").text(data['model']);
-                        $("#die_no").text(data['die_no']);
-                        $(".pins-display").find(".pin-box").each(function (index) {
-                            if ($(this).hasClass('orange-pin')) {
-                                $(this).removeClass('orange-pin').addClass('gray-pin');
-                            }
                         });
-                    }).fail(function (data) {
 
+                        if (part_id != event_part_id) {
+                            event_part_id = part_id
+                            $.ajax({
+                                type: 'GET', // or 'GET', depending on your needs
+                                url: base_url + 'api/parts/get_one/' + part_id,
+                                data: {},
+                                beforeSend: function (xhr) {
+                                },
+                            }).done(function (data) {
+                                $("#part_name").val('');
+                                $(".part_name").text(data['part_name']);
+                                $("#part_no").text(data['part_no']);
+                                $("#model").text(data['model']);
+                                $("#die_no").text(data['die_no']);
+                                $(".pins-display").find(".pin-box").each(function (index) {
+                                    if ($(this).hasClass('orange-pin')) {
+                                        $(this).removeClass('orange-pin').addClass('gray-pin');
+                                    }
+                                });
+                            }).fail(function (data) {
+
+                            });
+                        }
+                    }
+
+                    ws.addEventListener("error", (event) => {
+                        console.log("WebSocket error: ", event);
                     });
+
+                    ws.onclose = event => {
+                        get_part_data_from_socket();
+                        console.log("on close", "sss");
+                    }
+
+                    
+                } catch (err) {
+                    console.log("exception::", err.message);
                 }
             }
-        }
+        });
+    }
 
-    })
+    get_part_data_from_socket();
 }
 
 if ($("#start_jobs_data_right").length > 0) {

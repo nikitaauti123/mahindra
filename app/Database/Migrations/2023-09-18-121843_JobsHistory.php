@@ -40,7 +40,7 @@ class JobsHistory extends Migration
             ]
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('jobs_history');
+        $this->forge->createTable('jobs_history', true);
     }
 
     public function down()

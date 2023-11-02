@@ -42,7 +42,7 @@ class Permission extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('permission');
+        $this->forge->createTable('permission', true);
     }
 
     public function down()

@@ -58,7 +58,7 @@ class Parts extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('parts');
+        $this->forge->createTable('parts', true);
     }
 
     public function down()

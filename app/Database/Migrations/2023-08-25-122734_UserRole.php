@@ -22,7 +22,7 @@ class UserRole extends Migration
         ]);
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE', 'fk_users_tbl');
         $this->forge->addForeignKey('role_id', 'roles', 'id', 'CASCADE', 'CASCADE', 'fk_roles_tbl');
-        $this->forge->createTable('users_roles');
+        $this->forge->createTable('users_roles', true);
     }
 
     public function down()

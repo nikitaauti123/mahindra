@@ -11,16 +11,18 @@ class RolePermission extends Migration
         $this->forge->addField([
             'role_id' => [
                 'type'           => 'INT',
-                'constraint'     => 11
+                'constraint'     => 11,
+                'unsigned'       => true
             ],
             'permission_id' => [
                 'type'           => 'INT',
-                'constraint'     => 11
+                'constraint'     => 11,
+                'unsigned'       => true
             ]
         ]);
-        $this->forge->addForeignKey('role_id', 'roles', 'id', 'CASCADE', 'CASCADE', 'fk_roles_tbl');
+        $this->forge->addForeignKey('role_id', 'roles', 'id', 'CASCADE', 'CASCADE', 'fk_perm_roles_tbl');
         $this->forge->addForeignKey('permission_id', 'permission', 'id', 'CASCADE', 'CASCADE', 'fk_permission_tbl');
-        $this->forge->createTable('roles_permission');
+        $this->forge->createTable('roles_permission', true);
     }
 
     public function down()

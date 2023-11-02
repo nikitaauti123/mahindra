@@ -29,6 +29,10 @@ class Parts extends Migration
                 'constraint' => 100,
                 'null'       => true,
             ],
+            'pins' => [
+                'type'       => 'text',
+                'null'       => true,
+            ],
             'is_active' => [
                 'type'       => 'TINYINT',
                 'constraint' => 1,

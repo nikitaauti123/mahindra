@@ -238,7 +238,6 @@ function user_active_inactive(id, is_active) {
     }
 
 }
-//dashboard page
 if ($("#from_date").length > 0) {
     $("#from_date").daterangepicker({
         "startDate": moment(),
@@ -250,7 +249,7 @@ if ($("#from_date").length > 0) {
     });
 }
 
-// Parts
+
 if ($("#parts_list_tbl").length > 0) {
     // table
     var parts_table = $("#parts_list_tbl").DataTable({
@@ -376,9 +375,10 @@ if ($("#parts_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    let html = '<a href="' + base_url + 'admin/parts/edit/' + row['id'] + '"   class="edit_part" data-id="' + row['id'] + '"><i class="fa fa-edit text-info"></i></a>';
-                    html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="view_part" data-id="' + row['id'] + '" ><i class="fa fa-eye text-primary"></i></a>';
+                    let html = '<a href="javascript:void(0);" class="view_part " data-id="' + row['id'] + '" ><i class="fa fa-eye text-success"></i></a>';
 
+                     html += '&nbsp;&nbsp <a href="' + base_url + 'admin/parts/edit/' + row['id'] + '"   class="edit_part" data-id="' + row['id'] + '"><i class="fa fa-edit text-info"></i></a>';
+                     
                     html += '&nbsp;&nbsp;<a href="javascript:void(0);" class="delete_part" data-id="' + row['id'] + '" ><i class="fa fa-trash text-danger"></i></a>';
 
                     return html;
@@ -393,7 +393,6 @@ if ($("#parts_list_tbl").length > 0) {
     });
 }
 
-// Parts
 if ($("#jobs_list_tbl").length > 0) {
     // table
     var jobs_table = $("#jobs_list_tbl").DataTable({
@@ -867,24 +866,15 @@ if ($("#start_jobs_data_left").length > 0) {
                             });
                         }
 
-                        $.ajax({
-                            type: 'POSt', // or 'GET', depending on your needs
-                            url: base_url + 'api/jobs/set_api_jobs',
-                            data: {part_id:part_id,pins:pins,side:'left'},
-                            beforeSend: function (xhr) {
-                            },
-                        }).done(function (data) {
-                            $("#part_name").val('');
-                            $(".part_name").text(data['part_name']);
-                            $("#part_no").text(data['part_no']);
-                            $("#model").text(data['model']);
-                            $("#die_no").text(data['die_no']);
-                            $(".pins-display").find(".pin-box").each(function (index) {
-                                if ($(this).hasClass('orange-pin')) {
-                                    $(this).removeClass('orange-pin').addClass('gray-pin');
-                                }
-                            });
-                        }).fail(function (data) {
+                $.ajax({
+                    type: 'POSt', // or 'GET', depending on your needs
+                    url: base_url + 'api/jobs/set_api_jobs',
+                    data: {part_id:part_id,pins:pins,side:'left'},
+                    beforeSend: function (xhr) {
+                    },
+                }).done(function (data) {
+                    
+                }).fail(function (data) {
 
                         });
 
@@ -989,16 +979,6 @@ if ($("#start_jobs_data_right").length > 0) {
                     beforeSend: function (xhr) {
                     },
                 }).done(function (data) {
-                    $("#part_name").val('');
-                    $(".part_name").text(data['part_name']);
-                    $("#part_no").text(data['part_no']);
-                    $("#model").text(data['model']);
-                    $("#die_no").text(data['die_no']);
-                    $(".pins-display").find(".pin-box").each(function (index) {
-                        if ($(this).hasClass('orange-pin')) {
-                            $(this).removeClass('orange-pin').addClass('gray-pin');
-                        }
-                    });
                 }).fail(function (data) {
 
                 });

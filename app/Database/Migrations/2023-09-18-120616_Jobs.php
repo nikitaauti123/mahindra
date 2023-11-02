@@ -53,7 +53,7 @@ class Jobs extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('jobs');
+        $this->forge->createTable('jobs', true);
     }
 
     public function down()

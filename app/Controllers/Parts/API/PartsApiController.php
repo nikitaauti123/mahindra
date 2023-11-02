@@ -34,7 +34,7 @@ Class PartsApiController extends BaseController
             if(!empty($result)) {
                 return $this->respond($result, 200);
             } 
-            return $this->respond([], 200);
+            return $this->respond((object)[], 200);
         } catch(\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);

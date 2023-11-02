@@ -50,9 +50,9 @@
                                             <table id="parts_list_tbl" class="table table-bordered table-striped dataTable dtr-inline">
                                                 <thead>
                                                     <tr>
-                                                        <th><?php echo lang('Parts.SrNo'); ?>Sr.No</th>
+                                                        <th><?php echo lang('Parts.SrNo'); ?></th>
                                                         <th><?php echo lang('Parts.PartNo'); ?></th>
-                                                        <th><?php echo lang('Parts.PartName'); ?>Name</th>
+                                                        <th><?php echo lang('Parts.PartName'); ?></th>
                                                         <th><?php echo lang('Parts.Model'); ?></th>
                                                         <th><?php echo lang('Parts.Pins'); ?></th>
                                                         <th><?php echo lang('Parts.DieNo'); ?></th>

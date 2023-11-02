@@ -20,7 +20,7 @@ class RolePermission extends Migration
                 'unsigned'       => true
             ]
         ]);
-        $this->forge->addForeignKey('role_id', 'roles', 'id', 'CASCADE', 'CASCADE', 'fk_roles_tbl');
+        $this->forge->addForeignKey('role_id', 'roles', 'id', 'CASCADE', 'CASCADE', 'fk_perm_roles_tbl');
         $this->forge->addForeignKey('permission_id', 'permission', 'id', 'CASCADE', 'CASCADE', 'fk_permission_tbl');
         $this->forge->createTable('roles_permission', true);
     }

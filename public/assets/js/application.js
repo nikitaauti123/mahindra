@@ -939,6 +939,7 @@ if ($("#start_jobs_data_right").length > 0) {
             var pins = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
+                console.log("jsonData", jsonData);
                 part_id = jsonData.part_id;
                 pins=jsonData.pin_status
                 data = jsonData.pin_status;

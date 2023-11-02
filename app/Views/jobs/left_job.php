@@ -75,6 +75,17 @@
                                                             <span id="die_no"></span></div>
                                                     </div>
                                                 </div>
+                                                <!-- <div class="row">
+                                                    <div class="col-md-6"></div>
+                                                    <div class="col-md-6 text-end">
+                                                        <div class="color-legends">
+                                                            <div><span class="legend-box green-pin"></span> - Placed Correct</div>
+                                                            <div><span class="legend-box red-pin"></span> - Placed Incorrect</div>
+                                                            <div><span class="legend-box orange-pin"></span> - Need to Place</div>
+                                                            <div><span class="legend-box gray-pin"></span> - Not Placed</div>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">
                                                         <div class="pins-display-wrapper">

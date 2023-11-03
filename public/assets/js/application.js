@@ -1,5 +1,7 @@
 /** Custom Application Javascript  */
+// import SlimSelect from 'slim-select';
 import { successMsg, failMsg } from "./messages.js";
+
 
 function check_login(form_id, btn_id) {
 
@@ -2219,5 +2221,6 @@ function reload_history_tbl() {
 }
 
 
-
-
+// new SlimSelect({
+//     select: '#part_name_filter_history',
+//   })

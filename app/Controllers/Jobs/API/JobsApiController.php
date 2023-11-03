@@ -7,7 +7,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\JobsModel;
 use App\Models\PartsModel;
 use App\Models\JobsHistoryModel;
-
+use DateTime;
 use Exception;
 
 class JobsApiController extends BaseController
@@ -31,7 +31,19 @@ class JobsApiController extends BaseController
     public function list()
     {
         $result = $this->jobsModel->findAll();
-        return $this->respond($result, 200);
+        $combinedData = [];
+        foreach($result as $result_arr){
+           $created_at = new DateTime($result_arr['created_at']);
+             $formatted_date = $created_at->format('d-m-Y h:i A');
+             $result_arr['created_at'] =   $formatted_date;
+
+             $updated_at = new DateTime($result_arr['updated_at']);
+             $formatted_date_update = $updated_at->format('d-m-Y h:i A');
+             $result_arr['updated_at'] =   $formatted_date_update;
+
+            $combinedData[] = $result_arr;
+        }
+        return $this->respond($combinedData, 200);
     }
 
     public function getOne($id)

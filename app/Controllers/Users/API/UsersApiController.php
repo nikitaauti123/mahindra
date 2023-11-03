@@ -8,7 +8,7 @@ use App\Models\UsersModel;
 use App\Models\RolesPermissionModel;
 use App\Models\UsersRolesModel;
 use App\Models\RolesModel;
-
+use DateTime;
 
 use Exception;
 
@@ -117,6 +117,15 @@ Class UsersApiController extends BaseController
                 }
             }
            // print_r($roleNames);
+           $created_at = new DateTime($user['created_at']);
+           $updated_at = new DateTime($user['updated_at']);
+          
+           $formatted_date = $created_at->format('d-m-Y h:i A');
+           $formatted_date_updated = $updated_at->format('d-m-Y h:i A');
+          
+           $user['created_at'] =   $formatted_date;
+           $user['updated_at'] =   $formatted_date_updated;
+        
             $user['roles'] = implode(', ', $roleNames);
             $combinedData[] = $user;
         }

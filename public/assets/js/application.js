@@ -1282,7 +1282,7 @@ if ($("#update_users").length > 0) {
         });
     });
 }
-
+$(document).ready(function() {
 if ($("#add_users").length > 0) {
     new SlimSelect({
         select: '#role_id'
@@ -1363,6 +1363,7 @@ if ($("#add_users").length > 0) {
         });
     });
 }
+});
 function part_active_inactive(id, is_active) {
     var res = confirm("Do you want to update this part status?");
     if (res == true) {

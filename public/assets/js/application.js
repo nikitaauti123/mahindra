@@ -3,6 +3,7 @@
 import { successMsg, failMsg } from "./messages.js";
 
 
+
 function check_login(form_id, btn_id) {
 
     if (!$(form_id).valid()) {
@@ -813,60 +814,56 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
-/* if ($("#start_jobs_data_left").length > 0) {
+if ($("#start_jobs_data_left").length > 0) {
     $("#start_jobs_data_left").find("#part_name").select2();
-
-    function get_part_data_from_socket() {
-        $.ajax({
-            url: base_url + 'api/parts/get_api_url',
-            method: "GET",
-            dataType: "json",
-            success: function (data) {
-                //alert(data.WEBSOCKET_URL);
-                try {
-                    const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
-                    $("#result").html("Title: " + data.title);
-                    var part_id = '';
-                    var event_part_id = '';
-                    var data = '';
-                    var pins = '';
-                    ws.onmessage = (event) => {
-                        var jsonData = JSON.parse(event.data);
-                        part_id = jsonData.part_id;
-                        //pin_status = jsonData.pin_status;
-                        pins=jsonData.pin_status
-                        console.log(pins);
-                        data = jsonData.pin_status;
-                        console.log("data::", jsonData);
-                        let values = '';
-                        let correctInsertedValues = '';
-                        for (const key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                if (values !== "") {
-                                    values += ", "; // Add a comma and space if values is not empty
-                                    correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
-                                }
-                                values += key;
-                                correctInsertedValues += data[key].correct_inserted;
+    $.ajax({
+        url: base_url + 'api/parts/get_api_url',
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            //alert(data.WEBSOCKET_URL);
+            const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
+            $("#result").html("Title: " + data.title);
+            var part_id = '';
+            var event_part_id = '';
+            var data = '';
+            var pins = '';
+            ws.onmessage = (event) => {
+                var jsonData = JSON.parse(event.data);
+                part_id = jsonData.part_id;
+              //  pin_status = jsonData.pin_status;
+                 pins=jsonData.pin_status
+                console.log(pins);
+                data = jsonData.pin_status;
+                let values = '';
+                let correctInsertedValues = '';
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (values !== "") {
+                            values += ", "; // Add a comma and space if values is not empty
+                            correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
+                        }
+                        values += key;
+                        correctInsertedValues += data[key].correct_inserted;
+                    }
+                }
+                var pins_array = values.split(",");
+                var pins_color = correctInsertedValues.split(",");
+                for (let i in pins_array) {
+                    var pin_address = pins_array[i];
+                    var pin_color = pins_color[i];
+                    $(".pins-display").find(".pin-box").each(function (index) {
+                        var title = $(this).attr('title');
+                        var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
+                        if (pattern.test(title)) {
+                            if (pin_color.trim().toLowerCase() === 'true') {
+                                $(this).removeClass('red-pin').addClass('green-pin');
+                            } else if (pin_color.trim().toLowerCase() === 'false') {
+                                $(this).removeClass('green-pin').addClass('red-pin');
                             }
                         }
-                        var pins_array = values.split(",");
-                        var pins_color = correctInsertedValues.split(",");
-                        for (let i in pins_array) {
-                            var pin_address = pins_array[i];
-                            var pin_color = pins_color[i];
-                            $(".pins-display").find(".pin-box").each(function (index) {
-                                var title = $(this).attr('title');
-                                var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
-                                if (pattern.test(title)) {
-                                    if (pin_color.trim().toLowerCase() === 'true') {
-                                        $(this).removeClass('red-pin').addClass('green-pin');
-                                    } else if (pin_color.trim().toLowerCase() === 'false') {
-                                        $(this).removeClass('green-pin').addClass('red-pin');
-                                    }
-                                }
-                            });
-                        }
+                    });
+                }
 
                 $.ajax({
                     type: 'POSt', // or 'GET', depending on your needs
@@ -878,54 +875,38 @@ if ($("#update_parts_data").length > 0) {
                     
                 }).fail(function (data) {
 
+                });
+
+                if (part_id != event_part_id) {
+                    event_part_id = part_id
+                    $.ajax({
+                        type: 'GET', // or 'GET', depending on your needs
+                        url: base_url + 'api/parts/get_one/' + part_id,
+                        data: {},
+                        beforeSend: function (xhr) {
+                        },
+                    }).done(function (data) {
+                        $("#part_name").val('');
+                        $(".part_name").text(data['part_name']);
+                        $("#part_no").text(data['part_no']);
+                        $("#model").text(data['model']);
+                        $("#die_no").text(data['die_no']);
+                        $(".pins-display").find(".pin-box").each(function (index) {
+                            if ($(this).hasClass('orange-pin')) {
+                                $(this).removeClass('orange-pin').addClass('gray-pin');
+                            }
                         });
+                    }).fail(function (data) {
 
-                        if (part_id != event_part_id) {
-                            event_part_id = part_id
-                            $.ajax({
-                                type: 'GET', // or 'GET', depending on your needs
-                                url: base_url + 'api/parts/get_one/' + part_id,
-                                data: {},
-                                beforeSend: function (xhr) {
-                                },
-                            }).done(function (data) {
-                                $("#part_name").val('');
-                                $(".part_name").text(data['part_name']);
-                                $("#part_no").text(data['part_no']);
-                                $("#model").text(data['model']);
-                                $("#die_no").text(data['die_no']);
-                                $(".pins-display").find(".pin-box").each(function (index) {
-                                    if ($(this).hasClass('orange-pin')) {
-                                        $(this).removeClass('orange-pin').addClass('gray-pin');
-                                    }
-                                });
-                            }).fail(function (data) {
-
-                            });
-                        }
-                    }
-
-                    ws.addEventListener("error", (event) => {
-                        console.log("WebSocket error: ", event);
                     });
-
-                    ws.onclose = event => {
-                        get_part_data_from_socket();
-                        console.log("on close", "sss");
-                    }
-
-                    
-                } catch (err) {
-                    console.log("exception::", err.message);
                 }
             }
-        });
-    }
+        }
 
-    get_part_data_from_socket();
-} */
+    })
+}
 
-/* if ($("#start_jobs_data_right").length > 0) {
+if ($("#start_jobs_data_right").length > 0) {
     $("#start_jobs_data_right").find("#part_name").select2();
     $.ajax({
         url: base_url + 'api/parts/get_api_url',
@@ -941,7 +922,6 @@ if ($("#update_parts_data").length > 0) {
             var pins = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
-                console.log("jsonData", jsonData);
                 part_id = jsonData.part_id;
                 pins=jsonData.pin_status
                 data = jsonData.pin_status;
@@ -1012,98 +992,7 @@ if ($("#update_parts_data").length > 0) {
         }
 
     })
-} */
-
-// 0 - green
-// 1 - red
-// 2 - orange 
-// 3 - gray
-
-var event_part_id = '';
-
-function fetch_job_details_from_db(side) {
-    $.ajax({
-        url: base_url + 'api/jobs/get_api_data',
-        method: "POST",
-        data: {'side': side},
-        dataType: "json",
-        success: function (data) { 
-            //console.log("data", data);
-
-            let part_id = data.id;
-            
-            if(part_id != event_part_id) {
-                $(".part_name").html(data.part_name);
-                $("#part_no").html(data.part_no);
-                $("#model").html(data.model);
-                $("#die_no").html(data.die_no);
-                event_part_id = part_id;
-            }
-            
-            $(".pin-box").each(function(){
-                let title = $(this).attr('title');
-                console.log("title", title);
-
-                
-                var pins_data = JSON.parse(data.pins);
-
-                console.log("pins_data ::", pins_data);
-
-                for(let i in pins_data) {
-
-                    console.log("data.pins[i] ::", pins_data[i]);
-
-                    let style_class = 'gray-pin';
-                    if(i == title) {                            
-
-                        $(this).removeClass('green-pin');
-                        $(this).removeClass('red-pin');
-                        $(this).removeClass('orange-pin');
-                        $(this).removeClass('gray-pin');
-
-                        if(pins_data[i] == 0) {
-                            style_class = 'green-pin';
-                        } else if(pins_data[i] == 1){
-                            style_class = 'red-pin';
-                        } else if(pins_data[i] == 2){
-                            style_class = 'orange-pin';
-                        } else if(pins_data[i] == 3){
-                            style_class = 'gray-pin';
-                        }
-                        $(this).addClass(style_class);
-                    }
-                }
-
-            });
-
-            setTimeout(fetch_job_details_from_db(side), 5000);
-        },
-    });    
-}    
-
-if ($("#start_jobs_data_left").length > 0) { 
-    fetch_job_details_from_db('left');
 }
-
-if ($("#start_jobs_data_right").length > 0) { 
-    fetch_job_details_from_db('right');
-}
-
-function check_path_and_change_sidebar(){
-    var pathname = window.location.pathname;
-    if(
-        pathname == '/admin/parts/add' || 
-        pathname == '/admin/parts/edit' || 
-        pathname == '/admin/parts/view' ||
-        pathname == '/admin/jobs/right_job' || 
-        pathname == '/admin/jobs/left_job' 
-    ) 
-    {
-        $("body").addClass('sidebar-collapse');
-    }
-}
-
-check_path_and_change_sidebar();
 
 $(document).ready(function () {
     if ($('.digital-clock').length > 0) {
@@ -1157,6 +1046,9 @@ $("#part-export").on('click', function () {
 });
 
 if ($("#update_users").length > 0) {
+    new SlimSelect({
+        select: '#role_id'
+    });
     let id = $("#update_users").find("input[name='id']").val();
     $.ajax({
         url: base_url + 'api/users/get_one/' + id,
@@ -1279,6 +1171,9 @@ if ($("#update_users").length > 0) {
 }
 
 if ($("#add_users").length > 0) {
+    new SlimSelect({
+        select: '#role_id'
+    });
     $("#add_users").validate({
         rules: {
             'first_name': {
@@ -2037,6 +1932,22 @@ $(document).ready(function () {
 });
 function generate_table() {
     if ($("#completed_list_tbl").length > 0) {
+
+        new SlimSelect({
+            select: '#part_name_filter'
+        });
+        
+        
+        new SlimSelect({
+            select: '#part_no_filter'
+        });
+        new SlimSelect({
+            select: '#part_model_filter'
+        });
+        new SlimSelect({
+            select: '#part_die_no_filter'
+        });
+
         var part_no = $("#part_no_filter").val();
         var from_to_date = $("#f_date").val();
         var dateParts = from_to_date.split(" - ");
@@ -2201,6 +2112,23 @@ history_table = generate_table_history();
 function generate_table_history() {
     if ($("#history_list_tbl").length > 0) {
 
+
+        new SlimSelect({
+            select: '#part_name_filter_history',
+          })
+        
+          
+        new SlimSelect({
+            select: '#part_no_filter_history',
+          })
+          new SlimSelect({
+            select: '#part_model_filter_history'
+        });
+        
+        new SlimSelect({
+            select: '#part_die_no_filter_history'
+        });
+
         var part_no = $("#part_no_filter_history").val();
         var from_to_date = $("#f_date_history").val();
         var dateParts = from_to_date.split(" - ");
@@ -2333,6 +2261,7 @@ function reload_history_tbl() {
 }
 
 
-// new SlimSelect({
-//     select: '#part_name_filter_history',
-//   })
+
+
+
+

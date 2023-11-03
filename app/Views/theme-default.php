@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css'); ?>">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo base_url('assets/dist_list/css/adminlte.min.css'); ?>">
-
+  <link rel="stylesheet" href="<?php echo base_url('assets/css/slimselect.min.css'); ?>">
   <!-- Application style -->
   <link rel="stylesheet" href="<?php echo base_url('assets/css/application.css'); ?>">
   <script>
@@ -94,6 +94,7 @@
 
 <!-- Application Javascript File -->
 <script  src="<?php echo base_url('assets/js/file_upload.js'); ?>"></script>
+<script  src="<?php echo base_url('assets/js/slimselect.min.js'); ?>"></script>
 
 <script type="module" src="<?php echo base_url('assets/js/application.js'); ?>"></script>
 </body>

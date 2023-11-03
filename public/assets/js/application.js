@@ -2012,7 +2012,7 @@ $(document).on("click", "#select_all", function () {
         $("input[name='permission_id[]']").attr("checked", false);
     }
 });
-var date_formate = 'DD-MM-YYYY';
+var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="f_date"]').daterangepicker({
     locale: {
@@ -2064,9 +2064,16 @@ function generate_table() {
         var part_no = $("#part_no_filter").val();
         var from_to_date = $("#f_date").val();
         var dateParts = from_to_date.split(" - ");
-        // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-        var from_date = dateParts[0];
-        var to_date = dateParts[1];
+
+        // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+        var from_date_str = dateParts[0];
+        var to_date_str = dateParts[1];
+        
+        // Use Moment.js to parse and format the dates
+        var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        
+           
         var part_name = $("#part_name_filter").val();
         var model = $("#part_model_filter").val();
         var die_no = $("#part_die_no_filter").val();
@@ -2168,9 +2175,15 @@ function reload_complete_tbl() {
     var part_no = $("#part_no_filter").val();
     var from_to_date = $("#f_date").val();
     var dateParts = from_to_date.split(" - ");
-    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-    var from_date = dateParts[0];
-    var to_date = dateParts[1];
+
+    // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+    var from_date_str = dateParts[0];
+    var to_date_str = dateParts[1];
+    
+    // Use Moment.js to parse and format the dates
+    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    
     var part_name = $("#part_name_filter").val();
     // alert(to_date); 
     var model = $("#part_model_filter").val();
@@ -2189,7 +2202,9 @@ function reload_complete_tbl() {
         die_no).load();
 }
 
-var date_formate = 'DD-MM-YYYY';
+
+
+var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="f_date_history"]').daterangepicker({
     locale: {
@@ -2213,7 +2228,7 @@ $('#part_model_filter_history').change(function () {
     hide_show_complete_history();
 });
 $('#part_die_no_filter_history').change(function () {
-    hide_show_complete_history(); alert('change_die');
+    hide_show_complete_history(); 
 });
 
 function hide_show_complete_history() {
@@ -2245,9 +2260,19 @@ function generate_table_history() {
         var part_no = $("#part_no_filter_history").val();
         var from_to_date = $("#f_date_history").val();
         var dateParts = from_to_date.split(" - ");
-        // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-        var from_date = dateParts[0];
-        var to_date = dateParts[1];
+
+        // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+        var from_date_str = dateParts[0];
+        var to_date_str = dateParts[1];
+        
+        // Use Moment.js to parse and format the dates
+        var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        
+        // var dateParts = from_to_date.split(" - ");
+        // // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
+        // var from_date = dateParts[0];
+        // var to_date = dateParts[1];
         var part_name = $("#part_name_filter_history").val();
         // alert(to_date); 
 
@@ -2352,9 +2377,11 @@ function reload_history_tbl() {
     var part_no = $("#part_no_filter_history").val();
     var from_to_date = $("#f_date_history").val();
     var dateParts = from_to_date.split(" - ");
-    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-    var from_date = dateParts[0];
-    var to_date = dateParts[1];
+    var from_date_str = dateParts[0];
+    var to_date_str = dateParts[1];
+    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+
     var part_name = $("#part_name_filter_history").val();
     // alert(to_date); 
     var model = $("#part_model_filter_history").val();

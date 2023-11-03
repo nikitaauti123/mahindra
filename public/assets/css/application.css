@@ -8,6 +8,8 @@
     --green: rgb(0, 91, 0);
     --orange: rgb(254, 171, 19);
     --drak-gray:#202020;
+    --white: #FFF;
+    --black: #000;
 }
 
 .form-control {
@@ -491,4 +493,39 @@ form .error {
     position: absolute;
     bottom: 23px;
     left: 316px;
+}
+
+.color-legends .legend-box {
+    width: 10px;
+    height: 10px;
+    display: block;
+    float: left;
+    border: 1px solid #555;
+    
+}
+
+.color-legends label {
+    color: #5c5c5c;
+    font-size: 14px;
+}
+
+.legend-box.red-pin {
+    background-color: var(--red);
+}
+
+.legend-box.green-pin {
+    background-color: var(--green);
+}
+
+.legend-box.orange-pin {
+    background-color: var(--orange);
+}
+
+.legend-box.gray-pin {
+    background-color: var(--gray);
+}
+
+
+.background-white {
+    background-color: var(--white);
 }

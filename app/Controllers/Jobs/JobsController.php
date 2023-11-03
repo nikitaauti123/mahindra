@@ -74,6 +74,7 @@ class JobsController extends BaseController
     {
         $data['request'] = $this->request;
         $data['request'] = $this->request;
+        $this->jobshistoryModel->distinct();
         $this->jobshistoryModel->select('parts.*');
         $this->jobshistoryModel->join('parts', 'jobs_history.part_id = parts.id');
         $data['part'] =  $this->jobshistoryModel->findAll();

@@ -1028,8 +1028,6 @@ function fetch_job_details_from_db(side) {
         data: {'side': side},
         dataType: "json",
         success: function (data) { 
-            //console.log("data", data);
-
             let part_id = data.id;
             
             if(part_id != event_part_id) {
@@ -1042,12 +1040,8 @@ function fetch_job_details_from_db(side) {
             
             $(".pin-box").each(function(){
                 let title = $(this).attr('title');
-                console.log("title", title);
 
-                
                 var pins_data = JSON.parse(data.pins);
-
-                console.log("pins_data ::", pins_data);
 
                 for(let i in pins_data) {
 
@@ -1091,6 +1085,32 @@ if ($("#start_jobs_data_right").length > 0) {
 
 function check_path_and_change_sidebar(){
     var pathname = window.location.pathname;
+
+    console.log("pathname", pathname);
+
+    let paths = pathname.split("/"); 
+
+    if(paths.length == 6) {
+        paths.pop();
+        pathname = paths.join("/");
+    } else if(paths.length == 5) {
+        paths.pop();
+        pathname = paths.join("/");
+    }
+
+    console.log("path::", pathname);
+
+    if(
+        pathname == '/public/admin/parts/add' || 
+        pathname == '/public/admin/parts/edit' || 
+        pathname == '/public/admin/parts/view' ||
+        pathname == '/public/admin/jobs/right_job' || 
+        pathname == '/public/admin/jobs/left_job' 
+    ) 
+    {
+        $("body").addClass('sidebar-collapse');
+    }
+
     if(
         pathname == '/admin/parts/add' || 
         pathname == '/admin/parts/edit' || 

@@ -994,6 +994,119 @@ if ($("#start_jobs_data_right").length > 0) {
     })
 }
 
+// } */
+
+// 0 - green
+// 1 - red
+// 2 - orange 
+// 3 - gray
+
+var event_part_id = '';
+
+function fetch_job_details_from_db(side) {
+    $.ajax({
+        url: base_url + 'api/jobs/get_api_data',
+        method: "POST",
+        data: {'side': side},
+        dataType: "json",
+        success: function (data) { 
+            let part_id = data.id;
+            
+            if(part_id != event_part_id) {
+                $(".part_name").html(data.part_name);
+                $("#part_no").html(data.part_no);
+                $("#model").html(data.model);
+                $("#die_no").html(data.die_no);
+                event_part_id = part_id;
+            }
+            
+            $(".pin-box").each(function(){
+                let title = $(this).attr('title');
+
+                var pins_data = JSON.parse(data.pins);
+
+                for(let i in pins_data) {
+
+                    console.log("data.pins[i] ::", pins_data[i]);
+
+                    let style_class = 'gray-pin';
+                    if(i == title) {                            
+
+                        $(this).removeClass('green-pin');
+                        $(this).removeClass('red-pin');
+                        $(this).removeClass('orange-pin');
+                        $(this).removeClass('gray-pin');
+
+                        if(pins_data[i] == 0) {
+                            style_class = 'green-pin';
+                        } else if(pins_data[i] == 1){
+                            style_class = 'red-pin';
+                        } else if(pins_data[i] == 2){
+                            style_class = 'orange-pin';
+                        } else if(pins_data[i] == 3){
+                            style_class = 'gray-pin';
+                        }
+                        $(this).addClass(style_class);
+                    }
+                }
+
+            });
+
+            setTimeout(fetch_job_details_from_db(side), 5000);
+        },
+    });    
+}    
+
+if ($("#start_jobs_data_left").length > 0) { 
+    fetch_job_details_from_db('left');
+}
+
+if ($("#start_jobs_data_right").length > 0) { 
+    fetch_job_details_from_db('right');
+}
+
+function check_path_and_change_sidebar(){
+    var pathname = window.location.pathname;
+
+    console.log("pathname", pathname);
+
+    let paths = pathname.split("/"); 
+
+    if(paths.length == 6) {
+        paths.pop();
+        pathname = paths.join("/");
+    } else if(paths.length == 5) {
+        paths.pop();
+        pathname = paths.join("/");
+    }
+
+    console.log("path::", pathname);
+
+    if(
+        pathname == '/public/admin/parts/add' || 
+        pathname == '/public/admin/parts/edit' || 
+        pathname == '/public/admin/parts/view' ||
+        pathname == '/public/admin/jobs/right_job' || 
+        pathname == '/public/admin/jobs/left_job' 
+    ) 
+    {
+        $("body").addClass('sidebar-collapse');
+    }
+
+    if(
+        pathname == '/admin/parts/add' || 
+        pathname == '/admin/parts/edit' || 
+        pathname == '/admin/parts/view' ||
+        pathname == '/admin/jobs/right_job' || 
+        pathname == '/admin/jobs/left_job' 
+    ) 
+    {
+        $("body").addClass('sidebar-collapse');
+    }
+}
+
+check_path_and_change_sidebar();
+
 $(document).ready(function () {
     if ($('.digital-clock').length > 0) {
         var interval = '';

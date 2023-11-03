@@ -84,11 +84,11 @@
                                                 </div>
                                                 <div class="row mt-3 mb-3">
                                                     <div class="col-12">
-                                                        <div class="pins-display-wrapper no-click" >
+                                                        <div class="pins-display-wrapper" >
                                                         <div class="arrow-center">
                                                                 <i>sd</i>
                                                             </div>
-                                                            <div class="pins-display">
+                                                            <div class="pins-display no-click">
                                                                 <?php 
 
                                                                 $k=0;

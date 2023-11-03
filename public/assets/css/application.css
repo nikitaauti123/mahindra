@@ -130,12 +130,12 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 
 .pins-display .pin-box{
     float: left;
-    width: 28px;
-    height: 28px;
+    width: 34px;
+    height: 34px;
     margin: 2px;
     text-align: center;
     background-color: #ffffff;
-    line-height: 28px;
+    line-height: 34px;
     font-size: 12px;
     cursor: pointer;
     border-radius: 50%;
@@ -171,10 +171,10 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 }
 
 .pins-display {
-    width: 925px;
+    width: 1110px;
     overflow: hidden;   
     margin: 0 auto;
-    padding: 10px;
+    padding: 10px 10px 10px 17px;
     position: relative;
     background-color: #FFF;
 }
@@ -194,7 +194,7 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 }
 
 .pins-display .y-axis-line {
-    width: 900px;
+    width: 1180px;
     background-color:black;
     height: 3px;
     float: left;
@@ -222,19 +222,6 @@ form .error {
 
 .dark-mode .select2-selection--single, .select2-container--default.select2-container--focus .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--single {
     border-radius: 35px;
-}
-
-.arrow-center {
-    margin: 0 auto;
-    width: 925px;
-    text-align: center;
-    background: #fff;
-    padding: 10px;
-}
-
-.arrow-center .fa-arrow-alt-circle-up:before{
-    color: var(--red);
-    font-size: 30px;
 }
 
 .ast {
@@ -431,7 +418,7 @@ form .error {
 
   .arrow-center {
     margin: 0 auto;
-    width: 925px;
+    width: 1110px;
     text-align: center;
     background: #fff;
     padding: 10px;
@@ -493,7 +480,7 @@ form .error {
     content: "";
     background: #000;
     width: 3px;
-    height: 32px;
+    height: 48px;
     position: absolute;
 }
 .toggle-switch {

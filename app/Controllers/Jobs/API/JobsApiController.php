@@ -24,6 +24,8 @@ class JobsApiController extends BaseController
         $this->PartsModel = new PartsModel();
         $this->jobshistoryModel = new JobsHistoryModel();
         $this->session = \Config\Services::session();
+
+
     }
 
     public function list()
@@ -152,33 +154,18 @@ class JobsApiController extends BaseController
     }
     public function get_api_data()
     {
+
         $result = $this->jobsModel
-            ->select('jobs.*, parts.die_no,parts.part_name,parts.part_no,parts.model')
+            ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
             ->join('parts', 'parts.id = jobs.part_id')
             ->orderBy('jobs.id', 'DESC')
             ->where('jobs.side', $this->request->getVar('side'))
             ->limit(1) // Set the limit to 1 to fetch only one row
             ->get()
             ->getRow();
+
         if ($result) {
-            $pins = json_decode($result->pins, true);
-
-            if (is_array($pins)) {
-                // Separate keys and values into comma-separated strings
-                $keys = implode(',', array_keys($pins));
-                $values = implode(',', $pins);
-                $result = [
-                    'keys' => $keys,
-                    'values' => $values,
-                    'part_no' => $result->part_no,
-                    'part_name' => $result->part_name,
-                    'die_no' => $result->die_no,
-                    'model' => $result->model,
-                ];
-
-
-                return $this->respond($result, 200);
-            }
+            return $this->respond($result, 200);
         }
         return $this->respond(['error' => 'No data available'], 404);
     }
@@ -302,5 +289,85 @@ class JobsApiController extends BaseController
             $result_history['msg'] =  lang('Jobs.JobsapiSuccessUpdateMsg');
         }
         return $this->respond($result_history, 200);
+    }
+
+    public function add_job()
+    {
+
+        try {
+
+            $part_id = $this->request->getVar('part_id');
+
+            if(empty( $part_id)) {
+                throw new Exception("Please provide 'part_id' parameter value");
+            }
+
+            $json_pins = $this->request->getVar('pins');
+
+            if(empty($json_pins)) {
+                throw new Exception("Please provide 'pins' parameter value");
+            }
+
+            $side = $this->request->getVar('side');
+
+            if(empty($side)) {
+                throw new Exception("Please provide 'side' parameter value");
+            }
+
+
+            /*$result = array();
+            foreach ($array as $key => $value) {
+                $correct_inserted = trim($value['correct_inserted']);
+                $correct_inserted_value = ($correct_inserted === 'true') ? 1 : 0;
+                $result[$key] = $correct_inserted_value;
+            }
+            ksort($result);
+            $json_pins = json_encode($result); */
+        
+            $this->jobsModel->where('part_id', $part_id);
+            $jobs =  $this->jobsModel->first();
+            if (empty($jobs)) {
+                $data = [
+                    'part_id' => $part_id,
+                    'side' => $side,
+                    'pins' => $json_pins,
+                    'created_by'=>1,
+                    'start_time'=>date('Y-m-d H:i:s')    
+                ];
+                $result_arr['id'] = $this->jobsModel->insert($data, true);
+                $history_data = [
+                    'part_id' => $part_id,
+                    'job_id' => $result_arr['id'],
+                    'pins' => $json_pins,
+                    'is_active' => '1',
+                ];
+                $result_history['id'] = $this->jobshistoryModel->insert($history_data, true);
+                $result_history['msg'] =  lang('Jobs.JobsapiSuccessMsg');
+            } else {
+                $data = [
+                    'part_id' => $part_id,
+                    'side' => $side,
+                    'pins' => $json_pins,
+                    'updated_by'=>1,
+                    'end_time'=>date('Y-m-d H:i:s')    
+                ];
+                $id = $jobs['id'];
+                $result_arr['id'] = $this->jobsModel->update($id, $data);
+                $history_data = [
+                    'part_id' => $part_id,
+                    'job_id' => $result_arr['id'],
+                    'pins' => $json_pins,
+                    'is_active' => '1',
+                ];
+                $result_history['id'] = $this->jobshistoryModel->insert($history_data, true);
+                $result_history['msg'] =  lang('Jobs.JobsapiSuccessUpdateMsg');
+            }
+            return $this->respond($result_history, 200);
+
+        } catch (Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
+        
     }
 }

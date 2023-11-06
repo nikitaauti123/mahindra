@@ -132,13 +132,13 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 
 .pins-display .pin-box{
     float: left;
-    width: 34px;
-    height: 34px;
-    margin: 2px;
+    width: 50px;
+    height: 50px;
+    margin: 6px;
     text-align: center;
     background-color: #ffffff;
-    line-height: 34px;
-    font-size: 12px;
+    line-height: 42px;
+    font-size: 17px;
     cursor: pointer;
     border-radius: 50%;
     color: rgba(255,255,255, 1);
@@ -173,10 +173,10 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 }
 
 .pins-display {
-    width: 1110px;
+    /* width: 1110px; */
     overflow: hidden;   
     margin: 0 auto;
-    padding: 10px 10px 10px 17px;
+    padding: 10px 10px 10px 35px;
     position: relative;
     background-color: #FFF;
 }
@@ -187,6 +187,7 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
     position: relative;
 }
 
+
 .pins-display .x-axis-line {
     width: 3px;
     height: 30px;
@@ -196,7 +197,8 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 }
 
 .pins-display .y-axis-line {
-    width: 1180px;
+    /* width: 1180px; */
+    width:1850px;
     background-color:black;
     height: 3px;
     float: left;
@@ -420,7 +422,7 @@ form .error {
 
   .arrow-center {
     margin: 0 auto;
-    width: 1110px;
+    /* width: 1110px; */
     text-align: center;
     background: #fff;
     padding: 10px;
@@ -565,3 +567,20 @@ form .error {
 .background-white {
     background-color: var(--white);
 }
+/* 
+.pins-display {
+    width: 1110px;
+    overflow: hidden;
+    margin: 12px auto;
+    padding: 14px 10px 10px 17px;
+    position: relative;
+    background-color: #FFF;
+} */
+/* 
+.arrow-center {
+    margin: 0 auto;
+    width: 1110px;
+    text-align: center;
+    background: #fff;
+    padding: 10px;
+} */

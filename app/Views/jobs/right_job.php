@@ -83,7 +83,24 @@
                                             </div>
                                         </div>
                                         <div class="row mt-3 mb-3">
-                                            <div class="col-12">
+                                            <div class="col-12"><div class="card">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title"></h3>
+
+                                                        <div class="card-tools">
+                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                                                                <!-- <i class="fas fa-times"></i> -->
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body" style="display: block;">
+                                                        <div class="pins-display-wrapper">
+                                                            <div class="arrow-center">
+                                                                <i>sd</i>
+                                                            </div>
                                                 <div class="pins-display-wrapper">
                                                     <div class="arrow-center">
                                                         <i>sd</i>
@@ -115,6 +132,8 @@
                                                     <div class="arrow-center">
                                                         <i class="fa fa-arrow-alt-circle-up"></i>
                                                     </div>
+                                                    </div>
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>

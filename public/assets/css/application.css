@@ -530,6 +530,7 @@ form .error {
 }
 .ss-main .ss-single-selected .placeholder, .ss-main .ss-single-selected .placeholder * {   
     overflow: inherit;
+}
 
 .color-legends .legend-box {
     width: 10px;

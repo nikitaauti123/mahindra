@@ -26,22 +26,21 @@ class JobsApiController extends BaseController
         $this->PartsModel = new PartsModel();
         $this->jobshistoryModel = new JobsHistoryModel();
         $this->session = \Config\Services::session();
-
-
+        $this->JobActionsModel = new JobActionsModel();
     }
 
     public function list()
     {
         $result = $this->jobsModel->findAll();
         $combinedData = [];
-        foreach($result as $result_arr){
-           $created_at = new DateTime($result_arr['created_at']);
-             $formatted_date = $created_at->format('d-m-Y h:i A');
-             $result_arr['created_at'] =   $formatted_date;
+        foreach ($result as $result_arr) {
+            $created_at = new DateTime($result_arr['created_at']);
+            $formatted_date = $created_at->format('d-m-Y h:i A');
+            $result_arr['created_at'] =   $formatted_date;
 
-             $updated_at = new DateTime($result_arr['updated_at']);
-             $formatted_date_update = $updated_at->format('d-m-Y h:i A');
-             $result_arr['updated_at'] =   $formatted_date_update;
+            $updated_at = new DateTime($result_arr['updated_at']);
+            $formatted_date_update = $updated_at->format('d-m-Y h:i A');
+            $result_arr['updated_at'] =   $formatted_date_update;
 
             $combinedData[] = $result_arr;
         }
@@ -263,7 +262,7 @@ class JobsApiController extends BaseController
         }
         ksort($result);
         $json_pins = json_encode($result);
-       
+
         $this->jobsModel->where('part_id', $this->request->getVar('part_id'));
         $jobs =  $this->jobsModel->first();
         if (empty($jobs)) {
@@ -271,8 +270,8 @@ class JobsApiController extends BaseController
                 'part_id' => $this->request->getVar('part_id'),
                 'side' => $this->request->getVar('side'),
                 'pins' => $json_pins,
-                'created_by'=>$this->session->get('id'),
-                'start_time'=>date('Y-m-d H:i:s')    
+                'created_by' => $this->session->get('id'),
+                'start_time' => date('Y-m-d H:i:s')
             ];
             $result_arr['id'] = $this->jobsModel->insert($data, true);
             $history_data = [
@@ -288,8 +287,8 @@ class JobsApiController extends BaseController
                 'part_id' => $this->request->getVar('part_id'),
                 'side' => $this->request->getVar('side'),
                 'pins' => $json_pins,
-                'updated_by'=>$this->session->get('id'),
-                'end_time'=>date('Y-m-d H:i:s')    
+                'updated_by' => $this->session->get('id'),
+                'end_time' => date('Y-m-d H:i:s')
             ];
             $id = $jobs['id'];
             $result_arr['id'] = $this->jobsModel->update($id, $data);
@@ -312,19 +311,19 @@ class JobsApiController extends BaseController
 
             $part_id = $this->request->getVar('part_id');
 
-            if(empty( $part_id)) {
+            if (empty($part_id)) {
                 throw new Exception("Please provide 'part_id' parameter value");
             }
 
             $json_pins = $this->request->getVar('pins');
 
-            if(empty($json_pins)) {
+            if (empty($json_pins)) {
                 throw new Exception("Please provide 'pins' parameter value");
             }
 
             $side = $this->request->getVar('side');
 
-            if(empty($side)) {
+            if (empty($side)) {
                 throw new Exception("Please provide 'side' parameter value");
             }
 
@@ -337,7 +336,7 @@ class JobsApiController extends BaseController
             }
             ksort($result);
             $json_pins = json_encode($result); */
-        
+
             $this->jobsModel->where('part_id', $part_id);
             $jobs =  $this->jobsModel->first();
             if (empty($jobs)) {
@@ -345,8 +344,8 @@ class JobsApiController extends BaseController
                     'part_id' => $part_id,
                     'side' => $side,
                     'pins' => $json_pins,
-                    'created_by'=>1,
-                    'start_time'=>date('Y-m-d H:i:s')    
+                    'created_by' => 1,
+                    'start_time' => date('Y-m-d H:i:s')
                 ];
                 $result_arr['id'] = $this->jobsModel->insert($data, true);
                 $history_data = [
@@ -362,8 +361,8 @@ class JobsApiController extends BaseController
                     'part_id' => $part_id,
                     'side' => $side,
                     'pins' => $json_pins,
-                    'updated_by'=>1,
-                    'end_time'=>date('Y-m-d H:i:s')    
+                    'updated_by' => 1,
+                    'end_time' => date('Y-m-d H:i:s')
                 ];
                 $id = $jobs['id'];
                 $result_arr['id'] = $this->jobsModel->update($id, $data);
@@ -377,12 +376,41 @@ class JobsApiController extends BaseController
                 $result_history['msg'] =  lang('Jobs.JobsapiSuccessUpdateMsg');
             }
             return $this->respond($result_history, 200);
-
         } catch (Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }
-        
+    }
+    public function set_job_actions()
+    {
+        try {
+            if ($this->request->getVar('time') == 'start_time') {
+                $data = [
+                    'part_id' => $this->request->getVar('part_id'),
+                    'side' => $this->request->getVar('side'),
+                    'start_time' => date('Y-m-d H:i:s'),
+                    'created_by' => $this->session->get('id'),
+                ];
+                $result['id'] = $this->JobActionsModel->insert($data, false);
+                $result['msg'] = lang('Jobs.AddJobbActionSuccss');
+                $result['lastInsertid'] = $this->JobActionsModel->insertID();
+            } else {
+            
+                $id  = $this->request->getVar('id');
+                $data = [
+                    'side' => $this->request->getVar('side'),
+                    'end_time' => date('Y-m-d H:i:s'),
+                    'updated_by' => $this->session->get('id'),
+                ];
+                $result['id'] = $this->JobActionsModel->update($id, $data);
+                $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
+            }
+            return $this->respond($result, 200);
+        } catch (Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
+
     }
 
     public function get_job_status(){

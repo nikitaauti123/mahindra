@@ -41,12 +41,14 @@
                                     <div class="digital-clock">00:00:00</div>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <!-- <a href="javascript:void(0)" class="btn btn-primary" id="start_time">
+                                <input type="hidden" id="update_id_right" name="update_id_left">
+                                   
+                                    <a href="javascript:void(0)" class="btn btn-primary start_time_right" id="start_time">
                                                 Start 
                                             </a>
-                                            <a href="javascript:void(0)" class="btn btn-secondary"  id="stop_time">
+                                            <a href="javascript:void(0)" class="btn btn-secondary end_time_right"  id="stop_time">
                                                 Stop 
-                                            </a> -->
+                                            </a>
                                     <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary">Jobs List</a>
                                 </div>
                             </div>
@@ -56,6 +58,26 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <form id="start_jobs_data_right">
+                                    <div class="row">
+                                            <div class="col-3 parts_right_jobs">
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="part_name"><?php echo lang('Jobs.PartName'); ?></label>
+                                                        <select class="form-control" id="part_right_id" name="part_right_id" class="from-control">
+                                                            <option value="">Select <?php echo lang('Jobs.PartName'); ?></option>
+                                                            <?php
+                                                            if (!empty($parts)) {
+                                                                foreach ($parts as $part) {
+                                                                    echo '<option value="' . $part['id'] . '">' . $part['part_name'] . '</option>';
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="form-group">

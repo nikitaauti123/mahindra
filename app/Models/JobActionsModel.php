@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class JobsModel extends Model
+class JobActionsModel extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'job_actions';

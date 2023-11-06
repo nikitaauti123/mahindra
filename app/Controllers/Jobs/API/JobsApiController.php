@@ -7,6 +7,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\JobsModel;
 use App\Models\PartsModel;
 use App\Models\JobsHistoryModel;
+use App\Models\JobActionsModel;
 use DateTime;
 use Exception;
 
@@ -17,6 +18,7 @@ class JobsApiController extends BaseController
     private $PartsModel;
     private $session;
     private $jobshistoryModel;
+    private $JobActionsModel;
 
     public function __construct()
     {
@@ -382,4 +384,23 @@ class JobsApiController extends BaseController
         }
         
     }
+
+    public function get_job_status(){
+
+        $this->JobActionsModel = new JobActionsModel();
+
+        $result = $this->JobActionsModel
+            ->select('*')
+            ->orderBy('id', 'DESC')
+            ->where('end_time IS NULL')
+            ->limit(1) // Set the limit to 1 to fetch only one row
+            ->get()
+            ->getRow();
+
+        if ($result) {
+            return $this->respond($result, 200);
+        }
+        return $this->respond(['error' => 'No data available'], 404);
+    }
+
 }

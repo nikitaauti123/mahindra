@@ -57,12 +57,6 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/list'?'active':''; ?>">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p><?php echo lang('Left-sidebar.Menu.Jobs'); ?></p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="<?php echo base_url('/admin/jobs/right_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.StartJobRight'); ?></p>
@@ -110,14 +104,14 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <!--<li class="nav-item">
+                        <a href="<?php //echo base_url('/admin/jobs/job_history'); ?>" class="nav-link <?php //echo $current_page_url['path'] == 'admin/parts/list'?'active':''; ?>">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p><?php //echo lang('Left-sidebar.Menu.JobsHistory'); ?></p>
+                        </a>
+                        </li>-->
                         <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/jobs/job_history'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/list'?'active':''; ?>">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p><?php echo lang('Left-sidebar.Menu.JobsHistory'); ?></p>
-                            </a>
-                        </li>
-                          <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/jobs/completed_jobs'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/completed_jobs'?'active':''; ?>">
+                            <a href="<?php echo base_url('/admin/jobs/completed_jobs_list'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/parts/completed_jobs_list'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.JobsCompleted'); ?></p>
                             </a>

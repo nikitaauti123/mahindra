@@ -390,17 +390,17 @@ class JobsApiController extends BaseController
         $this->JobActionsModel = new JobActionsModel();
 
         $result = $this->JobActionsModel
-            ->select('*')
+            ->select('part_id, side, start_time, end_time')
             ->orderBy('id', 'DESC')
             ->where('end_time IS NULL')
-            ->limit(1) // Set the limit to 1 to fetch only one row
+            //->limit(1) // Set the limit to 1 to fetch only one row
             ->get()
-            ->getRow();
+            ->getResult();
 
         if ($result) {
             return $this->respond($result, 200);
         }
-        return $this->respond(['error' => 'No data available'], 404);
+        return $this->respond([['error' => true, 'message' => 'No job started']], 404);
     }
 
 }

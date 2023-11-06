@@ -2408,5 +2408,6 @@ function reload_history_tbl() {
 
 
 
-
+$("#completed_jobs_list_form #from_date").daterangepicker({
+});
 

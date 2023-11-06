@@ -63,6 +63,7 @@ class JobsController extends BaseController
         $data['request'] = $this->request;
         return view('jobs/remove', $data);
     }
+
     public function completed_jobs(){
         $data['request'] = $this->request;
         $data['part'] = $this->partModel
@@ -70,6 +71,7 @@ class JobsController extends BaseController
         ->join('jobs', 'jobs.part_id=parts.id')->findAll();  
         return view('jobs/completed_job', $data);
     }
+
     public function job_history()
     {
         $data['request'] = $this->request;
@@ -79,5 +81,17 @@ class JobsController extends BaseController
         $this->jobshistoryModel->join('parts', 'jobs_history.part_id = parts.id');
         $data['part'] =  $this->jobshistoryModel->findAll();
         return view('jobs/job_history', $data);
+    }
+
+    /**
+     *  
+     */
+    public function completed_jobs_list(){
+        $data['request'] = $this->request;
+        $all_parts = $this->partModel
+        ->select('parts.id,parts.die_no,parts.part_name,parts.part_no,parts.model')      
+        ->where('parts.is_active', '1')->findAll();
+        $data['part'] = $all_parts;
+        return view('jobs/completed_job_list', $data);
     }
 }

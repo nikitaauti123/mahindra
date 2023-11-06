@@ -7,7 +7,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\JobsModel;
 use App\Models\PartsModel;
 use App\Models\JobsHistoryModel;
-use App\Models\JobsActionsModel;
+use App\Models\JobActionsModel;
 use DateTime;
 use Exception;
 
@@ -18,7 +18,7 @@ class JobsApiController extends BaseController
     private $PartsModel;
     private $session;
     private $jobshistoryModel;
-    private $jobsactionModel;
+    private $JobActionsModel;
 
     public function __construct()
     {
@@ -26,7 +26,7 @@ class JobsApiController extends BaseController
         $this->PartsModel = new PartsModel();
         $this->jobshistoryModel = new JobsHistoryModel();
         $this->session = \Config\Services::session();
-        $this->jobsactionModel = new JobsActionsModel();
+        $this->JobActionsModel = new JobActionsModel();
     }
 
     public function list()
@@ -391,9 +391,9 @@ class JobsApiController extends BaseController
                     'start_time' => date('Y-m-d H:i:s'),
                     'created_by' => $this->session->get('id'),
                 ];
-                $result['id'] = $this->jobsactionModel->insert($data, false);
+                $result['id'] = $this->JobActionsModel->insert($data, false);
                 $result['msg'] = lang('Jobs.AddJobbActionSuccss');
-                $result['lastInsertid'] = $this->jobsactionModel->insertID();
+                $result['lastInsertid'] = $this->JobActionsModel->insertID();
             } else {
             
                 $id  = $this->request->getVar('id');
@@ -402,7 +402,7 @@ class JobsApiController extends BaseController
                     'end_time' => date('Y-m-d H:i:s'),
                     'updated_by' => $this->session->get('id'),
                 ];
-                $result['id'] = $this->jobsactionModel->update($id, $data);
+                $result['id'] = $this->JobActionsModel->update($id, $data);
                 $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
             }
             return $this->respond($result, 200);
@@ -412,4 +412,23 @@ class JobsApiController extends BaseController
         }
 
     }
+
+    public function get_job_status(){
+
+        $this->JobActionsModel = new JobActionsModel();
+
+        $result = $this->JobActionsModel
+            ->select('*')
+            ->orderBy('id', 'DESC')
+            ->where('end_time IS NULL')
+            ->limit(1) // Set the limit to 1 to fetch only one row
+            ->get()
+            ->getRow();
+
+        if ($result) {
+            return $this->respond($result, 200);
+        }
+        return $this->respond(['error' => 'No data available'], 404);
+    }
+
 }

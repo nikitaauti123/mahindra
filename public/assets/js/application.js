@@ -1173,6 +1173,10 @@ $(document).ready(function () {
                 },
             }).done(function (data) {
                  successMsg(data.msg);
+                 $('.parts_left_jobs').show();
+                 $('.start_time_left').show();
+                 $('.end_time_left').hide();
+                 $('#part_left_id').val('');
           //  $('#update_id_left').val(data.lastInsertid);
             
             }).fail(function (data) {
@@ -1256,6 +1260,10 @@ $(document).ready(function () {
                 },
             }).done(function (data) {
                  successMsg(data.msg);
+                 $('.parts_right_jobs').show();
+                 $('.start_time_right').show();
+                 $('.end_time_right').hide();
+              $('#part_right_id').val('');
           //  $('#update_id_left').val(data.lastInsertid);
             
             }).fail(function (data) {

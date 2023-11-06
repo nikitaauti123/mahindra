@@ -81,51 +81,35 @@
                                         </div>
                                         <div class="row mt-3 mb-3">
                                             <div class="col-12">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title"></h3>
-
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-minus"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                                                                <!-- <i class="fas fa-times"></i> -->
-                                                            </button>
-                                                        </div>
+                                                <div class="pins-display-wrapper">
+                                                    <div class="arrow-center">
+                                                        <i>sd</i>
                                                     </div>
-                                                    <div class="card-body" style="display: block;">
-                                                        <div class="pins-display-wrapper">
-                                                            <div class="arrow-center">
-                                                                <i>sd</i>
-                                                            </div>
-                                                            <div class="pins-display no-click">
-                                                                <?php
+                                                    <div class="pins-display no-click">
+                                                        <?php
 
-                                                                $k = 0;
+                                                        $k = 0;
 
-                                                                $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
-                                                                $col_array = explode(" ", $alphabets);
-                                                                for ($i = 1; $i <= 14; $i++) {
-                                                                    for ($j = 0; $j < count($col_array); $j++) {
-                                                                ?>
-                                                                        <div id="pin[<?php echo $k++; ?>]" title="<?php echo $col_array[$j] . $i; ?>" class="pin-box gray-pin"><?php echo $col_array[$j] . $i; ?></div>
-                                                                        <?php if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) : ?>
-                                                                            <div class="x-axis-line"></div>
-                                                                        <?php endif; ?>
-                                                                    <?php
-                                                                    } ?>
-                                                                    <?php if (($i + 1) % 8 == 0) : ?>
-                                                                        <div class="y-axis-line"></div>
-                                                                    <?php endif; ?>
-                                                                <?php
-                                                                }
-                                                                ?>
-                                                            </div>
-                                                            <div class="arrow-center">
-                                                                <i class="fa fa-arrow-alt-circle-up"></i>
-                                                            </div>
-                                                        </div>
+                                                        $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
+                                                        $col_array = explode(" ", $alphabets);
+                                                        for ($i = 1; $i <= 14; $i++) {
+                                                            for ($j = 0; $j < count($col_array); $j++) {
+                                                        ?>
+                                                                <div id="pin[<?php echo $k++; ?>]" title="<?php echo $col_array[$j] . $i; ?>" class="pin-box gray-pin"><?php echo $col_array[$j] . $i; ?></div>
+                                                                <?php if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) : ?>
+                                                                    <div class="x-axis-line"></div>
+                                                                <?php endif; ?>
+                                                            <?php
+                                                            } ?>
+                                                            <?php if (($i + 1) % 8 == 0) : ?>
+                                                                <div class="y-axis-line"></div>
+                                                            <?php endif; ?>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                    <div class="arrow-center">
+                                                        <i class="fa fa-arrow-alt-circle-up"></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -137,7 +121,7 @@
                                                     <div class="d-flex align-items-baseline m-1"><span class="legend-box green-pin"></span> <label> - Correct Position</label></div>
                                                     <div class="d-flex align-items-baseline m-1"><span class="legend-box red-pin"></span> <label> - Incorrect Position</label></div>
                                                     <div class="d-flex align-items-baseline m-1"><span class="legend-box orange-pin"></span> <label> - Actual Position</label></div>
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box gray-pin"></span> <label> - Not Placed Any Pin</label></div>
+                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box gray-pin"></span> <label> -  Not Placed Any Pin</label></div>
                                                 </div>
                                             </div>
                                         </div>

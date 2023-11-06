@@ -1122,7 +1122,7 @@ $(document).ready(function () {
             interval = setInterval(clockUpdate, 1000);
             let id = $('#part_left_id').val();
             if(id==''){
-                alert('please select part id first');
+                alert('please select part name first');
                 return false;
             }
             $.ajax({
@@ -1167,6 +1167,89 @@ $(document).ready(function () {
                 url: base_url + 'api/jobs/set_job_actions',
                 method: "POST",
                 data: {'side': 'left',id:id,time:'end_time'},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+                },
+            }).done(function (data) {
+                 successMsg(data.msg);
+          //  $('#update_id_left').val(data.lastInsertid);
+            
+            }).fail(function (data) {
+                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                if (typeof data.responseJSON.messages === 'object') {
+                    for (let i in data.responseJSON.messages) {
+                        failMsg(data.responseJSON.messages[i]);
+                    }
+                } else {
+                    let msg = data.responseJSON.messages.msg;
+                    failMsg(msg);
+                }
+        
+            });
+
+        });
+    }
+});
+
+
+$('.end_time_right').hide();
+$(document).ready(function () {
+    if ($('.digital-clock').length > 0) {
+        var interval = '';
+        $(".start_time_right").on('click', function (e) {
+            e.preventDefault();
+            clockUpdate();
+         
+            //if(interval != '') {
+            interval = setInterval(clockUpdate, 1000);
+            let id = $('#part_right_id').val();
+            if(id==''){
+                alert('please select part name first');
+                return false;
+            }
+            $.ajax({
+                url: base_url + 'api/jobs/set_job_actions',
+                method: "POST",
+                data: {'side': 'right',part_id:id,time:'start_time'},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+                },
+            }).done(function (data) {
+                 successMsg(data.msg);
+            $('#update_id_right').val(data.lastInsertid);
+            $('.parts_right_jobs').hide();
+            $('.start_time_right').hide();
+            $('.end_time_right').show();
+            
+            }).fail(function (data) {
+                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                if (typeof data.responseJSON.messages === 'object') {
+                    for (let i in data.responseJSON.messages) {
+                        failMsg(data.responseJSON.messages[i]);
+                    }
+                } else {
+                    let msg = data.responseJSON.messages.msg;
+                    failMsg(msg);
+                }
+        
+            });
+
+
+
+
+
+            //}
+        });
+        $(".end_time_right").on('click', function (e) {
+            e.preventDefault();
+            clearInterval(interval);
+            let id = $('#update_id_right').val();
+            $.ajax({
+                url: base_url + 'api/jobs/set_job_actions',
+                method: "POST",
+                data: {'side': 'right',id:id,time:'end_time'},
                 dataType: "json",
                 beforeSend: function (xhr) {
                     //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));

@@ -37,12 +37,13 @@
                                     <div class="digital-clock">00:00:00</div>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <!-- <a href="javascript:void(0)" class="btn btn-primary" id="start_time">
+                                    <input type="hidden" id="update_id_left" name="update_id_left">
+                                    <a href="javascript:void(0)" class="btn btn-primary start_time_left" id="start_time">
                                                 Start 
                                             </a>
-                                            <a href="javascript:void(0)" class="btn btn-secondary"  id="stop_time">
+                                            <a href="javascript:void(0)" class="btn btn-secondary end_time_left"  id="stop_time">
                                                 Stop 
-                                            </a> -->
+                                            </a>
                                     <a href="<?php echo base_url('/admin/jobs/list'); ?>" class="btn btn-primary"><?php echo lang('Jobs.JobsList'); ?></a>
                                 </div>
                             </div>
@@ -52,6 +53,26 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <form id="start_jobs_data_left">
+                                        <div class="row">
+                                            <div class="col-3 parts_left_jobs">
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                        <label for="part_name"><?php echo lang('Jobs.PartName'); ?></label>
+                                                        <select class="form-control" id="part_left_id" name="part_left_id" class="from-control">
+                                                            <option value="">Select <?php echo lang('Jobs.PartName'); ?></option>
+                                                            <?php
+                                                            if (!empty($parts)) {
+                                                                foreach ($parts as $part) {
+                                                                    echo '<option value="' . $part['id'] . '">' . $part['part_name'] . '</option>';
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
 
                                             <div class="col-3">
@@ -121,7 +142,7 @@
                                                     <div class="d-flex align-items-baseline m-1"><span class="legend-box green-pin"></span> <label> - Correct Position</label></div>
                                                     <div class="d-flex align-items-baseline m-1"><span class="legend-box red-pin"></span> <label> - Incorrect Position</label></div>
                                                     <div class="d-flex align-items-baseline m-1"><span class="legend-box orange-pin"></span> <label> - Actual Position</label></div>
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box gray-pin"></span> <label> -  Not Placed Any Pin</label></div>
+                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box gray-pin"></span> <label> - Not Placed Any Pin</label></div>
                                                 </div>
                                             </div>
                                         </div>

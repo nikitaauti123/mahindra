@@ -99,7 +99,7 @@ $routes->get('/api/jobs/history_list', 'Jobs\\Api\\JobsApiController::history_li
 $routes->post('/api/jobs/set_api_jobs', 'Jobs\\Api\\JobsApiController::set_api_jobs');
 
 $routes->post('/api/jobs/add_job', 'Jobs\\Api\\JobsApiController::add_job');
-
+$routes->post('/api/jobs/set_job_actions', 'Jobs\\Api\\JobsApiController::set_job_actions');
 
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');
 $routes->get('/admin/roles/add', 'Roles\\RolesController::Create');

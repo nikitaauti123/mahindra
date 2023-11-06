@@ -1110,20 +1110,84 @@ function check_path_and_change_sidebar(){
 }
 
 check_path_and_change_sidebar();
-
+$('.end_time_left').hide();
 $(document).ready(function () {
     if ($('.digital-clock').length > 0) {
         var interval = '';
-        $("#start_time").on('click', function (e) {
+        $(".start_time_left").on('click', function (e) {
             e.preventDefault();
             clockUpdate();
+         
             //if(interval != '') {
             interval = setInterval(clockUpdate, 1000);
+            let id = $('#part_left_id').val();
+            if(id==''){
+                alert('please select part id first');
+                return false;
+            }
+            $.ajax({
+                url: base_url + 'api/jobs/set_job_actions',
+                method: "POST",
+                data: {'side': 'left',part_id:id,time:'start_time'},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+                },
+            }).done(function (data) {
+                 successMsg(data.msg);
+            $('#update_id_left').val(data.lastInsertid);
+            $('.parts_left_jobs').hide();
+            $('.start_time_left').hide();
+            $('.end_time_left').show();
+            
+            }).fail(function (data) {
+                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                if (typeof data.responseJSON.messages === 'object') {
+                    for (let i in data.responseJSON.messages) {
+                        failMsg(data.responseJSON.messages[i]);
+                    }
+                } else {
+                    let msg = data.responseJSON.messages.msg;
+                    failMsg(msg);
+                }
+        
+            });
+
+
+
+
+
             //}
         });
-        $("#stop_time").on('click', function (e) {
+        $(".end_time_left").on('click', function (e) {
             e.preventDefault();
             clearInterval(interval);
+            let id = $('#update_id_left').val();
+            $.ajax({
+                url: base_url + 'api/jobs/set_job_actions',
+                method: "POST",
+                data: {'side': 'left',id:id,time:'end_time'},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+                },
+            }).done(function (data) {
+                 successMsg(data.msg);
+          //  $('#update_id_left').val(data.lastInsertid);
+            
+            }).fail(function (data) {
+                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                if (typeof data.responseJSON.messages === 'object') {
+                    for (let i in data.responseJSON.messages) {
+                        failMsg(data.responseJSON.messages[i]);
+                    }
+                } else {
+                    let msg = data.responseJSON.messages.msg;
+                    failMsg(msg);
+                }
+        
+            });
+
         });
     }
 });
@@ -2407,6 +2471,9 @@ function reload_history_tbl() {
 
 
 
+$('.start_time_left').change(function () {
+    let id = $('#part_left_id').val();
+    alert(id);
 
-
-
+   
+});

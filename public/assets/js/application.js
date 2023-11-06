@@ -1090,6 +1090,8 @@ function check_path_and_change_sidebar(){
 
     let paths = pathname.split("/"); 
 
+    console.log("length::", paths.length);
+
     if(paths.length == 6) {
         paths.pop();
         pathname = paths.join("/");
@@ -1105,7 +1107,9 @@ function check_path_and_change_sidebar(){
         pathname == '/public/admin/parts/edit' || 
         pathname == '/public/admin/parts/view' ||
         pathname == '/public/admin/jobs/right_job' || 
-        pathname == '/public/admin/jobs/left_job' 
+        pathname == '/public/admin/jobs/left_job' ||
+        pathname == '/public/admin/jobs' ||
+        pathname == '/public/admin/parts' 
     ) 
     {
         $("body").addClass('sidebar-collapse');

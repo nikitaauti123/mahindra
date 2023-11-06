@@ -32,6 +32,10 @@
 <!-- Toastr -->
 <script src="<?php echo base_url('assets/plugins/toastr/toastr.min.js'); ?>"></script>
 
+<script src="<?php echo base_url('assets/js/moment.min.js'); ?>"></script>
+<!-- Datetime picker -->
+<script src="<?php echo base_url('assets/js/daterangepicker.min.js'); ?>"></script>
+
 <!-- AdminLTE App -->
 <script src="<?php echo base_url('assets/dist_list/js/adminlte.min.js'); ?>"></script>
 <!-- Jquery validations -->

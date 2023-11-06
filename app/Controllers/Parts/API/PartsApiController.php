@@ -10,6 +10,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Exception;
+use DateTime;
 
 Class PartsApiController extends BaseController
 {
@@ -24,7 +25,19 @@ Class PartsApiController extends BaseController
     public function list()
     {
         $result = $this->partsModel->findAll();
-        return $this->respond($result, 200);
+        $combinedData = [];
+        foreach($result as $result_arr){
+           $created_at = new DateTime($result_arr['created_at']);
+             $formatted_date = $created_at->format('d-m-Y h:i A');
+             $result_arr['created_at'] =   $formatted_date;
+
+             $updated_at = new DateTime($result_arr['updated_at']);
+             $formatted_date_update = $updated_at->format('d-m-Y h:i A');
+             $result_arr['updated_at'] =   $formatted_date_update;
+
+            $combinedData[] = $result_arr;
+        }
+        return $this->respond($combinedData, 200);
     }
 
     public function getOne($id)

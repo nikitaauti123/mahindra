@@ -3,6 +3,7 @@
 import { successMsg, failMsg } from "./messages.js";
 
 
+
 function check_login(form_id, btn_id) {
 
     if (!$(form_id).valid()) {
@@ -813,60 +814,56 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
-/* if ($("#start_jobs_data_left").length > 0) {
+if ($("#start_jobs_data_left").length > 0) {
     $("#start_jobs_data_left").find("#part_name").select2();
-
-    function get_part_data_from_socket() {
-        $.ajax({
-            url: base_url + 'api/parts/get_api_url',
-            method: "GET",
-            dataType: "json",
-            success: function (data) {
-                //alert(data.WEBSOCKET_URL);
-                try {
-                    const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
-                    $("#result").html("Title: " + data.title);
-                    var part_id = '';
-                    var event_part_id = '';
-                    var data = '';
-                    var pins = '';
-                    ws.onmessage = (event) => {
-                        var jsonData = JSON.parse(event.data);
-                        part_id = jsonData.part_id;
-                        //pin_status = jsonData.pin_status;
-                        pins=jsonData.pin_status
-                        console.log(pins);
-                        data = jsonData.pin_status;
-                        console.log("data::", jsonData);
-                        let values = '';
-                        let correctInsertedValues = '';
-                        for (const key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                if (values !== "") {
-                                    values += ", "; // Add a comma and space if values is not empty
-                                    correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
-                                }
-                                values += key;
-                                correctInsertedValues += data[key].correct_inserted;
+    $.ajax({
+        url: base_url + 'api/parts/get_api_url',
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            //alert(data.WEBSOCKET_URL);
+            const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
+            $("#result").html("Title: " + data.title);
+            var part_id = '';
+            var event_part_id = '';
+            var data = '';
+            var pins = '';
+            ws.onmessage = (event) => {
+                var jsonData = JSON.parse(event.data);
+                part_id = jsonData.part_id;
+              //  pin_status = jsonData.pin_status;
+                 pins=jsonData.pin_status
+                console.log(pins);
+                data = jsonData.pin_status;
+                let values = '';
+                let correctInsertedValues = '';
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (values !== "") {
+                            values += ", "; // Add a comma and space if values is not empty
+                            correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
+                        }
+                        values += key;
+                        correctInsertedValues += data[key].correct_inserted;
+                    }
+                }
+                var pins_array = values.split(",");
+                var pins_color = correctInsertedValues.split(",");
+                for (let i in pins_array) {
+                    var pin_address = pins_array[i];
+                    var pin_color = pins_color[i];
+                    $(".pins-display").find(".pin-box").each(function (index) {
+                        var title = $(this).attr('title');
+                        var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
+                        if (pattern.test(title)) {
+                            if (pin_color.trim().toLowerCase() === 'true') {
+                                $(this).removeClass('red-pin').addClass('green-pin');
+                            } else if (pin_color.trim().toLowerCase() === 'false') {
+                                $(this).removeClass('green-pin').addClass('red-pin');
                             }
                         }
-                        var pins_array = values.split(",");
-                        var pins_color = correctInsertedValues.split(",");
-                        for (let i in pins_array) {
-                            var pin_address = pins_array[i];
-                            var pin_color = pins_color[i];
-                            $(".pins-display").find(".pin-box").each(function (index) {
-                                var title = $(this).attr('title');
-                                var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
-                                if (pattern.test(title)) {
-                                    if (pin_color.trim().toLowerCase() === 'true') {
-                                        $(this).removeClass('red-pin').addClass('green-pin');
-                                    } else if (pin_color.trim().toLowerCase() === 'false') {
-                                        $(this).removeClass('green-pin').addClass('red-pin');
-                                    }
-                                }
-                            });
-                        }
+                    });
+                }
 
                 $.ajax({
                     type: 'POSt', // or 'GET', depending on your needs
@@ -878,54 +875,38 @@ if ($("#update_parts_data").length > 0) {
                     
                 }).fail(function (data) {
 
+                });
+
+                if (part_id != event_part_id) {
+                    event_part_id = part_id
+                    $.ajax({
+                        type: 'GET', // or 'GET', depending on your needs
+                        url: base_url + 'api/parts/get_one/' + part_id,
+                        data: {},
+                        beforeSend: function (xhr) {
+                        },
+                    }).done(function (data) {
+                        $("#part_name").val('');
+                        $(".part_name").text(data['part_name']);
+                        $("#part_no").text(data['part_no']);
+                        $("#model").text(data['model']);
+                        $("#die_no").text(data['die_no']);
+                        $(".pins-display").find(".pin-box").each(function (index) {
+                            if ($(this).hasClass('orange-pin')) {
+                                $(this).removeClass('orange-pin').addClass('gray-pin');
+                            }
                         });
+                    }).fail(function (data) {
 
-                        if (part_id != event_part_id) {
-                            event_part_id = part_id
-                            $.ajax({
-                                type: 'GET', // or 'GET', depending on your needs
-                                url: base_url + 'api/parts/get_one/' + part_id,
-                                data: {},
-                                beforeSend: function (xhr) {
-                                },
-                            }).done(function (data) {
-                                $("#part_name").val('');
-                                $(".part_name").text(data['part_name']);
-                                $("#part_no").text(data['part_no']);
-                                $("#model").text(data['model']);
-                                $("#die_no").text(data['die_no']);
-                                $(".pins-display").find(".pin-box").each(function (index) {
-                                    if ($(this).hasClass('orange-pin')) {
-                                        $(this).removeClass('orange-pin').addClass('gray-pin');
-                                    }
-                                });
-                            }).fail(function (data) {
-
-                            });
-                        }
-                    }
-
-                    ws.addEventListener("error", (event) => {
-                        console.log("WebSocket error: ", event);
                     });
-
-                    ws.onclose = event => {
-                        get_part_data_from_socket();
-                        console.log("on close", "sss");
-                    }
-
-                    
-                } catch (err) {
-                    console.log("exception::", err.message);
                 }
             }
-        });
-    }
+        }
 
-    get_part_data_from_socket();
-} */
+    })
+}
 
-/* if ($("#start_jobs_data_right").length > 0) {
+if ($("#start_jobs_data_right").length > 0) {
     $("#start_jobs_data_right").find("#part_name").select2();
     $.ajax({
         url: base_url + 'api/parts/get_api_url',
@@ -941,7 +922,6 @@ if ($("#update_parts_data").length > 0) {
             var pins = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
-                console.log("jsonData", jsonData);
                 part_id = jsonData.part_id;
                 pins=jsonData.pin_status
                 data = jsonData.pin_status;
@@ -1012,7 +992,9 @@ if ($("#update_parts_data").length > 0) {
         }
 
     })
-} */
+}
+
+// } */
 
 // 0 - green
 // 1 - red
@@ -1181,6 +1163,9 @@ $("#part-export").on('click', function () {
 });
 
 if ($("#update_users").length > 0) {
+    new SlimSelect({
+        select: '#role_id'
+    });
     let id = $("#update_users").find("input[name='id']").val();
     $.ajax({
         url: base_url + 'api/users/get_one/' + id,
@@ -1301,8 +1286,11 @@ if ($("#update_users").length > 0) {
         });
     });
 }
-
+$(document).ready(function() {
 if ($("#add_users").length > 0) {
+    new SlimSelect({
+        select: '#role_id'
+    });
     $("#add_users").validate({
         rules: {
             'first_name': {
@@ -1379,6 +1367,7 @@ if ($("#add_users").length > 0) {
         });
     });
 }
+});
 function part_active_inactive(id, is_active) {
     var res = confirm("Do you want to update this part status?");
     if (res == true) {
@@ -2028,7 +2017,7 @@ $(document).on("click", "#select_all", function () {
         $("input[name='permission_id[]']").attr("checked", false);
     }
 });
-var date_formate = 'DD-MM-YYYY';
+var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="f_date"]').daterangepicker({
     locale: {
@@ -2061,12 +2050,35 @@ $(document).ready(function () {
 });
 function generate_table() {
     if ($("#completed_list_tbl").length > 0) {
+
+        new SlimSelect({
+            select: '#part_name_filter'
+        });
+        
+        
+        new SlimSelect({
+            select: '#part_no_filter'
+        });
+        new SlimSelect({
+            select: '#part_model_filter'
+        });
+        new SlimSelect({
+            select: '#part_die_no_filter'
+        });
+
         var part_no = $("#part_no_filter").val();
         var from_to_date = $("#f_date").val();
         var dateParts = from_to_date.split(" - ");
-        // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-        var from_date = dateParts[0];
-        var to_date = dateParts[1];
+
+        // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+        var from_date_str = dateParts[0];
+        var to_date_str = dateParts[1];
+        
+        // Use Moment.js to parse and format the dates
+        var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        
+           
         var part_name = $("#part_name_filter").val();
         var model = $("#part_model_filter").val();
         var die_no = $("#part_die_no_filter").val();
@@ -2168,9 +2180,15 @@ function reload_complete_tbl() {
     var part_no = $("#part_no_filter").val();
     var from_to_date = $("#f_date").val();
     var dateParts = from_to_date.split(" - ");
-    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-    var from_date = dateParts[0];
-    var to_date = dateParts[1];
+
+    // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+    var from_date_str = dateParts[0];
+    var to_date_str = dateParts[1];
+    
+    // Use Moment.js to parse and format the dates
+    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    
     var part_name = $("#part_name_filter").val();
     // alert(to_date); 
     var model = $("#part_model_filter").val();
@@ -2189,7 +2207,9 @@ function reload_complete_tbl() {
         die_no).load();
 }
 
-var date_formate = 'DD-MM-YYYY';
+
+
+var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="f_date_history"]').daterangepicker({
     locale: {
@@ -2213,7 +2233,7 @@ $('#part_model_filter_history').change(function () {
     hide_show_complete_history();
 });
 $('#part_die_no_filter_history').change(function () {
-    hide_show_complete_history(); alert('change_die');
+    hide_show_complete_history(); 
 });
 
 function hide_show_complete_history() {
@@ -2225,12 +2245,39 @@ history_table = generate_table_history();
 function generate_table_history() {
     if ($("#history_list_tbl").length > 0) {
 
+
+        new SlimSelect({
+            select: '#part_name_filter_history',
+          })
+        
+          
+        new SlimSelect({
+            select: '#part_no_filter_history',
+          })
+          new SlimSelect({
+            select: '#part_model_filter_history'
+        });
+        
+        new SlimSelect({
+            select: '#part_die_no_filter_history'
+        });
+
         var part_no = $("#part_no_filter_history").val();
         var from_to_date = $("#f_date_history").val();
         var dateParts = from_to_date.split(" - ");
-        // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-        var from_date = dateParts[0];
-        var to_date = dateParts[1];
+
+        // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+        var from_date_str = dateParts[0];
+        var to_date_str = dateParts[1];
+        
+        // Use Moment.js to parse and format the dates
+        var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        
+        // var dateParts = from_to_date.split(" - ");
+        // // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
+        // var from_date = dateParts[0];
+        // var to_date = dateParts[1];
         var part_name = $("#part_name_filter_history").val();
         // alert(to_date); 
 
@@ -2335,9 +2382,11 @@ function reload_history_tbl() {
     var part_no = $("#part_no_filter_history").val();
     var from_to_date = $("#f_date_history").val();
     var dateParts = from_to_date.split(" - ");
-    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-    var from_date = dateParts[0];
-    var to_date = dateParts[1];
+    var from_date_str = dateParts[0];
+    var to_date_str = dateParts[1];
+    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+
     var part_name = $("#part_name_filter_history").val();
     // alert(to_date); 
     var model = $("#part_model_filter_history").val();
@@ -2357,6 +2406,7 @@ function reload_history_tbl() {
 }
 
 
-// new SlimSelect({
-//     select: '#part_name_filter_history',
-//   })
+
+
+
+

@@ -1174,12 +1174,7 @@ $(document).ready(function () {
                     //}
                 }
                 
-                if ($("#start_jobs_data_right").length > 0) { 
-                    fetch_job_details_from_db('right', id);
-                    //if(rightInterval=='') {
-                        rightInterval= setTimeInterval(function(){fetch_job_details_from_db('right', id)}, 5000);
-                    //}
-                }
+                
 
             }).fail(function (data) {
                 $(btn_id).removeClass('button--loading').attr('disabled', false);
@@ -1243,7 +1238,7 @@ $(document).ready(function () {
          
             //if(interval != '') {
             // interval = setInterval(clockUpdate, 1000);
-            let id = $('#part_right_id').val();
+            var id = $('#part_right_id').val();
             if(id==''){
                 alert('please select part name first');
                 return false;
@@ -1257,11 +1252,26 @@ $(document).ready(function () {
                     //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
                 },
             }).done(function (data) {
-                 successMsg(data.msg);
-            $('#update_id_right').val(data.lastInsertid);
-            $('.parts_right_jobs').hide();
-            $('.start_time_right').hide();
-            $('.end_time_right').show();
+                
+                successMsg(data.msg);
+                $('#update_id_right').val(data.lastInsertid);
+                $('#part_right_id').parent('div').hide();
+                $('.start_time_right').hide();
+                $('.end_time_right').show();
+                $("#display_part-details").show();
+
+                if ($("#start_jobs_data_right").length > 0) { 
+
+                    $(".part_name").html('');
+                    $("#part_no").html('');
+                    $("#model").html('');
+                    $("#die_no").html('');
+
+                    fetch_job_details_from_db('right', id);
+                    //if(rightInterval=='') {
+                        rightInterval= setTimeInterval(function(){fetch_job_details_from_db('right', id)}, 5000);
+                    //}
+                }
             
             }).fail(function (data) {
                 $(btn_id).removeClass('button--loading').attr('disabled', false);
@@ -1272,36 +1282,30 @@ $(document).ready(function () {
                 } else {
                     let msg = data.responseJSON.messages.msg;
                     failMsg(msg);
-                }
-        
+                }        
             });
-
-
-
-
-
             //}
         });
         $(".end_time_right").on('click', function (e) {
             e.preventDefault();
-            clearInterval(interval);
+            //clearInterval(interval);
+            clearInterval(rightInterval);
             let id = $('#update_id_right').val();
             $.ajax({
                 url: base_url + 'api/jobs/set_job_actions',
                 method: "POST",
-                data: {'side': 'right',id:id,time:'end_time'},
+                data: {'side': 'right', id: id, time:'end_time'},
                 dataType: "json",
                 beforeSend: function (xhr) {
                     //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
                 },
             }).done(function (data) {
-                 successMsg(data.msg);
-                 $('.parts_right_jobs').show();
-                 $('.start_time_right').show();
-                 $('.end_time_right').hide();
-              $('#part_right_id').val('');
-          //  $('#update_id_left').val(data.lastInsertid);
-            
+                successMsg(data.msg);
+                $('#part_right_id').parent('div').show();
+                $('.start_time_right').show();
+                $('.end_time_right').hide();
+                $('#part_right_id').val('');
+                $("#display_part-details").hide();        
             }).fail(function (data) {
                 $(btn_id).removeClass('button--loading').attr('disabled', false);
                 if (typeof data.responseJSON.messages === 'object') {
@@ -2788,6 +2792,15 @@ if($("#completed_list_tbl_data").length>0) {
 if($("#part_left_id").length>0) {
     new SlimSelect({
         select: '#part_left_id',
+        onChange: (newVal) => {
+
+        }
+    });
+}
+
+if($("#part_right_id").length>0) {
+    new SlimSelect({
+        select: '#part_right_id',
         onChange: (newVal) => {
 
         }

@@ -1003,7 +1003,7 @@ if ($("#update_parts_data").length > 0) {
 
 var event_part_id = '';
 
-function fetch_job_details_from_db(side, part_id) {
+function fetch_job_details_from_db(side, part_id) {    
     $.ajax({
         url: base_url + 'api/jobs/get_api_data',
         method: "POST",
@@ -1162,6 +1162,12 @@ $(document).ready(function () {
                 $("#display_part-details").show();
 
                 if ($("#start_jobs_data_left").length > 0) { 
+
+                    $(".part_name").html('');
+                    $("#part_no").html('');
+                    $("#model").html('');
+                    $("#die_no").html('');
+
                     fetch_job_details_from_db('left', id);
                     //if(leftInterval=='') {
                         leftInterval = setInterval(function(){fetch_job_details_from_db('left', id)}, 5000);

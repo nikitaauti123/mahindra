@@ -417,12 +417,42 @@ class JobsApiController extends BaseController
 
     }
 
+    public function update_image($id)
+    {
+
+        try {
+            helper(['form']);
+
+            if (!$id) {
+                return $this->fail('Please provide valid id', 400, true);
+            }
+
+            $rules = [
+                'image_url'  => 'required|min_length[2]|max_length[255]'
+            ];
+
+            if (!$this->validate($rules)) {
+                return $this->fail($this->validator->getErrors(), 400, true);
+            }
+
+            $this->JobActionsModel = new JobActionsModel();
+
+            $data['image_url'] = $this->request->getVar('image_url');
+            $result['is_updated'] = $this->JobActionsModel->update($id, $data);
+            $result['msg'] = lang('Jobs.JobsSuccessUpdateMsg');
+            return $this->respond($result, 200);
+        } catch (\Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
+    }
+
     public function get_job_status(){
 
         $this->JobActionsModel = new JobActionsModel();
 
         $result = $this->JobActionsModel
-            ->select('part_id, side, start_time, end_time')
+            ->select('id, part_id, side, start_time, end_time')
             ->orderBy('id', 'DESC')
             ->where('end_time IS NULL')
             //->limit(1) // Set the limit to 1 to fetch only o ne row

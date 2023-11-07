@@ -2746,6 +2746,11 @@ function reload_completed_jobs_tbl() {
 }
 
 $("#completed_jobs_list_form #from_date").daterangepicker({
+    clearBtn: true,
+    "showDropdowns": true,
+    startDate: moment().subtract(1, 'month'),
+    endDate: new Date(),
+    maxDate: new Date(),
 });
 
 $('#completed_jobs_list_form #from_date').on('apply.daterangepicker', function(ev, picker) {

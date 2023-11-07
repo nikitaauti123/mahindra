@@ -96,6 +96,8 @@ $routes->get('/api/jobs/get_one/(:num)', 'Jobs\\Api\\JobsApiController::getOne/$
 $routes->get('/api/jobs/completed_list', 'Jobs\\Api\\JobsApiController::completed_list');
 $routes->get('/api/jobs/report_completed_list', 'Jobs\\Api\\JobsApiController::report_completed_list');
 
+$routes->post('/api/jobs/update_image/(:num)', 'Jobs\\Api\\JobsApiController::update_image/$1');
+
 $routes->post('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
 $routes->get('/api/jobs/history_list', 'Jobs\\Api\\JobsApiController::history_list');
 $routes->post('/api/jobs/set_api_jobs', 'Jobs\\Api\\JobsApiController::set_api_jobs');

@@ -401,12 +401,13 @@ class JobsApiController extends BaseController
             } else {
             
                 $id  = $this->request->getVar('id');
-                $data = [
+                /* $data = [
                     'side' => $this->request->getVar('side'),
                     'end_time' => date('Y-m-d H:i:s'),
                     'updated_by' => $this->session->get('id'),
-                ];
-                $result['id'] = $this->JobActionsModel->update($id, $data);
+                ]; */
+                //$result['id'] = $this->JobActionsModel->update(['part_id'=>$id], $data);
+                $this->JobActionsModel->update_data($id, $this->request->getVar('side'), $this->session->get('id'), date('Y-m-d H:i:s'));
                 $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
             }
             return $this->respond($result, 200);

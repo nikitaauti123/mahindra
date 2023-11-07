@@ -42,6 +42,8 @@ class JobsController extends BaseController
         helper('WebSocketHelper');
         $partsModel = new PartsModel();
         $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+        $data['jobs'] = $this->jobActionModel->where('end_time IS NULL')->where('side', 'right')->orderBy('id', 'DESC')->limit(1)->findAll();
+
         $data['request'] = $this->request;
         return view('jobs/right_job', $data);
     }

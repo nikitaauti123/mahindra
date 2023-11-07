@@ -50,4 +50,15 @@ class JobActionsModel extends Model
     protected $afterDelete    = [];
 
     
+
+    public function update_data($part_id, $side, $by_id, $end_time)
+    {
+
+        $builder = $this->builder();
+        $builder->set('end_time', $end_time)
+                ->set('updated_by', $by_id)
+                ->where('part_id', $part_id)
+                ->where('side', $side)
+                ->update();        
+    }
 }

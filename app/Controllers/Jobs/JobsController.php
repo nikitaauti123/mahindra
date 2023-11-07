@@ -5,15 +5,18 @@ namespace App\Controllers\Jobs;
 use App\Controllers\BaseController;
 use App\Models\PartsModel;
 use App\Models\JobsHistoryModel;
+use App\Models\JobActionsModel;
 
 class JobsController extends BaseController
 {
     protected $partModel;
     protected $jobshistoryModel;
+    protected $jobActionModel;
     function __construct()
     {
         $this->partModel = new PartsModel();
         $this->jobshistoryModel = new JobsHistoryModel();
+        $this->jobActionModel = new JobActionsModel();
     }
     public function List()
     {
@@ -46,7 +49,10 @@ class JobsController extends BaseController
     {
         helper('WebSocketHelper');
         $partsModel = new PartsModel();
-        $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+        $data['parts'] = $partsModel->where('is_active', '1')->findAll(); 
+
+        $data['jobs'] = $this->jobActionModel->where('end_time IS NULL')->where('side', 'left')->orderBy('id', 'DESC')->limit(1)->findAll();
+
         $data['request'] = $this->request;
         return view('jobs/left_job', $data);
     }

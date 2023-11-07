@@ -170,12 +170,14 @@ class JobsApiController extends BaseController
 
         $result = $this->jobsModel
             ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
-            ->join('parts', 'parts.id = jobs.part_id')
+            ->join('parts', 'jobs.part_id = parts.id', 'right')
             ->orderBy('jobs.id', 'DESC')
-            ->where('jobs.side', $this->request->getVar('side'))
+           // ->where('jobs.side', $this->request->getVar('side'))
+            ->where('parts.id', $this->request->getVar('part_id'))
             ->limit(1) // Set the limit to 1 to fetch only one row
             ->get()
             ->getRow();
+
 
         if ($result) {
             return $this->respond($result, 200);
@@ -381,6 +383,8 @@ class JobsApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
+
+
     public function set_job_actions()
     {
         try {
@@ -421,7 +425,7 @@ class JobsApiController extends BaseController
             ->select('part_id, side, start_time, end_time')
             ->orderBy('id', 'DESC')
             ->where('end_time IS NULL')
-            //->limit(1) // Set the limit to 1 to fetch only one row
+            //->limit(1) // Set the limit to 1 to fetch only o ne row
             ->get()
             ->getResult();
 
@@ -429,6 +433,69 @@ class JobsApiController extends BaseController
             return $this->respond($result, 200);
         }
         return $this->respond([['error' => true, 'message' => 'No job started']], 404);
+    }
+
+    private function change_date_format($str){
+        $date_str = explode("/", $str);
+        return $date_str[2]."-".$date_str[0]."-".$date_str[1];
+    }
+
+    public  function report_completed_list()
+    {
+        $result = [];
+        $this->JobActionsModel = new JobActionsModel();
+        if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+            
+            $from_date = $this->request->getVar('from_date');
+            $f_date = $this->change_date_format($from_date)." 00:00:00";
+            $to_date = $this->request->getVar('to_date');
+            $t_date = $this->change_date_format(($to_date)). " 23:59:59";
+            $this->JobActionsModel->where("start_time >= '" . $f_date . "'", null, false);
+            $this->JobActionsModel->where("end_time <= '" . $t_date . "'", null, false);
+        }
+        if (!empty($this->request->getVar('part_name'))) {
+            $this->JobActionsModel->where('parts.part_name', $this->request->getVar('part_name'));
+        }
+
+        if (!empty($this->request->getVar('part_no'))) {
+            $this->JobActionsModel->where('parts.part_no', $this->request->getVar('part_no'));
+        }
+        if (!empty($this->request->getVar('model'))) {
+            $this->JobActionsModel->where('parts.model', $this->request->getVar('model'));
+        }
+        if (!empty($this->request->getVar('die_no'))) {
+            $this->JobActionsModel->where('parts.die_no', $this->request->getVar('die_no'));
+        }
+
+        $this->JobActionsModel->select('*');
+        $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
+        $result = $this->JobActionsModel->findAll();
+
+        foreach ($result as $key=>$result_arr) {
+
+            if(isset($result_arr['start_time'])) {
+                $result[$key]['start_time'] = date("d-m-Y h:i A", strtotime($result_arr['start_time']));
+            }
+
+            if(isset($result_arr['end_time'])) {
+                $result[$key]['end_time'] = date("d-m-Y h:i A", strtotime($result_arr['end_time']));
+            }
+            
+            /* $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
+            $this->PartsModel->where('id', $result_arr['part_id']);
+            $partData = $this->PartsModel->first();
+
+
+            if ($partData) {
+                // Combine the data from the two tables and store it in the results array.
+                $combinedResult = array_merge($result_arr, $partData);
+                $combinedResults[] = $combinedResult;
+            } */
+
+          
+        }
+
+        return $this->respond($result, 200);
     }
 
 }

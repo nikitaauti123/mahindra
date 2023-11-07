@@ -521,15 +521,20 @@ form .error {
 }
 .ss-main .ss-single-selected {   
     cursor: pointer; 
-     width: 100%; 
-     height: 0px; 
+    width: 100%; 
+    height: 0px; 
+    padding-top: 11px;
 }
 .ss-main .ss-single-selected .ss-arrow span.arrow-down {
     transform: rotate(45deg);
-    margin: 8px 0 0;
+    margin: 3px 0 0;
 }
 .ss-main .ss-single-selected .placeholder, .ss-main .ss-single-selected .placeholder * {   
     overflow: inherit;
+}
+
+#start_time_left_parent .ss-main {
+    width: 200px !important;
 }
 
 .color-legends .legend-box {

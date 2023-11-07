@@ -54,13 +54,13 @@
                                     <div class="col-md-3 ">
                                         <div class="form-group">
                                             <label for="sel1"><?php echo lang('Parts.PartName'); ?>:</label>
-                                            <select name="part_name_filter" id="part_name_filter" class="form-control part_name_filter_completed">
+                                            <select name="part_name_filter" id="cmp_part_name_filter" class="form-control part_name_filter_completed">
                                                 <option value="">All <?php echo lang('Parts.PartName'); ?></option>
                                                 <?php
                                                 // print_r($s);exit;
                                                 foreach ($part as $parts) {
                                                     if(!empty($parts['part_name'])) {
-                                                        echo '<option value="' . $parts['id'] . '">' . $parts['part_name'] . '</option>';
+                                                        echo '<option value="' . $parts['part_name'] . '">' . $parts['part_name'] . '</option>';
                                                     }
                                                 }
                                                 ?>
@@ -70,13 +70,13 @@
                                     <div class="col-md-3 ">
                                         <div class="form-group">
                                             <label for="sel1"><?php echo lang('Parts.PartNo'); ?>:</label>
-                                            <select name="part_no_filter" id="part_no_filter" class="form-control">
+                                            <select name="part_no_filter" id="cmp_part_no_filter" class="form-control">
                                                 <option value="">All <?php echo lang('Parts.PartNo'); ?></option>
                                                 <?php
                                                 // print_r($s);exit;
                                                 foreach ($part as $parts) {
                                                     if(!empty($parts['part_no'])) {
-                                                        echo '<option value="' . $parts['id'] . '">' . $parts['part_no'] . '</option>';
+                                                        echo '<option value="' . $parts['part_no'] . '">' . $parts['part_no'] . '</option>';
                                                     }    
                                                 }
                                                 ?>
@@ -86,13 +86,13 @@
                                     <div class="col-md-3 ">
                                         <div class="form-group">
                                             <label for="sel1"><?php echo lang('Parts.Model'); ?>:</label>
-                                            <select name="part_model_filter" id="part_model_filter" class="form-control">
+                                            <select name="part_model_filter" id="cmp_part_model_filter" class="form-control">
                                                 <option value="">All <?php echo lang('Parts.Model'); ?></option>
                                                 <?php
                                                 // print_r($s);exit;
                                                 foreach ($part as $parts) {
                                                     if(!empty($parts['model'])) {
-                                                        echo '<option value="' . $parts['id'] . '">' . $parts['model'] . '</option>';
+                                                        echo '<option value="' . $parts['model'] . '">' . $parts['model'] . '</option>';
                                                     }
                                                 }
                                                 ?>
@@ -104,13 +104,13 @@
                                     <div class="col-md-3 ">
                                         <div class="form-group">
                                             <label for="sel1"><?php echo lang('Parts.DieNo'); ?>:</label>
-                                            <select name="part_die_no_filter" id="part_die_no_filter" class="form-control">
+                                            <select name="part_die_no_filter" id="cmp_part_die_no_filter" class="form-control">
                                                 <option value="">All <?php echo lang('Parts.DieNo'); ?></option>
                                                 <?php
                                                 // print_r($s);exit;
                                                 foreach ($part as $parts) {
                                                     if(!empty($parts['die_no'])) {
-                                                        echo '<option value="' . $parts['id'] . '">' . $parts['die_no'] . '</option>';
+                                                        echo '<option value="' . $parts['die_no'] . '">' . $parts['die_no'] . '</option>';
                                                     }
                                                 }
                                                 ?>

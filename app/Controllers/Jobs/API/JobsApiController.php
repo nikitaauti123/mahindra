@@ -528,4 +528,18 @@ class JobsApiController extends BaseController
         return $this->respond($result, 200);
     }
 
+    public function report_list_dashboard(){
+    $result = $this->JobActionsModel
+        ->select('*')    
+        ->join('parts', 'job_actions.part_id = parts.id')
+        ->orderBy('job_actions.id', 'DESC')
+        ->where('job_actions.end_time IS NOT NULL', null, false)
+        ->limit(10)
+        ->get()
+        ->getResult(); 
+        // print_r($result);
+            return $this->respond($result, 200);
+            
+        }
+
 }

@@ -8,6 +8,9 @@ use App\Models\UsersModel;
 use App\Models\RolesPermissionModel;
 use App\Models\UsersRolesModel;
 use App\Models\RolesModel;
+use App\Models\jobsModel;
+use App\Models\PartsModel;
+use App\Models\JobActionsModel;
 use DateTime;
 
 use Exception;
@@ -19,6 +22,10 @@ Class UsersApiController extends BaseController
     private $usersRoleModel;
     private $rolespermissionModel;
     private $roleModel;
+    private $jobsModel;
+    private $PartsModel;
+    private $jobactionsModel;
+
 
     public function __construct()
     {
@@ -26,8 +33,9 @@ Class UsersApiController extends BaseController
         $this->rolespermissionModel = new RolesPermissionModel();
         $this->usersRoleModel = new UsersRolesModel();
         $this->roleModel = new RolesModel();
-        
-        
+        $this->jobsModel = new jobsModel();
+        $this->PartsModel = new PartsModel();
+        $this->jobactionsModel = new JobActionsModel();
     }
     public function getOne($id)
     {
@@ -274,5 +282,56 @@ Class UsersApiController extends BaseController
         }
     
         return $this->respond($result, 200);
+    }
+
+    public function get_all_count(){
+        try {        
+            if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+                $from_date = $this->request->getVar('from_date');
+                $f_date = date("Y-m-d", strtotime($from_date));
+                $to_date = $this->request->getVar('to_date');
+                $t_date = date("Y-m-d", strtotime($to_date));
+                $this->jobsModel->where("DATE_FORMAT(created_at, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
+                $this->jobsModel->where("DATE_FORMAT(created_at, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
+            }
+            $this->jobsModel->where('end_time IS NOT NULL', null, false);        
+            $result = $this->jobsModel->findAll();
+            $combinedResults  = array();
+            foreach ($result as $result_arr) {
+                $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
+                $this->PartsModel->where('id', $result_arr['part_id']);
+                $partData = $this->PartsModel->first();
+                if ($partData) {
+                    // Combine the data from the two tables and store it in the results array.
+                    $combinedResult = array_merge($result_arr, $partData);
+                    $combinedResults[] = $combinedResult;
+                }
+            }
+            $result['total_completed_jobs'] =count($combinedResults);
+            $result['total_job'] =count($combinedResults);
+
+
+            if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+                $from_date = $this->request->getVar('from_date');
+                $f_date = date("Y-m-d", strtotime($from_date));
+                $to_date = $this->request->getVar('to_date');
+                $t_date = date("Y-m-d", strtotime($to_date));
+                // print_r($f_date);
+                // print_r($t_date);
+                  $this->jobactionsModel->where("DATE_FORMAT(start_time, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
+                $this->jobactionsModel->where("DATE_FORMAT(end_time, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
+            }
+            $this->jobactionsModel->where('side','left');
+            $result_left = $this->jobactionsModel->findAll();
+            $result['job_action_count_left'] =count($result_left);
+            $this->jobactionsModel->where('side','right');
+            $result_right = $this->jobactionsModel->findAll();
+            $result['job_action_count_right'] =count($result_right);
+
+          
+            echo json_encode($result);
+            die();
+        } catch (Exception $e) {
+        }
     }
 }

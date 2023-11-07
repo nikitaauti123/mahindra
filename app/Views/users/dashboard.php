@@ -28,7 +28,7 @@
                     <div class="col-3">
                         <div class="form-group">
                             <label for="from_date">Date</label>
-                            <input type="text" id="from_date" class="form-control" value="<?php echo date('d-m-Y'); ?>">
+                            <input type="text" id="from_date_dashboard" name="from_date_dashboard" class="form-control" value="<?php echo date('d-m-Y'); ?>">
                         </div>
                     </div>
                     <div class="col-9 text-right">
@@ -39,7 +39,26 @@
                 </div>
                 <!-- Info boxes -->
                 <div class="row">
+                <div class="col-12 col-sm-6 col-md-3">
+                <a href="<?=base_url();?>admin/jobs/list">
+                      
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-warning elevation-1">
+                                <i class="fas fa-list"></i>
+                                
+                            </span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text"><?php echo lang('Dashboard.TotalJobs'); ?></span>
+                                <span class="info-box-number" id="total_job">
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div></a>
+                        <!-- /.info-box -->
+                    </div>
                     <div class="col-12 col-sm-6 col-md-3">
+                        <a href="<?=base_url();?>admin/reports/completed_jobs_list">
                         <div class="info-box">
                             <span class="info-box-icon bg-success elevation-1">
                                 <i class="fas fa-calendar-check"></i>
@@ -47,24 +66,42 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text"><?php echo lang('Dashboard.TotCas'); ?></span>
-                                <span class="info-box-number">
-                                    1209
+                                <span class="info-box-number"  id="total_completed_jobs">
+                                   
                                 </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        </a>
+                        <!-- /.info-box -->
+                    </div>
+                    
+                    <!-- /.col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3">
+                            <span class="info-box-icon bg-primary elevation-1">
+                                <i class="fas fa-clock"></i>
+                            </span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text"><?php echo lang('Dashboard.JobACFLeft'); ?></span>
+                                <span class="info-box-number" id="JobACFLeft">
+                                    6.5 hrs</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
                         <!-- /.info-box -->
                     </div>
-                    <!-- /.col -->
                     <div class="col-12 col-sm-6 col-md-3">
                         <div class="info-box mb-3">
-                            <span class="info-box-icon bg-warning elevation-1">
+                            <span class="info-box-icon bg-info elevation-1">
                                 <i class="fas fa-clock"></i>
                             </span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text"><?php echo lang('Dashboard.InTAT'); ?></span>
-                                <span class="info-box-number">6.5 hrs</span>
+                                <span class="info-box-text"><?php echo lang('Dashboard.JobACFRight'); ?></span>
+                                <span class="info-box-number" id="JobACFRight">
+                                    6.5 hrs</span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -131,73 +168,16 @@
                             <!-- /.card-header -->
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table class="table m-0">
+                                    <table id="dashboard_list_tbl" class="table m-0">
                                         <thead>
                                             <tr>
-                                                <th>Part No</th>
-                                                <th>Part Name</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
+                                                <th><?php echo lang('Dashboard.PartNo')?></th>
+                                                <th><?php echo lang('Dashboard.PartName')?></th>
+                                                <th><?php echo lang('Dashboard.Status')?></th>
+                                                <th><?php echo lang('Dashboard.Actions')?></th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><a href="#">PT9842</a></td>
-                                                <td>LEFT DOOR</td>
-                                                <td><span class="badge badge-success">Completed</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00a65a" data-height="20"><button class="btn btn-primary">View</button></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">PT1848</a></td>
-                                                <td>RIGHT DOOR</td>
-                                                <td><span class="badge badge-success">Completed</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f39c12" data-height="20"><button class="btn btn-primary">View</button></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">PT7429</a></td>
-                                                <td>FRONT PANEL</td>
-                                                <td><span class="badge badge-success">Completed</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f56954" data-height="20"><button class="btn btn-primary">View</button></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">PT7429</a></td>
-                                                <td>BACK PANEL</td>
-                                                <td><span class="badge badge-info">Processing</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00c0ef" data-height="20"><button class="btn btn-primary">View</button></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">PT1848</a></td>
-                                                <td>LEFT SIDE PANEL</td>
-                                                <td><span class="badge badge-success">Completed</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f39c12" data-height="20"><button class="btn btn-primary">View</button></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">PT7429</a></td>
-                                                <td>RIGTH SIDE PANEL</td>
-                                                <td><span class="badge badge-success">Completed</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f56954" data-height="20"><button class="btn btn-primary">View</button></div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="#">PT9842</a></td>
-                                                <td>BACK DOOR</td>
-                                                <td><span class="badge badge-success">Completed</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00a65a" data-height="20"><button class="btn btn-primary">View</button></div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                        
                                     </table>
                                 </div>
                                 <!-- /.table-responsive -->
@@ -205,7 +185,7 @@
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
                                 <!-- <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a> -->
-                                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Jobs</a>
+                                <a href="<?=base_url()?>admin/reports/completed_jobs_list" class="btn btn-sm btn-secondary float-right">View All Jobs</a>
                             </div>
                             <!-- /.card-footer -->
                         </div>

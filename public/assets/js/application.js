@@ -2793,3 +2793,117 @@ if($("#part_left_id").length>0) {
         }
     });
 }
+
+var date_formate = 'DD-MM-YYYY HH:mm A';
+var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
+$('input[name="from_date_dashboard"]').daterangepicker({
+    locale: {
+        format: date_formate
+    },
+    startDate: defaultStartDate,
+
+});
+
+
+get_all_count();
+
+function get_all_count() {
+    var from_to_date = $("#from_date_dashboard").val();
+    var dateParts = from_to_date.split(" - ");
+    var from_date_str = dateParts[0];
+    var to_date_str = dateParts[1];
+    
+    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    $.ajax({
+        url: base_url + 'api/users/get_all_count',
+        method: "POST",
+        data: { from_date:from_date,to_date:to_date},
+        dataType: "json",
+        beforeSend: function() {},
+        complete: function() {
+
+        },
+        success: function(data) {
+            $("#total_completed_jobs").html(parseInt(data.total_completed_jobs));
+            $("#JobACFLeft").html(parseInt(data.job_action_count_left));
+            $("#JobACFRight").html(parseInt(data.job_action_count_right));
+            $("#total_job").html(parseInt(data.total_job));
+            $("#total_tpa").html(parseInt(data.total_tpa));
+            },
+        error: function() {}
+    });
+}
+
+
+
+if ($("#dashboard_list_tbl").length > 0) {
+    // table
+    var dashboard_table = $("#dashboard_list_tbl").DataTable({
+        "ordering": true,
+        'order': [[0, 'asc']],
+        'serverMethod': 'get',
+        'language': {
+            'loadingRecords': '&nbsp;',
+            'processing': 'Loading...',
+            "emptyTable": "There is no record to display"
+        },
+        "dom": 'Bfrtip',
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print"],
+        "lengthMenu": [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'All'],
+        ],
+        "ajax": {
+            "url": base_url + "api/jobs/report_list_dashboard",
+            "dataSrc": "",
+        },
+        "columns": [
+            {
+                "data": "part_no",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+
+            {
+                "data": "part_name",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
+                "data": "end_time",
+                "render": function (data, type, row, meta) {
+                   
+                        // Assuming "cb-switch" is the ID of the checkbox input element
+                        var checkboxId = "cb-switch";
+                        // Create a unique ID for each checkbox
+                         if (data !== 'null') {
+                                   return 'completed';
+                                  } else {
+                          return'pending' ;    }
+
+                   
+                }
+            },
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return '<a href="' + base_url + 'admin/reports/completed_jobs_list/' + row['id'] + '" ><i class="fa fa-eye"></i></a>';
+                }
+            }
+
+        ]
+    });
+}

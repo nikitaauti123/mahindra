@@ -295,9 +295,9 @@ Class UsersApiController extends BaseController
                 $this->jobsModel->where("DATE_FORMAT(created_at, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
             }
             $this->jobsModel->where('end_time IS NOT NULL', null, false);        
-            $result = $this->jobsModel->findAll();
+            $results = $this->jobsModel->findAll();
             $combinedResults  = array();
-            foreach ($result as $result_arr) {
+            foreach ($results as $result_arr) {
                 $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
                 $this->PartsModel->where('id', $result_arr['part_id']);
                 $partData = $this->PartsModel->first();
@@ -327,7 +327,21 @@ Class UsersApiController extends BaseController
             $this->jobactionsModel->where('side','right');
             $result_right = $this->jobactionsModel->findAll();
             $result['job_action_count_right'] =count($result_right);
-
+        //$this->jobsModel->where('end_time IS NOT NULL', null, false);  
+               
+            $result_c = $this->jobactionsModel
+            ->select('parts.*,job_actions.side,job_actions.part_id,job_actions.id,job_actions.start_time,job_actions.end_time')    
+            ->join('parts', 'job_actions.part_id = parts.id')
+            ->orderBy('job_actions.id', 'DESC')
+             ->limit(5)
+            ->get()
+            ->getResult(); ;
+            $result['completed_job'] = $result_c;
+            // print_r($result);exit;
+            // $this->jobsModel->where('end_time IS NOT NULL', null, false);        
+            // $result_I = $this->jobsModel->findAll();
+          
+            // $result['in_processed'] = $result_I;
           
             echo json_encode($result);
             die();

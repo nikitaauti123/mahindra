@@ -212,15 +212,15 @@
                                 <ul class="products-list product-list-in-card pl-2 pr-2">
                                     <li class="item">
                                         <div class="product-info">
-                                            <a href="javascript:void(0)" class="product-title">PT9842
-                                                <span class="badge badge-warning float-right">13/09/2023 12:24 AM</span></a>
-                                            <span class="product-description">
-                                                Completed Job
+                                            <a href="javascript:void(0)" class="product-title">  <span class="part-no"></span>
+                                               
+                                            <span class="badge badge-warning float-right start-time"></span></a>
+                                            <span class="product-description process">
                                             </span>
                                         </div>
                                     </li>
                                     <!-- /.item -->
-                                    <li class="item">
+                                    <!-- <li class="item">
                                         <div class="product-info">
                                             <a href="javascript:void(0)" class="product-title">PT7429
                                                 <span class="badge badge-info float-right">13/09/2023 11:24 AM</span></a>
@@ -228,9 +228,9 @@
                                                 Updated Job
                                             </span>
                                         </div>
-                                    </li>
+                                    </li> -->
                                     <!-- /.item -->
-                                    <li class="item">
+                                    <!-- <li class="item">
                                         <div class="product-info">
                                             <a href="javascript:void(0)" class="product-title">
                                                 JB1848 <span class="badge badge-danger float-right">
@@ -241,9 +241,9 @@
                                             Issue Job
                                             </span>
                                         </div>
-                                    </li>
+                                    </li> -->
                                     <!-- /.item -->
-                                    <li class="item">
+                                    <!-- <li class="item">
                                         <div class="product-info">
                                             <a href="javascript:void(0)" class="product-title">PT9842
                                                 <span class="badge badge-success float-right">13/09/2023 09:25 AM</span></a>
@@ -251,14 +251,14 @@
                                             Completed Job     
                                             </span>
                                         </div>
-                                    </li>
+                                    </li> -->
                                     <!-- /.item -->
                                 </ul>
                             </div>
                             <!-- /.card-body -->
-                            <div class="card-footer text-center">
+                            <!-- <div class="card-footer text-center">
                                 <a href="javascript:void(0)" class="uppercase">View All</a>
-                            </div>
+                            </div> -->
                             <!-- /.card-footer -->
                         </div>
                         <!-- /.card -->

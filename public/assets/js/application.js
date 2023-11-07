@@ -2807,6 +2807,10 @@ $('input[name="from_date_dashboard"]').daterangepicker({
 });
 
 
+$('#from_date_dashboard').change(function () {
+   // hide_show_complete_job();
+   get_all_count();
+});
 get_all_count();
 
 function get_all_count() {
@@ -2834,7 +2838,6 @@ function get_all_count() {
             $("#total_tpa").html(parseInt(data.total_tpa));
             var completedJobData = data.completed_job;
             var count = completedJobData.length; // Get the count
-
             for (var i = 0; i < count; i++) {
                 var completedJob = completedJobData[i];
                 var partNo = completedJob.part_no;

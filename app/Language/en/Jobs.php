@@ -24,4 +24,6 @@ return [
     'Status'=>'Status',
     'Actions'=>'Actions',
     'AddNewJob'=>'Add New Job',
+    'AddJobbActionSuccss'=> 'Job started  successfully',
+    'UpdateJobbActionSuccss'=>'Job ended successfully',
 ];

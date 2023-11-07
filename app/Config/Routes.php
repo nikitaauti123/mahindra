@@ -83,6 +83,7 @@ $routes->get('/admin/jobs/right_job', 'Jobs\\JobsController::Right_job');
 $routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::Left_job');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
 $routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completed_jobs');
+$routes->get('/admin/reports/completed_jobs_list', 'Jobs\\JobsController::completed_jobs_list');
 $routes->get('/admin/jobs/job_history', 'Jobs\\JobsController::job_history');
 
 $routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
@@ -93,12 +94,16 @@ $routes->post('/api/jobs/update/(:num)', 'Jobs\\Api\\JobsApiController::update/$
 $routes->post('/api/jobs/delete/(:num)', 'Jobs\\Api\\JobsApiController::delete/$1');
 $routes->get('/api/jobs/get_one/(:num)', 'Jobs\\Api\\JobsApiController::getOne/$1');
 $routes->get('/api/jobs/completed_list', 'Jobs\\Api\\JobsApiController::completed_list');
+$routes->get('/api/jobs/report_completed_list', 'Jobs\\Api\\JobsApiController::report_completed_list');
 
 $routes->post('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
 $routes->get('/api/jobs/history_list', 'Jobs\\Api\\JobsApiController::history_list');
 $routes->post('/api/jobs/set_api_jobs', 'Jobs\\Api\\JobsApiController::set_api_jobs');
 
 $routes->post('/api/jobs/add_job', 'Jobs\\Api\\JobsApiController::add_job');
+$routes->post('/api/jobs/set_job_actions', 'Jobs\\Api\\JobsApiController::set_job_actions');
+$routes->get('/api/jobs/get_job_status', 'Jobs\\Api\\JobsApiController::get_job_status');
+$routes->get('/api/jobs/completed_jobs_list', 'Jobs\\Api\\JobsApiController::completed_jobs_list');
 
 
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');

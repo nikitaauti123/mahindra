@@ -23,12 +23,13 @@ return [
   'Status' => 'Status',
   'Status' => 'Status',
   'Status' => 'Status',
-  'FromDate' => 'Filter by From Date To To Date',
+  'FromDate' => 'Filter by Date',
   'CreatedDate' => 'Created Date',
   'CreatedDate' => 'Created Date',
   'UpdatedDate' => 'Updated Date',
   'Actions' => 'Actions',
-  'Pins' => 'Pins'
+  'Pins' => 'Pins',
+  'Image' => 'Image URL'
 
 
 ];

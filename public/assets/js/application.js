@@ -1,5 +1,8 @@
 /** Custom Application Javascript  */
+// import SlimSelect from 'slim-select';
 import { successMsg, failMsg } from "./messages.js";
+
+
 
 function check_login(form_id, btn_id) {
 
@@ -813,58 +816,54 @@ if ($("#update_parts_data").length > 0) {
 
 /* if ($("#start_jobs_data_left").length > 0) {
     $("#start_jobs_data_left").find("#part_name").select2();
-
-    function get_part_data_from_socket() {
-        $.ajax({
-            url: base_url + 'api/parts/get_api_url',
-            method: "GET",
-            dataType: "json",
-            success: function (data) {
-                //alert(data.WEBSOCKET_URL);
-                try {
-                    const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
-                    $("#result").html("Title: " + data.title);
-                    var part_id = '';
-                    var event_part_id = '';
-                    var data = '';
-                    var pins = '';
-                    ws.onmessage = (event) => {
-                        var jsonData = JSON.parse(event.data);
-                        part_id = jsonData.part_id;
-                        //pin_status = jsonData.pin_status;
-                        pins=jsonData.pin_status
-                        console.log(pins);
-                        data = jsonData.pin_status;
-                        console.log("data::", jsonData);
-                        let values = '';
-                        let correctInsertedValues = '';
-                        for (const key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                if (values !== "") {
-                                    values += ", "; // Add a comma and space if values is not empty
-                                    correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
-                                }
-                                values += key;
-                                correctInsertedValues += data[key].correct_inserted;
+    $.ajax({
+        url: base_url + 'api/parts/get_api_url',
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            //alert(data.WEBSOCKET_URL);
+            const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
+            $("#result").html("Title: " + data.title);
+            var part_id = '';
+            var event_part_id = '';
+            var data = '';
+            var pins = '';
+            ws.onmessage = (event) => {
+                var jsonData = JSON.parse(event.data);
+                part_id = jsonData.part_id;
+              //  pin_status = jsonData.pin_status;
+                 pins=jsonData.pin_status
+                console.log(pins);
+                data = jsonData.pin_status;
+                let values = '';
+                let correctInsertedValues = '';
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (values !== "") {
+                            values += ", "; // Add a comma and space if values is not empty
+                            correctInsertedValues += ", "; // Add a comma and space if correctInsertedValues is not empty
+                        }
+                        values += key;
+                        correctInsertedValues += data[key].correct_inserted;
+                    }
+                }
+                var pins_array = values.split(",");
+                var pins_color = correctInsertedValues.split(",");
+                for (let i in pins_array) {
+                    var pin_address = pins_array[i];
+                    var pin_color = pins_color[i];
+                    $(".pins-display").find(".pin-box").each(function (index) {
+                        var title = $(this).attr('title');
+                        var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
+                        if (pattern.test(title)) {
+                            if (pin_color.trim().toLowerCase() === 'true') {
+                                $(this).removeClass('red-pin').addClass('green-pin');
+                            } else if (pin_color.trim().toLowerCase() === 'false') {
+                                $(this).removeClass('green-pin').addClass('red-pin');
                             }
                         }
-                        var pins_array = values.split(",");
-                        var pins_color = correctInsertedValues.split(",");
-                        for (let i in pins_array) {
-                            var pin_address = pins_array[i];
-                            var pin_color = pins_color[i];
-                            $(".pins-display").find(".pin-box").each(function (index) {
-                                var title = $(this).attr('title');
-                                var pattern = new RegExp(".*" + pin_address.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/-/g, '\\$&').replace(/ /g, '.?') + ".*", 'i');
-                                if (pattern.test(title)) {
-                                    if (pin_color.trim().toLowerCase() === 'true') {
-                                        $(this).removeClass('red-pin').addClass('green-pin');
-                                    } else if (pin_color.trim().toLowerCase() === 'false') {
-                                        $(this).removeClass('green-pin').addClass('red-pin');
-                                    }
-                                }
-                            });
-                        }
+                    });
+                }
 
                 $.ajax({
                     type: 'POSt', // or 'GET', depending on your needs
@@ -876,51 +875,35 @@ if ($("#update_parts_data").length > 0) {
                     
                 }).fail(function (data) {
 
+                });
+
+                if (part_id != event_part_id) {
+                    event_part_id = part_id
+                    $.ajax({
+                        type: 'GET', // or 'GET', depending on your needs
+                        url: base_url + 'api/parts/get_one/' + part_id,
+                        data: {},
+                        beforeSend: function (xhr) {
+                        },
+                    }).done(function (data) {
+                        $("#part_name").val('');
+                        $(".part_name").text(data['part_name']);
+                        $("#part_no").text(data['part_no']);
+                        $("#model").text(data['model']);
+                        $("#die_no").text(data['die_no']);
+                        $(".pins-display").find(".pin-box").each(function (index) {
+                            if ($(this).hasClass('orange-pin')) {
+                                $(this).removeClass('orange-pin').addClass('gray-pin');
+                            }
                         });
+                    }).fail(function (data) {
 
-                        if (part_id != event_part_id) {
-                            event_part_id = part_id
-                            $.ajax({
-                                type: 'GET', // or 'GET', depending on your needs
-                                url: base_url + 'api/parts/get_one/' + part_id,
-                                data: {},
-                                beforeSend: function (xhr) {
-                                },
-                            }).done(function (data) {
-                                $("#part_name").val('');
-                                $(".part_name").text(data['part_name']);
-                                $("#part_no").text(data['part_no']);
-                                $("#model").text(data['model']);
-                                $("#die_no").text(data['die_no']);
-                                $(".pins-display").find(".pin-box").each(function (index) {
-                                    if ($(this).hasClass('orange-pin')) {
-                                        $(this).removeClass('orange-pin').addClass('gray-pin');
-                                    }
-                                });
-                            }).fail(function (data) {
-
-                            });
-                        }
-                    }
-
-                    ws.addEventListener("error", (event) => {
-                        console.log("WebSocket error: ", event);
                     });
-
-                    ws.onclose = event => {
-                        get_part_data_from_socket();
-                        console.log("on close", "sss");
-                    }
-
-                    
-                } catch (err) {
-                    console.log("exception::", err.message);
                 }
             }
-        });
-    }
+        }
 
-    get_part_data_from_socket();
+    })
 } */
 
 /* if ($("#start_jobs_data_right").length > 0) {
@@ -939,7 +922,6 @@ if ($("#update_parts_data").length > 0) {
             var pins = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
-                console.log("jsonData", jsonData);
                 part_id = jsonData.part_id;
                 pins=jsonData.pin_status
                 data = jsonData.pin_status;
@@ -1012,6 +994,8 @@ if ($("#update_parts_data").length > 0) {
     })
 } */
 
+// } */
+
 // 0 - green
 // 1 - red
 // 2 - orange 
@@ -1019,15 +1003,13 @@ if ($("#update_parts_data").length > 0) {
 
 var event_part_id = '';
 
-function fetch_job_details_from_db(side) {
+function fetch_job_details_from_db(side, part_id) {
     $.ajax({
         url: base_url + 'api/jobs/get_api_data',
         method: "POST",
-        data: {'side': side},
+        data: {'side': side, part_id},
         dataType: "json",
         success: function (data) { 
-            //console.log("data", data);
-
             let part_id = data.id;
             
             if(part_id != event_part_id) {
@@ -1040,12 +1022,8 @@ function fetch_job_details_from_db(side) {
             
             $(".pin-box").each(function(){
                 let title = $(this).attr('title');
-                console.log("title", title);
 
-                
                 var pins_data = JSON.parse(data.pins);
-
-                console.log("pins_data ::", pins_data);
 
                 for(let i in pins_data) {
 
@@ -1073,22 +1051,50 @@ function fetch_job_details_from_db(side) {
                 }
 
             });
-
-            setTimeout(fetch_job_details_from_db(side), 5000);
         },
     });    
 }    
 
-if ($("#start_jobs_data_left").length > 0) { 
+/* if ($("#start_jobs_data_left").length > 0) { 
     fetch_job_details_from_db('left');
 }
 
 if ($("#start_jobs_data_right").length > 0) { 
     fetch_job_details_from_db('right');
-}
+} */
 
 function check_path_and_change_sidebar(){
     var pathname = window.location.pathname;
+
+    console.log("pathname", pathname);
+
+    let paths = pathname.split("/"); 
+
+    console.log("length::", paths.length);
+
+    if(paths.length == 6) {
+        paths.pop();
+        pathname = paths.join("/");
+    } else if(paths.length == 5) {
+        paths.pop();
+        pathname = paths.join("/");
+    }
+
+    console.log("path::", pathname);
+
+    if(
+        pathname == '/public/admin/parts/add' || 
+        pathname == '/public/admin/parts/edit' || 
+        pathname == '/public/admin/parts/view' ||
+        pathname == '/public/admin/jobs/right_job' || 
+        pathname == '/public/admin/jobs/left_job' ||
+        pathname == '/public/admin/jobs' ||
+        pathname == '/public/admin/parts' 
+    ) 
+    {
+        $("body").addClass('sidebar-collapse');
+    }
+
     if(
         pathname == '/admin/parts/add' || 
         pathname == '/admin/parts/edit' || 
@@ -1102,20 +1108,196 @@ function check_path_and_change_sidebar(){
 }
 
 check_path_and_change_sidebar();
-
+//$('.end_time_left').hide();
+var leftInterval = '';
+if($('.end_time_left').is(":visible")) {
+    let id = $('#update_id_left').val();
+    fetch_job_details_from_db('left', id);
+    leftInterval = setInterval(fetch_job_details_from_db('left', id), 5000);
+}
+var rightInterval = '';
+if($('.end_time_right').is(":visible")) {
+    let id = $('#update_id_right').val();
+    fetch_job_details_from_db('right', id);
+    rightInterval = setInterval(fetch_job_details_from_db('right', id), 5000);
+}
 $(document).ready(function () {
     if ($('.digital-clock').length > 0) {
         var interval = '';
-        $("#start_time").on('click', function (e) {
+        $(".start_time_left").on('click', function (e) {
             e.preventDefault();
-            clockUpdate();
+            //clockUpdate();
+         
             //if(interval != '') {
-            interval = setInterval(clockUpdate, 1000);
-            //}
+            //interval = setInterval(clockUpdate, 1000);
+            var id = $('#part_left_id').val();
+            if(id==''){
+                alert('Please select part name.');
+                return false;
+            }
+            $.ajax({
+                url: base_url + 'api/jobs/set_job_actions',
+                method: "POST",
+                data: {'side': 'left', part_id: id, time: 'start_time'},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+                },
+            }).done(function (data) {
+                successMsg(data.msg);
+                $('#update_id_left').val(data.lastInsertid);
+                $('#part_left_id').parent('div').hide();
+                $('.start_time_left').hide();
+                $('.end_time_left').show();
+                $("#display_part-details").show();
+
+                if ($("#start_jobs_data_left").length > 0) { 
+                    fetch_job_details_from_db('left', id);
+                    if(leftInterval=='') {
+                        leftInterval = setInterval(fetch_job_details_from_db('left', id), 5000);
+                    }
+                }
+                
+                if ($("#start_jobs_data_right").length > 0) { 
+                    fetch_job_details_from_db('right', id);
+                    if(rightInterval=='') {
+                        rightInterval= setTimeInterval(fetch_job_details_from_db('right', id), 5000);
+                    }
+                }
+
+            }).fail(function (data) {
+                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                if (typeof data.responseJSON.messages === 'object') {
+                    for (let i in data.responseJSON.messages) {
+                        failMsg(data.responseJSON.messages[i]);
+                    }
+                } else {
+                    let msg = data.responseJSON.messages.msg;
+                    failMsg(msg);
+                }        
+            });
         });
-        $("#stop_time").on('click', function (e) {
+
+        $(".end_time_left").on('click', function (e) {
             e.preventDefault();
             clearInterval(interval);
+            var id = $('#update_id_left').val();
+            $.ajax({
+                url: base_url + 'api/jobs/set_job_actions',
+                method: "POST",
+                data: {'side': 'left', id: id, time:'end_time'},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+                },
+            }).done(function (data) {
+                successMsg(data.msg);
+                $('#part_left_id').parent('div').show();
+                $('.start_time_left').show();
+                $('.end_time_left').hide();
+                $("#display_part-details").hide();
+                $('#part_left_id').val('');
+                
+            }).fail(function (data) {
+                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                if (typeof data.responseJSON.messages === 'object') {
+                    for (let i in data.responseJSON.messages) {
+                        failMsg(data.responseJSON.messages[i]);
+                    }
+                } else {
+                    let msg = data.responseJSON.messages.msg;
+                    failMsg(msg);
+                }
+        
+            });
+
+        });
+    }
+});
+
+
+//$('.end_time_right').hide();
+$(document).ready(function () {
+    if ($('.digital-clock').length > 0) {
+        var interval = '';
+        $(".start_time_right").on('click', function (e) {
+            e.preventDefault();
+            clockUpdate();
+         
+            //if(interval != '') {
+            interval = setInterval(clockUpdate, 1000);
+            let id = $('#part_right_id').val();
+            if(id==''){
+                alert('please select part name first');
+                return false;
+            }
+            $.ajax({
+                url: base_url + 'api/jobs/set_job_actions',
+                method: "POST",
+                data: {'side': 'right',part_id:id,time:'start_time'},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+                },
+            }).done(function (data) {
+                 successMsg(data.msg);
+            $('#update_id_right').val(data.lastInsertid);
+            $('.parts_right_jobs').hide();
+            $('.start_time_right').hide();
+            $('.end_time_right').show();
+            
+            }).fail(function (data) {
+                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                if (typeof data.responseJSON.messages === 'object') {
+                    for (let i in data.responseJSON.messages) {
+                        failMsg(data.responseJSON.messages[i]);
+                    }
+                } else {
+                    let msg = data.responseJSON.messages.msg;
+                    failMsg(msg);
+                }
+        
+            });
+
+
+
+
+
+            //}
+        });
+        $(".end_time_right").on('click', function (e) {
+            e.preventDefault();
+            clearInterval(interval);
+            let id = $('#update_id_right').val();
+            $.ajax({
+                url: base_url + 'api/jobs/set_job_actions',
+                method: "POST",
+                data: {'side': 'right',id:id,time:'end_time'},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+                },
+            }).done(function (data) {
+                 successMsg(data.msg);
+                 $('.parts_right_jobs').show();
+                 $('.start_time_right').show();
+                 $('.end_time_right').hide();
+              $('#part_right_id').val('');
+          //  $('#update_id_left').val(data.lastInsertid);
+            
+            }).fail(function (data) {
+                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                if (typeof data.responseJSON.messages === 'object') {
+                    for (let i in data.responseJSON.messages) {
+                        failMsg(data.responseJSON.messages[i]);
+                    }
+                } else {
+                    let msg = data.responseJSON.messages.msg;
+                    failMsg(msg);
+                }
+        
+            });
+
         });
     }
 });
@@ -1155,6 +1337,9 @@ $("#part-export").on('click', function () {
 });
 
 if ($("#update_users").length > 0) {
+    new SlimSelect({
+        select: '#role_id'
+    });
     let id = $("#update_users").find("input[name='id']").val();
     $.ajax({
         url: base_url + 'api/users/get_one/' + id,
@@ -1275,8 +1460,11 @@ if ($("#update_users").length > 0) {
         });
     });
 }
-
+$(document).ready(function() {
 if ($("#add_users").length > 0) {
+    new SlimSelect({
+        select: '#role_id'
+    });
     $("#add_users").validate({
         rules: {
             'first_name': {
@@ -1353,6 +1541,7 @@ if ($("#add_users").length > 0) {
         });
     });
 }
+});
 function part_active_inactive(id, is_active) {
     var res = confirm("Do you want to update this part status?");
     if (res == true) {
@@ -2002,7 +2191,7 @@ $(document).on("click", "#select_all", function () {
         $("input[name='permission_id[]']").attr("checked", false);
     }
 });
-var date_formate = 'DD-MM-YYYY';
+var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="f_date"]').daterangepicker({
     locale: {
@@ -2035,12 +2224,35 @@ $(document).ready(function () {
 });
 function generate_table() {
     if ($("#completed_list_tbl").length > 0) {
+
+        new SlimSelect({
+            select: '#part_name_filter'
+        });
+        
+        
+        new SlimSelect({
+            select: '#part_no_filter'
+        });
+        new SlimSelect({
+            select: '#part_model_filter'
+        });
+        new SlimSelect({
+            select: '#part_die_no_filter'
+        });
+
         var part_no = $("#part_no_filter").val();
         var from_to_date = $("#f_date").val();
         var dateParts = from_to_date.split(" - ");
-        // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-        var from_date = dateParts[0];
-        var to_date = dateParts[1];
+
+        // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+        var from_date_str = dateParts[0];
+        var to_date_str = dateParts[1];
+        
+        // Use Moment.js to parse and format the dates
+        var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        
+           
         var part_name = $("#part_name_filter").val();
         var model = $("#part_model_filter").val();
         var die_no = $("#part_die_no_filter").val();
@@ -2142,9 +2354,15 @@ function reload_complete_tbl() {
     var part_no = $("#part_no_filter").val();
     var from_to_date = $("#f_date").val();
     var dateParts = from_to_date.split(" - ");
-    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-    var from_date = dateParts[0];
-    var to_date = dateParts[1];
+
+    // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+    var from_date_str = dateParts[0];
+    var to_date_str = dateParts[1];
+    
+    // Use Moment.js to parse and format the dates
+    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    
     var part_name = $("#part_name_filter").val();
     // alert(to_date); 
     var model = $("#part_model_filter").val();
@@ -2163,7 +2381,9 @@ function reload_complete_tbl() {
         die_no).load();
 }
 
-var date_formate = 'DD-MM-YYYY';
+
+
+var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="f_date_history"]').daterangepicker({
     locale: {
@@ -2187,7 +2407,7 @@ $('#part_model_filter_history').change(function () {
     hide_show_complete_history();
 });
 $('#part_die_no_filter_history').change(function () {
-    hide_show_complete_history(); alert('change_die');
+    hide_show_complete_history(); 
 });
 
 function hide_show_complete_history() {
@@ -2199,12 +2419,39 @@ history_table = generate_table_history();
 function generate_table_history() {
     if ($("#history_list_tbl").length > 0) {
 
+
+        new SlimSelect({
+            select: '#part_name_filter_history',
+          })
+        
+          
+        new SlimSelect({
+            select: '#part_no_filter_history',
+          })
+          new SlimSelect({
+            select: '#part_model_filter_history'
+        });
+        
+        new SlimSelect({
+            select: '#part_die_no_filter_history'
+        });
+
         var part_no = $("#part_no_filter_history").val();
         var from_to_date = $("#f_date_history").val();
         var dateParts = from_to_date.split(" - ");
-        // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-        var from_date = dateParts[0];
-        var to_date = dateParts[1];
+
+        // The first part (index 0) is the "from date," and the second part (index 1) is the "to date."
+        var from_date_str = dateParts[0];
+        var to_date_str = dateParts[1];
+        
+        // Use Moment.js to parse and format the dates
+        var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+        
+        // var dateParts = from_to_date.split(" - ");
+        // // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
+        // var from_date = dateParts[0];
+        // var to_date = dateParts[1];
         var part_name = $("#part_name_filter_history").val();
         // alert(to_date); 
 
@@ -2309,9 +2556,11 @@ function reload_history_tbl() {
     var part_no = $("#part_no_filter_history").val();
     var from_to_date = $("#f_date_history").val();
     var dateParts = from_to_date.split(" - ");
-    // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-    var from_date = dateParts[0];
-    var to_date = dateParts[1];
+    var from_date_str = dateParts[0];
+    var to_date_str = dateParts[1];
+    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+
     var part_name = $("#part_name_filter_history").val();
     // alert(to_date); 
     var model = $("#part_model_filter_history").val();
@@ -2330,6 +2579,195 @@ function reload_history_tbl() {
         die_no).load();
 }
 
+$('.start_time_left').change(function () {
+    let id = $('#part_left_id').val();
+    alert(id);
+});
 
 
 
+var report_completed_jobs_tbl = completed_jobs_tbl();
+
+function completed_jobs_tbl() {
+    if ($("#completed_list_tbl_data").length > 0) {
+
+        var part_no = $("#cmp_part_no_filter").val();
+        var from_to_date = $("#from_date").val();
+        var dateParts = from_to_date.split(" - ");
+
+        var from_date = dateParts[0].trim();
+        var to_date = dateParts[1].trim();        
+           
+        var part_name = $("#cmp_part_name_filter").val();
+        var model = $("#cmp_part_model_filter").val();
+        var die_no = $("#cmp_part_die_no_filter").val();
+        var dataTable = $("#completed_list_tbl_data").DataTable({
+            "ordering": true,
+            'order': [[0, 'asc']],
+            'serverMethod': 'get',
+            'language': {
+                'loadingRecords': '&nbsp;',
+                'processing': 'Loading...',
+                "emptyTable": "There is no record to display"
+            },
+            "dom": 'Bfrtip',
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print"],
+            "lengthMenu": [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'All'],
+            ],
+            "ajax": {
+                "url": base_url + "api/jobs/report_completed_list?from_date=" + from_date + "&to_date=" + to_date + "&part_no=" + part_no + "&part_name=" + part_name + "&model=" + model + "&die_no=" + die_no,
+                "dataSrc": "",
+            },
+            "columns": [
+                {
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {
+                    "data": "part_no",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "part_name",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "model",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "die_no",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "start_time",
+                    "render": function (data, type, row, meta) {
+                        if (data && data != '-') {
+                            return (data.replace(" ", "<br>"));
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "end_time",
+                    "render": function (data, type, row, meta) {
+                        if (data && data != '-') {
+                            return (data.replace(" ", "<br>"));
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "image_url",
+                    "render": function (data, type, row, meta) {
+                        if (data && data != '-') {
+                            return '<a href="'+data+'" target="_blank"><img src="'+data+'" height="60px" width="80px" style="object-fit: cover;" /></a>';
+                        } else {
+                            return '-';
+                        }
+                    }
+                }
+
+            ]
+        });
+    }
+    return dataTable;
+}
+function reload_completed_jobs_tbl() {
+    var part_no = $("#cmp_part_no_filter").val();
+    var from_to_date = $("#from_date").val();
+    var dateParts = from_to_date.split(" - ");
+
+    var from_date = dateParts[0].trim();
+    var to_date = dateParts[1].trim();
+    
+    var part_name = $("#cmp_part_name_filter").val();
+    var model = $("#cmp_part_model_filter").val();
+    var die_no = $("#cmp_part_die_no_filter").val();
+    
+    report_completed_jobs_tbl.ajax.url(
+        base_url + "api/jobs/report_completed_list?"+
+        "from_date="+ from_date + 
+        "&to_date=" + to_date +
+        "&part_no=" + part_no + 
+        "&part_name=" + part_name + 
+        "&model=" + model + 
+        "&die_no=" + die_no
+    ).load();
+}
+
+$("#completed_jobs_list_form #from_date").daterangepicker({
+});
+
+$('#completed_jobs_list_form #from_date').on('apply.daterangepicker', function(ev, picker) {
+    reload_completed_jobs_tbl();
+});
+
+if($("#completed_list_tbl_data").length>0) {
+    new SlimSelect({
+        select: '#cmp_part_name_filter',
+        onChange: (newVal) => {
+                reload_completed_jobs_tbl();
+        }
+    });        
+    
+    new SlimSelect({
+        select: '#cmp_part_no_filter',
+        onChange: (newVal) => {
+            reload_completed_jobs_tbl();
+        }
+    });
+    new SlimSelect({
+        select: '#cmp_part_model_filter',
+        onChange: (newVal) => {
+            reload_completed_jobs_tbl();
+        }
+    });
+    new SlimSelect({
+        select: '#cmp_part_die_no_filter',
+        onChange: (newVal) => {
+            reload_completed_jobs_tbl();
+        }
+    });
+}
+
+if($("#part_left_id").length>0) {
+    new SlimSelect({
+        select: '#part_left_id',
+        onChange: (newVal) => {
+
+        }
+    });
+}

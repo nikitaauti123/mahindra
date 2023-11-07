@@ -52,7 +52,7 @@
                                 <div class="col-md-3 ">
                                     <div class="form-group">
                                         <label for="sel1"><?php echo lang('Parts.PartName'); ?>:</label>
-                                        <select name="part_name_filter" id="part_name_filter" class="form-control" required="">
+                                        <select name="part_name_filter" id="part_name_filter" class="form-control part_name_filter_completed" >
                                             <option value="">All <?php echo lang('Parts.PartName'); ?></option>
                                             <?php
                                             // print_r($s);exit;

@@ -50,6 +50,7 @@ $routes->post('/api/users/delete/(:num)', 'Users\\Api\\UsersApiController::delet
 
 
 $routes->post('/api/users/get_permission_names', 'Users\\Api\\UsersApiController::get_permission_names');
+$routes->post('/api/users/get_all_count', 'Users\\Api\\UsersApiController::get_all_count');
 
 
 $routes->get('/admin/parts/list', 'Parts\\PartsController::List');
@@ -84,6 +85,7 @@ $routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::Left_job');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
 $routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completed_jobs');
 $routes->get('/admin/reports/completed_jobs_list', 'Jobs\\JobsController::completed_jobs_list');
+$routes->get('/admin/reports/completed_jobs_list/(:num)', 'Jobs\\JobsController::completed_jobs_list/$1');
 $routes->get('/admin/jobs/job_history', 'Jobs\\JobsController::job_history');
 
 $routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
@@ -95,6 +97,7 @@ $routes->post('/api/jobs/delete/(:num)', 'Jobs\\Api\\JobsApiController::delete/$
 $routes->get('/api/jobs/get_one/(:num)', 'Jobs\\Api\\JobsApiController::getOne/$1');
 $routes->get('/api/jobs/completed_list', 'Jobs\\Api\\JobsApiController::completed_list');
 $routes->get('/api/jobs/report_completed_list', 'Jobs\\Api\\JobsApiController::report_completed_list');
+$routes->get('/api/jobs/report_list_dashboard', 'Jobs\\Api\\JobsApiController::report_list_dashboard');
 
 $routes->post('/api/jobs/update_image/(:num)', 'Jobs\\Api\\JobsApiController::update_image/$1');
 

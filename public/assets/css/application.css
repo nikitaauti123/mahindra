@@ -534,7 +534,8 @@ form .error {
 }
 
 #start_time_left_parent .ss-main {
-    width: 200px !important;
+    min-width: 200px !important;
+    width: auto !important;
 }
 
 .color-legends .legend-box {

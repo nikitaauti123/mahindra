@@ -823,11 +823,15 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
-/* if ($("#start_jobs_data_left").length > 0) {
-    $("#start_jobs_data_left").find("#part_name").select2();
+
+//if ($("#start_jobs_data_left").length > 0) {
+
+function web_socket_init(side ='left') {
+    //$("#start_jobs_data_left").find("#part_name").select2();
     $.ajax({
         url: base_url + 'api/parts/get_api_url',
         method: "GET",
+        data: {side: side},
         dataType: "json",
         success: function (data) {
             //alert(data.WEBSOCKET_URL);
@@ -838,10 +842,10 @@ if ($("#update_parts_data").length > 0) {
             var data = '';
             var pins = '';
             ws.onmessage = (event) => {
-                var jsonData = JSON.parse(event.data);
+                /*var jsonData = JSON.parse(event.data);
                 part_id = jsonData.part_id;
-              //  pin_status = jsonData.pin_status;
-                 pins=jsonData.pin_status
+                //pin_status = jsonData.pin_status;
+                pins = jsonData.pin_status
                 console.log(pins);
                 data = jsonData.pin_status;
                 let values = '';
@@ -872,10 +876,50 @@ if ($("#update_parts_data").length > 0) {
                             }
                         }
                     });
-                }
+                } */
 
-                $.ajax({
-                    type: 'POSt', // or 'GET', depending on your needs
+
+                let part_id = data.id;
+
+                /* if (part_id != event_part_id) {
+                    $(".part_name").html(data.part_name);
+                    $("#part_no").html(data.part_no);
+                    $("#model").html(data.model);
+                    $("#die_no").html(data.die_no);
+                    event_part_id = part_id;
+                } */
+
+                $(".pin-box").each(function () {
+                    let title = $(this).attr('title');
+
+                    var pins_data = JSON.parse(data.pins);
+
+                    for (let i in pins_data) {
+                        console.log("data.pins[i] ::", pins_data[i]);
+
+                        let style_class = 'gray-pin';
+                        if (i == title) {
+                            $(this).removeClass('green-pin');
+                            $(this).removeClass('red-pin');
+                            $(this).removeClass('orange-pin');
+                            $(this).removeClass('gray-pin');
+
+                            if (pins_data[i] == 0) {
+                                style_class = 'green-pin';
+                            } else if (pins_data[i] == 1) {
+                                style_class = 'red-pin';
+                            } else if (pins_data[i] == 2) {
+                                style_class = 'orange-pin';
+                            } else if (pins_data[i] == 3) {
+                                style_class = 'gray-pin';
+                            }
+                            $(this).addClass(style_class);
+                        }
+                    }
+                });
+
+                /* $.ajax({
+                    type: 'POST', // or 'GET', depending on your needs
                     url: base_url + 'api/jobs/set_api_jobs',
                     data: {part_id:part_id,pins:pins,side:'left'},
                     beforeSend: function (xhr) {
@@ -884,7 +928,7 @@ if ($("#update_parts_data").length > 0) {
                     
                 }).fail(function (data) {
 
-                });
+                }); */
 
                 if (part_id != event_part_id) {
                     event_part_id = part_id
@@ -900,11 +944,11 @@ if ($("#update_parts_data").length > 0) {
                         $("#part_no").text(data['part_no']);
                         $("#model").text(data['model']);
                         $("#die_no").text(data['die_no']);
-                        $(".pins-display").find(".pin-box").each(function (index) {
+                        /* $(".pins-display").find(".pin-box").each(function (index) {
                             if ($(this).hasClass('orange-pin')) {
                                 $(this).removeClass('orange-pin').addClass('gray-pin');
                             }
-                        });
+                        }); */
                     }).fail(function (data) {
 
                     });
@@ -912,8 +956,11 @@ if ($("#update_parts_data").length > 0) {
             }
         }
 
-    })
-} */
+    });
+}
+
+//} 
+
 
 /* if ($("#start_jobs_data_right").length > 0) {
     $("#start_jobs_data_right").find("#part_name").select2();
@@ -1035,12 +1082,10 @@ function fetch_job_details_from_db(side, part_id) {
                 var pins_data = JSON.parse(data.pins);
 
                 for (let i in pins_data) {
-
                     console.log("data.pins[i] ::", pins_data[i]);
 
                     let style_class = 'gray-pin';
                     if (i == title) {
-
                         $(this).removeClass('green-pin');
                         $(this).removeClass('red-pin');
                         $(this).removeClass('orange-pin');
@@ -1175,13 +1220,18 @@ $(document).ready(function () {
                     $("#model").html('');
                     $("#die_no").html('');
 
-                    fetch_job_details_from_db('left', id);
-                    //if(leftInterval=='') {
-                    leftInterval = setInterval(function () { fetch_job_details_from_db('left', id) }, 5000);
-                    //}
+                    // production code
+                    //fetch_job_details_from_db('left', id);
+                    /* leftInterval = setInterval(function(){
+                        
+                        fetch_job_details_from_db('left', id)}, 
+                        
+                        5000
+                    ); */
+
+                    web_socket_init('left');
+                    
                 }
-
-
 
             }).fail(function (data) {
                 $(btn_id).removeClass('button--loading').attr('disabled', false);
@@ -1274,10 +1324,12 @@ $(document).ready(function () {
                     $("#model").html('');
                     $("#die_no").html('');
 
-                    fetch_job_details_from_db('right', id);
-                    //if(rightInterval=='') {
-                    rightInterval = setTimeInterval(function () { fetch_job_details_from_db('right', id) }, 5000);
-                    //}
+                   /*  fetch_job_details_from_db('right', id);
+                    rightInterval = setTimeInterval(function () { 
+                        fetch_job_details_from_db('right', id) 
+                    }, 5000); */
+                    
+                    web_socket_init('right');
                 }
 
             }).fail(function (data) {
@@ -2639,9 +2691,10 @@ function completed_jobs_tbl() {
                 "emptyTable": "There is no record to display"
             },
             "dom": 'Bfrtip',
+            buttons: true,
             "lengthChange": false,
             "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print"],
+            "buttons": ["csv", "excel", "print"],
             "lengthMenu": [
                 [10, 25, 50, 100, -1],
                 [10, 25, 50, 100, 'All'],
@@ -2832,7 +2885,11 @@ $('#from_date_dashboard').change(function () {
    // hide_show_complete_job();
    get_all_count();
 });
-get_all_count();
+
+if($('#from_date_dashboard').length>0) {
+    get_all_count();
+}
+
 
 function get_all_count() {
     var from_to_date = $("#from_date_dashboard").val();

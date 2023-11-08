@@ -241,17 +241,26 @@ function user_active_inactive(id, is_active) {
     }
 
 }
-if ($("#from_date").length > 0) {
-    $("#from_date").daterangepicker({
-        "startDate": moment(),
-        "endDate": moment().add(1, 'month')
-    }, function (start, end, label) {
-        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+if ($("#completed_list_tbl_data").length > 0) {
+    var uri = $("#uri_segment").val();
 
-        $("#from_date").val(start.format('YYYY-MM-DD') + " - " + end.format('YYYY-MM-DD'));
-    });
+ if (uri =='') {
+        if ($("#from_date").length > 0) {
+            $("#from_date").daterangepicker({
+                "startDate": moment(),
+                "endDate": moment().add(1, 'month')
+            }, function (start, end, label) {
+                console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+
+                $("#from_date").val(start.format('YYYY-MM-DD') + " - " + end.format('YYYY-MM-DD'));
+            });
+        }
+    }else{
+        $('input[name="from_date"]').daterangepicker({
+        });
+        
+    }
 }
-
 
 if ($("#parts_list_tbl").length > 0) {
     // table
@@ -2747,6 +2756,10 @@ function reload_completed_jobs_tbl() {
     ).load();
 }
 
+if ($("#completed_list_tbl_data").length > 0) {
+    var uri = $("#uri_segment").val();
+
+ if (uri =='') {
 $("#completed_jobs_list_form #from_date").daterangepicker({
     clearBtn: true,
     "showDropdowns": true,
@@ -2754,6 +2767,14 @@ $("#completed_jobs_list_form #from_date").daterangepicker({
     endDate: new Date(),
     maxDate: new Date(),
 });
+ }else{
+    $("#completed_jobs_list_form #from_date").daterangepicker({
+        timePicker: false,
+        startDate: moment()
+    });
+ }
+}
+
 
 $('#completed_jobs_list_form #from_date').on('apply.daterangepicker', function (ev, picker) {
     reload_completed_jobs_tbl();
@@ -2959,7 +2980,7 @@ if ($("#dashboard_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return '<a href="' + base_url + 'admin/reports/completed_jobs_list/' + row['id'] + '" ><i class="fa fa-eye"></i></a>';
+                    return '<a href="' + base_url + 'admin/reports/completed_jobs_list/' + row['part_id'] + '" ><i class="fa fa-eye"></i></a>';
                 }
             }
 

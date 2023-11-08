@@ -531,7 +531,7 @@ class JobsApiController extends BaseController
 
     public function report_list_dashboard(){
     $result = $this->JobActionsModel
-    ->select('parts.*,job_actions.id')  
+    ->select('parts.*,job_actions.id,job_actions.part_id')  
         ->join('parts', 'job_actions.part_id = parts.id')
         ->orderBy('job_actions.id', 'DESC')
         ->where('job_actions.end_time IS NOT NULL', null, false)

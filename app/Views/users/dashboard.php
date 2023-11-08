@@ -32,9 +32,7 @@
                         </div>
                     </div>
                     <div class="col-9 text-right">
-                        <div class="form-group mt-3">
-                            <a href="<?php echo base_url('admin/jobs/add'); ?>" class="btn btn-primary"><?php echo lang('Jobs.AddNewJob'); ?> </a>
-                        </div>
+                       
                     </div>
                 </div>
                 <!-- Info boxes -->

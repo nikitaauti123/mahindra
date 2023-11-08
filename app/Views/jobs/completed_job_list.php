@@ -1,6 +1,8 @@
 <?= $this->extend('theme-default') ?>
 
 <?= $this->section('content') ?>
+<?php $uri = service('uri'); 
+ $part_id = $uri->getSegment(4);?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -44,6 +46,7 @@
                                 <div class="row">
                                     <div class="col-md-3 ">
                                         <div class="form-group">
+                                            <input type="hidden" name="uri_segment" id="uri_segment" value="<?php if(!empty($part_id)){ echo $part_id;}?>">
                                             <label for="sel1"><?php echo lang('Parts.FromDate'); ?>:</label>
                                             <input type="text" class="form-control" id="from_date" name="from_date" placeholder="Select <?php echo lang('Parts.FromDate'); ?>">
                                             <div class="input-group-addon  calender-icon">
@@ -54,14 +57,19 @@
                                     <div class="col-md-3 ">
                                         <div class="form-group">
                                             <label for="sel1"><?php echo lang('Parts.PartName'); ?>:</label>
+                                            
                                             <select name="part_name_filter" id="cmp_part_name_filter" class="form-control part_name_filter_completed">
                                                 <option value="">All <?php echo lang('Parts.PartName'); ?></option>
                                                 <?php
                                                 // print_r($s);exit;
                                                 foreach ($part as $parts) {
                                                     if(!empty($parts['part_name'])) {
-                                                        echo '<option value="' . $parts['part_name'] . '">' . $parts['part_name'] . '</option>';
-                                                    }
+                                                        echo '<option value="' . $parts['part_name'] . '"';
+                                                        if ($part_id == $parts['id']) {
+                                                            echo ' selected';
+                                                        }
+                                                        echo '>' . $parts['part_name'] . '</option>';
+                                                        }
                                                 }
                                                 ?>
                                             </select>

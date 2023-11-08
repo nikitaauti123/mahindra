@@ -814,8 +814,11 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
-/* if ($("#start_jobs_data_left").length > 0) {
-    $("#start_jobs_data_left").find("#part_name").select2();
+
+//if ($("#start_jobs_data_left").length > 0) {
+
+function web_socket_init() {
+    //$("#start_jobs_data_left").find("#part_name").select2();
     $.ajax({
         url: base_url + 'api/parts/get_api_url',
         method: "GET",
@@ -903,8 +906,11 @@ if ($("#update_parts_data").length > 0) {
             }
         }
 
-    })
-} */
+    });
+}
+
+//} 
+
 
 /* if ($("#start_jobs_data_right").length > 0) {
     $("#start_jobs_data_right").find("#part_name").select2();
@@ -1168,13 +1174,18 @@ $(document).ready(function () {
                     $("#model").html('');
                     $("#die_no").html('');
 
-                    fetch_job_details_from_db('left', id);
-                    //if(leftInterval=='') {
-                        leftInterval = setInterval(function(){fetch_job_details_from_db('left', id)}, 5000);
-                    //}
+                    // production code
+                    //fetch_job_details_from_db('left', id);
+                    /* leftInterval = setInterval(function(){
+                        
+                        fetch_job_details_from_db('left', id)}, 
+                        
+                        5000
+                    ); */
+
+                    web_socket_init();
+                    
                 }
-                
-                
 
             }).fail(function (data) {
                 $(btn_id).removeClass('button--loading').attr('disabled', false);
@@ -2632,9 +2643,10 @@ function completed_jobs_tbl() {
                 "emptyTable": "There is no record to display"
             },
             "dom": 'Bfrtip',
+            buttons: true,
             "lengthChange": false,
             "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print"],
+            "buttons": ["csv", "excel", "print"],
             "lengthMenu": [
                 [10, 25, 50, 100, -1],
                 [10, 25, 50, 100, 'All'],

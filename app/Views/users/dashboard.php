@@ -172,6 +172,8 @@
                                                 <th><?php echo lang('Dashboard.PartNo')?></th>
                                                 <th><?php echo lang('Dashboard.PartName')?></th>
                                                 <th><?php echo lang('Dashboard.Status')?></th>
+                                                <th><?php echo lang('Dashboard.CompletedDate')?></th>
+                                               
                                                 <th><?php echo lang('Dashboard.Actions')?></th>
                                             </tr>
                                         </thead>

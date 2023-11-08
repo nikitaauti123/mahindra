@@ -16,4 +16,5 @@ return [
     'DieNo'=> 'Die No',
     'Save'=>'Save',
     'Update'=>'Update',
+    'CompletedDate'=>'Completed Date'
 ];

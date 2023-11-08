@@ -170,29 +170,28 @@ class JobsApiController extends BaseController
 
         $part_id = $this->request->getVar('part_id');
 
-        if(!empty($part_id)) {
+        if (!empty($part_id)) {
             $result = $this->jobsModel
-            ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
-            ->join('parts', 'jobs.part_id = parts.id', 'right')
-            ->orderBy('jobs.id', 'DESC')
-           // ->where('jobs.side', $this->request->getVar('side'))
-            ->where('parts.id', $this->request->getVar('part_id'))
-            ->limit(1) // Set the limit to 1 to fetch only one row
-            ->get()
-            ->getRow();
-
+                ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
+                ->join('parts', 'jobs.part_id = parts.id', 'right')
+                ->orderBy('jobs.id', 'DESC')
+                // ->where('jobs.side', $this->request->getVar('side'))
+                ->where('parts.id', $this->request->getVar('part_id'))
+                ->limit(1) // Set the limit to 1 to fetch only one row
+                ->get()
+                ->getRow();
         } else {
             $result = $this->jobsModel
-            ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
-            ->join('parts', 'jobs.part_id = parts.id', 'right')
-            ->orderBy('jobs.id', 'DESC')
-            // ->where('jobs.side', $this->request->getVar('side'))
-            //->where('parts.id', $this->request->getVar('part_id'))
-            ->limit(1) // Set the limit to 1 to fetch only one row
-            ->get()
-            ->getRow();
+                ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
+                ->join('parts', 'jobs.part_id = parts.id', 'right')
+                ->orderBy('jobs.id', 'DESC')
+                // ->where('jobs.side', $this->request->getVar('side'))
+                //->where('parts.id', $this->request->getVar('part_id'))
+                ->limit(1) // Set the limit to 1 to fetch only one row
+                ->get()
+                ->getRow();
         }
-        
+
 
         if ($result) {
             return $this->respond($result, 200);
@@ -414,7 +413,7 @@ class JobsApiController extends BaseController
                 $result['msg'] = lang('Jobs.AddJobbActionSuccss');
                 $result['lastInsertid'] = $this->JobActionsModel->insertID();
             } else {
-            
+
                 $id  = $this->request->getVar('id');
                 /* $data = [
                     'side' => $this->request->getVar('side'),
@@ -430,7 +429,6 @@ class JobsApiController extends BaseController
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }
-
     }
 
     public function update_image($id)
@@ -463,7 +461,8 @@ class JobsApiController extends BaseController
         }
     }
 
-    public function get_job_status(){
+    public function get_job_status()
+    {
 
         $this->JobActionsModel = new JobActionsModel();
 
@@ -481,9 +480,10 @@ class JobsApiController extends BaseController
         return $this->respond([['error' => true, 'message' => 'No job started']], 404);
     }
 
-    private function change_date_format($str){
+    private function change_date_format($str)
+    {
         $date_str = explode("/", $str);
-        return $date_str[2]."-".$date_str[0]."-".$date_str[1];
+        return $date_str[2] . "-" . $date_str[0] . "-" . $date_str[1];
     }
 
     public  function report_completed_list()
@@ -491,11 +491,11 @@ class JobsApiController extends BaseController
         $result = [];
         $this->JobActionsModel = new JobActionsModel();
         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
-            
+
             $from_date = $this->request->getVar('from_date');
-            $f_date = $this->change_date_format($from_date)." 00:00:00";
+            $f_date = $this->change_date_format($from_date) . " 00:00:00";
             $to_date = $this->request->getVar('to_date');
-            $t_date = $this->change_date_format(($to_date)). " 23:59:59";
+            $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
             $this->JobActionsModel->where("start_time >= '" . $f_date . "'", null, false);
             $this->JobActionsModel->where("end_time <= '" . $t_date . "'", null, false);
         }
@@ -517,16 +517,16 @@ class JobsApiController extends BaseController
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->JobActionsModel->findAll();
 
-        foreach ($result as $key=>$result_arr) {
+        foreach ($result as $key => $result_arr) {
 
-            if(isset($result_arr['start_time'])) {
+            if (isset($result_arr['start_time'])) {
                 $result[$key]['start_time'] = date("d-m-Y h:i A", strtotime($result_arr['start_time']));
             }
 
-            if(isset($result_arr['end_time'])) {
+            if (isset($result_arr['end_time'])) {
                 $result[$key]['end_time'] = date("d-m-Y h:i A", strtotime($result_arr['end_time']));
             }
-            
+
             /* $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
             $this->PartsModel->where('id', $result_arr['part_id']);
             $partData = $this->PartsModel->first();
@@ -537,25 +537,28 @@ class JobsApiController extends BaseController
                 $combinedResult = array_merge($result_arr, $partData);
                 $combinedResults[] = $combinedResult;
             } */
-
-          
         }
 
         return $this->respond($result, 200);
     }
 
-    public function report_list_dashboard(){
-    $result = $this->JobActionsModel
-    ->select('parts.*,job_actions.id,job_actions.part_id')  
-        ->join('parts', 'job_actions.part_id = parts.id')
-        ->orderBy('job_actions.id', 'DESC')
-        ->where('job_actions.end_time IS NOT NULL', null, false)
-        ->limit(10)
-        ->get()
-        ->getResult(); 
-        // print_r($result);
-            return $this->respond($result, 200);
-            
+    public function report_list_dashboard()
+    {
+        $result = $this->JobActionsModel
+            ->select('parts.*,job_actions.id,job_actions.part_id,job_actions.end_time')
+            ->join('parts', 'job_actions.part_id = parts.id')
+            ->orderBy('job_actions.id', 'DESC')
+            ->where('job_actions.end_time IS NOT NULL', null, false)
+            ->limit(10)
+            ->get()
+            ->getResult();
+        $combinedData = [];
+        foreach ($result as $result_arr) {
+            $created_at = new DateTime($result_arr->end_time);
+            $formatted_date = $created_at->format('d-m-Y h:i A');
+            $result_arr->completed_time = $formatted_date;
+             $combinedData[] = $result_arr;
         }
-
+        return $this->respond($combinedData, 200);
+    }
 }

@@ -3035,6 +3035,16 @@ if ($("#dashboard_list_tbl").length > 0) {
                 }
             },
             {
+                "data": "completed_time",
+                "render": function (data, type, row, meta) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return '-';
+                    }
+                }
+            },
+            {
                 "data": null,
                 "render": function (data, type, row, meta) {
                     return '<a href="' + base_url + 'admin/reports/completed_jobs_list/' + row['part_id'] + '" ><i class="fa fa-eye"></i></a>';

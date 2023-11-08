@@ -35,9 +35,11 @@
                                 <div class="col-6">
                                     <h5 class="card-title"><?php echo lang('Jobs.CompletedList'); ?></h5>
                                 </div>
-                                <!-- <div class="col-6 text-right">
-                                    <a href="<?php echo base_url('/admin/jobs/add'); ?>" class="btn btn-primary">Add New Job</a>
-                                </div> -->
+                                <div class="col-6 text-right">
+                                <button type="button" id="completed-job-export" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;<?php echo lang('Jobs.ExportInExcel'); ?></button>
+                                <button type="button" id="completed-job-pdf" class="btn btn-primary"><i class="fa fa-file-excel-o"></i>&nbsp;<?php echo lang('Jobs.ExportInPdf'); ?></button>
+                            
+                            </div>
                             </div>
                         </div>
                         <!-- /.card-header -->

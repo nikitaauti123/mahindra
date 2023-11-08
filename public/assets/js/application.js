@@ -242,24 +242,17 @@ function user_active_inactive(id, is_active) {
 
 }
 if ($("#completed_list_tbl_data").length > 0) {
-    var uri = $("#uri_segment").val();
-
- if (uri =='') {
+ 
         if ($("#from_date").length > 0) {
             $("#from_date").daterangepicker({
-                "startDate": moment(),
-                "endDate": moment().add(1, 'month')
+                startDate: moment().subtract(1, 'month'),
+                endDate: new Date(),
             }, function (start, end, label) {
                 console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
 
                 $("#from_date").val(start.format('YYYY-MM-DD') + " - " + end.format('YYYY-MM-DD'));
             });
         }
-    }else{
-        $('input[name="from_date"]').daterangepicker({
-        });
-        
-    }
 }
 
 if ($("#parts_list_tbl").length > 0) {
@@ -2810,9 +2803,7 @@ function reload_completed_jobs_tbl() {
 }
 
 if ($("#completed_list_tbl_data").length > 0) {
-    var uri = $("#uri_segment").val();
-
- if (uri =='') {
+   
 $("#completed_jobs_list_form #from_date").daterangepicker({
     clearBtn: true,
     "showDropdowns": true,
@@ -2820,12 +2811,7 @@ $("#completed_jobs_list_form #from_date").daterangepicker({
     endDate: new Date(),
     maxDate: new Date(),
 });
- }else{
-    $("#completed_jobs_list_form #from_date").daterangepicker({
-        timePicker: false,
-        startDate: moment()
-    });
- }
+ 
 }
 
 
@@ -3064,3 +3050,27 @@ if ($("#part_right_id").length > 0) {
         }
     });
 }
+
+$("#completed-job-export").on('click', function () {   
+        var part_no = $("#cmp_part_no_filter").val();
+        var from_to_date = $("#from_date").val();
+        var dateParts = from_to_date.split(" - ");
+        var from_date = dateParts[0].trim();
+        var to_date = dateParts[1].trim();
+        var part_name = $("#cmp_part_name_filter").val();
+        var model = $("#cmp_part_model_filter").val();
+        var die_no = $("#cmp_part_die_no_filter").val();
+    window.location.href = base_url + 'api/jobs/export_completed_job?part_no='+part_no+'&from_date='+from_date+"&to_date="+to_date+'&part_name='+part_name+'&model='+model+'&die_no='+die_no;
+});
+
+$("#completed-job-pdf").on('click', function () {   
+    var part_no = $("#cmp_part_no_filter").val();
+    var from_to_date = $("#from_date").val();
+    var dateParts = from_to_date.split(" - ");
+    var from_date = dateParts[0].trim();
+    var to_date = dateParts[1].trim();
+    var part_name = $("#cmp_part_name_filter").val();
+    var model = $("#cmp_part_model_filter").val();
+    var die_no = $("#cmp_part_die_no_filter").val();
+window.location.href = base_url + 'api/jobs/pdf_completed_job?part_no='+part_no+'&from_date='+from_date+"&to_date="+to_date+'&part_name='+part_name+'&model='+model+'&die_no='+die_no;
+});

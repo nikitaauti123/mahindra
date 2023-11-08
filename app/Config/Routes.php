@@ -109,7 +109,8 @@ $routes->post('/api/jobs/add_job', 'Jobs\\Api\\JobsApiController::add_job');
 $routes->post('/api/jobs/set_job_actions', 'Jobs\\Api\\JobsApiController::set_job_actions');
 $routes->get('/api/jobs/get_job_status', 'Jobs\\Api\\JobsApiController::get_job_status');
 $routes->get('/api/jobs/completed_jobs_list', 'Jobs\\Api\\JobsApiController::completed_jobs_list');
-
+$routes->get('/api/jobs/export_completed_job', 'Jobs\\Api\\JobsApiController::export_completed_job');
+$routes->get('/api/jobs/pdf_completed_job', 'Jobs\\Api\\JobsApiController::pdf_completed_job');
 
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');
 $routes->get('/admin/roles/add', 'Roles\\RolesController::Create');

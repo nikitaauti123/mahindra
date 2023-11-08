@@ -2,7 +2,7 @@
 namespace App\Libraries;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
+use Mpdf\Mpdf;
 class Phpspreadsheet
 {
 
@@ -39,6 +39,8 @@ class Phpspreadsheet
     //header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment; filename="' . $pdf_data['file_name'] . '"');
     $writer->save('php://output');
+
+    
   }
   function output_multiple($sheets, $excel_data)
   {
@@ -81,5 +83,15 @@ class Phpspreadsheet
     }
     $sheet->getStyle("$first_key:$last_key")->getFont()->setBold(true);
     return $sheet;
+  }
+  function set_pdf($pdf_data){
+    $pdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial']);
+    ob_end_clean();
+    $pdf->WriteHTML($pdf_data['pdfdata']);
+    $pdfData = $pdf->output($pdf_data['title'] . '.pdf','D'); // Generate PDF content
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="' . $pdf_data['title'] . '.pdf"');    
+    echo $pdfData;
+    exit;
   }
 }

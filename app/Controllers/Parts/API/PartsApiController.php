@@ -167,9 +167,19 @@ Class PartsApiController extends BaseController
         }
     }
     public  function  get_api_url(){   
-        $envVariables = [
-            'WEBSOCKET_URL' => $_ENV['WEBSOCKET_URL'],          
-        ];
+
+        $side = $this->request->getVar('side');
+
+        if($side == 'right') {
+            $envVariables = [
+                'WEBSOCKET_URL' => $_ENV['WEBSOCKET_URL_RIGHT'],          
+            ];
+        } else {
+            $envVariables = [
+                'WEBSOCKET_URL' => $_ENV['WEBSOCKET_URL'],          
+            ];
+        }
+        
         return $this->respond($envVariables, 200);      
     }
 }

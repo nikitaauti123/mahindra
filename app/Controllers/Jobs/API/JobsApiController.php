@@ -168,7 +168,10 @@ class JobsApiController extends BaseController
     public function get_api_data()
     {
 
-        $result = $this->jobsModel
+        $part_id = $this->request->getVar('part_id');
+
+        if(!empty($part_id)) {
+            $result = $this->jobsModel
             ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
             ->join('parts', 'jobs.part_id = parts.id', 'right')
             ->orderBy('jobs.id', 'DESC')
@@ -178,6 +181,18 @@ class JobsApiController extends BaseController
             ->get()
             ->getRow();
 
+        } else {
+            $result = $this->jobsModel
+            ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
+            ->join('parts', 'jobs.part_id = parts.id', 'right')
+            ->orderBy('jobs.id', 'DESC')
+            // ->where('jobs.side', $this->request->getVar('side'))
+            //->where('parts.id', $this->request->getVar('part_id'))
+            ->limit(1) // Set the limit to 1 to fetch only one row
+            ->get()
+            ->getRow();
+        }
+        
 
         if ($result) {
             return $this->respond($result, 200);

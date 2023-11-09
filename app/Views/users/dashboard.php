@@ -32,9 +32,7 @@
                         </div>
                     </div>
                     <div class="col-9 text-right">
-                        <div class="form-group mt-3">
-                            <a href="<?php echo base_url('admin/jobs/add'); ?>" class="btn btn-primary"><?php echo lang('Jobs.AddNewJob'); ?> </a>
-                        </div>
+                       
                     </div>
                 </div>
                 <!-- Info boxes -->
@@ -174,6 +172,8 @@
                                                 <th><?php echo lang('Dashboard.PartNo')?></th>
                                                 <th><?php echo lang('Dashboard.PartName')?></th>
                                                 <th><?php echo lang('Dashboard.Status')?></th>
+                                                <th><?php echo lang('Dashboard.CompletedDate')?></th>
+                                               
                                                 <th><?php echo lang('Dashboard.Actions')?></th>
                                             </tr>
                                         </thead>

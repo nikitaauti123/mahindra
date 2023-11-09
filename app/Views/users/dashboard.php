@@ -37,7 +37,7 @@
                 </div>
                 <!-- Info boxes -->
                 <div class="row">
-                <div class="col-12 col-sm-6 col-md-3">
+                <!-- <div class="col-12 col-sm-6 col-md-3">
                 <a href="<?=base_url();?>admin/jobs/list">
                       
                         <div class="info-box mb-3">
@@ -51,10 +51,9 @@
                                 <span class="info-box-number" id="total_job">
                                 </span>
                             </div>
-                            <!-- /.info-box-content -->
-                        </div></a>
-                        <!-- /.info-box -->
-                    </div>
+                           </div></a>
+                       
+                    </div> -->
                     <div class="col-12 col-sm-6 col-md-3">
                         <a href="<?=base_url();?>admin/reports/completed_jobs_list">
                         <div class="info-box">
@@ -73,38 +72,29 @@
                         </a>
                         <!-- /.info-box -->
                     </div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <a href="<?=base_url();?>admin/reports/completed_jobs_list">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-success elevation-1">
+                                <i class="fas fa-calendar-check"></i>
+                            </span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text"><?php echo lang('Dashboard.AvgHRequired'); ?></span>
+                                <span class="info-box-number"  id="averag_hour_required">
+                                   
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        </a>
+                        <!-- /.info-box -->
+                    </div>
                     
                     <!-- /.col -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon bg-primary elevation-1">
-                                <i class="fas fa-clock"></i>
-                            </span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text"><?php echo lang('Dashboard.JobACFLeft'); ?></span>
-                                <span class="info-box-number" id="JobACFLeft">
-                                    6.5 hrs</span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon bg-info elevation-1">
-                                <i class="fas fa-clock"></i>
-                            </span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text"><?php echo lang('Dashboard.JobACFRight'); ?></span>
-                                <span class="info-box-number" id="JobACFRight">
-                                    6.5 hrs</span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
+                    
+                    
                     <!-- /.col -->
 
                     <!-- fix for small devices only -->

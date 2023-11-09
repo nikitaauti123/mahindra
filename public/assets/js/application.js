@@ -2859,10 +2859,11 @@ if ($("#part_left_id").length > 0) {
 var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="from_date_dashboard"]').daterangepicker({
-    locale: {
-        format: date_formate
-    },
-    startDate: defaultStartDate,
+     clearBtn: true,
+    "showDropdowns": true,
+    startDate: moment().subtract(1, 'month'),
+    endDate: new Date(),
+    maxDate: new Date(),
 
 });
 
@@ -2870,6 +2871,7 @@ $('input[name="from_date_dashboard"]').daterangepicker({
 $('#from_date_dashboard').change(function () {
    // hide_show_complete_job();
    get_all_count();
+   alert('ok');
 });
 
 if($('#from_date_dashboard').length>0) {
@@ -2880,11 +2882,8 @@ if($('#from_date_dashboard').length>0) {
 function get_all_count() {
     var from_to_date = $("#from_date_dashboard").val();
     var dateParts = from_to_date.split(" - ");
-    var from_date_str = dateParts[0];
-    var to_date_str = dateParts[1];
-
-    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
-    var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+    var from_date = dateParts[0].trim();
+    var to_date = dateParts[1].trim();
     $.ajax({
         url: base_url + 'api/users/get_all_count',
         method: "POST",
@@ -2896,10 +2895,7 @@ function get_all_count() {
         },
         success: function (data) {
             $("#total_completed_jobs").html(parseInt(data.total_completed_jobs));
-            $("#JobACFLeft").html(parseInt(data.job_action_count_left));
-            $("#JobACFRight").html(parseInt(data.job_action_count_right));
-            $("#total_job").html(parseInt(data.total_job));
-            $("#total_tpa").html(parseInt(data.total_tpa));
+             $("#averag_hour_required").html(parseInt(data.averag_hour_required));
             var completedJobData = data.completed_job;
             var count = completedJobData.length; // Get the count
             for (var i = 0; i < count; i++) {

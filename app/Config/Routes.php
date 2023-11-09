@@ -112,6 +112,8 @@ $routes->get('/api/jobs/completed_jobs_list', 'Jobs\\Api\\JobsApiController::com
 $routes->get('/api/jobs/export_completed_job', 'Jobs\\Api\\JobsApiController::export_completed_job');
 $routes->get('/api/jobs/pdf_completed_job', 'Jobs\\Api\\JobsApiController::pdf_completed_job');
 
+$routes->get('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
+
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');
 $routes->get('/admin/roles/add', 'Roles\\RolesController::Create');
 $routes->get('/admin/roles/edit/(:num)', 'Roles\\RolesController::Edit/$1');

@@ -8,7 +8,7 @@ use App\Models\UsersModel;
 use App\Models\RolesPermissionModel;
 use App\Models\UsersRolesModel;
 use App\Models\RolesModel;
-use App\Models\jobsModel;
+use App\Models\JobsModel;
 use App\Models\PartsModel;
 use App\Models\JobActionsModel;
 use DateTime;

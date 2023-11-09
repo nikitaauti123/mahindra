@@ -827,13 +827,14 @@ function web_socket_init(side ='left') {
         success: function (data) {
             //alert(data.WEBSOCKET_URL);
             const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
-            $("#result").html("Title: " + data.title);
+            //$("#result").html("Title: " + data.title);
             var part_id = '';
             var event_part_id = '';
             var data = '';
             var pins = '';
             ws.onmessage = (event) => {
-                /*var jsonData = JSON.parse(event.data);
+                var jsonData = JSON.parse(event.data);
+                /*
                 part_id = jsonData.part_id;
                 //pin_status = jsonData.pin_status;
                 pins = jsonData.pin_status
@@ -870,7 +871,7 @@ function web_socket_init(side ='left') {
                 } */
 
 
-                let part_id = data.id;
+                let part_id = jsonData.id;
 
                 /* if (part_id != event_part_id) {
                     $(".part_name").html(data.part_name);
@@ -883,7 +884,7 @@ function web_socket_init(side ='left') {
                 $(".pin-box").each(function () {
                     let title = $(this).attr('title');
 
-                    var pins_data = JSON.parse(data.pins);
+                    var pins_data = JSON.parse(jsonData.pins);
 
                     for (let i in pins_data) {
                         console.log("data.pins[i] ::", pins_data[i]);
@@ -1165,14 +1166,19 @@ var leftInterval = '';
 
 if ($('.end_time_left').is(":visible")) {
     let id = $('#update_id_left').val();
-    fetch_job_details_from_db('left', id);
+    /*fetch_job_details_from_db('left', id);
     leftInterval = setInterval(function () { fetch_job_details_from_db('left', id); }, 5000);
+    */
+    web_socket_init('left');
+    leftInterval = setInterval(function () { web_socket_init('left'); }, 5000);
 }
 var rightInterval = '';
 if ($('.end_time_right').is(":visible")) {
     let id = $('#update_id_right').val();
-    fetch_job_details_from_db('right', id);
-    rightInterval = setInterval(function () { fetch_job_details_from_db('right', id) }, 5000);
+    //fetch_job_details_from_db('right', id);
+    //rightInterval = setInterval(function () { fetch_job_details_from_db('right', id) }, 5000);
+    web_socket_init('right');
+    leftInterval = setInterval(function () { web_socket_init('right'); }, 5000);
 }
 $(document).ready(function () {
     if ($('.digital-clock').length > 0) {

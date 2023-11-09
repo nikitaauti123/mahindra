@@ -22,6 +22,7 @@ return [
     'EndTime'=>'End Time',
     'SrNo'=>'Sr.No',
     'Status'=>'Status',
+    'Export'=>'Export',
     'Actions'=>'Actions',
     'AddNewJob'=>'Add New Job',
     'AddJobbActionSuccss'=> 'Job started  successfully',

@@ -568,8 +568,17 @@ class JobsApiController extends BaseController
     public function export_completed_job(){
     $pdf_data = array();
         $date = date('Y-m-d H:i:s');
-        $file_name = "Complated-jobs-List";
-        $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
+        $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
+        $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
+        print_r($to_date);
+    //      $file_name = 'completed_jobs_'.$date.'';
+    
+    //    $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
+   // $file_name = "completed_jobs_{$from_date}_to_{$to_date}";
+       $file_name = "completed_jobs";
+       $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
+   
+       
         $pdf_data['title'] = $file_name;
         $col[] = 'Part No';
         $col[] = 'Part Name';
@@ -578,7 +587,7 @@ class JobsApiController extends BaseController
         $col[] = 'Start Time';
         $col[] = 'End Time';
         $col[] = 'Image';
-        $headers = excel_columns($col);
+        $headers = excel_columns($col,2);
         $pdf_data['headers'] = $headers;
          if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
 
@@ -608,15 +617,22 @@ class JobsApiController extends BaseController
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->JobActionsModel->findAll();
         $data = array();
-        $i = 0;
+        $i = 1;
         if (count($result) > 0) {
             foreach ($result as $row) {
                 $data[$i][] = ((isset($row['part_no']) && !empty($row['part_no'])) ? $row['part_no'] : " ");
                 $data[$i][] = ((isset($row['part_name']) && !empty($row['part_name'])) ? $row['part_name'] : " ");
                 $data[$i][] = ((isset($row['model']) && !empty($row['model'])) ? $row['model'] : " ");
                 $data[$i][] = ((isset($row['die_no']) && !empty($row['die_no'])) ? $row['die_no'] : " ");
-                $data[$i][] = ((isset($row['end_time']) && !empty($row['end_time'])) ? $row['end_time'] : " ");
-                $data[$i][] = ((isset($row['start_time']) && !empty($row['start_time'])) ? $row['start_time'] : " ");             
+              
+                $created_at = new DateTime($row['end_time']);
+                $formatted_date = $created_at->format('d-m-Y h:i A');
+
+                $created_at_start = new DateTime($row['start_time']);
+                $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
+
+                $data[$i][] = ((isset($formatted_date) && !empty($formatted_date)) ? $formatted_date : " ");
+                $data[$i][] = ((isset($formatted_date_start) && !empty($formatted_date_start)) ? $formatted_date_start : " ");             
                 $data[$i][] = ((isset($row['image_url']) && !empty($row['image_url'])) ? $row['image_url'] : " ");
              
                 $i++;
@@ -625,18 +641,18 @@ class JobsApiController extends BaseController
         $body = excel_columns($data, 2);      
 
         $pdf_data['data'] = $body;  
-
-   $style_array =  array(
-            'fill' => array(
-                'color' => array('rgb' => 'FF0000')
-            ),
-            'font'  => array(
-                'bold'  =>  true,
-                'color' =>     array('rgb' => 'FF0000')
-            )
-        );
+        $pdf_data['sheet'] = 'completed-jobs';  
+        $style_array =  array(
+                'fill' => array(
+                    'color' => array('rgb' => 'FF0000')
+                ),
+                'font'  => array(
+                    'bold'  =>  true,
+                    'color' =>     array('rgb' => 'FF0000')
+                )
+            );
         $pdf_data['style_array'] = $style_array;
-        $pdf_data['file_name'] = $file_name . '.xlsx';
+        $pdf_data['file_name'] = $file_name .'_'.$from_date.'_to_'.$to_date.'.xlsx';
         $this->phpspreadsheet->set_data($pdf_data);
       
     }

@@ -320,15 +320,12 @@ class UsersApiController extends BaseController
             $av_result = $this->jobactionsModel->findAll();
             $totalTimeSum = 0;
             $totalCount = count($av_result);
-
             foreach ($av_result as $record) {
                 $totalTimeSum += $record['average_time'];
             }
             if ($totalCount > 0) {
-                //$averageTimeInMinutes = $totalTimeSum / $totalCount;
                 $averageTimeInHours = $totalTimeSum / 60;
             }
-
             $result['averag_hour_required'] = $averageTimeInHours;
 
             echo json_encode($result);

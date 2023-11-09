@@ -2901,7 +2901,7 @@ function get_all_count() {
         },
         success: function (data) {
             $("#total_completed_jobs").html(parseInt(data.total_completed_jobs));
-             $("#averag_hour_required").html(parseInt(data.averag_hour_required));
+             $("#averag_hour_required").html(Number(data.averag_hour_required).toFixed(2));
             var completedJobData = data.completed_job;
             var count = completedJobData.length; // Get the count
             for (var i = 0; i < count; i++) {

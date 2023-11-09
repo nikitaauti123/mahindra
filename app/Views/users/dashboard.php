@@ -77,7 +77,7 @@
                         <a href="<?=base_url();?>admin/reports/completed_jobs_list">
                         <div class="info-box">
                             <span class="info-box-icon bg-info elevation-1">
-                                <i class="fas fa-list"></i>
+                                <i class="fas fa-clock"></i>
                             </span>
 
                             <div class="info-box-content">

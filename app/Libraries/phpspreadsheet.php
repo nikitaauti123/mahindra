@@ -1,8 +1,13 @@
 <?php
+
 namespace App\Libraries;
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+
 use Mpdf\Mpdf;
+
 class Phpspreadsheet
 {
 
@@ -32,15 +37,41 @@ class Phpspreadsheet
     if (isset($pdf_data['style_array'])) {
       //$sheet->getStyle('A2:E5')->applyFromArray($pdf_data['style_array']);
     }
+    if (isset($pdf_data['sheet']) && $pdf_data['sheet']  == 'completed-jobs') {
+      $sheet->mergeCells('A1:G1'); // Merge cells for the title
+      $sheet->setCellValue('A1', 'Completed Jobs'); // Set the title
+      $sheet->getStyle('A1:G1')->getAlignment()->setHorizontal('center'); // Center align the title
+      $sheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+      $sheet->getStyle('A1:G1')->getFill()->getStartColor()->setARGB('FF34659B');
+      $sheet->getStyle('A1:G1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN); // Add this line
+      $sheet->getStyle('A1:G2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+      $sheet->getStyle('A1:G2')->getFill()->getStartColor()->setARGB('FF34659B');
+      $sheet->getStyle('A2:G2')->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE));
+      $sheet->getStyle('A2:G2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN); // Add this line
+      $columnCount = count($pdf_data['headers']);
+      $equalWidth = 20; // Adjust the width as needed
+      
+      for ($i = 1; $i <= $columnCount; $i++) {
+          $sheet->getColumnDimensionByColumn($i)->setWidth($equalWidth);
+      }
+      
+      foreach ($pdf_data['data'] as $cell => $value) {
+        $sheet->setCellValue($cell, $value);
+        $styleArray = [
+          'borders' => [
+            'allBorders' => [
+              'borderStyle' => Border::BORDER_THIN,
+            ],
+          ],
+        ];
+        $sheet->getStyle($cell)->applyFromArray($styleArray);
+      }
+    }
     $writer = new Xlsx($spreadsheet);
     ob_end_clean();
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-    //header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment; filename="' . $pdf_data['file_name'] . '"');
     $writer->save('php://output');
-
-    
   }
   function output_multiple($sheets, $excel_data)
   {
@@ -84,13 +115,14 @@ class Phpspreadsheet
     $sheet->getStyle("$first_key:$last_key")->getFont()->setBold(true);
     return $sheet;
   }
-  function set_pdf($pdf_data){
+  function set_pdf($pdf_data)
+  {
     $pdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial']);
     ob_end_clean();
     $pdf->WriteHTML($pdf_data['pdfdata']);
-    $pdfData = $pdf->output($pdf_data['title'] . '.pdf','D'); // Generate PDF content
+    $pdfData = $pdf->output($pdf_data['title'] . '.pdf', 'D'); // Generate PDF content
     header('Content-Type: application/pdf');
-    header('Content-Disposition: attachment; filename="' . $pdf_data['title'] . '.pdf"');    
+    header('Content-Disposition: attachment; filename="' . $pdf_data['title'] . '.pdf"');
     echo $pdfData;
     exit;
   }

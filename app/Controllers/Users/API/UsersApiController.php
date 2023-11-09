@@ -324,10 +324,9 @@ class UsersApiController extends BaseController
             foreach ($av_result as $record) {
                 $totalTimeSum += $record['average_time'];
             }
-            // /print_r($totalTimeSum);
             if ($totalCount > 0) {
-                $averageTimeInMinutes = $totalTimeSum / $totalCount;
-                $averageTimeInHours = $averageTimeInMinutes / 60;
+                //$averageTimeInMinutes = $totalTimeSum / $totalCount;
+                $averageTimeInHours = $totalTimeSum / 60;
             }
 
             $result['averag_hour_required'] = $averageTimeInHours;

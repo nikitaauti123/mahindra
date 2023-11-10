@@ -633,7 +633,7 @@ class JobsApiController extends BaseController
 
                 $data[$i][] = ((isset($formatted_date) && !empty($formatted_date)) ? $formatted_date : " ");
                 $data[$i][] = ((isset($formatted_date_start) && !empty($formatted_date_start)) ? $formatted_date_start : " ");             
-                $data[$i][] = ((isset($row['image_url']) && !empty($row['image_url'])) ? '<img src="' . $row['image_url'] . '" width="50" height="50">' : " ");
+                $data[$i][] = ((isset($row['image_url']) && !empty($row['image_url'])) ? $row['image_url'] : " ");
 
                 $i++;
             }

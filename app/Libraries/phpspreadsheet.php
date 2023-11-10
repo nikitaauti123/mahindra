@@ -50,11 +50,12 @@ class Phpspreadsheet
       $sheet->getStyle('A2:G2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN); // Add this line
       $columnCount = count($pdf_data['headers']);
       $equalWidth = 20; // Adjust the width as needed
-      
+
       for ($i = 1; $i <= $columnCount; $i++) {
-          $sheet->getColumnDimensionByColumn($i)->setWidth($equalWidth);
+        $sheet->getColumnDimensionByColumn($i)->setWidth($equalWidth);
       }
-      
+
+
       foreach ($pdf_data['data'] as $cell => $value) {
         $sheet->setCellValue($cell, $value);
         $styleArray = [
@@ -65,8 +66,28 @@ class Phpspreadsheet
           ],
         ];
         $sheet->getStyle($cell)->applyFromArray($styleArray);
+      }    
+      foreach ($pdf_data['data'] as $cell => $value) {
+        
+        if (strpos($cell, 'G') !== false && !empty($value)) {
+        $columnGValue = ''; 
+        $rowIndex = (int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT) + 1; // Adjust row index to 1-based index
+        $sheet->setCellValue('G' . $rowIndex, $columnGValue);
+        
+          $absolute_path = FCPATH . $value;
+          if (file_exists($absolute_path)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setPath($absolute_path);
+            $drawing->setHeight(50);
+            $drawing->setWidth(50);
+            $drawing->setCoordinates($cell);
+            $drawing->setWorksheet($sheet);
+            $sheet->getRowDimension((int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT))->setRowHeight(150);  // Adjust this based on your needs
+          }
+        }
       }
     }
+    // exit;
     $writer = new Xlsx($spreadsheet);
     ob_end_clean();
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -122,7 +143,7 @@ class Phpspreadsheet
     ob_end_clean();
     $pdf->SetHeader('{PAGENO} / {nb}');
     $pdf->SetFooter('{PAGENO}');
-    $pdf->WriteHTML($pdf_data['pdfdata']);  
+    $pdf->WriteHTML($pdf_data['pdfdata']);
     $pdfData = $pdf->output($pdf_data['title'] . '.pdf', 'D'); // Generate PDF content
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment; filename="' . $pdf_data['title'] . '.pdf"');

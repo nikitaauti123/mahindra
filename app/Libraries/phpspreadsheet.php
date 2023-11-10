@@ -117,9 +117,12 @@ class Phpspreadsheet
   }
   function set_pdf($pdf_data)
   {
-    $pdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial']);
+
+    $pdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial', 'allow_output_buffering' => true, 'allow_remote_images' => true]);
     ob_end_clean();
-    $pdf->WriteHTML($pdf_data['pdfdata']);
+    $pdf->SetHeader('{PAGENO} / {nb}');
+    $pdf->SetFooter('{PAGENO}');
+    $pdf->WriteHTML($pdf_data['pdfdata']);  
     $pdfData = $pdf->output($pdf_data['title'] . '.pdf', 'D'); // Generate PDF content
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment; filename="' . $pdf_data['title'] . '.pdf"');

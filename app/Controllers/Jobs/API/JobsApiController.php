@@ -570,7 +570,7 @@ class JobsApiController extends BaseController
         $date = date('Y-m-d H:i:s');
         $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
         $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
-        print_r($to_date);
+        // print_r($to_date);
     //      $file_name = 'completed_jobs_'.$date.'';
     
     //    $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
@@ -659,9 +659,13 @@ class JobsApiController extends BaseController
     public function pdf_completed_job(){
         $pdf_data = array();
         $date = date('Y-m-d H:i:s');
-        $file_name = "Complated-jobs-List";
+        $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
+        $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
+      
+        $file_name = "completed_jobs";
         $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
-        $pdf_data['title'] = $file_name;
+        $pdf_data['title'] =  $file_name .'_'.$from_date.'_to_'.$to_date;
+    
         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
 
             $from_date = $this->request->getVar('from_date');
@@ -688,19 +692,19 @@ class JobsApiController extends BaseController
         $this->JobActionsModel->select('*');
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->JobActionsModel->findAll();
-        
+        $inputPath ='' . FCPATH . '\assets\img\Mahindra_Logo.jpg';
 // Start building the HTML content
-$htmlContent = '<img src="/assets/img/favicon-white.png" height="50" width="50"><h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse">
+$htmlContent = '<img src='.$inputPath.' height="60" width="100"><h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
 <thead>
-    <tr style="background-color:blue">
+    <tr style="background-color:#3465a4;width: 100%;">
     <th>Sr No</th>
-        <th>Part No</th>
-        <th>Part Name</th>
-        <th>Model</th>
-        <th>Die No</th>
-        <th>Start Time</th>
-        <th>End Time</th>
-        <th>Image</th>
+        <th  style="width: 120px;">Part No</th>
+        <th  style="width: 120px;">Part Name</th>
+        <th  style="width: 120px;">Model</th>
+        <th style="width: 120px;">Die No</th>
+        <th style="width: 120px;">Start Time</th>
+        <th style="width: 120px;">End Time</th>
+        <th style="width: 120px;">Image</th>
     </tr>
 </thead>
 <tbody>';
@@ -715,22 +719,22 @@ foreach ($result as $row) {
 
    
 $htmlContent .= '<tr>';
-$htmlContent .= '<td>' .$k++ . '</td>';
+$htmlContent .= '<td  style="width: 40px;" >' .$k++ . '</td>';
 
-$htmlContent .= '<td>' . htmlspecialchars(isset($row['part_no']) ? $row['part_no'] : '') . '</td>';
-$htmlContent .= '<td>' . htmlspecialchars(isset($row['part_name']) ? $row['part_name'] : '') . '</td>';
-$htmlContent .= '<td>' . htmlspecialchars(isset($row['model']) ? $row['model'] : '') . '</td>';
-$htmlContent .= '<td>' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
-$htmlContent .= '<td>' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
-$htmlContent .= '<td>' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
-$htmlContent .= '<td>' . htmlspecialchars(isset($row['image_url']) ? $row['image_url'] : '') . '</td>';
+$htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_no']) ? $row['part_no'] : '') . '</td>';
+$htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_name']) ? $row['part_name'] : '') . '</td>';
+$htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['model']) ? $row['model'] : '') . '</td>';
+$htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
+$htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
+$htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
+$htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH . $row['image_url'] . '" height="50" width="50">' : '') . '</td>';
 $htmlContent .= '</tr>';
 }
 
 // print_r($htmlContent);exit;
 
 $htmlContent .= '</tbody></table>';
-
+// print_r($htmlContent);exit;
 $pdf_data['pdfdata'] = $htmlContent;  
 
   $this->phpspreadsheet->set_pdf($pdf_data);

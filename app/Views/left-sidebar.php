@@ -57,13 +57,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/jobs/left_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add_left'?'active':''; ?>">
+                            <a href="<?php echo base_url('/jobs/left_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/add_left'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.StartJobLeft'); ?></p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/jobs/right_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add'?'active':''; ?>">
+                            <a href="<?php echo base_url('/jobs/right_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/add'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.StartJobRight'); ?></p>
                             </a>

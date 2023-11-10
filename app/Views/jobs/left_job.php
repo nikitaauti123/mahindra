@@ -40,14 +40,13 @@
                                 $hide_stop = '';
                                 $hide_details = '';
                             }
-
                             ?>
-                            <div class="row">
+                            <div class="row d-flex align-items-center justify-content-center">
                                 <div class="col-3 text-center">
                                     <div class="digital-clock" style="display: none;">00:00:00</div>
                                     <div class="row d-flex align-items-center justify-content-center">
                                         <div class="col-12">
-                                            <div class="form-group d-flex align-items-center justify-content-center">
+                                            <div class="d-flex align-items-center justify-content-center">
                                                 <div class="m-1" id="start_time_left_parent" style="<?php echo $hide_start; ?>">
                                                     <select class="form-control" id="part_left_id" name="part_left_id" class="from-control">
                                                         <option value="">Select <?php echo lang('Jobs.PartName'); ?></option>
@@ -60,9 +59,7 @@
                                                         ?>
                                                     </select>
                                                 </div>
-                                                <input type="hidden" id="update_id_left" name="update_id_left" value="<?php if (is_array($jobs) && count($jobs) > 0) {
-                                                                                                                            echo $jobs[0]['part_id'];
-                                                                                                                        } ?>">
+                                                <input type="hidden" id="update_id_left" name="update_id_left" value="<?php if (is_array($jobs) && count($jobs) > 0) { echo $jobs[0]['part_id']; } ?>">
                                                 <div class="m-1">
                                                     <a href="javascript:void(0)" class="btn btn-primary start_time_left" id="start_time" style="<?php echo $hide_start; ?>">
                                                         Start
@@ -111,7 +108,7 @@
                             </div>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body">
+                        <div class="card-body no-pad">
                             <div class="row">
                                 <div class="col-md-12">
                                     <form id="start_jobs_data_left">
@@ -154,10 +151,10 @@
                                             <div class="col-md-6"></div>
                                             <div class="col-md-6  d-flex justify-content-end">
                                                 <div class="color-legends background-white d-flex align-items-center">
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box green-pin"></span> <label> - Correct Position</label></div>
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box red-pin"></span> <label> - Incorrect Position</label></div>
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box orange-pin"></span> <label> - Actual Position</label></div>
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box gray-pin"></span> <label> - Not Placed Any Pin</label></div>
+                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box green-pin"></span> <label> &nbsp; Correct Position</label></div>
+                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box red-pin"></span> <label> &nbsp; Incorrect Position</label></div>
+                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box orange-pin"></span> <label> &nbsp; Actual Position</label></div>
+                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box gray-pin"></span> <label> &nbsp; Not Placed Any Pin</label></div>
                                                 </div>
                                             </div>
                                         </div>

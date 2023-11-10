@@ -2877,7 +2877,6 @@ $('input[name="from_date_dashboard"]').daterangepicker({
 $('#from_date_dashboard').change(function () {
    // hide_show_complete_job();
    get_all_count();
-   alert('ok');
 });
 
 if($('#from_date_dashboard').length>0) {

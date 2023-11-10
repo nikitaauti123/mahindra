@@ -625,10 +625,10 @@ class JobsApiController extends BaseController
                 $data[$i][] = ((isset($row['model']) && !empty($row['model'])) ? $row['model'] : " ");
                 $data[$i][] = ((isset($row['die_no']) && !empty($row['die_no'])) ? $row['die_no'] : " ");
               
-                $created_at = new DateTime($row['end_time']);
+                $created_at = new DateTime($row['start_time']);
                 $formatted_date = $created_at->format('d-m-Y h:i A');
 
-                $created_at_start = new DateTime($row['start_time']);
+                $created_at_start = new DateTime($row['end_time']);
                 $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
 
                 $data[$i][] = ((isset($formatted_date) && !empty($formatted_date)) ? $formatted_date : " ");

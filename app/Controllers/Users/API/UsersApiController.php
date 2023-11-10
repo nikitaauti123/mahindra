@@ -308,7 +308,7 @@ class UsersApiController extends BaseController
                 ->select('parts.*,job_actions.side,job_actions.part_id,job_actions.id,job_actions.start_time,job_actions.end_time')
                 ->join('parts', 'job_actions.part_id = parts.id')
                 ->orderBy('job_actions.id', 'DESC')
-                ->limit(5)
+                ->limit(10)
                 ->get()
                 ->getResult();;
             $result['completed_job'] = $result_c;

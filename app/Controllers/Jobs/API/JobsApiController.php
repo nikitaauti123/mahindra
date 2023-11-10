@@ -690,9 +690,9 @@ class JobsApiController extends BaseController
         $result = $this->JobActionsModel->findAll();
         
 // Start building the HTML content
-$htmlContent = '<table border="1">
+$htmlContent = '<img src="/assets/img/favicon-white.png" height="50" width="50"><h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse">
 <thead>
-    <tr>
+    <tr style="background-color:blue">
     <th>Sr No</th>
         <th>Part No</th>
         <th>Part Name</th>
@@ -707,6 +707,13 @@ $htmlContent = '<table border="1">
 
 $k = 1;
 foreach ($result as $row) {
+    $created_at = new DateTime($row['end_time']);
+    $formatted_date = $created_at->format('d-m-Y h:i A');
+
+    $created_at_start = new DateTime($row['start_time']);
+    $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
+
+   
 $htmlContent .= '<tr>';
 $htmlContent .= '<td>' .$k++ . '</td>';
 
@@ -714,8 +721,8 @@ $htmlContent .= '<td>' . htmlspecialchars(isset($row['part_no']) ? $row['part_no
 $htmlContent .= '<td>' . htmlspecialchars(isset($row['part_name']) ? $row['part_name'] : '') . '</td>';
 $htmlContent .= '<td>' . htmlspecialchars(isset($row['model']) ? $row['model'] : '') . '</td>';
 $htmlContent .= '<td>' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
-$htmlContent .= '<td>' . htmlspecialchars(isset($row['start_time']) ? $row['start_time'] : '') . '</td>';
-$htmlContent .= '<td>' . htmlspecialchars(isset($row['end_time']) ? $row['end_time'] : '') . '</td>';
+$htmlContent .= '<td>' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
+$htmlContent .= '<td>' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
 $htmlContent .= '<td>' . htmlspecialchars(isset($row['image_url']) ? $row['image_url'] : '') . '</td>';
 $htmlContent .= '</tr>';
 }

@@ -522,6 +522,7 @@ form .error {
     cursor: pointer; 
     width: 100%; 
     height: 30px;
+    padding-bottom: 10px;
 }
 .ss-main .ss-single-selected .ss-arrow span.arrow-down {
     transform: rotate(45deg);
@@ -535,7 +536,7 @@ form .error {
     padding: 0.275rem 0.75rem;
 }
 
-#start_time_left_parent .ss-main {
+#start_time_left_parent .ss-main, #start_time_right_parent .ss-main {
     width: 200px !important;
 }
 
@@ -572,4 +573,8 @@ form .error {
 
 .background-white {
     background-color: var(--white);
+}
+
+.card-body.no-pad {
+    padding: 0px;
 }

@@ -17,6 +17,6 @@ return [
     'Save'=>'Save',
     'Update'=>'Update',
     'CompletedDate'=>'Completed Date',
-    'AvgHRequired'=>'Avg. Hours Required',
+    'AvgHRequired'=>'Avg. Hours',
     
 ];

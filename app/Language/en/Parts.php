@@ -17,6 +17,7 @@ return [
   'SrNo' => 'Sr No',
   'StartTime' => 'Start Time',
   'EndTime' => 'End Time',
+  'TotalTime' => 'Total Time',
   'Status' => 'Status',
   'IsActive' => 'Is active',
   'PartsList' => 'Parts List',

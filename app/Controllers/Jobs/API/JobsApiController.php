@@ -531,6 +531,12 @@ class JobsApiController extends BaseController
                 $result[$key]['end_time'] = date("d-m-Y h:i A", strtotime($result_arr['end_time']));
             }
 
+            $startTime = strtotime($result_arr['start_time']);
+            $endTime = strtotime($result_arr['end_time']);    
+            $timeDiffSeconds = $endTime - $startTime;
+            $totalTime = gmdate('H:i:s', $timeDiffSeconds);
+            $result[$key]['total_time'] = $totalTime;
+
             /* $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
             $this->PartsModel->where('id', $result_arr['part_id']);
             $partData = $this->PartsModel->first();
@@ -570,11 +576,6 @@ class JobsApiController extends BaseController
         $date = date('Y-m-d H:i:s');
         $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
         $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
-        // print_r($to_date);
-    //      $file_name = 'completed_jobs_'.$date.'';
-    
-    //    $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
-   // $file_name = "completed_jobs_{$from_date}_to_{$to_date}";
        $file_name = "completed_jobs";
        $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
    
@@ -586,6 +587,7 @@ class JobsApiController extends BaseController
         $col[] = 'Die No';
         $col[] = 'Start Time';
         $col[] = 'End Time';
+        $col[] = 'Total Time';
         $col[] = 'Image';
         $headers = excel_columns($col,2);
         $pdf_data['headers'] = $headers;
@@ -630,9 +632,15 @@ class JobsApiController extends BaseController
 
                 $created_at_start = new DateTime($row['end_time']);
                 $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
+                $startTime = strtotime($row['start_time']);
+                $endTime = strtotime($row['end_time']);    
+                $timeDiffSeconds = $endTime - $startTime;
+                $totalTime = gmdate('H:i:s', $timeDiffSeconds);
 
                 $data[$i][] = ((isset($formatted_date) && !empty($formatted_date)) ? $formatted_date : " ");
                 $data[$i][] = ((isset($formatted_date_start) && !empty($formatted_date_start)) ? $formatted_date_start : " ");             
+                $data[$i][] = ((isset($totalTime) && !empty($totalTime)) ? $totalTime : " ");             
+               
                 $data[$i][] = ((isset($row['image_url']) && !empty($row['image_url'])) ? $row['image_url'] : " ");
 
                 $i++;
@@ -704,6 +712,7 @@ $htmlContent = '<h3 style="text-align:center">Completed Jobs</h3><table border="
         <th style="width: 120px;">Die No</th>
         <th style="width: 120px;">Start Time</th>
         <th style="width: 120px;">End Time</th>
+        <th style="width: 120px;">Total Time</th>
         <th style="width: 120px;">Image</th>
     </tr>
 </thead>
@@ -717,7 +726,10 @@ foreach ($result as $row) {
     $created_at_start = new DateTime($row['end_time']);
     $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
 
-   
+    $startTime = strtotime($row['start_time']);
+    $endTime = strtotime($row['end_time']);    
+    $timeDiffSeconds = $endTime - $startTime;
+    $totalTime = gmdate('H:i:s', $timeDiffSeconds);
 $htmlContent .= '<tr>';
 $htmlContent .= '<td  style="width: 40px;" >' .$k++ . '</td>';
 
@@ -727,6 +739,7 @@ $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['mod
 $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
 $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
 $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
+$htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($totalTime) ? $totalTime : '') . '</td>';
 $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH . $row['image_url'] . '" height="50" width="50">' : '') . '</td>';
 $htmlContent .= '</tr>';
 }

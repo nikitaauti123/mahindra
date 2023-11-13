@@ -70,10 +70,10 @@ class Phpspreadsheet
       }    
       foreach ($pdf_data['data'] as $cell => $value) {
         
-        if (strpos($cell, 'G') !== false && !empty($value)) {
+        if (strpos($cell, 'H') !== false && !empty($value)) {
         $columnGValue = ''; 
         $rowIndex = (int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT) + 1; // Adjust row index to 1-based index
-        $sheet->setCellValue('G' . $rowIndex, $columnGValue);
+        $sheet->setCellValue('H' . $rowIndex, $columnGValue);
         
           $absolute_path = FCPATH . $value;
           if (file_exists($absolute_path)) {

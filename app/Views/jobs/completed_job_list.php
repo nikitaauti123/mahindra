@@ -144,6 +144,7 @@
                                                     <th><?php echo lang('Parts.DieNo'); ?></th>
                                                     <th><?php echo lang('Parts.StartTime'); ?></th>
                                                     <th><?php echo lang('Parts.EndTime'); ?></th>
+                                                    <th><?php echo lang('Parts.TotalTime'); ?></th>
                                                     <th><?php echo lang('Parts.Image'); ?></th>
                                                     <!-- <th>Actions</th> -->
                                                 </tr>

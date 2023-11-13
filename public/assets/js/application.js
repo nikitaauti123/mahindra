@@ -2771,6 +2771,16 @@ function completed_jobs_tbl() {
                     }
                 },
                 {
+                    "data": "total_time",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
                     "data": "image_url",
                     "render": function (data, type, row, meta) {
                         if (data && data != '-') {
@@ -3077,8 +3087,10 @@ $("#completed-job-export").on('click', function () {
         var part_no = $("#cmp_part_no_filter").val();
         var from_to_date = $("#from_date").val();
         var dateParts = from_to_date.split(" - ");
-        var from_date = dateParts[0].trim();
-        var to_date = dateParts[1].trim();
+        var from_date_str = dateParts[0].trim();
+        var to_date_str = dateParts[1].trim();
+       var from_date = convertDateFormat(from_date_str);
+        var to_date = convertDateFormat(to_date_str);
         var part_name = $("#cmp_part_name_filter").val();
         var model = $("#cmp_part_model_filter").val();
         var die_no = $("#cmp_part_die_no_filter").val();
@@ -3089,8 +3101,11 @@ $("#completed-job-pdf").on('click', function () {
     var part_no = $("#cmp_part_no_filter").val();
     var from_to_date = $("#from_date").val();
     var dateParts = from_to_date.split(" - ");
-    var from_date = dateParts[0].trim();
-    var to_date = dateParts[1].trim();
+    var from_date_str = dateParts[0].trim();
+    var to_date_str = dateParts[1].trim();
+   var from_date = convertDateFormat(from_date_str);
+    var to_date = convertDateFormat(to_date_str);
+
     var part_name = $("#cmp_part_name_filter").val();
     var model = $("#cmp_part_model_filter").val();
     var die_no = $("#cmp_part_die_no_filter").val();

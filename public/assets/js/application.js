@@ -247,6 +247,7 @@ if ($("#completed_list_tbl_data").length > 0) {
             $("#from_date").daterangepicker({
                 startDate: moment().subtract(1, 'month'),
                 endDate: new Date(),
+                
             }, function (start, end, label) {
                 console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
 
@@ -2790,8 +2791,10 @@ function reload_completed_jobs_tbl() {
     var from_to_date = $("#from_date").val();
     var dateParts = from_to_date.split(" - ");
 
-    var from_date = dateParts[0].trim();
-    var to_date = dateParts[1].trim();
+    var from_date_str = dateParts[0].trim();
+    var to_date_str = dateParts[1].trim();
+   var from_date = convertDateFormat(from_date_str);
+    var to_date = convertDateFormat(to_date_str);
 
     var part_name = $("#cmp_part_name_filter").val();
     var model = $("#cmp_part_model_filter").val();
@@ -2813,6 +2816,10 @@ if ($("#completed_list_tbl_data").length > 0) {
 $("#completed_jobs_list_form #from_date").daterangepicker({
     clearBtn: true,
     "showDropdowns": true,
+    locale: {
+        format: date_formate
+    },
+
     startDate: moment().subtract(1, 'month'),
     endDate: new Date(),
     maxDate: new Date(),
@@ -2867,6 +2874,9 @@ var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="from_date_dashboard"]').daterangepicker({
      clearBtn: true,
     "showDropdowns": true,
+    locale: {
+        format: date_formate
+    },
     startDate: moment().subtract(1, 'month'),
     endDate: new Date(),
     maxDate: new Date(),
@@ -2883,12 +2893,23 @@ if($('#from_date_dashboard').length>0) {
     get_all_count();
 }
 
+function convertDateFormat(inputDate) {
+    var dateParts = inputDate.split(" ");
+    var dayMonthYear = dateParts[0].split("-");
+    var time = dateParts[1];
+    var year = dayMonthYear[2].slice(-4);
+    var formattedDate = dayMonthYear[1] + "/" + dayMonthYear[0] + "/" + year;
+    return formattedDate;
+}
+
 
 function get_all_count() {
     var from_to_date = $("#from_date_dashboard").val();
     var dateParts = from_to_date.split(" - ");
-    var from_date = dateParts[0].trim();
-    var to_date = dateParts[1].trim();
+    var from_date_str = dateParts[0].trim();
+    var to_date_str = dateParts[1].trim();
+   var from_date = convertDateFormat(from_date_str);
+    var to_date = convertDateFormat(to_date_str);
     $.ajax({
         url: base_url + 'api/users/get_all_count',
         method: "POST",

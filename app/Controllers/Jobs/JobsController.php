@@ -59,6 +59,28 @@ class JobsController extends BaseController
         return view('jobs/left_job', $data);
     }
 
+    public function Right_side_tv()
+    {
+        helper('WebSocketHelper');
+        $partsModel = new PartsModel();
+        $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+        $data['jobs'] = $this->jobActionModel->where('end_time IS NULL')->where('side', 'right')->orderBy('id', 'DESC')->limit(1)->findAll();
+
+        $data['request'] = $this->request;
+        return view('jobs/right_side_tv', $data);
+    }
+    public function Left_side_tv()
+    {
+        helper('WebSocketHelper');
+        $partsModel = new PartsModel();
+        $data['parts'] = $partsModel->where('is_active', '1')->findAll(); 
+
+        $data['jobs'] = $this->jobActionModel->where('end_time IS NULL')->where('side', 'left')->orderBy('id', 'DESC')->limit(1)->findAll();
+
+        $data['request'] = $this->request;
+        return view('jobs/left_side_tv', $data);
+    }
+
     public function Edit($id)
     {
         $data['request'] = $this->request;

@@ -89,6 +89,8 @@ $routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completed_jobs
 $routes->get('/admin/reports/completed_jobs_list', 'Jobs\\JobsController::completed_jobs_list');
 $routes->get('/admin/reports/completed_jobs_list/(:num)', 'Jobs\\JobsController::completed_jobs_list/$1');
 $routes->get('/admin/jobs/job_history', 'Jobs\\JobsController::job_history');
+$routes->get('/jobs/right_side_tv', 'Jobs\\JobsController::Right_side_tv');
+$routes->get('/jobs/left_side_tv', 'Jobs\\JobsController::Left_side_tv');
 
 $routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
 

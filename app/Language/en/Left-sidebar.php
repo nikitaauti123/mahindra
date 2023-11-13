@@ -16,6 +16,8 @@ return [
         'Reports' => 'Reports',
         'StartJobRight' => 'Start Right Side Job',
         'StartJobLeft' => 'Start Left Side Job',
-        'JobsCompleted'=>'Completed Jobs'
+        'JobsCompleted'=>'Completed Jobs',
+        'StartLeftTV' => 'Left Side TV',
+        'StartRightTV' => 'Right Side TV',
     ]
 ];

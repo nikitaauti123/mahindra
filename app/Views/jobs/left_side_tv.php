@@ -1,26 +1,8 @@
-
-<?= $this->extend('theme-default') ?>
+<?= $this->extend('theme-tv') ?>
 
 <?= $this->section('content') ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0"><?php echo lang('Jobs.Add'); ?></h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#"><?php echo lang('Left-sidebar.Menu.Home'); ?></a></li>
-                        <li class="breadcrumb-item active"><?php echo lang('Jobs.Add'); ?></li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
 
     <!-- Main content -->
     <section class="content">
@@ -48,8 +30,8 @@
                                     <div class="row d-flex align-items-center justify-content-center">
                                         <div class="col-12">
                                             <div class="d-flex align-items-center justify-content-center">
-                                                <div class="m-1" id="start_time_right_parent" style="<?php echo $hide_start; ?>">
-                                                    <select class="form-control" id="part_right_id" name="part_right_id" class="from-control">
+                                                <div class="m-1" id="start_time_left_parent" style="<?php echo $hide_start; ?>">
+                                                    <select class="form-control" id="part_left_id" name="part_left_id" class="from-control">
                                                         <option value="">Select <?php echo lang('Jobs.PartName'); ?></option>
                                                         <?php
                                                         if (!empty($parts)) {
@@ -60,14 +42,14 @@
                                                         ?>
                                                     </select>
                                                 </div>
-                                                <input type="hidden" id="update_id_right" name="update_id_right" value="<?php if(is_array($jobs) && count($jobs)>0) { echo $jobs[0]['part_id']; }?>" >
+                                                <input type="hidden" id="update_id_left" name="update_id_left" value="<?php if (is_array($jobs) && count($jobs) > 0) { echo $jobs[0]['part_id']; } ?>">
                                                 <div class="m-1">
-                                                    <a href="javascript:void(0)" class="btn btn-success start_time_right" id="start_time" style="<?php echo $hide_start; ?>">
+                                                    <a href="javascript:void(0)" class="btn btn-success start_time_left" id="start_time" style="<?php echo $hide_start; ?>">
                                                         Start
                                                     </a>
                                                 </div>
                                                 <div class="m-1">
-                                                    <a href="javascript:void(0)" class="btn btn-danger end_time_right" id="stop_time" style="<?php echo $hide_stop; ?>">
+                                                    <a href="javascript:void(0)" class="btn btn-danger end_time_left" id="stop_time" style="<?php echo $hide_stop; ?>">
                                                         Stop
                                                     </a>
                                                 </div>

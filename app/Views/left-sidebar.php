@@ -57,15 +57,27 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?php echo base_url('/jobs/left_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/add_left'?'active':''; ?>">
+                            <a href="<?php echo base_url('/jobs/left_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/left_job'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.StartJobLeft'); ?></p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo base_url('/jobs/right_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/add'?'active':''; ?>">
+                            <a href="<?php echo base_url('/jobs/right_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/right_job'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.StartJobRight'); ?></p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/jobs/left_side_tv'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/left_side_tv'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.StartLeftTV'); ?></p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/jobs/right_side_tv'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/right_side_tv'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.StartRightTV'); ?></p>
                             </a>
                         </li>
                     </ul>

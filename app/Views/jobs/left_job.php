@@ -61,12 +61,12 @@
                                                 </div>
                                                 <input type="hidden" id="update_id_left" name="update_id_left" value="<?php if (is_array($jobs) && count($jobs) > 0) { echo $jobs[0]['part_id']; } ?>">
                                                 <div class="m-1">
-                                                    <a href="javascript:void(0)" class="btn btn-primary start_time_left" id="start_time" style="<?php echo $hide_start; ?>">
+                                                    <a href="javascript:void(0)" class="btn btn-success start_time_left" id="start_time" style="<?php echo $hide_start; ?>">
                                                         Start
                                                     </a>
                                                 </div>
                                                 <div class="m-1">
-                                                    <a href="javascript:void(0)" class="btn btn-secondary end_time_left" id="stop_time" style="<?php echo $hide_stop; ?>">
+                                                    <a href="javascript:void(0)" class="btn btn-danger end_time_left" id="stop_time" style="<?php echo $hide_stop; ?>">
                                                         Stop
                                                     </a>
                                                 </div>

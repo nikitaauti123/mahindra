@@ -578,3 +578,15 @@ form .error {
 .card-body.no-pad {
     padding: 0px;
 }
+
+body.no-sidebar .main-header{
+    margin-left: 0 !important;
+}
+
+body.no-sidebar .content-wrapper{
+    margin-left: 0 !important;
+}
+
+body.no-sidebar .main-footer{
+    margin-left: 0 !important;
+}

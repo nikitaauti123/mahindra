@@ -855,7 +855,20 @@ function websocket_call(data) {
     }
 }
 
+function add_loader_el() {
+    if($(".lds-ellipsis").length==0) {
+        $('.loader').html('<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>');
+    } 
+}
+
+function remove_loader_el() {
+    if($(".lds-ellipsis").length>0) {
+        $('.loader').html('');
+    } 
+}
+
 function web_socket_init(side ='left') {
+    add_loader_el();
     $.ajax({
         url: base_url + 'api/parts/get_api_url',
         method: "GET",
@@ -869,6 +882,7 @@ function web_socket_init(side ='left') {
             var pins = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
+                remove_loader_el();
                 /*
                 part_id = jsonData.part_id;
                 //pin_status = jsonData.pin_status;
@@ -978,8 +992,13 @@ function web_socket_init(side ='left') {
                     });
                 }
             }
-        }
 
+            ws.addEventListener("error", (event) => {
+                remove_loader_el();
+                console.log("WebSocket error: ", event);
+                web_socket_init(side);
+            });
+        }
     });
 }
 
@@ -1132,8 +1151,6 @@ function fetch_job_details_from_db(side, part_id) {
             //leftInterval = setTimeout(fetch_job_details_from_db(side, part_id), 5000);
             //console.log("leftInterval", leftInterval);
             //}
-
-
         },
     });
 
@@ -1149,12 +1166,7 @@ if ($("#start_jobs_data_right").length > 0) {
 
 function check_path_and_change_sidebar() {
     var pathname = window.location.pathname;
-
-    console.log("pathname", pathname);
-
     let paths = pathname.split("/");
-
-    console.log("length::", paths.length);
 
     if (paths.length == 6) {
         paths.pop();
@@ -1163,8 +1175,6 @@ function check_path_and_change_sidebar() {
         paths.pop();
         pathname = paths.join("/");
     }
-
-    console.log("path::", pathname);
 
     if (
         pathname == '/public/admin/parts/add' ||
@@ -1200,16 +1210,28 @@ if ($('.end_time_left').is(":visible")) {
     leftInterval = setInterval(function () { fetch_job_details_from_db('left', id); }, 5000);
     */
     web_socket_init('left');
-    leftInterval = setInterval(function () { web_socket_init('left'); }, 5000);
+    //leftInterval = setInterval(function () { web_socket_init('left'); }, 5000);
 }
+
 var rightInterval = '';
 if ($('.end_time_right').is(":visible")) {
     let id = $('#update_id_right').val();
     //fetch_job_details_from_db('right', id);
     //rightInterval = setInterval(function () { fetch_job_details_from_db('right', id) }, 5000);
     web_socket_init('right');
-    leftInterval = setInterval(function () { web_socket_init('right'); }, 5000);
+    //rightInterval = setInterval(function () { web_socket_init('right'); }, 5000);
 }
+
+
+if($("#right_side_tv_display").is(":visible")) {
+    web_socket_init('right');
+}
+
+if($("#left_side_tv_display").is(":visible")) {
+    web_socket_init('left');
+}
+
+
 $(document).ready(function () {
     if ($('.digital-clock').length > 0) {
         var interval = '';
@@ -1296,14 +1318,7 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-});
 
-
-//$('.end_time_right').hide();
-$(document).ready(function () {
-    if ($('.digital-clock').length > 0) {
-        var interval = '';
         $(".start_time_right").on('click', function (e) {
             e.preventDefault();
             //clockUpdate();
@@ -1357,6 +1372,7 @@ $(document).ready(function () {
             });
             //}
         });
+
         $(".end_time_right").on('click', function (e) {
             e.preventDefault();
             //clearInterval(interval);
@@ -1414,10 +1430,8 @@ function clockUpdate() {
     var m = addZero(date.getMinutes());
     var s = addZero(date.getSeconds());
 
-    $('.digital-clock').text(h + ':' + m + ':' + s)
-
+    $('.digital-clock').text(h + ':' + m + ':' + s);
 }
-
 
 $("#part-export").on('click', function () {
     window.location.href = base_url + 'admin/parts/export_part';
@@ -1432,9 +1446,6 @@ if ($("#update_users").length > 0) {
         url: base_url + 'api/users/get_one/' + id,
         method: "GET",
         dataType: "json",
-        beforeSend: function (xhr) {
-            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-        },
     }).done(function (data) {
         $("#update_users").find("input[name='first_name']").val(data.first_name);
         $("#update_users").find("input[name='last_name']").val(data.last_name);
@@ -1457,7 +1468,7 @@ if ($("#update_users").length > 0) {
             dataType: "json",
             data: {
                 user_id: data.id
-            }, //v_mac: v_mac,
+            },
             success: function (user_data) {
                 if (user_data.role_id !== null) {
                     $("#role_id").val(user_data.role_id['role_id']);
@@ -1466,7 +1477,6 @@ if ($("#update_users").length > 0) {
             error: function (error) {
                 console.error("Error:", error);
             },
-
         });
 
     }).fail(function (data) {
@@ -1531,6 +1541,7 @@ if ($("#update_users").length > 0) {
         });
     });
 }
+
 $(document).ready(function () {
     if ($("#add_users").length > 0) {
         new SlimSelect({
@@ -1613,6 +1624,7 @@ $(document).ready(function () {
         });
     }
 });
+
 function part_active_inactive(id, is_active) {
     var res = confirm("Do you want to update this part status?");
     if (res == true) {
@@ -1633,6 +1645,7 @@ function part_active_inactive(id, is_active) {
     }
 
 }
+
 function job_active_inactive(id, is_active) {
     var res = confirm("Do you want to update this job status?");
     if (res == true) {

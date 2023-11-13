@@ -38,7 +38,7 @@
     var base_url = '<?php echo base_url(); ?>';
   </script>
 </head>
-<body class="hold-transition dark-mode no-sidebar layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition dark-mode no-sidebar layout-fixed layout-navbar-fixed layout-footer">
 <div class="wrapper">
   <?= $this->include('pre-loader'); ?>
   <?= $this->include('nav-header-tv'); ?>

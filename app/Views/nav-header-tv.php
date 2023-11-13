@@ -22,6 +22,9 @@
             <a href="<?php echo base_url('/logout'); ?>" class="nav-link"><?php echo lang('Left-sidebar.Menu.Logout'); ?></a>
             <?php } ?>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <div class="loader"></div>
+        </li>
     </ul>
 
     <!-- Right navbar links -->
@@ -29,18 +32,18 @@
         <li>
             <div class="row" style="width:650px;">
                 <div class="col-md-8">
-                    <label for="">Part Name: </label>&nbsp;<span class="part_name"> LEFT SIDE DOOR FOR CAR </span>
+                    <label for="">Part Name: </label>&nbsp;<span class="part_name">  </span>
                 </div>
                 <div class="col-md-4">
-                    <label for="">Die No: </label>&nbsp;<span class="die_no"> 99 </span>
+                    <label for="">Die No: </label>&nbsp;<span class="die_no">  </span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-8">
-                    <label for="">Model: </label>&nbsp;<span class="model"> XUV 700 </span>
+                    <label for="">Model: </label>&nbsp;<span class="model">  </span>
                 </div>
                 <div class="col-md-4">
-                    <label for="">Part No: </label>&nbsp;<span class="part_no"> PT92343 </span>
+                    <label for="">Part No: </label>&nbsp;<span class="part_no">  </span>
                 </div>
             </div>
         </li>

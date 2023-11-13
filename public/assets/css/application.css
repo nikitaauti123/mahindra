@@ -590,3 +590,7 @@ body.no-sidebar .content-wrapper{
 body.no-sidebar .main-footer{
     margin-left: 0 !important;
 }
+
+body .navbar-dark .navbar-nav .nav-link.active {
+    color: var(--primary);
+}

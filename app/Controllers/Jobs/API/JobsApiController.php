@@ -730,6 +730,7 @@ foreach ($result as $row) {
     $endTime = strtotime($row['end_time']);    
     $timeDiffSeconds = $endTime - $startTime;
     $totalTime = gmdate('H:i:s', $timeDiffSeconds);
+    $defalut_img ='' . FCPATH . '\assets\img\no_image_found.png';
 $htmlContent .= '<tr>';
 $htmlContent .= '<td  style="width: 40px;" >' .$k++ . '</td>';
 
@@ -740,7 +741,7 @@ $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['die
 $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
 $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
 $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($totalTime) ? $totalTime : '') . '</td>';
-$htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH . $row['image_url'] . '" height="50" width="50">' : '') . '</td>';
+$htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH . $row['image_url'] . '" height="50" width="50">' : '<img src="' . $defalut_img . '" height="60" width="60">') . '</td>';
 $htmlContent .= '</tr>';
 }
 

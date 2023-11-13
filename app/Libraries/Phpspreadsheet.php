@@ -76,6 +76,7 @@ class Phpspreadsheet
         $sheet->setCellValue('H' . $rowIndex, $columnGValue);
         
           $absolute_path = FCPATH . $value;
+          $defalut_img ='' . FCPATH . '\assets\img\no_image_found.png';
           if (file_exists($absolute_path)) {
             $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
             $drawing->setPath($absolute_path);
@@ -84,6 +85,15 @@ class Phpspreadsheet
             $drawing->setCoordinates($cell);
             $drawing->setWorksheet($sheet);
             $sheet->getRowDimension((int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT))->setRowHeight(150);  // Adjust this based on your needs
+          }else{
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setPath($defalut_img);
+            $drawing->setHeight(70);
+            $drawing->setWidth(70);
+            $drawing->setCoordinates($cell);
+            $drawing->setWorksheet($sheet);
+            $sheet->getRowDimension((int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT))->setRowHeight(150);  // Adjust this based on your needs
+        
           }
         }
       }

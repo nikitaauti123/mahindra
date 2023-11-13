@@ -2879,7 +2879,7 @@ if ($("#part_left_id").length > 0) {
     });
 }
 
-var date_formate = 'DD-MM-YYYY HH:mm A';
+var date_formate = 'DD-MM-YYYY';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');
 $('input[name="from_date_dashboard"]').daterangepicker({
      clearBtn: true,

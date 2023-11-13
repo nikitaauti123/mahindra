@@ -313,6 +313,17 @@ class UsersApiController extends BaseController
                 ->getResult();;
             $result['completed_job'] = $result_c;
 
+
+
+            if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+                $from_date = $this->request->getVar('from_date');
+                $f_date = $this->change_date_format($from_date) . " 00:00:00";
+                $to_date = $this->request->getVar('to_date');
+                $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
+                $this->jobactionsModel->where("start_time >= '" . $f_date . "'", null, false);
+                $this->jobactionsModel->where("end_time <= '" . $t_date . "'", null, false);
+            }
+
             $this->jobactionsModel->select("AVG(TIMESTAMPDIFF(MINUTE, job_actions.start_time, job_actions.end_time)) as average_time", false);
             $this->jobactionsModel->where('end_time IS NOT NULL', null, false);
            

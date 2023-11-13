@@ -2,8 +2,6 @@
 // import SlimSelect from 'slim-select';
 import { successMsg, failMsg } from "./messages.js";
 
-
-
 function check_login(form_id, btn_id) {
 
     if (!$(form_id).valid()) {
@@ -241,19 +239,19 @@ function user_active_inactive(id, is_active) {
     }
 
 }
-if ($("#completed_list_tbl_data").length > 0) {
- 
-        if ($("#from_date").length > 0) {
-            $("#from_date").daterangepicker({
-                startDate: moment().subtract(1, 'month'),
-                endDate: new Date(),
-                
-            }, function (start, end, label) {
-                console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
 
-                $("#from_date").val(start.format('YYYY-MM-DD') + " - " + end.format('YYYY-MM-DD'));
-            });
-        }
+if ($("#completed_list_tbl_data").length > 0) {
+    if ($("#from_date").length > 0) {
+        $("#from_date").daterangepicker({
+            startDate: moment().subtract(1, 'month'),
+            endDate: new Date(),
+            
+        }, function (start, end, label) {
+            console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+
+            $("#from_date").val(start.format('YYYY-MM-DD') + " - " + end.format('YYYY-MM-DD'));
+        });
+    }
 }
 
 if ($("#parts_list_tbl").length > 0) {
@@ -540,18 +538,18 @@ function reload_roles_tbl() {
 function reload_users_tbl() {
     users_table.ajax.url(base_url + "api/users/list").load();
 }
+
 function reload_permission_tbl() {
     permission_table.ajax.url(base_url + "api/permissions/list").load();
 }
-
 
 $(document).on('click', '.view_part', function () {
     let id = $(this).data('id');
     location.href = base_url + 'admin/parts/view/' + id;
 });
+
 $(document).on('click', '.delete_part', function () {
     let id = $(this).data('id');
-
     var con = confirm("Do you really want to delete this record?");
 
     if (con) {
@@ -577,7 +575,6 @@ $(document).on('click', '.delete_part', function () {
         });
     }
 });
-
 
 $(document).on('click', '.delete_user', function () {
     let id = $(this).data('id');
@@ -700,7 +697,6 @@ if ($("#add_parts_data").length > 0) {
 }
 
 if ($("#update_parts_data").length > 0) {
-
     let id = $("#update_parts_data").find("input[name='id']").val();
     $.ajax({
         url: base_url + 'api/parts/get_one/' + id,
@@ -717,11 +713,9 @@ if ($("#update_parts_data").length > 0) {
         var is_active = data.is_active;
         var checkbox = $("#is_active");
         if (is_active == 1) {
-
             $("#update_parts_data").find("input[name='is_active']").prop("checked", true); // Check the checkbo
             checkbox.prop("checked", true); // Check the checkbox
         } else if (is_active == 0) {
-
             $("#update_parts_data").find("input[name='is_active']").prop("checked", false); // Check the checkbo
         }
         var pins_array = data.pins.split(",");
@@ -729,7 +723,6 @@ if ($("#update_parts_data").length > 0) {
         for (let i in pins_array) {
             var pin_address = pins_array[i];
             $(".pins-display").find(".pin-box").each(function (index) {
-                console.log("pins address::", pin_address);
                 if ($(this).attr('title') == pin_address) {
                     $(this).addClass('green-pin');
                 }
@@ -760,7 +753,6 @@ if ($("#update_parts_data").length > 0) {
         e.preventDefault();
 
         var is_active = $("input[name='is_active']:checked").length;
-
         let pins_selected = [];
         let i = 0;
 
@@ -817,20 +809,60 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
+function websocket_call(data) {
+    var event_part_id = '';
+    const ws = new WebSocket(data.WEBSOCKET_URL);
+    ws.onmessage = (event) => {
+        var jsonData = JSON.parse(event.data);
+        var pins_data = JSON.parse(jsonData.pins);
+        var part_id = jsonData.id;
 
-//if ($("#start_jobs_data_left").length > 0) {
+        for (let i in pins_data) {
+            $(".pin-box['title="+i+"']").removeClass('green-pin');
+            $(".pin-box['title="+i+"']").removeClass('red-pin');
+            $(".pin-box['title="+i+"']").removeClass('orange-pin');
+            $(".pin-box['title="+i+"']").removeClass('gray-pin');
+
+            let style_class = 'gray-pin';
+            if(pins_data[i] == 0) {
+                style_class = 'green-pin';
+            } else if (pins_data[i] == 1) { 
+                style_class = 'red-pin';
+            } else if(pins_data[i] == 2) {
+                style_class = 'orange-pin';
+            } else if(pins_data[i] == 3) {
+                style_class = 'gray-pin';
+            }
+
+            $(".pin-box['title="+i+"']").addClass(style_class);
+        }
+
+        if ( part_id != event_part_id ) {
+            event_part_id = part_id
+            $.ajax({
+                type: 'GET', 
+                url: base_url + 'api/parts/get_one/' + part_id,
+                data: {},
+            }).done(function (data) {
+                $(".part_name").text(data['part_name']);
+                $(".part_no").text(data['part_no']);
+                $(".model").text(data['model']);
+                $(".die_no").text(data['die_no']);
+            }).fail(function (data) {
+                console.log("No part details found!");
+            });
+        }
+    }
+}
 
 function web_socket_init(side ='left') {
-    //$("#start_jobs_data_left").find("#part_name").select2();
     $.ajax({
         url: base_url + 'api/parts/get_api_url',
         method: "GET",
         data: {side: side},
         dataType: "json",
         success: function (data) {
-            //alert(data.WEBSOCKET_URL);
-            const ws = new WebSocket(data.WEBSOCKET_URL);  // Replace with your server URL
-            //$("#result").html("Title: " + data.title);
+            const ws = new WebSocket(data.WEBSOCKET_URL);
             var part_id = '';
             var event_part_id = '';
             var data = '';
@@ -884,14 +916,11 @@ function web_socket_init(side ='left') {
                     event_part_id = part_id;
                 } */
 
+                var pins_data = JSON.parse(jsonData.pins);
                 $(".pin-box").each(function () {
                     let title = $(this).attr('title');
-
-                    var pins_data = JSON.parse(jsonData.pins);
-
                     for (let i in pins_data) {
                         console.log("data.pins[i] ::", pins_data[i]);
-
                         let style_class = 'gray-pin';
                         if (i == title) {
                             $(this).removeClass('green-pin');
@@ -953,8 +982,6 @@ function web_socket_init(side ='left') {
 
     });
 }
-
-//} 
 
 
 /* if ($("#start_jobs_data_right").length > 0) {
@@ -1197,14 +1224,12 @@ $(document).ready(function () {
                 alert('Please select part name.');
                 return false;
             }
+
             $.ajax({
                 url: base_url + 'api/jobs/set_job_actions',
                 method: "POST",
                 data: { 'side': 'left', part_id: id, time: 'start_time' },
                 dataType: "json",
-                beforeSend: function (xhr) {
-                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-                },
             }).done(function (data) {
                 successMsg(data.msg);
                 $('#update_id_left').val(data.lastInsertid);
@@ -1222,15 +1247,12 @@ $(document).ready(function () {
 
                     // production code
                     //fetch_job_details_from_db('left', id);
-                    /* leftInterval = setInterval(function(){
-                        
-                        fetch_job_details_from_db('left', id)}, 
-                        
+                    /* leftInterval = setInterval(function(){                        
+                        fetch_job_details_from_db('left', id)},                         
                         5000
                     ); */
 
-                    web_socket_init('left');
-                    
+                    web_socket_init('left');                    
                 }
 
             }).fail(function (data) {
@@ -1249,16 +1271,12 @@ $(document).ready(function () {
         $(".end_time_left").on('click', function (e) {
             e.preventDefault();
             clearInterval(leftInterval);
-            //clearTimeout(leftInterval);
             var id = $('#update_id_left').val();
             $.ajax({
                 url: base_url + 'api/jobs/set_job_actions',
                 method: "POST",
                 data: { 'side': 'left', id: id, time: 'end_time' },
                 dataType: "json",
-                beforeSend: function (xhr) {
-                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-                },
             }).done(function (data) {
                 successMsg(data.msg);
                 $('#part_left_id').parent('div').show();
@@ -1266,7 +1284,6 @@ $(document).ready(function () {
                 $('.end_time_left').hide();
                 $("#display_part-details").hide();
                 $('#part_left_id').val('');
-
             }).fail(function (data) {
                 $(btn_id).removeClass('button--loading').attr('disabled', false);
                 if (typeof data.responseJSON.messages === 'object') {
@@ -1277,9 +1294,7 @@ $(document).ready(function () {
                     let msg = data.responseJSON.messages.msg;
                     failMsg(msg);
                 }
-
             });
-
         });
     }
 });
@@ -1291,7 +1306,7 @@ $(document).ready(function () {
         var interval = '';
         $(".start_time_right").on('click', function (e) {
             e.preventDefault();
-            clockUpdate();
+            //clockUpdate();
 
             //if(interval != '') {
             // interval = setInterval(clockUpdate, 1000);
@@ -1305,9 +1320,6 @@ $(document).ready(function () {
                 method: "POST",
                 data: { 'side': 'right', part_id: id, time: 'start_time' },
                 dataType: "json",
-                beforeSend: function (xhr) {
-                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-                },
             }).done(function (data) {
 
                 successMsg(data.msg);
@@ -1355,9 +1367,6 @@ $(document).ready(function () {
                 method: "POST",
                 data: { 'side': 'right', id: id, time: 'end_time' },
                 dataType: "json",
-                beforeSend: function (xhr) {
-                    //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-                },
             }).done(function (data) {
                 successMsg(data.msg);
                 $('#part_right_id').parent('div').show();
@@ -1375,9 +1384,7 @@ $(document).ready(function () {
                     let msg = data.responseJSON.messages.msg;
                     failMsg(msg);
                 }
-
             });
-
         });
     }
 });
@@ -1431,7 +1438,6 @@ if ($("#update_users").length > 0) {
     }).done(function (data) {
         $("#update_users").find("input[name='first_name']").val(data.first_name);
         $("#update_users").find("input[name='last_name']").val(data.last_name);
-
         $("#update_users").find("input[name='email']").val(data.email);
         $("#update_users").find("input[name='phone_number']").val(data.phone);
         $("#update_users").find("input[name='employee_id']").val(data.emp_id);
@@ -1456,7 +1462,6 @@ if ($("#update_users").length > 0) {
                 if (user_data.role_id !== null) {
                     $("#role_id").val(user_data.role_id['role_id']);
                 }
-
             },
             error: function (error) {
                 console.error("Error:", error);
@@ -1467,45 +1472,31 @@ if ($("#update_users").length > 0) {
     }).fail(function (data) {
         console.log("Not found");
     });
+
     $("#update_users").validate({
         rules: {
-            'first_name': {
-                required: true,
-            },
+            'first_name': { required: true },
             'last_name': { required: true },
             'email': { required: true },
-            'phone_number': {
-                required: true, minlength: 10,
-                maxlength: 12,
-            },
+            'phone_number': { required: true, minlength: 10, maxlength: 12 },
             'username': { required: true },
             'password': { minlength: 5 },
-            'confirm_password': {
-                equalTo: "#password"
-            },
-            'email': {
-                required: true,
-                email: true
-            },
+            'confirm_password': { equalTo: "#password" },
+            'email': { required: true, email: true },
             'employee_id': { required: true },
         },
         messages: {
-            'first_name': {
-                required: 'Please enter first Name',
-            },
+            'first_name': { required: 'Please enter first Name' },
             'last_name': { required: 'Please enter last Name' },
             'email': { required: 'Please enter Die No' },
             'phone_number': { required: 'Please enter Phone Number' },
             'username': { required: 'Please enter User Name' },
-
             'employee_id': { required: 'Please enter employee Id' },
         }
     });
 
     $("#update_users button").on('click', function (e) {
         e.preventDefault();
-
-
         if (!$("#update_users").valid()) {
             return false;
         }
@@ -2664,8 +2655,6 @@ $('.start_time_left').change(function () {
     alert(id);
 });
 
-
-
 var report_completed_jobs_tbl = completed_jobs_tbl();
 
 function completed_jobs_tbl() {
@@ -2796,6 +2785,7 @@ function completed_jobs_tbl() {
     }
     return dataTable;
 }
+
 function reload_completed_jobs_tbl() {
     var part_no = $("#cmp_part_no_filter").val();
     var from_to_date = $("#from_date").val();
@@ -2822,21 +2812,18 @@ function reload_completed_jobs_tbl() {
 }
 
 if ($("#completed_list_tbl_data").length > 0) {
-   
-$("#completed_jobs_list_form #from_date").daterangepicker({
-    clearBtn: true,
-    "showDropdowns": true,
-    locale: {
-        format: date_formate
-    },
+    $("#completed_jobs_list_form #from_date").daterangepicker({
+        clearBtn: true,
+        "showDropdowns": true,
+        locale: {
+            format: date_formate
+        },
 
-    startDate: moment().subtract(1, 'month'),
-    endDate: new Date(),
-    maxDate: new Date(),
-});
- 
+        startDate: moment().subtract(1, 'month'),
+        endDate: new Date(),
+        maxDate: new Date(),
+    });
 }
-
 
 $('#completed_jobs_list_form #from_date').on('apply.daterangepicker', function (ev, picker) {
     reload_completed_jobs_tbl();
@@ -2912,7 +2899,6 @@ function convertDateFormat(inputDate) {
     return formattedDate;
 }
 
-
 function get_all_count() {
     var from_to_date = $("#from_date_dashboard").val();
     var dateParts = from_to_date.split(" - ");
@@ -2970,7 +2956,6 @@ function get_all_count() {
         error: function () { }
     });
 }
-
 
 function formatDate(dateString) {
     var date = new Date(dateString);
@@ -3072,7 +3057,6 @@ if ($("#dashboard_list_tbl").length > 0) {
         ]
     });
 }
-
 
 if ($("#part_right_id").length > 0) {
     new SlimSelect({

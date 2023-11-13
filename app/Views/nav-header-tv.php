@@ -1,3 +1,6 @@
+<?php 
+    $current_page_url = current_page_url();
+?>
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-dark">
     <!-- Left navbar links -->
@@ -6,13 +9,13 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?php echo base_url('admin/dashboard'); ?>" class="nav-link">Dashboard</a>
+            <a href="<?php echo base_url('admin/dashboard'); ?>" class="nav-link <?php echo (isset($current_page_url['path']) && $current_page_url['path'] =='admin/dashboard')?'active':''; ?>">Dashboard</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?php echo base_url('admin/left_side_tv'); ?>" class="nav-link">Left TV</a>
+            <a href="<?php echo base_url('jobs/left_side_tv'); ?>" class="nav-link <?php echo (isset($current_page_url['path']) && $current_page_url['path'] =='jobs/left_side_tv')?'active':''; ?>">Left TV</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?php echo base_url('admin/right_side_tv'); ?>" class="nav-link">Right TV</a>
+            <a href="<?php echo base_url('jobs/right_side_tv'); ?>" class="nav-link <?php echo (isset($current_page_url['path']) && $current_page_url['path'] =='jobs/right_side_tv')?'active':''; ?>">Right TV</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <?php if(session()->get('isLoggedIn')) { ?>

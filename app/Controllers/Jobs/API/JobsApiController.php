@@ -702,7 +702,14 @@ class JobsApiController extends BaseController
         $result = $this->JobActionsModel->findAll();
         $inputPath ='' . FCPATH . '\assets\img\Mahindra_Logo.jpg';
 // Start building the HTML content
-$htmlContent = '<h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
+$htmlContent = '<table width="100%">
+<tr>
+    <td><img src="' . $inputPath . '" height="60" width="100"></td>
+</tr>
+<tr>
+    <td style="border-bottom: 1px solid #000;"></td>
+</tr>
+</table><h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
 <thead>
     <tr style="background-color:#3465a4;width: 100%;">
     <th>Sr No</th>

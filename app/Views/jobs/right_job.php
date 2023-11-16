@@ -112,7 +112,7 @@
                         <div class="card-body no-pad">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form id="start_jobs_data_left">
+                                    <form id="start_jobs_data_right">
                                         <div class="row mt-3 mb-3">
                                             <div class="col-12">
                                                 <div class="pins-display-wrapper">

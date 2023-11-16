@@ -3,18 +3,16 @@
 <?= $this->section('content') ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body no-pad">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form id="start_jobs_data_left">
+                                    <form id="left_side_tv_display">
                                         <div class="row mt-3 mb-3">
                                             <div class="col-12">
                                                 <div class="pins-display-wrapper">
@@ -69,19 +67,13 @@
                         <!-- /.row -->
                     </div>
                     <!-- ./card-body -->
-                    <!-- <div class="card-footer">
-                            </div> -->
-                    <!-- /.card-footer -->
                 </div>
                 <!-- /.card -->
             </div>
             <!-- /.col -->
         </div>
         <!-- /.row -->
-
-        <!-- /.row -->
-</div><!--/. container-fluid -->
-</section>
+    </section>
 <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->

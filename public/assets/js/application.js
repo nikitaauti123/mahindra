@@ -2430,12 +2430,10 @@ function reload_complete_tbl() {
     var from_date_str = dateParts[0];
     var to_date_str = dateParts[1];
 
-    // Use Moment.js to parse and format the dates
-    var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
+var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
     var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
 
     var part_name = $("#part_name_filter").val();
-    // alert(to_date); 
     var model = $("#part_model_filter").val();
     var die_no = $("#part_die_no_filter").val();
     completed_table.ajax.url(base_url + "api/jobs/completed_list?from_date=" +
@@ -2519,13 +2517,7 @@ function generate_table_history() {
         var from_date = moment(from_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
         var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
 
-        // var dateParts = from_to_date.split(" - ");
-        // // The first part (index 0) will be the "from date," and the second part (index 1) will be the "to date."
-        // var from_date = dateParts[0];
-        // var to_date = dateParts[1];
-        var part_name = $("#part_name_filter_history").val();
-        // alert(to_date); 
-
+         var part_name = $("#part_name_filter_history").val();
         var model = $("#part_model_filter_history").val();
         var die_no = $("#part_die_no_filter_history").val();
         var dataTable = $("#history_list_tbl").DataTable({
@@ -2633,7 +2625,6 @@ function reload_history_tbl() {
     var to_date = moment(to_date_str, "DD-MM-YYYY hh:mm A").format("DD-MM-YYYY");
 
     var part_name = $("#part_name_filter_history").val();
-    // alert(to_date); 
     var model = $("#part_model_filter_history").val();
     var die_no = $("#part_die_no_filter_history").val();
     history_table.ajax.url(base_url + "api/jobs/history_list?from_date=" +
@@ -2652,7 +2643,6 @@ function reload_history_tbl() {
 
 $('.start_time_left').change(function () {
     let id = $('#part_left_id').val();
-    alert(id);
 });
 
 var report_completed_jobs_tbl = completed_jobs_tbl();
@@ -2666,7 +2656,6 @@ function completed_jobs_tbl() {
 
         var from_date = dateParts[0].trim();
         var to_date = dateParts[1].trim();
-
         var part_name = $("#cmp_part_name_filter").val();
         var model = $("#cmp_part_model_filter").val();
         var die_no = $("#cmp_part_die_no_filter").val();
@@ -2795,7 +2784,6 @@ function reload_completed_jobs_tbl() {
     var to_date_str = dateParts[1].trim();
    var from_date = convertDateFormat(from_date_str);
     var to_date = convertDateFormat(to_date_str);
-
     var part_name = $("#cmp_part_name_filter").val();
     var model = $("#cmp_part_model_filter").val();
     var die_no = $("#cmp_part_die_no_filter").val();
@@ -2810,13 +2798,13 @@ function reload_completed_jobs_tbl() {
         "&die_no=" + die_no
     ).load();
 }
-
+var date_formate_com = 'DD-MM-YYYY';
 if ($("#completed_list_tbl_data").length > 0) {
     $("#completed_jobs_list_form #from_date").daterangepicker({
         clearBtn: true,
         "showDropdowns": true,
         locale: {
-            format: date_formate
+            format: date_formate_com
         },
 
         startDate: moment().subtract(1, 'month'),

@@ -239,6 +239,20 @@ function user_active_inactive(id, is_active) {
     }
 
 }
+var from_date_completed_date = getUrlParameter('from_date');
+var to_date_completed_date = getUrlParameter('to_date');
+if(from_date_completed_date != ''){
+    $("#completed_jobs_list_form #from_date").daterangepicker({
+        clearBtn: true,
+        "showDropdowns": true,
+        locale: {
+            format: date_formate_com
+        },
+        startDate: moment(from_date_completed_date, date_formate_com),
+        endDate: moment(to_date_completed_date, date_formate_com),
+        maxDate: new Date(),
+    });
+}else{
 
 if ($("#completed_list_tbl_data").length > 0) {
     if ($("#from_date").length > 0) {
@@ -252,6 +266,7 @@ if ($("#completed_list_tbl_data").length > 0) {
             $("#from_date").val(start.format('YYYY-MM-DD') + " - " + end.format('YYYY-MM-DD'));
         });
     }
+}
 }
 
 if ($("#parts_list_tbl").length > 0) {
@@ -2658,25 +2673,33 @@ $('.start_time_left').change(function () {
     let id = $('#part_left_id').val();
 });
 
+function convertDateFormat_new(inputDate) {
+    var dateParts = inputDate.split("-");
+    var day = dateParts[0];
+    var month = dateParts[1];
+    var year = dateParts[2];
+    
+    // Create a new date in "MM/DD/YYYY" format
+    var outputDate = month + '/' + day + '/' + year;
+    return outputDate;
+}
 var report_completed_jobs_tbl = completed_jobs_tbl();
 
 function completed_jobs_tbl() {
-    if ($("#completed_list_tbl_data").length > 0) {
-    var from_date = getUrlParameter('from_date');
- 
-    var to_date = getUrlParameter('to_date');
-  
+    if ($("#completed_list_tbl_data").length > 0) {  
         var job_Action_id = $("#uri_segment").val();
         var part_no = $("#cmp_part_no_filter").val();
-        var from_to_date = $("#from_date").val();
-        var dateParts = from_to_date.split(" - ");
-        if (from_date !== '' && to_date !== '') {
-            var from_date = getUrlParameter('from_date');
-            var to_date = getUrlParameter('to_date');
-        } else {
-            var from_date = dateParts[0].trim();
-            var to_date = dateParts[1].trim();
-        }
+        var from_date_completed_date = getUrlParameter('from_date');
+        var to_date_completed_date = getUrlParameter('to_date');
+     if(from_date_completed_date !=''){
+            var from_date =convertDateFormat_new(from_date_completed_date);
+            var to_date = convertDateFormat_new(to_date_completed_date);
+     }else{
+        var from_to_date = $("#from_date").val();;
+        var dateParts = from_to_date.split(" - ");       
+        var from_date = dateParts[0].trim();
+        var to_date = dateParts[1].trim();
+     }
         var part_name = $("#cmp_part_name_filter").val();
         var model = $("#cmp_part_model_filter").val();
         var die_no = $("#cmp_part_die_no_filter").val();
@@ -2827,6 +2850,22 @@ function reload_completed_jobs_tbl() {
     ).load();
 }
 var date_formate_com = 'DD-MM-YYYY';
+
+var from_date_completed_date = getUrlParameter('from_date');
+var to_date_completed_date = getUrlParameter('to_date');
+if(from_date_completed_date != ''){
+    $("#completed_jobs_list_form #from_date").daterangepicker({
+        clearBtn: true,
+        "showDropdowns": true,
+        locale: {
+            format: date_formate_com
+        },
+        startDate: moment(from_date_completed_date, date_formate_com),
+        endDate: moment(to_date_completed_date, date_formate_com),
+        maxDate: new Date(),
+    });
+}else{
+    alert('not');
 if ($("#completed_list_tbl_data").length > 0) {
     $("#completed_jobs_list_form #from_date").daterangepicker({
         clearBtn: true,
@@ -2839,6 +2878,7 @@ if ($("#completed_list_tbl_data").length > 0) {
         endDate: new Date(),
         maxDate: new Date(),
     });
+}
 }
 
 $('#completed_jobs_list_form #from_date').on('apply.daterangepicker', function (ev, picker) {
@@ -2904,15 +2944,17 @@ $('#from_date_dashboard').change(function () {
 
 if($('#from_date_dashboard').length>0) {
     get_all_count();
-    var anchor = $(".myAnchor");
+   
     var from_to_date = $("#from_date_dashboard").val();
     var dateParts = from_to_date.split(" - ");
     var from_date_str = dateParts[0].trim();
     var to_date_str = dateParts[1].trim();
    var from_date = convertDateFormat(from_date_str);
     var to_date = convertDateFormat(to_date_str);
+    var anchor = $(".myAnchor");
+
     if (anchor.length) {
-        anchor.attr("href", base_url+ 'admin/reports/completed_jobs_list?from_date=' + from_date + '&to_date=' + to_date);
+        anchor.attr("href", base_url+ 'admin/reports/completed_jobs_list?from_date=' + from_date_str + '&to_date=' + to_date_str);
   }
 }
 
@@ -2947,7 +2989,7 @@ function get_all_count() {
             // Check if the anchor is found
             if (anchor.length) {
                 // Update the href attribute
-                   anchor.attr("href", base_url+ 'admin/reports/completed_jobs_list?from_date=' + from_date + '&to_date=' + to_date);
+                   anchor.attr("href", base_url+ 'admin/reports/completed_jobs_list?from_date=' + from_date_str + '&to_date=' + to_date_str);
           }
     
             $("#total_completed_jobs").html(parseInt(data.total_completed_jobs));

@@ -34,5 +34,6 @@ return [
     'Action' => 'Action',
     'StatusUpdateMsg'=>'Users Status Updated Successfully',
     'AddNewUsers' => 'Add New Users',
+    'Actions'=>'Actions',
     
 ];

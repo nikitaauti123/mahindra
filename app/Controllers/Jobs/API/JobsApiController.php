@@ -516,6 +516,9 @@ class JobsApiController extends BaseController
         if (!empty($this->request->getVar('die_no'))) {
             $this->JobActionsModel->where('parts.die_no', $this->request->getVar('die_no'));
         }
+        if (!empty($this->request->getVar('job_Action_id'))) {
+            $this->JobActionsModel->where('job_actions.id', $this->request->getVar('job_Action_id'));
+        }
 
         $this->JobActionsModel->select('*');
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');

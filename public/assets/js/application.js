@@ -2662,13 +2662,21 @@ var report_completed_jobs_tbl = completed_jobs_tbl();
 
 function completed_jobs_tbl() {
     if ($("#completed_list_tbl_data").length > 0) {
-
+    var from_date = getUrlParameter('from_date');
+ 
+    var to_date = getUrlParameter('to_date');
+  
+        var job_Action_id = $("#uri_segment").val();
         var part_no = $("#cmp_part_no_filter").val();
         var from_to_date = $("#from_date").val();
         var dateParts = from_to_date.split(" - ");
-
-        var from_date = dateParts[0].trim();
-        var to_date = dateParts[1].trim();
+        if (from_date !== '' && to_date !== '') {
+            var from_date = getUrlParameter('from_date');
+            var to_date = getUrlParameter('to_date');
+        } else {
+            var from_date = dateParts[0].trim();
+            var to_date = dateParts[1].trim();
+        }
         var part_name = $("#cmp_part_name_filter").val();
         var model = $("#cmp_part_model_filter").val();
         var die_no = $("#cmp_part_die_no_filter").val();
@@ -2691,7 +2699,7 @@ function completed_jobs_tbl() {
                 [10, 25, 50, 100, 'All'],
             ],
             "ajax": {
-                "url": base_url + "api/jobs/report_completed_list?from_date=" + from_date + "&to_date=" + to_date + "&part_no=" + part_no + "&part_name=" + part_name + "&model=" + model + "&die_no=" + die_no,
+                "url": base_url + "api/jobs/report_completed_list?from_date=" + from_date + "&to_date=" + to_date + "&part_no=" + part_no + "&part_name=" + part_name + "&model=" + model + "&die_no=" + die_no+"&job_Action_id="+job_Action_id,
                 "dataSrc": "",
             },
             "columns": [
@@ -2788,6 +2796,13 @@ function completed_jobs_tbl() {
     return dataTable;
 }
 
+
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
 function reload_completed_jobs_tbl() {
     var part_no = $("#cmp_part_no_filter").val();
     var from_to_date = $("#from_date").val();
@@ -2889,6 +2904,16 @@ $('#from_date_dashboard').change(function () {
 
 if($('#from_date_dashboard').length>0) {
     get_all_count();
+    var anchor = $(".myAnchor");
+    var from_to_date = $("#from_date_dashboard").val();
+    var dateParts = from_to_date.split(" - ");
+    var from_date_str = dateParts[0].trim();
+    var to_date_str = dateParts[1].trim();
+   var from_date = convertDateFormat(from_date_str);
+    var to_date = convertDateFormat(to_date_str);
+    if (anchor.length) {
+        anchor.attr("href", base_url+ 'admin/reports/completed_jobs_list?from_date=' + from_date + '&to_date=' + to_date);
+  }
 }
 
 function convertDateFormat(inputDate) {
@@ -2917,6 +2942,14 @@ function get_all_count() {
 
         },
         success: function (data) {
+            var anchor = $(".myAnchor");
+
+            // Check if the anchor is found
+            if (anchor.length) {
+                // Update the href attribute
+                   anchor.attr("href", base_url+ 'admin/reports/completed_jobs_list?from_date=' + from_date + '&to_date=' + to_date);
+          }
+    
             $("#total_completed_jobs").html(parseInt(data.total_completed_jobs));
              $("#averag_hour_required").html(Number(data.averag_hour_required).toFixed(2));
             var completedJobData = data.completed_job;
@@ -3051,7 +3084,7 @@ if ($("#dashboard_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return '<a href="' + base_url + 'admin/reports/completed_jobs_list/' + row['part_id'] + '" ><i class="fa fa-eye"></i></a>';
+                    return '<a href="' + base_url + 'admin/reports/completed_jobs_list/' + row['id'] + '" ><i class="fa fa-eye"></i></a>';
                 }
             }
 

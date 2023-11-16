@@ -55,7 +55,7 @@
                        
                     </div> -->
                     <div class="col-12 col-sm-6 col-md-3">
-                        <a href="<?=base_url();?>admin/reports/completed_jobs_list">
+                        <a class="myAnchor" id="myAnchor" href="<?=base_url();?>admin/reports/completed_jobs_list">
                         <div class="info-box">
                             <span class="info-box-icon bg-success elevation-1">
                                 <i class="fas fa-calendar-check"></i>
@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="col-12 col-sm-6 col-md-3">
-                        <a href="<?=base_url();?>admin/reports/completed_jobs_list">
+                        <a class="myAnchor" href="<?=base_url();?>admin/reports/completed_jobs_list">
                         <div class="info-box">
                             <span class="info-box-icon bg-info elevation-1">
                                 <i class="fas fa-clock"></i>

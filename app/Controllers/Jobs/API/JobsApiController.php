@@ -579,11 +579,13 @@ class JobsApiController extends BaseController
         $date = date('Y-m-d H:i:s');
         $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
         $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
-       $file_name = "completed_jobs";
-       $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
    
+        $file_name = "completed_jobs";
+      
        
         $pdf_data['title'] = $file_name;
+        $pdf_data['file_name'] = $file_name .'_'.$from_date.'_to_'.$to_date.'.xlsx';
+    
         $col[] = 'Part No';
         $col[] = 'Part Name';
         $col[] = 'Model';
@@ -663,8 +665,7 @@ class JobsApiController extends BaseController
                 )
             );
         $pdf_data['style_array'] = $style_array;
-        $pdf_data['file_name'] = $file_name .'_'.$from_date.'_to_'.$to_date.'.xlsx';
-        $this->phpspreadsheet->set_data($pdf_data);
+         $this->phpspreadsheet->set_data($pdf_data);
       
     }
     public function pdf_completed_job(){
@@ -672,11 +673,9 @@ class JobsApiController extends BaseController
         $date = date('Y-m-d H:i:s');
         $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
         $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
-      
         $file_name = "completed_jobs";
         $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
         $pdf_data['title'] =  $file_name .'_'.$from_date.'_to_'.$to_date;
-    
         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
 
             $from_date = $this->request->getVar('from_date');

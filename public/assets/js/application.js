@@ -2865,7 +2865,6 @@ if(from_date_completed_date != ''){
         maxDate: new Date(),
     });
 }else{
-    alert('not');
 if ($("#completed_list_tbl_data").length > 0) {
     $("#completed_jobs_list_form #from_date").daterangepicker({
         clearBtn: true,

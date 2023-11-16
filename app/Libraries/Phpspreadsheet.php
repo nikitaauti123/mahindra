@@ -38,17 +38,17 @@ class Phpspreadsheet
       //$sheet->getStyle('A2:E5')->applyFromArray($pdf_data['style_array']);
     }
     if (isset($pdf_data['sheet']) && $pdf_data['sheet']  == 'completed-jobs') {
-      $sheet->mergeCells('A1:G1'); // Merge cells for the title
+      $sheet->mergeCells('A1:H1'); // Merge cells for the title
       $sheet->setCellValue('A1', 'Completed Jobs'); // Set the title
-      $sheet->getStyle('A1:G1')->getAlignment()->setHorizontal('center'); // Center align the title
-      $sheet->getStyle('A1:G1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-      $sheet->getStyle('A1:G1')->getFill()->getStartColor()->setARGB('FF34659B');
-      $sheet->getStyle('A1:G1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN); // Add this line
-      $sheet->getStyle('A1:G2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
-      $sheet->getStyle('A1:G2')->getFill()->getStartColor()->setARGB('FF34659B');
-      $sheet->getStyle('A1:G1')->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE));
-      $sheet->getStyle('A2:G2')->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE));
-      $sheet->getStyle('A2:G2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN); // Add this line
+      $sheet->getStyle('A1:H1')->getAlignment()->setHorizontal('center'); // Center align the title
+      $sheet->getStyle('A1:H1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+      $sheet->getStyle('A1:H1')->getFill()->getStartColor()->setARGB('FF34659B');
+      $sheet->getStyle('A1:H1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN); // Add this line
+      $sheet->getStyle('A1:H2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+      $sheet->getStyle('A1:H2')->getFill()->getStartColor()->setARGB('FF34659B');
+      $sheet->getStyle('A1:H1')->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE));
+      $sheet->getStyle('A2:H2')->getFont()->setColor(new \PhpOffice\PhpSpreadsheet\Style\Color(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE));
+      $sheet->getStyle('A2:H2')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN); // Add this line
       $columnCount = count($pdf_data['headers']);
       $equalWidth = 20; // Adjust the width as needed
 

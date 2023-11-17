@@ -824,19 +824,23 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
-function websocket_call(data) {
+function websocket_call(data, side) {
     var event_part_id = '';
     const ws = new WebSocket(data.WEBSOCKET_URL);
     ws.onmessage = (event) => {
+        //var date = new Date();
+        //console.log("start time::", date);
+        add_loader_el();
         var jsonData = JSON.parse(event.data);
-        var pins_data = JSON.parse(jsonData.pins);
+        //var pins_data = JSON.parse(jsonData.pins);
+        var pins_data = jsonData.pins;
         var part_id = jsonData.id;
 
         for (let i in pins_data) {
-            $(".pin-box['title="+i+"']").removeClass('green-pin');
-            $(".pin-box['title="+i+"']").removeClass('red-pin');
-            $(".pin-box['title="+i+"']").removeClass('orange-pin');
-            $(".pin-box['title="+i+"']").removeClass('gray-pin');
+            $(".pin-box[title=\""+i+"\"]").removeClass('green-pin');
+            $(".pin-box[title=\""+i+"\"]").removeClass('red-pin');
+            $(".pin-box[title=\""+i+"\"]").removeClass('orange-pin');
+            $(".pin-box[title=\""+i+"\"]").removeClass('gray-pin');
 
             let style_class = 'gray-pin';
             if(pins_data[i] == 0) {
@@ -849,7 +853,7 @@ function websocket_call(data) {
                 style_class = 'gray-pin';
             }
 
-            $(".pin-box['title="+i+"']").addClass(style_class);
+            $(".pin-box[title=\""+i+"\"]").addClass(style_class);
         }
 
         if ( part_id != event_part_id ) {
@@ -867,7 +871,22 @@ function websocket_call(data) {
                 console.log("No part details found!");
             });
         }
+        remove_loader_el();
     }
+
+    //ws.addEventListener("error", (event) => {
+        //remove_loader_el();
+        //console.log("WebSocket error: ", event);
+        //web_socket_init(side);
+    //});
+
+    ws.addEventListener("close", (event) => {
+        remove_loader_el();
+        //console.log("WebSocket close: ", event);
+        web_socket_init(side);
+    });
+    
+    
 }
 
 function add_loader_el() {
@@ -890,14 +909,14 @@ function web_socket_init(side ='left') {
         data: {side: side},
         dataType: "json",
         success: function (data) {
-            const ws = new WebSocket(data.WEBSOCKET_URL);
+            /* const ws = new WebSocket(data.WEBSOCKET_URL);
             var part_id = '';
             var event_part_id = '';
             var data = '';
             var pins = '';
             ws.onmessage = (event) => {
                 var jsonData = JSON.parse(event.data);
-                remove_loader_el();
+                remove_loader_el(); */
                 /*
                 part_id = jsonData.part_id;
                 //pin_status = jsonData.pin_status;
@@ -935,7 +954,7 @@ function web_socket_init(side ='left') {
                 } */
 
 
-                let part_id = jsonData.id;
+                //let part_id = jsonData.id;
 
                 /* if (part_id != event_part_id) {
                     $(".part_name").html(data.part_name);
@@ -945,7 +964,8 @@ function web_socket_init(side ='left') {
                     event_part_id = part_id;
                 } */
 
-                var pins_data = JSON.parse(jsonData.pins);
+                //var pins_data = JSON.parse(jsonData.pins);
+                /* var pins_data = jsonData.pins;
                 $(".pin-box").each(function () {
                     let title = $(this).attr('title');
                     for (let i in pins_data) {
@@ -970,7 +990,7 @@ function web_socket_init(side ='left') {
                         }
                     }
                 });
-
+ */
                 /* $.ajax({
                     type: 'POST', // or 'GET', depending on your needs
                     url: base_url + 'api/jobs/set_api_jobs',
@@ -983,7 +1003,7 @@ function web_socket_init(side ='left') {
 
                 }); */
 
-                if (part_id != event_part_id) {
+                /* if (part_id != event_part_id) {
                     event_part_id = part_id
                     $.ajax({
                         type: 'GET', // or 'GET', depending on your needs
@@ -997,22 +1017,20 @@ function web_socket_init(side ='left') {
                         $("#part_no").text(data['part_no']);
                         $("#model").text(data['model']);
                         $("#die_no").text(data['die_no']);
-                        /* $(".pins-display").find(".pin-box").each(function (index) {
-                            if ($(this).hasClass('orange-pin')) {
-                                $(this).removeClass('orange-pin').addClass('gray-pin');
-                            }
-                        }); */
+                       
                     }).fail(function (data) {
 
-                    });
-                }
-            }
+                    }); 
+                }*/
+            //}
 
-            ws.addEventListener("error", (event) => {
+           /*  ws.addEventListener("error", (event) => {
                 remove_loader_el();
                 console.log("WebSocket error: ", event);
                 web_socket_init(side);
-            });
+            }); */
+
+            websocket_call(data, side);
         }
     });
 }

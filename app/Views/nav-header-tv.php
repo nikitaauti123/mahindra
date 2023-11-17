@@ -18,11 +18,6 @@
             <a href="<?php echo base_url('jobs/right_side_tv'); ?>" class="nav-link <?php echo (isset($current_page_url['path']) && $current_page_url['path'] =='jobs/right_side_tv')?'active':''; ?>">Right TV</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <?php if(session()->get('isLoggedIn')) { ?>
-            <a href="<?php echo base_url('/logout'); ?>" class="nav-link"><?php echo lang('Left-sidebar.Menu.Logout'); ?></a>
-            <?php } ?>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
             <div class="loader"></div>
         </li>
     </ul>

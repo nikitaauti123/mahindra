@@ -67,33 +67,48 @@ class Phpspreadsheet
           ],
         ];
         $sheet->getStyle($cell)->applyFromArray($styleArray);
-      }    
+      }
       foreach ($pdf_data['data'] as $cell => $value) {
-        
+
         if (strpos($cell, 'H') !== false && !empty($value)) {
-        $columnGValue = ''; 
-        $rowIndex = (int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT) + 1; // Adjust row index to 1-based index
-        $sheet->setCellValue('H' . $rowIndex, $columnGValue);
-        
+          $columnGValue = '';
+          $rowIndex = (int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT) + 1; // Adjust row index to 1-based index
+          $sheet->setCellValue('H' . $rowIndex, $columnGValue);
+
           $absolute_path = FCPATH . $value;
-          $defalut_img ='' . FCPATH . '\assets\img\no_image_found.png';
+          $defalut_img = '' . FCPATH . '\assets\img\no_image_found.png';
           if (file_exists($absolute_path)) {
-            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-            $drawing->setPath($absolute_path);
-            $drawing->setHeight(50);
-            $drawing->setWidth(50);
-            $drawing->setCoordinates($cell);
-            $drawing->setWorksheet($sheet);
-            $sheet->getRowDimension((int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT))->setRowHeight(150);  // Adjust this based on your needs
-          }else{
+            $image_info = getimagesize($absolute_path);
+            if ($image_info !== false) {
+              $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+              $drawing->setPath($absolute_path);
+              $desiredWidthInPixels = 60;  // Set the column width to 100 pixels
+              $sheet->getColumnDimensionByColumn(4)->setWidth($desiredWidthInPixels);
+              $columnWidth = $sheet->getColumnDimensionByColumn(4)->getWidth();
+              $aspectRatio = $drawing->getWidth() / $drawing->getHeight();
+              $imageHeight = $columnWidth / $aspectRatio;
+              $scalingFactor = 2.1;  
+              $drawing->setHeight($imageHeight * $scalingFactor);
+              $drawing->setCoordinates($cell);
+              $drawing->setWorksheet($sheet);
+              $sheet->getRowDimension((int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT))->setRowHeight(150);  // Adjust this based on your needs
+            }
+          } else {
             $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
             $drawing->setPath($defalut_img);
-            $drawing->setHeight(70);
-            $drawing->setWidth(70);
+            $columnWidth = $sheet->getColumnDimensionByColumn(2)->getWidth();
+            $desiredWidthInPixels = 70;  // Set the column width to 100 pixels
+            $sheet->getColumnDimensionByColumn(4)->setWidth($desiredWidthInPixels);
+            $columnWidth = $sheet->getColumnDimensionByColumn(4)->getWidth();
+            $aspectRatio = $drawing->getWidth() / $drawing->getHeight();
+
+            $imageHeight = $columnWidth / $aspectRatio;
+            $scalingFactor = 2.1;  // Adjust based on your needs
+            $drawing->setHeight($imageHeight * $scalingFactor);
+
             $drawing->setCoordinates($cell);
             $drawing->setWorksheet($sheet);
-            $sheet->getRowDimension((int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT))->setRowHeight(150);  // Adjust this based on your needs
-        
+            $sheet->getRowDimension((int)filter_var($cell, FILTER_SANITIZE_NUMBER_INT))->setRowHeight(150);  // Adjust this based on your needs          
           }
         }
       }
@@ -152,11 +167,6 @@ class Phpspreadsheet
 
     $pdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial', 'allow_output_buffering' => true, 'allow_remote_images' => true]);
     ob_end_clean();
-    $inputPath ='' . FCPATH . '\assets\img\Mahindra_Logo.jpg';
-  
-
-
-  // $pdf->SetHTMLHeader($header);
     $pdf->SetFooter('{PAGENO}');
     $pdf->WriteHTML($pdf_data['pdfdata']);
     $pdfData = $pdf->output($pdf_data['title'] . '.pdf', 'D'); // Generate PDF content

@@ -702,27 +702,20 @@ class JobsApiController extends BaseController
         $this->JobActionsModel->select('*');
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->JobActionsModel->findAll();
-        $inputPath ='' . FCPATH . '\assets\img\Mahindra_Logo.jpg';
+        $inputPath ='' . FCPATH . '\assets\img\Mahindra_Logo_hor.jpg';
 // Start building the HTML content
-$htmlContent = '<table width="100%">
-<tr>
-    <td><img src="' . $inputPath . '" height="60" width="100"></td>
-</tr>
-<tr>
-    <td style="border-bottom: 1px solid #000;"></td>
-</tr>
-</table><h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
+$htmlContent = '<h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
 <thead>
-    <tr style="background-color:#3465a4;width: 100%;">
-    <th>Sr No</th>
-        <th  style="width: 120px;">Part No</th>
-        <th  style="width: 120px;">Part Name</th>
-        <th  style="width: 120px;">Model</th>
-        <th style="width: 120px;">Die No</th>
-        <th style="width: 120px;">Start Time</th>
-        <th style="width: 120px;">End Time</th>
-        <th style="width: 120px;">Total Time</th>
-        <th style="width: 120px;">Image</th>
+    <tr style="background-color:#3465a4;width: 100%;color:white">
+    <th  style="color:white">  Sr No</th>
+        <th  style="width: 120px;color:white">Part No</th>
+        <th  style="width: 120px;color:white">Part Name</th>
+        <th  style="width: 120px;color:white">Model</th>
+        <th style="width: 120px;color:white">Die No</th>
+        <th style="width: 120px;color:white">Start Time</th>
+        <th style="width: 120px;color:white">End Time</th>
+        <th style="width: 120px;color:white">Total Time</th>
+        <th style="width: 120px;color:white">Image</th>
     </tr>
 </thead>
 <tbody>';

@@ -64,8 +64,7 @@ if ($("#users_list_tbl").length > 0) {
             'processing': 'Loading...',
             "emptyTable": "There is no record to display"
         },
-        "dom": 'Bfrtip',
-        "lengthChange": false,
+        "responsive": true,
         "autoWidth": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print"],
         "lengthMenu": [
@@ -2730,9 +2729,9 @@ function completed_jobs_tbl() {
                 'processing': 'Loading...',
                 "emptyTable": "There is no record to display"
             },
-            "dom": 'Bfrtip',
-            buttons: true,
-            "lengthChange": false,
+            // "dom": 'Bfrtip',
+            // buttons: true,
+            // "lengthChange": false,
             "autoWidth": false,
             "buttons": ["csv", "excel", "print"],
             "lengthMenu": [

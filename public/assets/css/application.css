@@ -4,7 +4,7 @@
     --primary: #dc3545;
     --secondary: rgb(255, 66, 66);
     --red: #e40303;
-    --gray: #dfdfdf;
+    --gray: #7b7878;
     --green: rgb(0, 91, 0);
     --orange: rgb(254, 171, 19);
     --drak-gray:#202020;
@@ -192,7 +192,7 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 }
 
 .pins-display .y-axis-line {
-    width: 1180px;
+    width: 99%;
     background-color:black;
     height: 3px;
     float: left;

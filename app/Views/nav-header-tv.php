@@ -18,11 +18,6 @@
             <a href="<?php echo base_url('jobs/right_side_tv'); ?>" class="nav-link <?php echo (isset($current_page_url['path']) && $current_page_url['path'] =='jobs/right_side_tv')?'active':''; ?>">Right TV</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <?php if(session()->get('isLoggedIn')) { ?>
-            <a href="<?php echo base_url('/logout'); ?>" class="nav-link"><?php echo lang('Left-sidebar.Menu.Logout'); ?></a>
-            <?php } ?>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
             <div class="loader"></div>
         </li>
     </ul>
@@ -31,18 +26,18 @@
     <ul class="navbar-nav ml-auto">
         <li>
             <div class="row" style="width:650px;">
-                <div class="col-md-8">
+                <div class="col-4 col-md-8">
                     <label for="">Part Name: </label>&nbsp;<span class="part_name">  </span>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4 col-md-4">
                     <label for="">Die No: </label>&nbsp;<span class="die_no">  </span>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-4 col-md-8">
                     <label for="">Model: </label>&nbsp;<span class="model">  </span>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4 col-md-4">
                     <label for="">Part No: </label>&nbsp;<span class="part_no">  </span>
                 </div>
             </div>

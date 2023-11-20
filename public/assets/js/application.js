@@ -1619,12 +1619,10 @@ $(document).ready(function () {
                     //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
                 },
             }).done(function (data) {
-                btn.removeClass('button--loading').attr('disabled', false);
-                successMsg(data.msg);
+                 successMsg(data.msg);
                 location.href = base_url + 'admin/users/list';
                 reload_users_tbl();
             }).fail(function (data) {
-                btn.removeClass('button--loading').attr('disabled', false);
                 if (typeof data.responseJSON.messages === 'object') {
                     for (let i in data.responseJSON.messages) {
                         failMsg(data.responseJSON.messages[i]);
@@ -1817,13 +1815,11 @@ if ($("#add_roles").length > 0) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
             successMsg(data.msg);
             location.href = base_url + 'admin/roles/list';
             reload_roles_tbl();
         }).fail(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
-            if (typeof data.responseJSON.messages === 'object') {
+             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
                 }
@@ -1985,12 +1981,10 @@ if ($("#update_roles").length > 0) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
-            successMsg(data.msg);
+             successMsg(data.msg);
             location.href = base_url + 'admin/roles/list';
             reload_roles_tbl();
         }).fail(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
@@ -2140,8 +2134,6 @@ if ($("#add_permission").length > 0) {
         if (!$("#add_permission").valid()) {
             return false;
         }
-        let btn = $(this);
-        btn.addClass('button--loading').attr('disabled', true);
         $.ajax({
             url: base_url + 'api/permissions/add/',
             method: "POST",
@@ -2152,12 +2144,10 @@ if ($("#add_permission").length > 0) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
             successMsg(data.msg);
             location.href = base_url + 'admin/permissions/list';
             reload_permission_tbl();
         }).fail(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
@@ -2264,13 +2254,11 @@ if ($("#update_permission").length > 0) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
-            successMsg(data.msg);
+       successMsg(data.msg);
             location.href = base_url + 'admin/permissions/list';
             reload_permission_tbl();
         }).fail(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
-            if (typeof data.responseJSON.messages === 'object') {
+             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
                 }

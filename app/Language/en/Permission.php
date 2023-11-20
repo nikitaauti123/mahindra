@@ -28,5 +28,6 @@ return [
     'StatusUpdateMsg'=>'Permission Updated Successfully !',
     'DeleteMsg'=>'Permission Deleted Successfully !',
     'View' => 'View Permission',
+    'DuplicatePermission'=>'Permission already added. Please add another Permission.'
 
 ];

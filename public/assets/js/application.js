@@ -1501,8 +1501,10 @@ if ($("#update_users").length > 0) {
                 user_id: data.id
             },
             success: function (user_data) {
-                if (user_data.role_id !== null) {
-                    $("#role_id").val(user_data.role_id['role_id']);
+                if (user_data.role_id['role_id'] !== null) {
+                    $("#update_users").find("select[name='role_id']").val(user_data.role_id['role_id']);
+                    $("#role_id").css("display", "block");
+                    $("#role_id").css("display", "none");
                 }
             },
             error: function (error) {
@@ -1519,21 +1521,18 @@ if ($("#update_users").length > 0) {
             'first_name': { required: true },
             'last_name': { required: true },
             'email': { required: true },
-            'phone_number': { required: true, minlength: 10, maxlength: 12 },
+            'phone_number': { minlength: 10, maxlength: 12 },
             'username': { required: true },
             'password': { minlength: 5 },
             'confirm_password': { equalTo: "#password" },
             'email': { required: true, email: true },
-            'employee_id': { required: true },
-        },
+            },
         messages: {
             'first_name': { required: 'Please enter first Name' },
             'last_name': { required: 'Please enter last Name' },
             'email': { required: 'Please enter Die No' },
-            'phone_number': { required: 'Please enter Phone Number' },
             'username': { required: 'Please enter User Name' },
-            'employee_id': { required: 'Please enter employee Id' },
-        }
+             }
     });
 
     $("#update_users button").on('click', function (e) {
@@ -1586,7 +1585,7 @@ $(document).ready(function () {
                 'last_name': { required: true },
                 'email': { required: true },
                 'phone_number': {
-                    required: true, minlength: 10,
+                   minlength: 10,
                     maxlength: 12,
                 },
                 'username': { required: true },
@@ -1599,7 +1598,7 @@ $(document).ready(function () {
                     required: true,
                     email: true
                 },
-                'employee_id': { required: true },
+               
             },
             messages: {
                 'first_name': {
@@ -1607,14 +1606,12 @@ $(document).ready(function () {
                 },
                 'last_name': { required: 'Please enter last Name' },
                 'email': { required: 'Please enter email' },
-                'phone_number': { required: 'Please enter Phone Number' },
                 'username': { required: 'Please enter User Name' },
                 'password': { required: 'Please enter password' },
 
                 'confirm_password': { required: 'Please enter confirm password' },
 
-                'employee_id': { required: 'Please enter employee Id' },
-            }
+                }
         });
 
         $("#add_users button").on('click', function (e) {

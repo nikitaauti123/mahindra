@@ -51,27 +51,28 @@
                                                     <input type="text" class="form-control" name="name" placeholder="<?php echo lang('Roles.Roles'); ?>">
                                                 </div>
                                             </div>
-</div>  <div class="row mt-3 mb-3">
+                                        </div>
+                                        <div class="row mt-3 mb-3">
                                             <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <label class="col-md-4" for="role"><?php echo lang('Roles.Permission'); ?><span class="red_text">*</span></label>
-                                                <div class="col-md-8 form-group">
-                                                    <div class="permision-list  ">
-                                                        <input type="checkbox" class="form-check-input" id="select_all">&nbsp;<b><?php echo lang('Roles.SelectAll'); ?></b>
-                                                        <?php foreach ($permission as $perm) { ?>
-                                                            <div><input type="checkbox" class="form-check-input" value="<?php echo $perm['id']; ?>" name="permission_id[]" id="permission_id[]">&nbsp;<?php echo $perm['permission_id']; ?></div>
-                                                        <?php
-                                                        }
-                                                        ?>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <label class="col-md-4" for="role"><?php echo lang('Roles.Permission'); ?><span class="red_text">*</span></label>
+                                                        <div class="col-md-8 form-group">
+                                                            <div class="permision-list  ">
+                                                                <input type="checkbox" class="form-check-input" id="select_all">&nbsp;<b><?php echo lang('Roles.SelectAll'); ?></b>
+                                                                <?php foreach ($permission as $perm) { ?>
+                                                                    <div><input type="checkbox" class="form-check-input" value="<?php echo $perm['id']; ?>" name="permission_id[]" id="permission_id[]">&nbsp;<?php echo $perm['permission_id']; ?></div>
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                                    </div>
-                                                    <div class="row mt-3 mb-3">
-                                           
+                                        <div class="row mt-3 mb-3">
+
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="is_active" class="col-sm-4 control-label"><?php echo lang('Users.IsActive'); ?>?</label>
@@ -100,7 +101,7 @@
                                                     <?php echo lang('Users.Update'); ?>
                                                 </button>
                                                 <input type="reset" value="<?php echo lang('Reset'); ?>" class="btn btn-primary">
- 
+
                                             </div>
                                         </div>
                                     </form>

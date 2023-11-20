@@ -84,6 +84,16 @@ Class RolesApiController extends BaseController
             if(!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
+
+            $this->rolesModel->where('is_active', '1');
+            $this->rolesModel->where('deleted_at IS NULL');
+            $this->rolesModel->where('name', $this->request->getVar('name'));
+            $res = $this->rolesModel->find();
+
+
+            if (!empty($res)) {
+                return $this->fail(lang('Roles.DuplicateRoles'));
+            }
             $isactive = 0;
             if ($this->request->getVar('is_active') == 'on') {
                
@@ -128,6 +138,18 @@ Class RolesApiController extends BaseController
 
             if(!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
+            }
+            if ($id != '') {
+                $this->rolesModel->where('id !=', $id);
+            }
+            $this->rolesModel->where('is_active', '1');
+            $this->rolesModel->where('deleted_at IS NULL');
+            $this->rolesModel->where('name', $this->request->getVar('name'));
+            $res = $this->rolesModel->find();
+
+
+            if (!empty($res)) {
+                return $this->fail(lang('Roles.DuplicateRoles'));
             }
             $isactive = 0;
             if ($this->request->getVar('is_active') == 'on') {

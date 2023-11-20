@@ -29,5 +29,7 @@ return [
     'StatusUpdateMsg'=>'Status Updated Successfully !',
     'DeleteMsg'=>'Roles Deleted Successfully !',
     'View' => 'View Roles',
+    'DuplicateRoles'=>'Role name already added. Please add another role.'
+
 
 ];

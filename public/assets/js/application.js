@@ -1822,7 +1822,6 @@ if ($("#add_roles").length > 0) {
             return false;
         }
         let btn = $(this);
-        btn.addClass('button--loading').attr('disabled', true);
         $.ajax({
             url: base_url + 'api/roles/add/',
             method: "POST",
@@ -1987,8 +1986,6 @@ if ($("#update_roles").length > 0) {
         if (!$("#update_roles").valid()) {
             return false;
         }
-        let btn = $(this);
-        btn.addClass('button--loading').attr('disabled', true);
         $.ajax({
             url: base_url + 'api/roles/update/' + id,
             method: "POST",
@@ -2260,8 +2257,6 @@ if ($("#update_permission").length > 0) {
         if (!$("#update_permission").valid()) {
             return false;
         }
-        let btn = $(this);
-        btn.addClass('button--loading').attr('disabled', true);
         $.ajax({
             url: base_url + 'api/permissions/update/' + id,
             method: "POST",

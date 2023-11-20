@@ -53,6 +53,9 @@
                                                     <input type="text" class="form-control" name="name" placeholder="<?php echo lang('Roles.Roles'); ?>">
                                                 </div>
                                             </div>
+</div>
+<div class="row mt-3 mb-3">
+                                          
                                             <div class="col-md-4">
                                         <div class="form-group">
                                             <div class="row">
@@ -70,7 +73,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                            
+                                           
+                                                    </div>
+
+                                                    <div class="row mt-3 mb-3">
+                                          
                                                 <div class="col-4">
                                                     <div class="form-group">
                                             <label for="is_active" class="col-sm-4 control-label"><?php echo lang('Users.IsActive'); ?>?</label>
@@ -90,11 +97,13 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-12 text-center">
+                                                    <div class="col-6 ">
                                                     <button class="btn btn-primary">
                                                       
                                                          <?php echo lang('Users.Add'); ?>
-                                                        </button>  
+                                                        </button> 
+                                                        <input type="reset" value="<?php echo lang('Reset'); ?>" class="btn btn-primary">
+ 
                                                     </div>
                                                 </div>
                                             </form>

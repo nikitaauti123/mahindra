@@ -2279,10 +2279,11 @@ if ($("#update_permission").length > 0) {
 }
 $(document).on("click", "#select_all", function () {
     if ($(this).is(":checked") == true) {
+         $("input[name='permission_id[]']").prop("checked", true);
         $("input[name='permission_id[]']").attr("checked", "checked");
     } else {
-        $("input[name='permission_id[]']").attr("checked", false);
-    }
+        $("input[name='permission_id[]']").prop("checked", false);
+      }
 });
 var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');

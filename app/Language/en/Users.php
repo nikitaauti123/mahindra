@@ -4,10 +4,6 @@ return [
     'UsersList' => 'Users List',
     'RolesList' => 'Roles List',
     'PermissionsList' => 'PermissionsList',
-    'RolesList' => 'Roles List',
-    'RolesList' => 'Roles List',
-    'RolesList' => 'Roles List',
-    'RolesList' => 'Roles List',
     'Password' => 'Password',
     'ConfirmPassword' => 'Confirm Password',
     'ProfilePhoto' => 'Profile Photo',
@@ -36,6 +32,6 @@ return [
     'AddNewUsers' => 'Add New Users',
     'Actions'=>'Actions',
     'DuplicateEmp' => 'emp id already added. Please enter another emp id',
-    'DuplicateUsername' => 'user name already added. Please enter another username',
+    'DuplicateEmail' => 'Email already added. Please enter another email',
     
 ];

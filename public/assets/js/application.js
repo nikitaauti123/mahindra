@@ -279,8 +279,7 @@ if ($("#parts_list_tbl").length > 0) {
             'processing': 'Loading...',
             "emptyTable": "There is no record to display"
         },
-        "dom": 'Bfrtip',
-        "lengthChange": false,
+
         "autoWidth": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print"],
         "lengthMenu": [

@@ -1625,8 +1625,6 @@ $(document).ready(function () {
             if (!$("#add_users").valid()) {
                 return false;
             }
-            let btn = $(this);
-            btn.addClass('button--loading').attr('disabled', true);
             $.ajax({
                 url: base_url + 'api/users/add/',
                 method: "POST",

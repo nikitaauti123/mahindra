@@ -1771,7 +1771,7 @@ if ($("#roles_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return '<a href="' + base_url + 'admin/roles/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_roles" ><i class="fa fa-trash"></i></a>';
+                    return '<a href="' + base_url + 'admin/roles/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit text-primary"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_roles" ><i class="fa fa-trash"></i></a>';
                 }
             }
 
@@ -2085,7 +2085,7 @@ if ($("#permission_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return '<a href="' + base_url + 'admin/permissions/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_permission" ><i class="fa fa-trash"></i></a>';
+                    return '<a href="' + base_url + 'admin/permissions/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit text-primary"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_permission" ><i class="fa fa-trash"></i></a>';
                 }
             }
 

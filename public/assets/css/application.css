@@ -192,7 +192,7 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 }
 
 .pins-display .y-axis-line {
-    width: 1180px;
+    width: 99%;
     background-color:black;
     height: 3px;
     float: left;

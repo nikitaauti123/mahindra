@@ -26,18 +26,18 @@
     <ul class="navbar-nav ml-auto">
         <li>
             <div class="row" style="width:650px;">
-                <div class="col-md-8">
+                <div class="col-4 col-md-8">
                     <label for="">Part Name: </label>&nbsp;<span class="part_name">  </span>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4 col-md-4">
                     <label for="">Die No: </label>&nbsp;<span class="die_no">  </span>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-4 col-md-8">
                     <label for="">Model: </label>&nbsp;<span class="model">  </span>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4 col-md-4">
                     <label for="">Part No: </label>&nbsp;<span class="part_no">  </span>
                 </div>
             </div>

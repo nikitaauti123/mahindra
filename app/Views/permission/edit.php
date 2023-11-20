@@ -43,23 +43,23 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <form id="update_permission" method="post" enctype="multipart/form-data">
-
                                         <div class="row mt-3 mb-3">
-                                            
-                                        <div class="col-4">
+                                            <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="name"><?php echo lang('Permission.Permission'); ?></label>
                                                     <input type="text" class="form-control" name="permission_id" placeholder="<?php echo lang('Permission.Roles'); ?>">
                                                 </div>
                                             </div>
-                                            <div class="col-4">
+                            </div><div class="row mt-3 mb-3">
+                                            <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="name"><?php echo lang('Permission.Description'); ?></label>
                                                     <input type="text" class="form-control" name="description" placeholder="<?php echo lang('Permission.Description'); ?>">
                                                 </div>
                                             </div>
-                                            
-                                            
+</div>
+<div class="row">
+
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="is_active" class="col-sm-4 control-label"><?php echo lang('Users.IsActive'); ?>?</label>
@@ -67,7 +67,7 @@
                                                         <div class="checkbox">
                                                             <div class="toggle-switch mt-1">
                                                                 <label for="cb-switch">
-                                                                    <input type="checkbox" id="cb-switch" name="is_active" >
+                                                                    <input type="checkbox" id="cb-switch" name="is_active">
                                                                     <span>
                                                                         <small></small>
                                                                     </span>
@@ -80,13 +80,15 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-12 text-center">
+                                            <div class="col-6">
                                                 <input type="hidden" class="" name="id" value="<?php echo $id; ?>">
 
                                                 <button class="btn btn-primary">
 
                                                     <?php echo lang('Users.Update'); ?>
                                                 </button>
+                                                <input type="reset" value="<?php echo lang('Reset'); ?>" class="btn btn-primary">
+
                                             </div>
                                         </div>
                                     </form>

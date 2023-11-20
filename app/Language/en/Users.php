@@ -34,5 +34,7 @@ return [
     'StatusUpdateMsg'=>'User\'s Status Updated Successfully',
     'AddNewUsers' => 'Add New User',
     'Actions'=>'Actions',
+    'DuplicateEmp' => 'emp id already added. Please enter another emp id',
+    'DuplicateUsername' => 'user name already added. Please enter another username',
     
 ];

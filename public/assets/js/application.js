@@ -279,8 +279,7 @@ if ($("#parts_list_tbl").length > 0) {
             'processing': 'Loading...',
             "emptyTable": "There is no record to display"
         },
-        "dom": 'Bfrtip',
-        "lengthChange": false,
+
         "autoWidth": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print"],
         "lengthMenu": [
@@ -1502,8 +1501,10 @@ if ($("#update_users").length > 0) {
                 user_id: data.id
             },
             success: function (user_data) {
-                if (user_data.role_id !== null) {
-                    $("#role_id").val(user_data.role_id['role_id']);
+                if (user_data.role_id['role_id'] !== null) {
+                    $("#update_users").find("select[name='role_id']").val(user_data.role_id['role_id']);
+                    $("#role_id").css("display", "block");
+                    $("#role_id").css("display", "none");
                 }
             },
             error: function (error) {
@@ -1520,21 +1521,18 @@ if ($("#update_users").length > 0) {
             'first_name': { required: true },
             'last_name': { required: true },
             'email': { required: true },
-            'phone_number': { required: true, minlength: 10, maxlength: 12 },
+            'phone_number': { minlength: 10, maxlength: 12 },
             'username': { required: true },
             'password': { minlength: 5 },
             'confirm_password': { equalTo: "#password" },
             'email': { required: true, email: true },
-            'employee_id': { required: true },
-        },
+            },
         messages: {
             'first_name': { required: 'Please enter first Name' },
             'last_name': { required: 'Please enter last Name' },
             'email': { required: 'Please enter Die No' },
-            'phone_number': { required: 'Please enter Phone Number' },
             'username': { required: 'Please enter User Name' },
-            'employee_id': { required: 'Please enter employee Id' },
-        }
+             }
     });
 
     $("#update_users button").on('click', function (e) {
@@ -1587,7 +1585,7 @@ $(document).ready(function () {
                 'last_name': { required: true },
                 'email': { required: true },
                 'phone_number': {
-                    required: true, minlength: 10,
+                   minlength: 10,
                     maxlength: 12,
                 },
                 'username': { required: true },
@@ -1600,7 +1598,7 @@ $(document).ready(function () {
                     required: true,
                     email: true
                 },
-                'employee_id': { required: true },
+               
             },
             messages: {
                 'first_name': {
@@ -1608,14 +1606,12 @@ $(document).ready(function () {
                 },
                 'last_name': { required: 'Please enter last Name' },
                 'email': { required: 'Please enter email' },
-                'phone_number': { required: 'Please enter Phone Number' },
                 'username': { required: 'Please enter User Name' },
                 'password': { required: 'Please enter password' },
 
                 'confirm_password': { required: 'Please enter confirm password' },
 
-                'employee_id': { required: 'Please enter employee Id' },
-            }
+                }
         });
 
         $("#add_users button").on('click', function (e) {
@@ -1625,8 +1621,6 @@ $(document).ready(function () {
             if (!$("#add_users").valid()) {
                 return false;
             }
-            let btn = $(this);
-            btn.addClass('button--loading').attr('disabled', true);
             $.ajax({
                 url: base_url + 'api/users/add/',
                 method: "POST",
@@ -1637,12 +1631,10 @@ $(document).ready(function () {
                     //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
                 },
             }).done(function (data) {
-                btn.removeClass('button--loading').attr('disabled', false);
-                successMsg(data.msg);
+                 successMsg(data.msg);
                 location.href = base_url + 'admin/users/list';
                 reload_users_tbl();
             }).fail(function (data) {
-                btn.removeClass('button--loading').attr('disabled', false);
                 if (typeof data.responseJSON.messages === 'object') {
                     for (let i in data.responseJSON.messages) {
                         failMsg(data.responseJSON.messages[i]);
@@ -1773,7 +1765,7 @@ if ($("#roles_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return '<a href="' + base_url + 'admin/roles/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_roles" ><i class="fa fa-trash"></i></a>';
+                    return '<a href="' + base_url + 'admin/roles/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit text-primary"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_roles" ><i class="fa fa-trash"></i></a>';
                 }
             }
 
@@ -1824,7 +1816,6 @@ if ($("#add_roles").length > 0) {
             return false;
         }
         let btn = $(this);
-        btn.addClass('button--loading').attr('disabled', true);
         $.ajax({
             url: base_url + 'api/roles/add/',
             method: "POST",
@@ -1835,13 +1826,11 @@ if ($("#add_roles").length > 0) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
             successMsg(data.msg);
             location.href = base_url + 'admin/roles/list';
             reload_roles_tbl();
         }).fail(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
-            if (typeof data.responseJSON.messages === 'object') {
+             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
                 }
@@ -1991,8 +1980,6 @@ if ($("#update_roles").length > 0) {
         if (!$("#update_roles").valid()) {
             return false;
         }
-        let btn = $(this);
-        btn.addClass('button--loading').attr('disabled', true);
         $.ajax({
             url: base_url + 'api/roles/update/' + id,
             method: "POST",
@@ -2003,12 +1990,10 @@ if ($("#update_roles").length > 0) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
-            successMsg(data.msg);
+             successMsg(data.msg);
             location.href = base_url + 'admin/roles/list';
             reload_roles_tbl();
         }).fail(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
@@ -2094,7 +2079,7 @@ if ($("#permission_list_tbl").length > 0) {
             {
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return '<a href="' + base_url + 'admin/permissions/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_permission" ><i class="fa fa-trash"></i></a>';
+                    return '<a href="' + base_url + 'admin/permissions/edit/' + row['id'] + '"    class="edit_user" ><i class="fa fa-edit text-primary"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" data-id="' + row['id'] + '" class="delete_permission" ><i class="fa fa-trash"></i></a>';
                 }
             }
 
@@ -2158,8 +2143,6 @@ if ($("#add_permission").length > 0) {
         if (!$("#add_permission").valid()) {
             return false;
         }
-        let btn = $(this);
-        btn.addClass('button--loading').attr('disabled', true);
         $.ajax({
             url: base_url + 'api/permissions/add/',
             method: "POST",
@@ -2170,12 +2153,10 @@ if ($("#add_permission").length > 0) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
             successMsg(data.msg);
             location.href = base_url + 'admin/permissions/list';
             reload_permission_tbl();
         }).fail(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
@@ -2270,8 +2251,6 @@ if ($("#update_permission").length > 0) {
         if (!$("#update_permission").valid()) {
             return false;
         }
-        let btn = $(this);
-        btn.addClass('button--loading').attr('disabled', true);
         $.ajax({
             url: base_url + 'api/permissions/update/' + id,
             method: "POST",
@@ -2282,13 +2261,11 @@ if ($("#update_permission").length > 0) {
                 //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
             },
         }).done(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
-            successMsg(data.msg);
+       successMsg(data.msg);
             location.href = base_url + 'admin/permissions/list';
             reload_permission_tbl();
         }).fail(function (data) {
-            btn.removeClass('button--loading').attr('disabled', false);
-            if (typeof data.responseJSON.messages === 'object') {
+             if (typeof data.responseJSON.messages === 'object') {
                 for (let i in data.responseJSON.messages) {
                     failMsg(data.responseJSON.messages[i]);
                 }

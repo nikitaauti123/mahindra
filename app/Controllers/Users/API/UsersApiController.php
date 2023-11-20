@@ -153,6 +153,22 @@ class UsersApiController extends BaseController
             if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
+            $this->usersModel->where('is_active', '1');
+            $this->usersModel->where('deleted_at IS NULL');
+            $this->usersModel->where('username', $this->request->getVar('username'));
+            $resultuser = $this->usersModel->findAll();
+            if (!empty($resultuser)) {
+                return $this->fail(lang('Users.DuplicateUsername'));
+            }
+
+            $this->usersModel->where('is_active', '1');
+            $this->usersModel->where('deleted_at IS NULL');
+            $this->usersModel->where('emp_id', $this->request->getVar('employee_id'));
+            $result = $this->usersModel->findAll();
+            if (!empty($result)) {
+                return $this->fail(lang('Users.DuplicateEmp'));
+            }
+           
             $isactive = 0;
             if ($this->request->getVar('is_active') == 'on') {
                 $isactive = 1;
@@ -193,6 +209,26 @@ class UsersApiController extends BaseController
 
             if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
+            }
+
+           
+            $this->usersModel->where('id !=', $id);
+            $this->usersModel->where('is_active', '1');
+            $this->usersModel->where('deleted_at IS NULL');
+            $this->usersModel->where('username', $this->request->getVar('username'));
+            $resultuser = $this->usersModel->findAll();
+            if (!empty($resultuser)) {
+                return $this->fail(lang('Users.DuplicateUsername'));
+            }
+
+            
+            $this->usersModel->where('id !=', $id);
+            $this->usersModel->where('is_active', '1');
+            $this->usersModel->where('deleted_at IS NULL');
+            $this->usersModel->where('emp_id', $this->request->getVar('employee_id'));
+            $result = $this->usersModel->findAll();
+            if (!empty($result)) {
+                return $this->fail(lang('Users.DuplicateEmp'));
             }
             $isactive = 0;
             if ($this->request->getVar('is_active') == 'on') {

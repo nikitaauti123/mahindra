@@ -34,7 +34,7 @@
                                         <h5 class="card-title"><?php echo lang('Roles.Add'); ?></h5>                                       
                                     </div>
                                     <div class="col-6 text-right">
-                                        <a href="<?php echo base_url('/admin/users/list'); ?>" class="btn btn-primary" ><?php echo lang('Users.UsersList'); ?></a>
+                                        <a href="<?php echo base_url('/admin/users/list'); ?>" class="btn btn-primary" ><?php echo lang('Roles.RolesList'); ?></a>
                                     </div>
                                     </div>
                             </div>

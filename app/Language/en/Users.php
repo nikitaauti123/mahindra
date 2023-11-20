@@ -22,18 +22,17 @@ return [
     'EmployeeId' => 'Employee Id',
     'Add' => 'Add',
     'SrNo' => 'Sr.No',
-    'ProfilePhoto' => 'Profile Photo',
-    
+    'ProfilePhoto' => 'Profile Photo',    
     'Edit' => 'Edit',
     'Role' => 'Role',
     'UsersList' => 'Users List',
-    'UsersSuccessMsg' => 'Users Added Successfully',
-    'UsersUpdateMsg' => 'Users Updated Successfully',
+    'UsersSuccessMsg' => 'User Details Added Successfully',
+    'UsersUpdateMsg' => 'User Details Updated Successfully',
     'CreatedDate' => 'Created Date',
     'UpdatedDate' => 'Updated Date',
     'Action' => 'Action',
-    'StatusUpdateMsg'=>'Users Status Updated Successfully',
-    'AddNewUsers' => 'Add New Users',
+    'StatusUpdateMsg'=>'User\'s Status Updated Successfully',
+    'AddNewUsers' => 'Add New User',
     'Actions'=>'Actions',
     
 ];

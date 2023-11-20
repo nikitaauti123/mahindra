@@ -47,7 +47,7 @@
                                                 <div class="row mt-3 mb-3">
                                           
                                            
-                                            <div class="col-4">
+                                            <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="name"><?php echo lang('Roles.Roles'); ?><span class="red_text">*</span></label>
                                                     <input type="text" class="form-control" name="name" placeholder="<?php echo lang('Roles.Roles'); ?>">
@@ -56,7 +56,7 @@
 </div>
 <div class="row mt-3 mb-3">
                                           
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="row">
                                                 <label class="col-md-4" for="role"><?php echo lang('Roles.Permission'); ?><span class="red_text">*</span></label>
@@ -78,7 +78,7 @@
 
                                                     <div class="row mt-3 mb-3">
                                           
-                                                <div class="col-4">
+                                                <div class="col-6">
                                                     <div class="form-group">
                                             <label for="is_active" class="col-sm-4 control-label"><?php echo lang('Users.IsActive'); ?>?</label>
                                             <div class="col-sm-8">

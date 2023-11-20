@@ -1501,7 +1501,7 @@ if ($("#update_users").length > 0) {
                 user_id: data.id
             },
             success: function (user_data) {
-                if (user_data.role_id['role_id'] !== null) {
+                if (user_data.role_id!== null) {
                     $("#update_users").find("select[name='role_id']").val(user_data.role_id['role_id']);
                     $("#role_id").css("display", "block");
                     $("#role_id").css("display", "none");

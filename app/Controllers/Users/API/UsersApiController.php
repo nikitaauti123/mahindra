@@ -163,10 +163,10 @@ class UsersApiController extends BaseController
 
             $this->usersModel->where('is_active', '1');
             $this->usersModel->where('deleted_at IS NULL');
-            $this->usersModel->where('emp_id', $this->request->getVar('employee_id'));
+            $this->usersModel->where('username', $this->request->getVar('username'));
             $result = $this->usersModel->findAll();
             if (!empty($result)) {
-                return $this->fail(lang('Users.DuplicateEmp'));
+                return $this->fail(lang('Users.DuplicateUsername'));
             }
            
             $isactive = 0;
@@ -225,10 +225,10 @@ class UsersApiController extends BaseController
             $this->usersModel->where('id !=', $id);
             $this->usersModel->where('is_active', '1');
             $this->usersModel->where('deleted_at IS NULL');
-            $this->usersModel->where('emp_id', $this->request->getVar('employee_id'));
+            $this->usersModel->where('username', $this->request->getVar('username'));
             $result = $this->usersModel->findAll();
             if (!empty($result)) {
-                return $this->fail(lang('Users.DuplicateEmp'));
+                return $this->fail(lang('Users.DuplicateUsername'));
             }
             $isactive = 0;
             if ($this->request->getVar('is_active') == 'on') {

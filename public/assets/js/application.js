@@ -1250,6 +1250,8 @@ if ($('.end_time_left').is(":visible")) {
     */
     web_socket_init('left');
     //leftInterval = setInterval(function () { web_socket_init('left'); }, 5000);
+    clockUpdate();
+    var interval = setInterval(clockUpdate, 1000);
 }
 
 var rightInterval = '';
@@ -1259,6 +1261,8 @@ if ($('.end_time_right').is(":visible")) {
     //rightInterval = setInterval(function () { fetch_job_details_from_db('right', id) }, 5000);
     web_socket_init('right');
     //rightInterval = setInterval(function () { web_socket_init('right'); }, 5000);
+    clockUpdate();
+    var interval = setInterval(clockUpdate, 1000);
 }
 
 
@@ -1276,10 +1280,11 @@ $(document).ready(function () {
         var interval = '';
         $(".start_time_left").on('click', function (e) {
             e.preventDefault();
-            //clockUpdate();
+            clockUpdate();
 
             //if(interval != '') {
-            //interval = setInterval(clockUpdate, 1000);
+            interval = setInterval(clockUpdate, 1000);
+            //}
             var id = $('#part_left_id').val();
             if (id == '') {
                 alert('Please select part name.');
@@ -1445,7 +1450,7 @@ $(document).ready(function () {
         });
     }
 });
-
+var timer = 0;
 function clockUpdate() {
     var date = new Date();
     //$('.digital-clock').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
@@ -1467,9 +1472,18 @@ function clockUpdate() {
         }
     }
 
-    var h = addZero(twelveHour(date.getHours()));
+   /*  var h = addZero(twelveHour(date.getHours()));
     var m = addZero(date.getMinutes());
-    var s = addZero(date.getSeconds());
+    var s = addZero(date.getSeconds()); */
+    
+
+    var new_hr = Math.floor((timer / 3600));
+    var new_m = Math.floor((timer % 3600) / 60);
+    var h = new_hr>0?addZero(new_hr):addZero(0);
+    var m = new_m>0?addZero(new_m):addZero(0);
+    var s = addZero(Math.floor(timer % 60));
+
+    timer++;
 
     $('.digital-clock').text(h + ':' + m + ':' + s);
 }

@@ -575,7 +575,7 @@ class JobsApiController extends BaseController
         return $this->respond($combinedData, 200);
     }
     public function export_completed_job(){
-    $pdf_data = array();
+        $pdf_data = array();
         $date = date('Y-m-d H:i:s');
         $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
         $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
@@ -586,10 +586,10 @@ class JobsApiController extends BaseController
         $pdf_data['title'] = $file_name;
         $pdf_data['file_name'] = $file_name .'_'.$from_date.'_to_'.$to_date.'.xlsx';
     
-        $col[] = 'Part No';
+        $col[] = 'Part No.';
         $col[] = 'Part Name';
         $col[] = 'Model';
-        $col[] = 'Die No';
+        $col[] = 'Die No.';
         $col[] = 'Start Time';
         $col[] = 'End Time';
         $col[] = 'Total Time';
@@ -677,7 +677,6 @@ class JobsApiController extends BaseController
         $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
         $pdf_data['title'] =  $file_name .'_'.$from_date.'_to_'.$to_date;
         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
-
             $from_date = $this->request->getVar('from_date');
             $f_date = $this->change_date_format($from_date) . " 00:00:00";
             $to_date = $this->request->getVar('to_date');
@@ -688,7 +687,6 @@ class JobsApiController extends BaseController
         if (!empty($this->request->getVar('part_name'))) {
             $this->JobActionsModel->where('parts.part_name', $this->request->getVar('part_name'));
         }
-
         if (!empty($this->request->getVar('part_no'))) {
             $this->JobActionsModel->where('parts.part_no', $this->request->getVar('part_no'));
         }
@@ -698,62 +696,61 @@ class JobsApiController extends BaseController
         if (!empty($this->request->getVar('die_no'))) {
             $this->JobActionsModel->where('parts.die_no', $this->request->getVar('die_no'));
         }
-
         $this->JobActionsModel->select('*');
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->JobActionsModel->findAll();
         $inputPath ='' . FCPATH . '\assets\img\Mahindra_Logo_hor.jpg';
-// Start building the HTML content
-$htmlContent = '<h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
-<thead>
-    <tr style="background-color:#3465a4;width: 100%;color:white">
-    <th  style="color:white">  Sr No</th>
-        <th  style="width: 120px;color:white">Part No</th>
-        <th  style="width: 120px;color:white">Part Name</th>
-        <th  style="width: 120px;color:white">Model</th>
-        <th style="width: 120px;color:white">Die No</th>
-        <th style="width: 120px;color:white">Start Time</th>
-        <th style="width: 120px;color:white">End Time</th>
-        <th style="width: 120px;color:white">Total Time</th>
-        <th style="width: 120px;color:white">Image</th>
-    </tr>
-</thead>
-<tbody>';
+        // Start building the HTML content
+        $htmlContent = '<h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
+        <thead>
+            <tr style="background-color:#3465a4;width: 100%;color:white">
+            <th  style="color:white">Sr. No.</th>
+                <th  style="width: 120px;color:white">Part No.</th>
+                <th  style="width: 120px;color:white">Part Name</th>
+                <th  style="width: 120px;color:white">Model</th>
+                <th style="width: 120px;color:white">Die No.</th>
+                <th style="width: 120px;color:white">Start Time</th>
+                <th style="width: 120px;color:white">End Time</th>
+                <th style="width: 120px;color:white">Total Time</th>
+                <th style="width: 120px;color:white">Image</th>
+            </tr>
+        </thead>
+        <tbody>';
 
-$k = 1;
-foreach ($result as $row) {
-    $created_at = new DateTime($row['start_time']);
-    $formatted_date = $created_at->format('d-m-Y h:i A');
+        $k = 1;
+        foreach ($result as $row) {
+            $created_at = new DateTime($row['start_time']);
+            $formatted_date = $created_at->format('d-m-Y h:i A');
 
-    $created_at_start = new DateTime($row['end_time']);
-    $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
+            $created_at_start = new DateTime($row['end_time']);
+            $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
 
-    $startTime = strtotime($row['start_time']);
-    $endTime = strtotime($row['end_time']);    
-    $timeDiffSeconds = $endTime - $startTime;
-    $totalTime = gmdate('H:i:s', $timeDiffSeconds);
-    $defalut_img ='' . FCPATH . '\assets\img\no_image_found.png';
-$htmlContent .= '<tr>';
-$htmlContent .= '<td  style="width: 40px;" >' .$k++ . '</td>';
+            $startTime = strtotime($row['start_time']);
+            $endTime = strtotime($row['end_time']);    
+            $timeDiffSeconds = $endTime - $startTime;
+            $totalTime = gmdate('H:i:s', $timeDiffSeconds);
+            $defalut_img ='' . FCPATH . '\assets\img\no_image_found.png';
+            $htmlContent .= '<tr>';
+            $htmlContent .= '<td  style="width: 40px;" >' .$k++ . '</td>';
 
-$htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_no']) ? $row['part_no'] : '') . '</td>';
-$htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_name']) ? $row['part_name'] : '') . '</td>';
-$htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['model']) ? $row['model'] : '') . '</td>';
-$htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
-$htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
-$htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
-$htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($totalTime) ? $totalTime : '') . '</td>';
-$htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH . $row['image_url'] . '" height="60" width="100">' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
-$htmlContent .= '</tr>';
-}
+            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_no']) ? $row['part_no'] : '') . '</td>';
+            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_name']) ? $row['part_name'] : '') . '</td>';
+            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['model']) ? $row['model'] : '') . '</td>';
+            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($totalTime) ? $totalTime : '') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH . $row['image_url'] . '" height="60" width="100">' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
+            $htmlContent .= '</tr>';
+        }
 
-// print_r($htmlContent);exit;
+        // print_r($htmlContent);exit;
 
-$htmlContent .= '</tbody></table>';
-// print_r($htmlContent);exit;
-$pdf_data['pdfdata'] = $htmlContent;  
+        $htmlContent .= '</tbody></table>';
+        // print_r($htmlContent);exit;
+        $pdf_data['pdfdata'] = $htmlContent;  
 
-  $this->phpspreadsheet->set_pdf($pdf_data);
+        $this->phpspreadsheet->set_pdf($pdf_data);
 
     }
 }

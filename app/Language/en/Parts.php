@@ -22,8 +22,6 @@ return [
   'IsActive' => 'Is active',
   'PartsList' => 'Parts List',
   'Status' => 'Status',
-  'Status' => 'Status',
-  'Status' => 'Status',
   'FromDate' => 'Filter by Date',
   'CreatedDate' => 'Created Date',
   'CreatedDate' => 'Created Date',

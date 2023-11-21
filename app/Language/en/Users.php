@@ -4,10 +4,6 @@ return [
     'UsersList' => 'Users List',
     'RolesList' => 'Roles List',
     'PermissionsList' => 'PermissionsList',
-    'RolesList' => 'Roles List',
-    'RolesList' => 'Roles List',
-    'RolesList' => 'Roles List',
-    'RolesList' => 'Roles List',
     'Password' => 'Password',
     'ConfirmPassword' => 'Confirm Password',
     'ProfilePhoto' => 'Profile Photo',
@@ -34,7 +30,7 @@ return [
     'StatusUpdateMsg'=>'User\'s Status Updated Successfully',
     'AddNewUsers' => 'Add New User',
     'Actions'=>'Actions',
-    'DuplicateEmp' => 'emp id already added. Please enter another emp id',
-    'DuplicateUsername' => 'user name already added. Please enter another username',
+    'DuplicateUsername' => 'Username already added. Please enter another User name',
+    'DuplicateEmail' => 'Email already added. Please enter another email',
     
 ];

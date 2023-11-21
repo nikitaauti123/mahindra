@@ -1501,7 +1501,7 @@ if ($("#update_users").length > 0) {
                 user_id: data.id
             },
             success: function (user_data) {
-                if (user_data.role_id['role_id'] !== null) {
+                if (user_data.role_id!== null) {
                     $("#update_users").find("select[name='role_id']").val(user_data.role_id['role_id']);
                     $("#role_id").css("display", "block");
                     $("#role_id").css("display", "none");
@@ -2279,10 +2279,11 @@ if ($("#update_permission").length > 0) {
 }
 $(document).on("click", "#select_all", function () {
     if ($(this).is(":checked") == true) {
+         $("input[name='permission_id[]']").prop("checked", true);
         $("input[name='permission_id[]']").attr("checked", "checked");
     } else {
-        $("input[name='permission_id[]']").attr("checked", false);
-    }
+        $("input[name='permission_id[]']").prop("checked", false);
+      }
 });
 var date_formate = 'DD-MM-YYYY HH:mm A';
 var defaultStartDate = moment().subtract(7, 'days').format('DD-MM-YYYY');

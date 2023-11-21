@@ -822,9 +822,10 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
+var ws = '';
 function websocket_call(data, side) {
     var event_part_id = '';
-    const ws = new WebSocket(data.WEBSOCKET_URL);
+    ws = new WebSocket(data.WEBSOCKET_URL);
     ws.onmessage = (event) => {
         //var date = new Date();
         //console.log("start time::", date);
@@ -834,24 +835,31 @@ function websocket_call(data, side) {
         var pins_data = jsonData.pins;
         var part_id = jsonData.id;
 
-        for (let i in pins_data) {
-            $(".pin-box[title=\""+i+"\"]").removeClass('green-pin');
-            $(".pin-box[title=\""+i+"\"]").removeClass('red-pin');
-            $(".pin-box[title=\""+i+"\"]").removeClass('orange-pin');
-            $(".pin-box[title=\""+i+"\"]").removeClass('gray-pin');
+        var change_pin_colors = true;
 
-            let style_class = 'gray-pin';
-            if(pins_data[i] == 0) {
-                style_class = 'green-pin';
-            } else if (pins_data[i] == 1) { 
-                style_class = 'red-pin';
-            } else if(pins_data[i] == 2) {
-                style_class = 'orange-pin';
-            } else if(pins_data[i] == 3) {
-                style_class = 'gray-pin';
+        if($(".digital-clock").length>0 && !$(".digital-clock").is(":visible")) {
+            change_pin_colors = false;
+        }
+
+        if(change_pin_colors == true) {
+            for (let i in pins_data) {
+                $(".pin-box[title=\""+i+"\"]").removeClass('green-pin');
+                $(".pin-box[title=\""+i+"\"]").removeClass('red-pin');
+                $(".pin-box[title=\""+i+"\"]").removeClass('orange-pin');
+                $(".pin-box[title=\""+i+"\"]").removeClass('gray-pin');
+
+                let style_class = 'gray-pin';
+                if(pins_data[i] == 0) {
+                    style_class = 'green-pin';
+                } else if (pins_data[i] == 1) { 
+                    style_class = 'red-pin';
+                } else if(pins_data[i] == 2) {
+                    style_class = 'orange-pin';
+                } else if(pins_data[i] == 3) {
+                    style_class = 'gray-pin';
+                }
+                $(".pin-box[title=\""+i+"\"]").addClass(style_class);
             }
-
-            $(".pin-box[title=\""+i+"\"]").addClass(style_class);
         }
 
         if ( part_id != event_part_id ) {
@@ -1289,14 +1297,15 @@ $(document).ready(function () {
                 $('#part_left_id').parent('div').hide();
                 $('.start_time_left').hide();
                 $('.end_time_left').show();
+                $('.digital-clock').show();
                 $("#display_part-details").show();
 
                 if ($("#start_jobs_data_left").length > 0) {
 
                     $(".part_name").html('');
-                    $("#part_no").html('');
-                    $("#model").html('');
-                    $("#die_no").html('');
+                    $(".part_no").html('');
+                    $(".model").html('');
+                    $(".die_no").html('');
 
                     // production code
                     //fetch_job_details_from_db('left', id);
@@ -1335,6 +1344,7 @@ $(document).ready(function () {
                 $('#part_left_id').parent('div').show();
                 $('.start_time_left').show();
                 $('.end_time_left').hide();
+                $('.digital-clock').hide();
                 $("#display_part-details").hide();
                 $('#part_left_id').val('');
             }).fail(function (data) {
@@ -1378,9 +1388,9 @@ $(document).ready(function () {
                 if ($("#start_jobs_data_right").length > 0) {
 
                     $(".part_name").html('');
-                    $("#part_no").html('');
-                    $("#model").html('');
-                    $("#die_no").html('');
+                    $(".part_no").html('');
+                    $(".model").html('');
+                    $(".die_no").html('');
 
                    /*  fetch_job_details_from_db('right', id);
                     rightInterval = setTimeInterval(function () { 

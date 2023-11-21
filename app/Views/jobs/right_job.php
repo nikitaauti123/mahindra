@@ -44,7 +44,6 @@
                             ?>
                             <div class="row d-flex align-items-center justify-content-center">
                                 <div class="col-3 text-center">
-                                    <div class="digital-clock" style="display: none;">00:00:00</div>
                                     <div class="row d-flex align-items-center justify-content-center">
                                         <div class="col-12">
                                             <div class="d-flex align-items-center justify-content-center">
@@ -67,6 +66,9 @@
                                                     </a>
                                                 </div>
                                                 <div class="m-1">
+                                                    <div class="digital-clock" style="<?php echo $hide_stop; ?>">00:00:00</div>
+                                                </div>
+                                                <div class="m-1">
                                                     <a href="javascript:void(0)" class="btn btn-danger end_time_right" id="stop_time" style="<?php echo $hide_stop; ?>">
                                                         Stop
                                                     </a>
@@ -86,19 +88,19 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="part_name"><?php echo lang('Jobs.PartNo'); ?></label> :
-                                                <span id="part_no"></span>
+                                                <span class="part_no"></span>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="part_name"><?php echo lang('Jobs.Model'); ?></label> :
-                                                <span id="model"></span>
+                                                <span class="model"></span>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="part_name"><?php echo lang('Jobs.DieNo'); ?></label> :
-                                                <span id="die_no"></span>
+                                                <span class="die_no"></span>
                                             </div>
                                         </div>
                                     </div>

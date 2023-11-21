@@ -2,8 +2,8 @@
 
 return [
     'List' => 'Roles Master',
-    'Add' => 'Add Roles',
-    'Update' => 'Update Roles',
+    'Add' => 'Add Role',
+    'Update' => 'Update Role',
     'View' => 'View Roles',
 
     'Imports' => 'Import',
@@ -18,16 +18,16 @@ return [
     'Update' => 'Update',
     'SrNo' => 'Sr.No',
     'Status' => 'Status',
-    'Permission' => 'Permission',
-    'Roles' => 'Roles',
+    'Permission' => 'Permissions',
+    'Roles' => 'Role',
     'RolesList' => 'Roles List',
     'SelectAll'=>'Select All',
 
-    'AddNew'=>'Add New Roles',
-    'RolesSuccessMsg' => 'Roles Added Successfully !',
-    'RolesUpdateMsg' => 'Roles Updated Successfully !',
+    'AddNew'=>'Add New Role',
+    'RolesSuccessMsg' => 'Role Added Successfully !',
+    'RolesUpdateMsg' => 'Role Updated Successfully !',
     'StatusUpdateMsg'=>'Status Updated Successfully !',
-    'DeleteMsg'=>'Roles Deleted Successfully !',
+    'DeleteMsg'=>'Role Deleted Successfully !',
     'View' => 'View Roles',
     'DuplicateRoles'=>'Role name already added. Please add another role.'
 

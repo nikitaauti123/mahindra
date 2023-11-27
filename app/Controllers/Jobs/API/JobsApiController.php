@@ -668,6 +668,7 @@ class JobsApiController extends BaseController
          $this->phpspreadsheet->set_data($pdf_data);
       
     }
+
     public function pdf_completed_job(){
         $pdf_data = array();
         $date = date('Y-m-d H:i:s');
@@ -751,6 +752,5 @@ class JobsApiController extends BaseController
         $pdf_data['pdfdata'] = $htmlContent;  
 
         $this->phpspreadsheet->set_pdf($pdf_data);
-
     }
 }

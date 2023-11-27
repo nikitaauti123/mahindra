@@ -29,7 +29,7 @@
                                                         for ($i = 1; $i <= 14; $i++) {
                                                             for ($j = 0; $j < count($col_array); $j++) {
                                                         ?>
-                                                                <div id="pin[<?php echo $k++; ?>]" title="<?php echo $col_array[$j] . $i; ?>" class="pin-box gray-pin"><?php echo $col_array[$j] . $i; ?></div>
+                                                                <div id="<?php echo $col_array[$j] . $i; ?>" title="<?php echo $col_array[$j] . $i; ?>" class="pin-box gray-pin"><?php echo $col_array[$j] . $i; ?></div>
                                                                 <?php if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) : ?>
                                                                     <div class="x-axis-line"></div>
                                                                 <?php endif; ?>

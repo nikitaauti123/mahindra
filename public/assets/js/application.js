@@ -735,11 +735,7 @@ if ($("#update_parts_data").length > 0) {
 
         for (let i in pins_array) {
             var pin_address = pins_array[i];
-            $(".pins-display").find(".pin-box").each(function (index) {
-                if ($(this).attr('title') == pin_address) {
-                    $(this).addClass('green-pin');
-                }
-            });
+            $("#"+pin_address).addClass('green-pin');
         }
 
     }).fail(function (data) {
@@ -822,6 +818,14 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
+function elapsedMilliseconds(startTime)
+{
+    var n = new Date();
+    var s = n.getTime();
+    var diff = s - startTime;
+    return diff;
+}
+
 var ws = '';
 function websocket_call(data, side) {
     var event_part_id = '';
@@ -831,8 +835,12 @@ function websocket_call(data, side) {
         //console.log("start time::", date);
         add_loader_el();
         var jsonData = JSON.parse(event.data);
-        //var pins_data = JSON.parse(jsonData.pins);
-        var pins_data = jsonData.pins;
+        if(typeof jsonData.pins == 'string') {
+            var pins_data = JSON.parse(jsonData.pins)  
+        } else {
+            var pins_data = jsonData.pins;
+        }
+
         var part_id = jsonData.id;
 
         var change_pin_colors = true;
@@ -841,12 +849,12 @@ function websocket_call(data, side) {
             change_pin_colors = false;
         }
 
+        console.log("pins_data", Object.keys(pins_data).length);
+
+        var startTime = new Date().getTime();
         if(change_pin_colors == true) {
             for (let i in pins_data) {
-                $(".pin-box[title=\""+i+"\"]").removeClass('green-pin');
-                $(".pin-box[title=\""+i+"\"]").removeClass('red-pin');
-                $(".pin-box[title=\""+i+"\"]").removeClass('orange-pin');
-                $(".pin-box[title=\""+i+"\"]").removeClass('gray-pin');
+                $("#"+i).removeClass('green-pin').removeClass('red-pin').removeClass('orange-pin').removeClass('gray-pin');
 
                 let style_class = 'gray-pin';
                 if(pins_data[i] == 0) {
@@ -858,8 +866,10 @@ function websocket_call(data, side) {
                 } else if(pins_data[i] == 3) {
                     style_class = 'gray-pin';
                 }
-                $(".pin-box[title=\""+i+"\"]").addClass(style_class);
+                $("#"+i).addClass(style_class);
             }
+
+            console.log("time required::", elapsedMilliseconds(startTime));
         }
 
         if ( part_id != event_part_id ) {

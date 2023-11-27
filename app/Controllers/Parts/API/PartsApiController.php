@@ -166,6 +166,7 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
+      
     public  function  get_api_url(){   
 
         $side = $this->request->getVar('side');

@@ -58,8 +58,8 @@ $routes->get('/admin/parts/add', 'Parts\\PartsController::Create');
 $routes->get('/admin/parts/import', 'Parts\\PartsController::Import');
 $routes->post('/admin/parts/bulk_import_parts', 'Parts\\PartsController::bulk_import_parts');
 
-$routes->get('admin/parts/export_part', 'Parts\\PartsController::export_part');
-$routes->get('admin/parts/edit/(:num)', 'Parts\\PartsController::Edit/$1');
+$routes->get('/admin/parts/export_part', 'Parts\\PartsController::export_part');
+$routes->get('/admin/parts/edit/(:num)', 'Parts\\PartsController::Edit/$1');
 
 
 $routes->get('/admin/parts/view/(:num)', 'Parts\\PartsController::View/$1');
@@ -82,11 +82,15 @@ $routes->get('/admin/jobs/add', 'Jobs\\JobsController::Create');
 $routes->get('/admin/jobs/add_left', 'Jobs\\JobsController::Create_left');
 $routes->get('/admin/jobs/right_job', 'Jobs\\JobsController::Right_job');
 $routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::Left_job');
+$routes->get('/jobs/right_job', 'Jobs\\JobsController::Right_job');
+$routes->get('/jobs/left_job', 'Jobs\\JobsController::Left_job');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
 $routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completed_jobs');
 $routes->get('/admin/reports/completed_jobs_list', 'Jobs\\JobsController::completed_jobs_list');
 $routes->get('/admin/reports/completed_jobs_list/(:num)', 'Jobs\\JobsController::completed_jobs_list/$1');
 $routes->get('/admin/jobs/job_history', 'Jobs\\JobsController::job_history');
+$routes->get('/jobs/right_side_tv', 'Jobs\\JobsController::Right_side_tv');
+$routes->get('/jobs/left_side_tv', 'Jobs\\JobsController::Left_side_tv');
 
 $routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
 
@@ -109,7 +113,10 @@ $routes->post('/api/jobs/add_job', 'Jobs\\Api\\JobsApiController::add_job');
 $routes->post('/api/jobs/set_job_actions', 'Jobs\\Api\\JobsApiController::set_job_actions');
 $routes->get('/api/jobs/get_job_status', 'Jobs\\Api\\JobsApiController::get_job_status');
 $routes->get('/api/jobs/completed_jobs_list', 'Jobs\\Api\\JobsApiController::completed_jobs_list');
+$routes->get('/api/jobs/export_completed_job', 'Jobs\\Api\\JobsApiController::export_completed_job');
+$routes->get('/api/jobs/pdf_completed_job', 'Jobs\\Api\\JobsApiController::pdf_completed_job');
 
+$routes->get('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
 
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');
 $routes->get('/admin/roles/add', 'Roles\\RolesController::Create');
@@ -135,7 +142,7 @@ $routes->post('/api/permissions/update_is_active', 'Permission\\Api\\PermissionA
 $routes->post('/api/permissions/delete/(:num)', 'Permission\\Api\\PermissionApiController::delete/$1');
 $routes->get('/api/permissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
 $routes->post('/api/permissions/update/(:num)', 'Permission\\Api\\PermissionApiController::update/$1');
-$routes->get('api/pemissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
+$routes->get('/api/pemissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
 
 
 /*

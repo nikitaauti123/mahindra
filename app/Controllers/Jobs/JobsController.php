@@ -59,6 +59,28 @@ class JobsController extends BaseController
         return view('jobs/left_job', $data);
     }
 
+    public function Right_side_tv()
+    {
+        helper('WebSocketHelper');
+        $partsModel = new PartsModel();
+        $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+        $data['jobs'] = $this->jobActionModel->where('end_time IS NULL')->where('side', 'right')->orderBy('id', 'DESC')->limit(1)->findAll();
+
+        $data['request'] = $this->request;
+        return view('jobs/right_side_tv', $data);
+    }
+    public function Left_side_tv()
+    {
+        helper('WebSocketHelper');
+        $partsModel = new PartsModel();
+        $data['parts'] = $partsModel->where('is_active', '1')->findAll(); 
+
+        $data['jobs'] = $this->jobActionModel->where('end_time IS NULL')->where('side', 'left')->orderBy('id', 'DESC')->limit(1)->findAll();
+
+        $data['request'] = $this->request;
+        return view('jobs/left_side_tv', $data);
+    }
+
     public function Edit($id)
     {
         $data['request'] = $this->request;
@@ -96,6 +118,16 @@ class JobsController extends BaseController
      */
     public function completed_jobs_list(){
         $data['request'] = $this->request;
+        $uri = service('uri'); 
+       
+        if(!empty($uri->getSegment(4))){
+        $part_id = $uri->getSegment(4);
+                $result = $this->jobActionModel
+                ->where('id', $part_id)
+                ->first();
+                $data['part_id'] = $result['part_id'];
+        }
+         // exit;
         $all_parts = $this->partModel
         ->select('parts.id,parts.die_no,parts.part_name,parts.part_no,parts.model')      
         ->where('parts.is_active', '1')->findAll();

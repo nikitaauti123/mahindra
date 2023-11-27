@@ -4,10 +4,13 @@ namespace App\Controllers\Jobs\Api;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
+use App\Libraries\Phpspreadsheet;
 use App\Models\JobsModel;
 use App\Models\PartsModel;
 use App\Models\JobsHistoryModel;
 use App\Models\JobActionsModel;
+use Shuchkin\SimpleXLSX;
+use Shuchkin\SimpleXLS;
 use DateTime;
 use Exception;
 
@@ -19,6 +22,7 @@ class JobsApiController extends BaseController
     private $session;
     private $jobshistoryModel;
     private $JobActionsModel;
+    private $phpspreadsheet;
 
     public function __construct()
     {
@@ -27,6 +31,7 @@ class JobsApiController extends BaseController
         $this->jobshistoryModel = new JobsHistoryModel();
         $this->session = \Config\Services::session();
         $this->JobActionsModel = new JobActionsModel();
+        $this->phpspreadsheet = new Phpspreadsheet();
     }
 
     public function list()
@@ -170,29 +175,28 @@ class JobsApiController extends BaseController
 
         $part_id = $this->request->getVar('part_id');
 
-        if(!empty($part_id)) {
+        if (!empty($part_id)) {
             $result = $this->jobsModel
-            ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
-            ->join('parts', 'jobs.part_id = parts.id', 'right')
-            ->orderBy('jobs.id', 'DESC')
-           // ->where('jobs.side', $this->request->getVar('side'))
-            ->where('parts.id', $this->request->getVar('part_id'))
-            ->limit(1) // Set the limit to 1 to fetch only one row
-            ->get()
-            ->getRow();
-
+                ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
+                ->join('parts', 'jobs.part_id = parts.id', 'right')
+                ->orderBy('jobs.id', 'DESC')
+                // ->where('jobs.side', $this->request->getVar('side'))
+                ->where('parts.id', $this->request->getVar('part_id'))
+                ->limit(1) // Set the limit to 1 to fetch only one row
+                ->get()
+                ->getRow();
         } else {
             $result = $this->jobsModel
-            ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
-            ->join('parts', 'jobs.part_id = parts.id', 'right')
-            ->orderBy('jobs.id', 'DESC')
-            // ->where('jobs.side', $this->request->getVar('side'))
-            //->where('parts.id', $this->request->getVar('part_id'))
-            ->limit(1) // Set the limit to 1 to fetch only one row
-            ->get()
-            ->getRow();
+                ->select('jobs.pins, jobs.side, parts.id, parts.die_no,parts.part_name,parts.part_no,parts.model')
+                ->join('parts', 'jobs.part_id = parts.id', 'right')
+                ->orderBy('jobs.id', 'DESC')
+                // ->where('jobs.side', $this->request->getVar('side'))
+                //->where('parts.id', $this->request->getVar('part_id'))
+                ->limit(1) // Set the limit to 1 to fetch only one row
+                ->get()
+                ->getRow();
         }
-        
+
 
         if ($result) {
             return $this->respond($result, 200);
@@ -414,7 +418,7 @@ class JobsApiController extends BaseController
                 $result['msg'] = lang('Jobs.AddJobbActionSuccss');
                 $result['lastInsertid'] = $this->JobActionsModel->insertID();
             } else {
-            
+
                 $id  = $this->request->getVar('id');
                 /* $data = [
                     'side' => $this->request->getVar('side'),
@@ -430,7 +434,6 @@ class JobsApiController extends BaseController
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }
-
     }
 
     public function update_image($id)
@@ -463,7 +466,8 @@ class JobsApiController extends BaseController
         }
     }
 
-    public function get_job_status(){
+    public function get_job_status()
+    {
 
         $this->JobActionsModel = new JobActionsModel();
 
@@ -481,9 +485,10 @@ class JobsApiController extends BaseController
         return $this->respond([['error' => true, 'message' => 'No job started']], 404);
     }
 
-    private function change_date_format($str){
+    private function change_date_format($str)
+    {
         $date_str = explode("/", $str);
-        return $date_str[2]."-".$date_str[0]."-".$date_str[1];
+        return $date_str[2] . "-" . $date_str[0] . "-" . $date_str[1];
     }
 
     public  function report_completed_list()
@@ -491,11 +496,113 @@ class JobsApiController extends BaseController
         $result = [];
         $this->JobActionsModel = new JobActionsModel();
         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
-            
             $from_date = $this->request->getVar('from_date');
-            $f_date = $this->change_date_format($from_date)." 00:00:00";
+            $f_date = $this->change_date_format($from_date) . " 00:00:00";
             $to_date = $this->request->getVar('to_date');
-            $t_date = $this->change_date_format(($to_date)). " 23:59:59";
+            $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
+            $this->JobActionsModel->where("start_time >= '" . $f_date . "'", null, false);
+            $this->JobActionsModel->where("end_time <= '" . $t_date . "'", null, false);
+        }
+        if (!empty($this->request->getVar('part_name'))) {
+            $this->JobActionsModel->where('parts.part_name', $this->request->getVar('part_name'));
+        }
+
+        if (!empty($this->request->getVar('part_no'))) {
+            $this->JobActionsModel->where('parts.part_no', $this->request->getVar('part_no'));
+        }
+        if (!empty($this->request->getVar('model'))) {
+            $this->JobActionsModel->where('parts.model', $this->request->getVar('model'));
+        }
+        if (!empty($this->request->getVar('die_no'))) {
+            $this->JobActionsModel->where('parts.die_no', $this->request->getVar('die_no'));
+        }
+        if (!empty($this->request->getVar('job_Action_id'))) {
+            $this->JobActionsModel->where('job_actions.id', $this->request->getVar('job_Action_id'));
+        }
+
+        $this->JobActionsModel->select('*');
+        $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
+        $result = $this->JobActionsModel->findAll();
+
+        foreach ($result as $key => $result_arr) {
+
+            if (isset($result_arr['start_time'])) {
+                $result[$key]['start_time'] = date("d-m-Y h:i A", strtotime($result_arr['start_time']));
+            }
+
+            if (isset($result_arr['end_time'])) {
+                $result[$key]['end_time'] = date("d-m-Y h:i A", strtotime($result_arr['end_time']));
+            }
+
+            $startTime = strtotime($result_arr['start_time']);
+            $endTime = strtotime($result_arr['end_time']);    
+            $timeDiffSeconds = $endTime - $startTime;
+            $totalTime = gmdate('H:i:s', $timeDiffSeconds);
+            $result[$key]['total_time'] = $totalTime;
+
+            /* $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
+            $this->PartsModel->where('id', $result_arr['part_id']);
+            $partData = $this->PartsModel->first();
+
+
+            if ($partData) {
+                // Combine the data from the two tables and store it in the results array.
+                $combinedResult = array_merge($result_arr, $partData);
+                $combinedResults[] = $combinedResult;
+            } */
+        }
+
+        return $this->respond($result, 200);
+    }
+
+    public function report_list_dashboard()
+    {
+        $result = $this->JobActionsModel
+            ->select('parts.*,job_actions.id,job_actions.part_id,job_actions.end_time')
+            ->join('parts', 'job_actions.part_id = parts.id')
+            ->orderBy('job_actions.id', 'DESC')
+            ->where('job_actions.end_time IS NOT NULL', null, false)
+            ->limit(10)
+            ->get()
+            ->getResult();
+        $combinedData = [];
+        foreach ($result as $result_arr) {
+            $created_at = new DateTime($result_arr->end_time);
+            $formatted_date = $created_at->format('d-m-Y h:i A');
+            $result_arr->completed_time = $formatted_date;
+             $combinedData[] = $result_arr;
+        }
+        return $this->respond($combinedData, 200);
+    }
+    public function export_completed_job(){
+        $pdf_data = array();
+        $date = date('Y-m-d H:i:s');
+        $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
+        $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
+   
+        $file_name = "completed_jobs";
+      
+       
+        $pdf_data['title'] = $file_name;
+        $pdf_data['file_name'] = $file_name .'_'.$from_date.'_to_'.$to_date.'.xlsx';
+    
+        $col[] = 'Part No.';
+        $col[] = 'Part Name';
+        $col[] = 'Model';
+        $col[] = 'Die No.';
+        $col[] = 'Start Time';
+        $col[] = 'End Time';
+        $col[] = 'Total Time';
+        $col[] = 'Image';
+        $headers = excel_columns($col,2);
+        $pdf_data['headers'] = $headers;
+         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+
+            $from_date = $this->request->getVar('from_date');
+            $f_date = $this->change_date_format($from_date) . " 00:00:00";
+            $to_date = $this->request->getVar('to_date');
+            $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
+         
             $this->JobActionsModel->where("start_time >= '" . $f_date . "'", null, false);
             $this->JobActionsModel->where("end_time <= '" . $t_date . "'", null, false);
         }
@@ -516,46 +623,134 @@ class JobsApiController extends BaseController
         $this->JobActionsModel->select('*');
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->JobActionsModel->findAll();
+        $data = array();
+        $i = 1;
+        if (count($result) > 0) {
+            foreach ($result as $row) {
+                $data[$i][] = ((isset($row['part_no']) && !empty($row['part_no'])) ? $row['part_no'] : " ");
+                $data[$i][] = ((isset($row['part_name']) && !empty($row['part_name'])) ? $row['part_name'] : " ");
+                $data[$i][] = ((isset($row['model']) && !empty($row['model'])) ? $row['model'] : " ");
+                $data[$i][] = ((isset($row['die_no']) && !empty($row['die_no'])) ? $row['die_no'] : " ");
+              
+                $created_at = new DateTime($row['start_time']);
+                $formatted_date = $created_at->format('d-m-Y h:i A');
 
-        foreach ($result as $key=>$result_arr) {
+                $created_at_start = new DateTime($row['end_time']);
+                $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
+                $startTime = strtotime($row['start_time']);
+                $endTime = strtotime($row['end_time']);    
+                $timeDiffSeconds = $endTime - $startTime;
+                $totalTime = gmdate('H:i:s', $timeDiffSeconds);
 
-            if(isset($result_arr['start_time'])) {
-                $result[$key]['start_time'] = date("d-m-Y h:i A", strtotime($result_arr['start_time']));
+                $data[$i][] = ((isset($formatted_date) && !empty($formatted_date)) ? $formatted_date : " ");
+                $data[$i][] = ((isset($formatted_date_start) && !empty($formatted_date_start)) ? $formatted_date_start : " ");             
+                $data[$i][] = ((isset($totalTime) && !empty($totalTime)) ? $totalTime : " ");             
+               
+                $data[$i][] = ((isset($row['image_url']) && !empty($row['image_url'])) ? $row['image_url'] : " ");
+
+                $i++;
             }
-
-            if(isset($result_arr['end_time'])) {
-                $result[$key]['end_time'] = date("d-m-Y h:i A", strtotime($result_arr['end_time']));
-            }
-            
-            /* $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
-            $this->PartsModel->where('id', $result_arr['part_id']);
-            $partData = $this->PartsModel->first();
-
-
-            if ($partData) {
-                // Combine the data from the two tables and store it in the results array.
-                $combinedResult = array_merge($result_arr, $partData);
-                $combinedResults[] = $combinedResult;
-            } */
-
-          
         }
+        $body = excel_columns($data, 2);      
 
-        return $this->respond($result, 200);
+        $pdf_data['data'] = $body;  
+        $pdf_data['sheet'] = 'completed-jobs';  
+        $style_array =  array(
+                'fill' => array(
+                    'color' => array('rgb' => 'FF0000')
+                ),
+                'font'  => array(
+                    'bold'  =>  true,
+                    'color' =>     array('rgb' => 'FF0000')
+                )
+            );
+        $pdf_data['style_array'] = $style_array;
+         $this->phpspreadsheet->set_data($pdf_data);
+      
     }
 
-    public function report_list_dashboard(){
-    $result = $this->JobActionsModel
-    ->select('parts.*,job_actions.id')  
-        ->join('parts', 'job_actions.part_id = parts.id')
-        ->orderBy('job_actions.id', 'DESC')
-        ->where('job_actions.end_time IS NOT NULL', null, false)
-        ->limit(10)
-        ->get()
-        ->getResult(); 
-        // print_r($result);
-            return $this->respond($result, 200);
-            
+    public function pdf_completed_job(){
+        $pdf_data = array();
+        $date = date('Y-m-d H:i:s');
+        $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
+        $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
+        $file_name = "completed_jobs";
+        $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
+        $pdf_data['title'] =  $file_name .'_'.$from_date.'_to_'.$to_date;
+        if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+            $from_date = $this->request->getVar('from_date');
+            $f_date = $this->change_date_format($from_date) . " 00:00:00";
+            $to_date = $this->request->getVar('to_date');
+            $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
+            $this->JobActionsModel->where("start_time >= '" . $f_date . "'", null, false);
+            $this->JobActionsModel->where("end_time <= '" . $t_date . "'", null, false);
+        }
+        if (!empty($this->request->getVar('part_name'))) {
+            $this->JobActionsModel->where('parts.part_name', $this->request->getVar('part_name'));
+        }
+        if (!empty($this->request->getVar('part_no'))) {
+            $this->JobActionsModel->where('parts.part_no', $this->request->getVar('part_no'));
+        }
+        if (!empty($this->request->getVar('model'))) {
+            $this->JobActionsModel->where('parts.model', $this->request->getVar('model'));
+        }
+        if (!empty($this->request->getVar('die_no'))) {
+            $this->JobActionsModel->where('parts.die_no', $this->request->getVar('die_no'));
+        }
+        $this->JobActionsModel->select('*');
+        $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
+        $result = $this->JobActionsModel->findAll();
+        $inputPath ='' . FCPATH . '\assets\img\Mahindra_Logo_hor.jpg';
+        // Start building the HTML content
+        $htmlContent = '<h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
+        <thead>
+            <tr style="background-color:#3465a4;width: 100%;color:white">
+            <th  style="color:white">Sr. No.</th>
+                <th  style="width: 120px;color:white">Part No.</th>
+                <th  style="width: 120px;color:white">Part Name</th>
+                <th  style="width: 120px;color:white">Model</th>
+                <th style="width: 120px;color:white">Die No.</th>
+                <th style="width: 120px;color:white">Start Time</th>
+                <th style="width: 120px;color:white">End Time</th>
+                <th style="width: 120px;color:white">Total Time</th>
+                <th style="width: 120px;color:white">Image</th>
+            </tr>
+        </thead>
+        <tbody>';
+
+        $k = 1;
+        foreach ($result as $row) {
+            $created_at = new DateTime($row['start_time']);
+            $formatted_date = $created_at->format('d-m-Y h:i A');
+
+            $created_at_start = new DateTime($row['end_time']);
+            $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
+
+            $startTime = strtotime($row['start_time']);
+            $endTime = strtotime($row['end_time']);    
+            $timeDiffSeconds = $endTime - $startTime;
+            $totalTime = gmdate('H:i:s', $timeDiffSeconds);
+            $defalut_img ='' . FCPATH . '\assets\img\no_image_found.png';
+            $htmlContent .= '<tr>';
+            $htmlContent .= '<td  style="width: 40px;" >' .$k++ . '</td>';
+
+            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_no']) ? $row['part_no'] : '') . '</td>';
+            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_name']) ? $row['part_name'] : '') . '</td>';
+            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['model']) ? $row['model'] : '') . '</td>';
+            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($totalTime) ? $totalTime : '') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH . $row['image_url'] . '" height="60" width="100">' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
+            $htmlContent .= '</tr>';
         }
 
+        // print_r($htmlContent);exit;
+
+        $htmlContent .= '</tbody></table>';
+        // print_r($htmlContent);exit;
+        $pdf_data['pdfdata'] = $htmlContent;  
+
+        $this->phpspreadsheet->set_pdf($pdf_data);
+    }
 }

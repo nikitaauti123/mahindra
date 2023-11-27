@@ -8,14 +8,14 @@ use App\Models\UsersModel;
 use App\Models\RolesPermissionModel;
 use App\Models\UsersRolesModel;
 use App\Models\RolesModel;
-use App\Models\jobsModel;
+use App\Models\JobsModel;
 use App\Models\PartsModel;
 use App\Models\JobActionsModel;
 use DateTime;
 
 use Exception;
 
-Class UsersApiController extends BaseController
+class UsersApiController extends BaseController
 {
     use ResponseTrait;
     private $usersModel;
@@ -41,11 +41,11 @@ Class UsersApiController extends BaseController
     {
         try {
             $result = $this->usersModel->find($id);
-            if(!empty($result)) {
+            if (!empty($result)) {
                 return $this->respond($result, 200);
-            } 
+            }
             return $this->respond([], 200);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }
@@ -57,13 +57,13 @@ Class UsersApiController extends BaseController
         try {
 
             helper(['form']);
-            
+
             $rules = [
                 'username'  => 'required|min_length[2]|max_length[50]',
                 'password'  => 'required|min_length[3]|max_length[50]',
             ];
 
-            if(!$this->validate($rules)) {
+            if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
 
@@ -73,37 +73,36 @@ Class UsersApiController extends BaseController
             $data['password'] = $this->request->getVar('password');
 
             $user = $this->usersModel->Where('is_active', 1)
-                                ->Where('username', $data['username'])
-                                ->orWhere('email', $data['username'])
-                                ->orWhere('phone', $data['username'])
-                                ->first();        
-            if ( !$user) {
+                ->Where('username', $data['username'])
+                ->orWhere('email', $data['username'])
+                ->orWhere('phone', $data['username'])
+                ->first();
+            if (!$user) {
                 throw new Exception(lang('Login.FailMsg'));
-            }                                
-            
+            }
+
             $hashed_pass = $user['password'];
             $authenticatePassword = password_verify($data['password'], $hashed_pass);
 
-            if( !$authenticatePassword ){
+            if (!$authenticatePassword) {
                 throw new Exception(lang('Login.FailMsg'));
             }
-                
+
             $ses_data = [
                 'id' =>  $user['id'],
                 'first_name' =>  $user['first_name'],
                 'email' =>  $user['email'],
                 'isLoggedIn' => TRUE
             ];
-            $session->set($ses_data);             
-                
+            $session->set($ses_data);
+
             $result['msg'] =  lang('Login.SuccessMsg');
             $result['user'] =  $user;
             return $this->respond($result, 200);
-            
         } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
-        }        
+        }
     }
 
     public function list()
@@ -113,7 +112,7 @@ Class UsersApiController extends BaseController
         $combinedData = [];
         helper('common_helper');
         foreach ($users as $user) {
-               $user_id = $user['id'];
+            $user_id = $user['id'];
             $this->usersRoleModel->where('user_id', $user_id); // Filter by user_id
             $userRoles = $this->usersRoleModel->findAll();
             $roleNames = [];
@@ -124,35 +123,52 @@ Class UsersApiController extends BaseController
                     $roleNames[] = $role['name'];
                 }
             }
-           // print_r($roleNames);
-           $created_at = new DateTime($user['created_at']);
-           $updated_at = new DateTime($user['updated_at']);
-          
-           $formatted_date = $created_at->format('d-m-Y h:i A');
-           $formatted_date_updated = $updated_at->format('d-m-Y h:i A');
-          
-           $user['created_at'] =   $formatted_date;
-           $user['updated_at'] =   $formatted_date_updated;
-        
+            // print_r($roleNames);
+            $created_at = new DateTime($user['created_at']);
+            $updated_at = new DateTime($user['updated_at']);
+
+            $formatted_date = $created_at->format('d-m-Y h:i A');
+            $formatted_date_updated = $updated_at->format('d-m-Y h:i A');
+
+            $user['created_at'] =   $formatted_date;
+            $user['updated_at'] =   $formatted_date_updated;
+
             $user['roles'] = implode(', ', $roleNames);
             $combinedData[] = $user;
         }
         return $this->respond($combinedData, 200);
-       // return $this->respond($result, 200);
+        // return $this->respond($result, 200);
     }
 
-    public function add(){
+    public function add()
+    {
         try {
             helper(['form']);
-            
+
             $rules = [
                 'username'  => 'required|min_length[2]|max_length[50]',
                 'password'  => 'required|min_length[3]|max_length[50]'
             ];
 
-            if(!$this->validate($rules)) {
+            if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
+            $this->usersModel->where('is_active', '1');
+            $this->usersModel->where('deleted_at IS NULL');
+            $this->usersModel->where('email', $this->request->getVar('email'));
+            $resultuser = $this->usersModel->findAll();
+            if (!empty($resultuser)) {
+                return $this->fail(lang('Users.DuplicateEmail'));
+            }
+
+            $this->usersModel->where('is_active', '1');
+            $this->usersModel->where('deleted_at IS NULL');
+            $this->usersModel->where('username', $this->request->getVar('username'));
+            $result = $this->usersModel->findAll();
+            if (!empty($result)) {
+                return $this->fail(lang('Users.DuplicateUsername'));
+            }
+           
             $isactive = 0;
             if ($this->request->getVar('is_active') == 'on') {
                 $isactive = 1;
@@ -166,40 +182,60 @@ Class UsersApiController extends BaseController
             $data['last_name']       = $this->request->getVar('last_name');
             $data['is_active']       = $isactive;
             $user_role['role_id'] =  $this->request->getVar('role_id');
-           
-             $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
+
+            $data = array_filter($data, fn ($value) => !is_null($value) && $value !== '');
             $result['msg'] = lang('Users.UsersSuccessMsg');
-           
+
             $result['id'] = $this->usersModel->insert($data, true);
             $user_role['user_id'] = $result['id'];
             $result['role_id'] = $this->usersRoleModel->insert($user_role, true);
-           
-            return $this->respond($result, 200);
 
-        } catch (\Exception $e){
+            return $this->respond($result, 200);
+        } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
-        }    
+        }
     }
 
-    public function update($id){
+    public function update($id)
+    {
 
         try {
             helper(['form']);
-            
+
             $rules = [
                 'username'  => 'required|min_length[2]|max_length[50]',
-                          ];
+            ];
 
-            if(!$this->validate($rules)) {
+            if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
+            }
+
+           
+            $this->usersModel->where('id !=', $id);
+            $this->usersModel->where('is_active', '1');
+            $this->usersModel->where('deleted_at IS NULL');
+            $this->usersModel->where('email', $this->request->getVar('email'));
+            $resultuser = $this->usersModel->findAll();
+            if (!empty($resultuser)) {
+                return $this->fail(lang('Users.DuplicateEmail'));
+            }
+
+            
+            $this->usersModel->where('id !=', $id);
+            $this->usersModel->where('is_active', '1');
+            $this->usersModel->where('deleted_at IS NULL');
+            $this->usersModel->where('username', $this->request->getVar('username'));
+            $result = $this->usersModel->findAll();
+            if (!empty($result)) {
+                return $this->fail(lang('Users.DuplicateUsername'));
             }
             $isactive = 0;
             if ($this->request->getVar('is_active') == 'on') {
-               
+
                 $isactive = 1;
             }
-           
+
             $data['username'] = $this->request->getVar('username');
             $data['password'] = $this->request->getVar('password');
             $data['email']    = $this->request->getVar('email');
@@ -209,23 +245,23 @@ Class UsersApiController extends BaseController
             $data['last_name']       = $this->request->getVar('last_name');
             $data['is_active']       = $isactive;
             $user_role['role_id'] =  $this->request->getVar('role_id');
-           
-            $data = array_filter($data, fn($value) => !is_null($value) && $value !== '');
-            
+
+            $data = array_filter($data, fn ($value) => !is_null($value) && $value !== '');
+
             $user_role['user_id'] = $id;
             $this->usersRoleModel->where('user_id', $id)->delete();
-            $result['role_id'] = $this->usersRoleModel->insert($user_role, true);            
+            $result['role_id'] = $this->usersRoleModel->insert($user_role, true);
 
             $result['id'] = $this->usersModel->update($id, $data);
             $result['msg'] = lang('Users.UsersUpdateMsg');
             return $this->respond($result, 200);
-
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
-        }    
+        }
     }
-    public function update_is_active(){
+    public function update_is_active()
+    {
         try {
             $id = $this->request->getVar('id');
             $is_Active = $this->request->getVar('is_active');
@@ -242,30 +278,31 @@ Class UsersApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-    public function delete($id){
+    public function delete($id)
+    {
 
         try {
             helper(['form']);
 
-            if(!$id) {
+            if (!$id) {
                 return $this->fail('Please provide valid id', 400, true);
             }
 
             $result['is_deleted'] = $this->usersModel->delete($id);
             $result['msg'] = "Users deleted successfully!";
             return $this->respond($result, 200);
-
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
-        }    
+        }
     }
 
-    public function get_permission_names(){
+    public function get_permission_names()
+    {
         $id = $this->request->getVar('role_id');
         $this->rolespermissionModel->where('role_id', $id);
-        $result = $this->rolespermissionModel->findAll();      
-        return $this->respond($result, 200);    
+        $result = $this->rolespermissionModel->findAll();
+        return $this->respond($result, 200);
     }
 
     public  function get_role_names()
@@ -274,78 +311,78 @@ Class UsersApiController extends BaseController
 
 
         $result['role_id']  = $this->usersRoleModel->Where('user_id', $id)
-        ->first();
-
-        if (isset($result['role_id'] ) && (!empty($result['role_id']))) {
-            $result['role_name']  = $this->roleModel->Where('id', $result['role_id']['role_id'])
             ->first();
+
+        if (isset($result['role_id']) && (!empty($result['role_id']))) {
+            $result['role_name']  = $this->roleModel->Where('id', $result['role_id']['role_id'])
+                ->first();
         }
-    
+
         return $this->respond($result, 200);
     }
 
-    public function get_all_count(){
-        try {        
+    public function get_all_count()
+    {
+        try {
             if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
                 $from_date = $this->request->getVar('from_date');
-                $f_date = date("Y-m-d", strtotime($from_date));
+                $f_date = $this->change_date_format($from_date) . " 00:00:00";
                 $to_date = $this->request->getVar('to_date');
-                $t_date = date("Y-m-d", strtotime($to_date));
-                $this->jobsModel->where("DATE_FORMAT(created_at, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
-                $this->jobsModel->where("DATE_FORMAT(created_at, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
+                $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
+                $this->jobactionsModel->where("start_time >= '" . $f_date . "'", null, false);
+                $this->jobactionsModel->where("end_time <= '" . $t_date . "'", null, false);
             }
-            $this->jobsModel->where('end_time IS NOT NULL', null, false);        
-            $results = $this->jobsModel->findAll();
-            $combinedResults  = array();
-            foreach ($results as $result_arr) {
-                $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
-                $this->PartsModel->where('id', $result_arr['part_id']);
-                $partData = $this->PartsModel->first();
-                if ($partData) {
-                    // Combine the data from the two tables and store it in the results array.
-                    $combinedResult = array_merge($result_arr, $partData);
-                    $combinedResults[] = $combinedResult;
-                }
-            }
-            $result['total_completed_jobs'] =count($combinedResults);
-            $result['total_job'] =count($combinedResults);
+            $this->jobactionsModel->where('end_time IS NOT NULL', null, false);
+            $this->jobactionsModel->join('parts', 'job_actions.part_id = parts.id');
+            $results_complted = $this->jobactionsModel->findAll();
+            $result['total_completed_jobs'] = count($results_complted);
 
 
-            if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
-                $from_date = $this->request->getVar('from_date');
-                $f_date = date("Y-m-d", strtotime($from_date));
-                $to_date = $this->request->getVar('to_date');
-                $t_date = date("Y-m-d", strtotime($to_date));
-                // print_r($f_date);
-                // print_r($t_date);
-                  $this->jobactionsModel->where("DATE_FORMAT(start_time, '%Y-%m-%d') >= '" . $f_date . "'", null, false);
-                $this->jobactionsModel->where("DATE_FORMAT(end_time, '%Y-%m-%d') <= '" . $t_date . "'", null, false);
-            }
-            $this->jobactionsModel->where('side','left');
             $result_left = $this->jobactionsModel->findAll();
-            $result['job_action_count_left'] =count($result_left);
-            $this->jobactionsModel->where('side','right');
-            $result_right = $this->jobactionsModel->findAll();
-            $result['job_action_count_right'] =count($result_right);
-        //$this->jobsModel->where('end_time IS NOT NULL', null, false);  
-               
+
             $result_c = $this->jobactionsModel
-            ->select('parts.*,job_actions.side,job_actions.part_id,job_actions.id,job_actions.start_time,job_actions.end_time')    
-            ->join('parts', 'job_actions.part_id = parts.id')
-            ->orderBy('job_actions.id', 'DESC')
-             ->limit(5)
-            ->get()
-            ->getResult(); ;
+                ->select('parts.*,job_actions.side,job_actions.part_id,job_actions.id,job_actions.start_time,job_actions.end_time')
+                ->join('parts', 'job_actions.part_id = parts.id')
+                ->orderBy('job_actions.id', 'DESC')
+                ->limit(10)
+                ->get()
+                ->getResult();;
             $result['completed_job'] = $result_c;
-            // print_r($result);exit;
-            // $this->jobsModel->where('end_time IS NOT NULL', null, false);        
-            // $result_I = $this->jobsModel->findAll();
-          
-            // $result['in_processed'] = $result_I;
-          
+
+
+
+            if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+                $from_date = $this->request->getVar('from_date');
+                $f_date = $this->change_date_format($from_date) . " 00:00:00";
+                $to_date = $this->request->getVar('to_date');
+                $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
+                $this->jobactionsModel->where("start_time >= '" . $f_date . "'", null, false);
+                $this->jobactionsModel->where("end_time <= '" . $t_date . "'", null, false);
+            }
+
+            $this->jobactionsModel->select("AVG(TIMESTAMPDIFF(MINUTE, job_actions.start_time, job_actions.end_time)) as average_time", false);
+            $this->jobactionsModel->where('end_time IS NOT NULL', null, false);
+           
+            $this->jobactionsModel->join('parts', 'job_actions.part_id=parts.id');
+            $av_result = $this->jobactionsModel->findAll();
+            $totalTimeSum = 0;
+            $totalCount = count($av_result);
+            foreach ($av_result as $record) {
+                $totalTimeSum += $record['average_time'];
+            }
+            if ($totalCount > 0) {
+                $averageTimeInHours = $totalTimeSum / 60;
+            }
+            $result['averag_hour_required'] = $averageTimeInHours;
+
             echo json_encode($result);
             die();
         } catch (Exception $e) {
         }
+    }
+    private function change_date_format($str)
+    {
+        $date_str = explode("/", $str);
+        return $date_str[2] . "-" . $date_str[0] . "-" . $date_str[1];
     }
 }

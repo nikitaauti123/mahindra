@@ -65,7 +65,7 @@
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="phone_number"><?php echo lang('Users.PhoneNumber'); ?><span class="red_text">*</span></label>
+                                                    <label for="phone_number"><?php echo lang('Users.PhoneNumber'); ?></label>
                                                     <input type="text" class="form-control" name="phone_number" placeholder="<?php echo lang('Users.PhoneNumber'); ?>">
                                                 </div>
                                             </div>
@@ -77,7 +77,7 @@
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="employee_id"><?php echo lang('Users.EmployeeId'); ?><span class="red_text">*</span></label>
+                                                    <label for="employee_id"><?php echo lang('Users.EmployeeId'); ?></label>
                                                     <input type="text" class="form-control" name="employee_id" placeholder="<?php echo lang('Users.EmployeeId'); ?>">
                                                 </div>
                                             </div>
@@ -95,7 +95,7 @@
                                             </div>
                                             <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="role"><?php echo lang('Users.Role'); ?><span class="red_text">*</span></label>
+                                            <label for="role"><?php echo lang('Users.Role'); ?></label>
                                             <select name="role_id" id="role_id" class="form-control" >
                                             <option value="">All <?php echo lang('Users.Role'); ?></option>
                                             <?php

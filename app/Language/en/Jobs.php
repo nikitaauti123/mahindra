@@ -22,8 +22,12 @@ return [
     'EndTime'=>'End Time',
     'SrNo'=>'Sr.No',
     'Status'=>'Status',
+    'Export'=>'Export',
     'Actions'=>'Actions',
     'AddNewJob'=>'Add New Job',
     'AddJobbActionSuccss'=> 'Job started  successfully',
     'UpdateJobbActionSuccss'=>'Job stoped successfully',
+    'ExportInExcel'=>'Export In Excel',
+    'ExportInPdf'=>'Export In Pdf'
+    
 ];

@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
         <img src="<?php echo base_url('assets/img/Mahindra_Logo_hor.jpg'); ?>" alt="Mahindra Logo" class="brand-image elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Mahindra</span>
     </a>
@@ -57,15 +57,27 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/jobs/left_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add_left'?'active':''; ?>">
+                            <a href="<?php echo base_url('/jobs/left_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/left_job'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.StartJobLeft'); ?></p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo base_url('/admin/jobs/right_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/jobs/add'?'active':''; ?>">
+                            <a href="<?php echo base_url('/jobs/right_job'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/right_job'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.StartJobRight'); ?></p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/jobs/left_side_tv'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/left_side_tv'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.StartLeftTV'); ?></p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/jobs/right_side_tv'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/right_side_tv'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.StartRightTV'); ?></p>
                             </a>
                         </li>
                     </ul>
@@ -135,13 +147,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link <?php echo $current_page_url['path'] == 'admin/roles/list'?'active':''; ?>">
+                            <a href="<?php echo base_url('/admin/roles/list'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/roles/list'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.Roles'); ?></p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link <?php echo $current_page_url['path'] == 'admin/permissions/list'?'active':''; ?>">
+                            <a href="<?php echo base_url('/admin/permissions/list'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'admin/permissions/list'?'active':''; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p><?php echo lang('Left-sidebar.Menu.Permissions'); ?></p>
                             </a>

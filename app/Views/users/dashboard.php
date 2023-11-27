@@ -32,14 +32,12 @@
                         </div>
                     </div>
                     <div class="col-9 text-right">
-                        <div class="form-group mt-3">
-                            <a href="<?php echo base_url('admin/jobs/add'); ?>" class="btn btn-primary"><?php echo lang('Jobs.AddNewJob'); ?> </a>
-                        </div>
+                       
                     </div>
                 </div>
                 <!-- Info boxes -->
                 <div class="row">
-                <div class="col-12 col-sm-6 col-md-3">
+                <!-- <div class="col-12 col-sm-6 col-md-3">
                 <a href="<?=base_url();?>admin/jobs/list">
                       
                         <div class="info-box mb-3">
@@ -53,12 +51,11 @@
                                 <span class="info-box-number" id="total_job">
                                 </span>
                             </div>
-                            <!-- /.info-box-content -->
-                        </div></a>
-                        <!-- /.info-box -->
-                    </div>
+                           </div></a>
+                       
+                    </div> -->
                     <div class="col-12 col-sm-6 col-md-3">
-                        <a href="<?=base_url();?>admin/reports/completed_jobs_list">
+                        <a class="myAnchor" id="myAnchor" href="<?=base_url();?>admin/reports/completed_jobs_list">
                         <div class="info-box">
                             <span class="info-box-icon bg-success elevation-1">
                                 <i class="fas fa-calendar-check"></i>
@@ -75,38 +72,29 @@
                         </a>
                         <!-- /.info-box -->
                     </div>
-                    
-                    <!-- /.col -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="info-box mb-3">
-                            <span class="info-box-icon bg-primary elevation-1">
-                                <i class="fas fa-clock"></i>
-                            </span>
 
-                            <div class="info-box-content">
-                                <span class="info-box-text"><?php echo lang('Dashboard.JobACFLeft'); ?></span>
-                                <span class="info-box-number" id="JobACFLeft">
-                                    6.5 hrs</span>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                    </div>
                     <div class="col-12 col-sm-6 col-md-3">
-                        <div class="info-box mb-3">
+                        <a class="myAnchor" href="<?=base_url();?>admin/reports/completed_jobs_list">
+                        <div class="info-box">
                             <span class="info-box-icon bg-info elevation-1">
                                 <i class="fas fa-clock"></i>
                             </span>
 
                             <div class="info-box-content">
-                                <span class="info-box-text"><?php echo lang('Dashboard.JobACFRight'); ?></span>
-                                <span class="info-box-number" id="JobACFRight">
-                                    6.5 hrs</span>
+                                <span class="info-box-text"><?php echo lang('Dashboard.AvgHRequired'); ?></span>
+                                <span class="info-box-number"  id="averag_hour_required">
+                                   
+                                </span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
+                        </a>
                         <!-- /.info-box -->
                     </div>
+                    
+                    <!-- /.col -->
+                    
+                    
                     <!-- /.col -->
 
                     <!-- fix for small devices only -->
@@ -174,6 +162,8 @@
                                                 <th><?php echo lang('Dashboard.PartNo')?></th>
                                                 <th><?php echo lang('Dashboard.PartName')?></th>
                                                 <th><?php echo lang('Dashboard.Status')?></th>
+                                                <th><?php echo lang('Dashboard.CompletedDate')?></th>
+                                               
                                                 <th><?php echo lang('Dashboard.Actions')?></th>
                                             </tr>
                                         </thead>

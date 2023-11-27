@@ -176,7 +176,6 @@ class PartsController extends BaseController
 
     }
 
-
     function check_part_exists($array)
     {
         global $con;

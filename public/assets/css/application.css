@@ -646,3 +646,8 @@ body .navbar-dark .navbar-nav .nav-link.active {
       transform: translate(24px, 0);
     }
   }
+
+
+  .status_message {
+    font-weight: bold;
+  }

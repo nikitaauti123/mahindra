@@ -59,7 +59,7 @@
                                                         ?>
                                                     </select>
                                                 </div>
-                                                <input type="hidden" id="update_id_right" name="update_id_right" value="<?php if(is_array($jobs) && count($jobs)>0) { echo $jobs[0]['part_id']; }?>" >
+                                                <input type="hidden" id="update_id_right" name="update_id_right" value="<?php if(is_array($jobs) && count($jobs)>0) { echo $jobs[0]['id']; }?>" >
                                                 <div class="m-1">
                                                     <a href="javascript:void(0)" class="btn btn-success start_time_right" id="start_time" style="<?php echo $hide_start; ?>">
                                                         Start
@@ -147,35 +147,36 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6"></div>
-                                            <div class="col-md-6  d-flex justify-content-end">
-                                                <div class="color-legends background-white d-flex align-items-center">
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box green-pin"></span> <label> &nbsp; Correct Position</label></div>
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box red-pin"></span> <label> &nbsp; Incorrect Position</label></div>
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box orange-pin"></span> <label> &nbsp; Actual Position</label></div>
-                                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box gray-pin"></span> <label> &nbsp; Not Placed Any Pin</label></div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </form>
                                 </div>
                             </div>
                             <!-- /.col -->
                         </div>
                         <!-- /.row -->
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-4 text-center"><div class="status_message"></div></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6  d-flex justify-content-end">
+                                <div class="color-legends background-white d-flex align-items-center">
+                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box green-pin"></span> <label> &nbsp; Correct Position</label></div>
+                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box red-pin"></span> <label> &nbsp; Incorrect Position</label></div>
+                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box orange-pin"></span> <label> &nbsp; Actual Position</label></div>
+                                    <div class="d-flex align-items-baseline m-1"><span class="legend-box gray-pin"></span> <label> &nbsp; Not Placed Any Pin</label></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- ./card-body -->
                     <!-- <div class="card-footer">
-                            </div> -->
+                    </div> -->
                     <!-- /.card-footer -->
                 </div>
                 <!-- /.card -->
             </div>
             <!-- /.col -->
         </div>
-        <!-- /.row -->
-
         <!-- /.row -->
 </div><!--/. container-fluid -->
 </section>

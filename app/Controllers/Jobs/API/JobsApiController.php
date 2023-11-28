@@ -407,12 +407,15 @@ class JobsApiController extends BaseController
     public function set_job_actions()
     {
         try {
+            $user_id = $this->session->get('id')?$this->session->get('id'):1;
+
             if ($this->request->getVar('time') == 'start_time') {
+                
                 $data = [
                     'part_id' => $this->request->getVar('part_id'),
                     'side' => $this->request->getVar('side'),
                     'start_time' => date('Y-m-d H:i:s'),
-                    'created_by' => $this->session->get('id'),
+                    'created_by' => $user_id,
                 ];
                 $result['id'] = $this->JobActionsModel->insert($data, false);
                 $result['msg'] = lang('Jobs.AddJobbActionSuccss');
@@ -426,8 +429,13 @@ class JobsApiController extends BaseController
                     'updated_by' => $this->session->get('id'),
                 ]; */
                 //$result['id'] = $this->JobActionsModel->update(['part_id'=>$id], $data);
-                $this->JobActionsModel->update_data($id, $this->request->getVar('side'), $this->session->get('id'), date('Y-m-d H:i:s'));
-                $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
+                $affected = $this->JobActionsModel->update_data($id, $this->request->getVar('side'), $user_id, date('Y-m-d H:i:s'));
+                if($affected>0) {
+                    $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
+                } else {
+                    throw new Exception("Not updated");
+                }
+                
             }
             return $this->respond($result, 200);
         } catch (Exception $e) {
@@ -457,6 +465,9 @@ class JobsApiController extends BaseController
             $this->JobActionsModel = new JobActionsModel();
 
             $data['image_url'] = $this->request->getVar('image_url');
+            $data['wrong_pins'] = $this->request->getVar('wrong_pins');
+            $data['correct_pins'] = $this->request->getVar('correct_pins');
+
             $result['is_updated'] = $this->JobActionsModel->update($id, $data);
             $result['msg'] = lang('Jobs.JobsSuccessUpdateMsg');
             return $this->respond($result, 200);
@@ -706,13 +717,17 @@ class JobsApiController extends BaseController
         <thead>
             <tr style="background-color:#3465a4;width: 100%;color:white">
             <th  style="color:white">Sr. No.</th>
-                <th  style="width: 120px;color:white">Part No.</th>
+                <th  style="width: 80px;color:white">Part No.</th>
                 <th  style="width: 120px;color:white">Part Name</th>
-                <th  style="width: 120px;color:white">Model</th>
-                <th style="width: 120px;color:white">Die No.</th>
-                <th style="width: 120px;color:white">Start Time</th>
-                <th style="width: 120px;color:white">End Time</th>
-                <th style="width: 120px;color:white">Total Time</th>
+                <th  style="width: 80px;color:white">Model</th>
+                <th style="width: 80px;color:white">Die No.</th>
+                <th style="width: 80px;color:white">Start Time</th>
+                <th style="width: 80px;color:white">End Time</th>
+                <th style="width: 80px;color:white">Total Time</th>
+                <th style="width: 80px;color:white">Not Ok Pins</th>
+                <th style="width: 80px;color:white">OK Pins</th>
+                <th style="width: 80px;color:white">Total Pins</th>
+                <th style="width: 80px;color:white">OK Pins (%)</th>
                 <th style="width: 120px;color:white">Image</th>
             </tr>
         </thead>
@@ -734,14 +749,18 @@ class JobsApiController extends BaseController
             $htmlContent .= '<tr>';
             $htmlContent .= '<td  style="width: 40px;" >' .$k++ . '</td>';
 
-            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_no']) ? $row['part_no'] : '') . '</td>';
+            $htmlContent .= '<td  style="width: 80px;">' . htmlspecialchars(isset($row['part_no']) ? $row['part_no'] : '') . '</td>';
             $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_name']) ? $row['part_name'] : '') . '</td>';
-            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['model']) ? $row['model'] : '') . '</td>';
-            $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
-            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
-            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
-            $htmlContent .= '<td style="width: 120px;">' . htmlspecialchars(isset($totalTime) ? $totalTime : '') . '</td>';
-            $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH . $row['image_url'] . '" height="60" width="100">' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
+            $htmlContent .= '<td  style="width: 80px;">' . htmlspecialchars(isset($row['model']) ? $row['model'] : '') . '</td>';
+            $htmlContent .= '<td  style="width: 80px;">' . htmlspecialchars(isset($row['die_no']) ? $row['die_no'] : '') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($totalTime) ? $totalTime : '') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['wrong_pins']) ? $row['wrong_pins'] : '') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['correct_pins']) ? $row['correct_pins'] : '') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['pins']) ? count(explode(",", $row['pins'])) : '') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['correct_pins'])&&$row['correct_pins']>0 ? number_format($row['correct_pins']/count(explode(",", $row['pins']))*100, 2) : 0) . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH .'assets/img/'. $row['image_url'] . '" height="120" width="120">' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
             $htmlContent .= '</tr>';
         }
 

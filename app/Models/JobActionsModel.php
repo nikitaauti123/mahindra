@@ -18,6 +18,8 @@ class JobActionsModel extends Model
         'part_id',
         'side',
         'image_url',
+        'wrong_pins',
+        'correct_pins',
         'start_time',
         'end_time',
         'created_by',
@@ -51,14 +53,16 @@ class JobActionsModel extends Model
 
     
 
-    public function update_data($part_id, $side, $by_id, $end_time)
+    public function update_data($id, $side, $by_id, $end_time)
     {
 
         $builder = $this->builder();
         $builder->set('end_time', $end_time)
                 ->set('updated_by', $by_id)
-                ->where('part_id', $part_id)
+                ->where('id', $id)
                 ->where('side', $side)
-                ->update();        
+                ->update();
+                
+        return $this->db->affectedRows();
     }
 }

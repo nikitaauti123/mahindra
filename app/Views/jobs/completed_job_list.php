@@ -36,7 +36,7 @@
                                     <h5 class="card-title"><?php echo lang('Jobs.CompletedList'); ?></h5>
                                 </div>
                                 <div class="col-6 text-right">
-                                <button type="button" id="completed-job-export" class="btn btn-primary"><i class="fa fa-file-excel text-success"></i>&nbsp;<?php echo lang('Jobs.Export'); ?></button>
+                                <!-- <button type="button" id="completed-job-export" class="btn btn-primary"><i class="fa fa-file-excel text-success"></i>&nbsp;<?php echo lang('Jobs.Export'); ?></button> -->
                                 <button type="button" id="completed-job-pdf" class="btn btn-primary"><i class="fa fa-file-pdf text-danger"></i>&nbsp;<?php echo lang('Jobs.Export'); ?></button>
                             
                             </div>
@@ -145,6 +145,10 @@
                                                     <th><?php echo lang('Parts.StartTime'); ?></th>
                                                     <th><?php echo lang('Parts.EndTime'); ?></th>
                                                     <th><?php echo lang('Parts.TotalTime'); ?></th>
+                                                    <th><?php echo lang('Parts.wrong_count'); ?></th>
+                                                    <th><?php echo lang('Parts.correct_count'); ?></th>
+                                                    <th><?php echo lang('Parts.total_pins'); ?></th>
+                                                    <th><?php echo lang('Parts.correct_per'); ?></th>
                                                     <th><?php echo lang('Parts.Image'); ?></th>
                                                     <!-- <th>Actions</th> -->
                                                 </tr>

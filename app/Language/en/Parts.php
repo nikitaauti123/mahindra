@@ -28,7 +28,10 @@ return [
   'UpdatedDate' => 'Updated Date',
   'Actions' => 'Actions',
   'Pins' => 'Pins',
-  'Image' => 'Image URL'
-
+  'Image' => 'Image URL',
+  'wrong_count' => 'Not Ok Pins',
+  'correct_count' => 'Ok Pins',
+  'total_pins' => 'Total Pins',  
+  'correct_per' => 'OK Pins (%)'
 
 ];

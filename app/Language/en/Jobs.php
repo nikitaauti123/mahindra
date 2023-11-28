@@ -29,5 +29,4 @@ return [
     'UpdateJobbActionSuccss'=>'Job stoped successfully',
     'ExportInExcel'=>'Export In Excel',
     'ExportInPdf'=>'Export In Pdf'
-    
 ];

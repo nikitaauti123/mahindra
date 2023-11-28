@@ -165,7 +165,7 @@ class Phpspreadsheet
 
   function set_pdf($pdf_data)
   {
-    $pdf = new \Mpdf\Mpdf([ 'tempDir'=> __DIR__."/../writable/tmp", 'mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial', 'allow_output_buffering' => true, 'allow_remote_images' => true]);
+    $pdf = new \Mpdf\Mpdf([ 'tempDir'=> __DIR__."/../../writable/tmp", 'mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial', 'allow_output_buffering' => true, 'allow_remote_images' => true]);
     ob_end_clean();
     $pdf->SetFooter('{PAGENO}');
     $pdf->WriteHTML($pdf_data['pdfdata']);

@@ -82,3 +82,27 @@ if (!function_exists('websocket_js_code')) {
         return "const webSocketURL = '$webSocketURL';";
     }
 }
+
+
+if (!function_exists('send_email')) {
+    function send_email($to, $subject, $message)
+    {
+        $email = \Config\Services::email();
+        $init =  $email->initialize([
+            'protocol' => 'smtp',
+            'SMTPHost' => env('SMTP_HOST'),
+            'SMTPPort' => env('SMTP_PORT'),
+            'SMTPUser' => env('SMTP_USER'),
+            'SMTPPass' => env('SMTP_PASS'),
+        ]);
+        $email->setFrom('your_email@example.com', 'Your Name');
+        $email->setTo($to);
+        $email->setSubject($subject);
+        $email->setMessage($message);
+        if ($email->send()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

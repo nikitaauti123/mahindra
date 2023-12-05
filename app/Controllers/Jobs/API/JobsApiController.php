@@ -407,10 +407,10 @@ class JobsApiController extends BaseController
     public function set_job_actions()
     {
         try {
-            $user_id = $this->session->get('id')?$this->session->get('id'):1;
+            $user_id = $this->session->get('id') ? $this->session->get('id') : 1;
 
             if ($this->request->getVar('time') == 'start_time') {
-                
+
                 $data = [
                     'part_id' => $this->request->getVar('part_id'),
                     'side' => $this->request->getVar('side'),
@@ -423,19 +423,71 @@ class JobsApiController extends BaseController
             } else {
 
                 $id  = $this->request->getVar('id');
-                /* $data = [
-                    'side' => $this->request->getVar('side'),
-                    'end_time' => date('Y-m-d H:i:s'),
-                    'updated_by' => $this->session->get('id'),
-                ]; */
-                //$result['id'] = $this->JobActionsModel->update(['part_id'=>$id], $data);
                 $affected = $this->JobActionsModel->update_data($id, $this->request->getVar('side'), $user_id, date('Y-m-d H:i:s'));
-                if($affected>0) {
+                if ($affected > 0) {
                     $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
                 } else {
                     throw new Exception("Not updated");
                 }
-                
+                $result_job = $this->JobActionsModel
+                    ->select('parts.*,job_actions.id,job_actions.image_url, job_actions.part_id, job_actions.side, job_actions.start_time, job_actions.end_time,job_actions.correct_pins,job_actions.wrong_pins, parts.pins as total_pins')
+                    ->join('parts', 'parts.id = job_actions.part_id', 'left') // Assuming 'id' is the primary key in the 'parts' table and 'part_id' is the foreign key in the 'job_actions' table
+                    ->where('job_actions.id', $id)
+                    ->get()
+                    ->getFirstRow();
+
+
+                // print_r($result_job->pins);exit;
+
+                $body = '<p>Dear User,</p>';
+                $body .= '<p>Here are the job details:</p>';
+
+                $body .= '<div class="row">';
+
+                // Left Column
+                $body .= '<div class="col-6">';
+                $body .= '<p><strong>Part Name:</strong> ' . $result_job->part_name . '</p>';
+                $body .= '<p><strong>Part No:</strong> ' . $result_job->part_no . '</p>';
+                $body .= '<p><strong>Die No:</strong> ' . $result_job->die_no . '</p>';
+                // Convert start_time and end_time to DateTime objects
+                $startTime = new DateTime($result_job->start_time);
+                $endTime = new DateTime($result_job->end_time);
+
+                $body .= '<p><strong>Start Time:</strong> ' . $startTime->format('d-m-y H:i:s') . '</p>';
+                $body .= '<p><strong>End Time:</strong> ' . $endTime->format('d-m-y H:i:s') . '</p>';
+
+                $body .= '</div>';
+                $totalTime = strtotime($result_job->end_time) - strtotime($result_job->start_time);
+                if ($result_job->correct_pins != 0 && $result_job->total_pins != 0) {
+
+                    $correct_pins_count = ($result_job->correct_pins / $result_job->total_pins) * 100;
+                } else {
+
+                    $correct_pins_count = 000; // or handle it in a way that makes sense for your application
+                }
+
+                $correct_pins_count_formatted = number_format($correct_pins_count, 2); // Format to 2 decimal places
+                $defaultImagePath = FCPATH . 'assets/img/no_image_found.png';
+                $imageContent = isset($result_job->image_url) ? file_get_contents($result_job->image_url) : file_get_contents($defaultImagePath);
+                $base64Image = 'data:image/png;base64,' . base64_encode($imageContent);
+
+                // Right Column
+                $body .= '<div class="col-6">';
+                $body .= '<p><strong>Total Time:</strong> ' . gmdate("H:i:s", $totalTime) . '</p>';
+                $body .= '<p><strong>Ok Pins:</strong> ' . $result_job->correct_pins . '</p>';
+                $body .= '<p><strong>Not Ok Pins:</strong> ' . $result_job->wrong_pins . '</p>';
+                $body .= '<p><strong>Total Pins:</strong> ' . $result_job->total_pins . '</p>';
+                $body .= '<p><strong>Correct Pins (%):</strong> ' . $correct_pins_count_formatted . '%</p>';
+                $body .= '<p><strong>Image:</strong></p>';
+                $body .= '<img src="' . $base64Image . '" alt="Job Image" style="max-width:100%;">';
+                $body .= '</div>';
+
+                $body .= '</div>';
+
+                $body .= '<p>Thank You</p>';
+                $body .= '<p>Team</p>';
+
+                send_email(env('To_Email'), 'Jobs Details', $body);
             }
             return $this->respond($result, 200);
         } catch (Exception $e) {
@@ -546,7 +598,7 @@ class JobsApiController extends BaseController
             }
 
             $startTime = strtotime($result_arr['start_time']);
-            $endTime = strtotime($result_arr['end_time']);    
+            $endTime = strtotime($result_arr['end_time']);
             $timeDiffSeconds = $endTime - $startTime;
             $totalTime = gmdate('H:i:s', $timeDiffSeconds);
             $result[$key]['total_time'] = $totalTime;
@@ -581,22 +633,23 @@ class JobsApiController extends BaseController
             $created_at = new DateTime($result_arr->end_time);
             $formatted_date = $created_at->format('d-m-Y h:i A');
             $result_arr->completed_time = $formatted_date;
-             $combinedData[] = $result_arr;
+            $combinedData[] = $result_arr;
         }
         return $this->respond($combinedData, 200);
     }
-    public function export_completed_job(){
+    public function export_completed_job()
+    {
         $pdf_data = array();
         $date = date('Y-m-d H:i:s');
-        $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
-        $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
-   
+        $from_date =  date('d_m_Y', strtotime($this->request->getVar('from_date')));
+        $to_date = date('d_m_Y', strtotime($this->request->getVar('to_date')));
+
         $file_name = "completed_jobs";
-      
-       
+
+
         $pdf_data['title'] = $file_name;
-        $pdf_data['file_name'] = $file_name .'_'.$from_date.'_to_'.$to_date.'.xlsx';
-    
+        $pdf_data['file_name'] = $file_name . '_' . $from_date . '_to_' . $to_date . '.xlsx';
+
         $col[] = 'Part No.';
         $col[] = 'Part Name';
         $col[] = 'Model';
@@ -605,15 +658,15 @@ class JobsApiController extends BaseController
         $col[] = 'End Time';
         $col[] = 'Total Time';
         $col[] = 'Image';
-        $headers = excel_columns($col,2);
+        $headers = excel_columns($col, 2);
         $pdf_data['headers'] = $headers;
-         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
+        if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
 
             $from_date = $this->request->getVar('from_date');
             $f_date = $this->change_date_format($from_date) . " 00:00:00";
             $to_date = $this->request->getVar('to_date');
             $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
-         
+
             $this->JobActionsModel->where("start_time >= '" . $f_date . "'", null, false);
             $this->JobActionsModel->where("end_time <= '" . $t_date . "'", null, false);
         }
@@ -642,52 +695,52 @@ class JobsApiController extends BaseController
                 $data[$i][] = ((isset($row['part_name']) && !empty($row['part_name'])) ? $row['part_name'] : " ");
                 $data[$i][] = ((isset($row['model']) && !empty($row['model'])) ? $row['model'] : " ");
                 $data[$i][] = ((isset($row['die_no']) && !empty($row['die_no'])) ? $row['die_no'] : " ");
-              
+
                 $created_at = new DateTime($row['start_time']);
                 $formatted_date = $created_at->format('d-m-Y h:i A');
 
                 $created_at_start = new DateTime($row['end_time']);
                 $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
                 $startTime = strtotime($row['start_time']);
-                $endTime = strtotime($row['end_time']);    
+                $endTime = strtotime($row['end_time']);
                 $timeDiffSeconds = $endTime - $startTime;
                 $totalTime = gmdate('H:i:s', $timeDiffSeconds);
 
                 $data[$i][] = ((isset($formatted_date) && !empty($formatted_date)) ? $formatted_date : " ");
-                $data[$i][] = ((isset($formatted_date_start) && !empty($formatted_date_start)) ? $formatted_date_start : " ");             
-                $data[$i][] = ((isset($totalTime) && !empty($totalTime)) ? $totalTime : " ");             
-               
+                $data[$i][] = ((isset($formatted_date_start) && !empty($formatted_date_start)) ? $formatted_date_start : " ");
+                $data[$i][] = ((isset($totalTime) && !empty($totalTime)) ? $totalTime : " ");
+
                 $data[$i][] = ((isset($row['image_url']) && !empty($row['image_url'])) ? $row['image_url'] : " ");
 
                 $i++;
             }
         }
-        $body = excel_columns($data, 2);      
+        $body = excel_columns($data, 2);
 
-        $pdf_data['data'] = $body;  
-        $pdf_data['sheet'] = 'completed-jobs';  
+        $pdf_data['data'] = $body;
+        $pdf_data['sheet'] = 'completed-jobs';
         $style_array =  array(
-                'fill' => array(
-                    'color' => array('rgb' => 'FF0000')
-                ),
-                'font'  => array(
-                    'bold'  =>  true,
-                    'color' =>     array('rgb' => 'FF0000')
-                )
-            );
+            'fill' => array(
+                'color' => array('rgb' => 'FF0000')
+            ),
+            'font'  => array(
+                'bold'  =>  true,
+                'color' =>     array('rgb' => 'FF0000')
+            )
+        );
         $pdf_data['style_array'] = $style_array;
-         $this->phpspreadsheet->set_data($pdf_data);
-      
+        $this->phpspreadsheet->set_data($pdf_data);
     }
 
-    public function pdf_completed_job(){
+    public function pdf_completed_job()
+    {
         $pdf_data = array();
         $date = date('Y-m-d H:i:s');
-        $from_date =  date('d_m_Y',strtotime($this->request->getVar('from_date')));
-        $to_date = date('d_m_Y',strtotime($this->request->getVar('to_date')));
+        $from_date =  date('d_m_Y', strtotime($this->request->getVar('from_date')));
+        $to_date = date('d_m_Y', strtotime($this->request->getVar('to_date')));
         $file_name = "completed_jobs";
         $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
-        $pdf_data['title'] =  $file_name .'_'.$from_date.'_to_'.$to_date;
+        $pdf_data['title'] =  $file_name . '_' . $from_date . '_to_' . $to_date;
         if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
             $from_date = $this->request->getVar('from_date');
             $f_date = $this->change_date_format($from_date) . " 00:00:00";
@@ -711,7 +764,7 @@ class JobsApiController extends BaseController
         $this->JobActionsModel->select('*');
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->JobActionsModel->findAll();
-        $inputPath ='' . FCPATH . '\assets\img\Mahindra_Logo_hor.jpg';
+        $inputPath = '' . FCPATH . '\assets\img\Mahindra_Logo_hor.jpg';
         // Start building the HTML content
         $htmlContent = '<h3 style="text-align:center">Completed Jobs</h3><table border="1" style="border-collapse:collapse,width: 100%;">
         <thead>
@@ -742,12 +795,12 @@ class JobsApiController extends BaseController
             $formatted_date_start = $created_at_start->format('d-m-Y h:i A');
 
             $startTime = strtotime($row['start_time']);
-            $endTime = strtotime($row['end_time']);    
+            $endTime = strtotime($row['end_time']);
             $timeDiffSeconds = $endTime - $startTime;
             $totalTime = gmdate('H:i:s', $timeDiffSeconds);
-            $defalut_img ='' . FCPATH . '\assets\img\no_image_found.png';
+            $defalut_img = '' . FCPATH . '\assets\img\no_image_found.png';
             $htmlContent .= '<tr>';
-            $htmlContent .= '<td  style="width: 40px;" >' .$k++ . '</td>';
+            $htmlContent .= '<td  style="width: 40px;" >' . $k++ . '</td>';
 
             $htmlContent .= '<td  style="width: 80px;">' . htmlspecialchars(isset($row['part_no']) ? $row['part_no'] : '') . '</td>';
             $htmlContent .= '<td  style="width: 120px;">' . htmlspecialchars(isset($row['part_name']) ? $row['part_name'] : '') . '</td>';
@@ -759,8 +812,8 @@ class JobsApiController extends BaseController
             $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['wrong_pins']) ? $row['wrong_pins'] : 0) . '</td>';
             $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['correct_pins']) ? $row['correct_pins'] : 0) . '</td>';
             $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['pins']) ? count(explode(",", $row['pins'])) : 0) . '</td>';
-            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['correct_pins'])&&$row['correct_pins']>0 ? number_format($row['correct_pins']/count(explode(",", $row['pins']))*100, 2) : 0) . '</td>';
-            $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<a href="'.base_url(). 'assets/img/'. $row['image_url'].'" target="_blank"><img src="' . FCPATH .'assets/img/'. $row['image_url'] . '" height="120" width="120"></a>' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['correct_pins']) && $row['correct_pins'] > 0 ? number_format($row['correct_pins'] / count(explode(",", $row['pins'])) * 100, 2) : 0) . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<a href="' . base_url() . 'assets/img/' . $row['image_url'] . '" target="_blank"><img src="' . FCPATH . 'assets/img/' . $row['image_url'] . '" height="120" width="120"></a>' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
             $htmlContent .= '</tr>';
         }
 
@@ -768,7 +821,7 @@ class JobsApiController extends BaseController
 
         $htmlContent .= '</tbody></table>';
         // print_r($htmlContent);exit;
-        $pdf_data['pdfdata'] = $htmlContent;  
+        $pdf_data['pdfdata'] = $htmlContent;
 
         $this->phpspreadsheet->set_pdf($pdf_data);
     }

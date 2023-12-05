@@ -23,7 +23,7 @@
     </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto tv_nav">
         <li>
             <div class="row" style="width:650px;">
                 <div class="col-4 col-md-8">

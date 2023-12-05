@@ -756,11 +756,11 @@ class JobsApiController extends BaseController
             $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($formatted_date) ? $formatted_date : '') . '</td>';
             $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($formatted_date_start) ? $formatted_date_start : '') . '</td>';
             $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($totalTime) ? $totalTime : '') . '</td>';
-            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['wrong_pins']) ? $row['wrong_pins'] : '') . '</td>';
-            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['correct_pins']) ? $row['correct_pins'] : '') . '</td>';
-            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['pins']) ? count(explode(",", $row['pins'])) : '') . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['wrong_pins']) ? $row['wrong_pins'] : 0) . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['correct_pins']) ? $row['correct_pins'] : 0) . '</td>';
+            $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['pins']) ? count(explode(",", $row['pins'])) : 0) . '</td>';
             $htmlContent .= '<td style="width: 80px;">' . htmlspecialchars(isset($row['correct_pins'])&&$row['correct_pins']>0 ? number_format($row['correct_pins']/count(explode(",", $row['pins']))*100, 2) : 0) . '</td>';
-            $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<img src="' . FCPATH .'assets/img/'. $row['image_url'] . '" height="120" width="120">' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
+            $htmlContent .= '<td style="width: 120px;">' . (isset($row['image_url']) ? '<a href="'.base_url(). 'assets/img/'. $row['image_url'].'" target="_blank"><img src="' . FCPATH .'assets/img/'. $row['image_url'] . '" height="120" width="120"></a>' : '<img src="' . $defalut_img . '" height="60" width="100">') . '</td>';
             $htmlContent .= '</tr>';
         }
 

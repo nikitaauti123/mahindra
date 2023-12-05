@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'TotCas' => 'Completed Jobs report',
+    'TotCas' => 'Completed Jobs',
     'InTAT' => 'Avg. Cycle Time',
     'OutTAT' => 'OK Jobs',
     'JobACFLeft' => 'Left Side Jobs',

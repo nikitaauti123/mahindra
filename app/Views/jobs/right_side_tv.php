@@ -15,7 +15,7 @@
                                     <form id="right_side_tv_display">
                                         <div class="row mt-3 mb-3">
                                             <div class="col-12">
-                                                <div class="pins-display-wrapper">
+                                                <div class="pins-display-wrapper tv_screen">
                                                     <div class="arrow-center">
                                                         <i>sd</i>
                                                     </div>
@@ -41,7 +41,7 @@
                                                         ?>
                                                     </div>
                                                     <div class="arrow-center">
-                                                        <i class="fa fa-arrow-alt-circle-up"></i>
+                                                        <div class="front">Front</div>
                                                     </div>
                                                 </div>
                                             </div>

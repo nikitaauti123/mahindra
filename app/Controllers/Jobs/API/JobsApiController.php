@@ -485,7 +485,6 @@ class JobsApiController extends BaseController
                 $body .= '</div>';
 
                 $body .= '<p>Thank You</p>';
-                $body .= '<p>Team</p>';
 
                 send_email(env('To_Email'), 'Jobs Details', $body);
             }

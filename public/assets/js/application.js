@@ -2798,6 +2798,51 @@ function completed_jobs_tbl() {
                     }
                 },
                 {
+                    "data": "wrong_pins",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "correct_pins",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "pins",
+                    "render": function (data, type, row, meta) {
+                        if (data != '') {
+                            return data.split(",").length;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        if (row['pins']) {
+                            var perc = 0;
+                            if(row['correct_pins']>0) {
+                                perc = (row['correct_pins'] / row['pins'].split(",").length)* 100; 
+                                perc = perc.toFixed(2);
+                            }
+                            return perc;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
                     "data": "image_url",
                     "render": function (data, type, row, meta) {
                         if (data && data != '-') {

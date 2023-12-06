@@ -436,9 +436,6 @@ class JobsApiController extends BaseController
                     ->get()
                     ->getFirstRow();
 
-
-                // print_r($result_job->pins);exit;
-
                 $body = '<p>Dear User,</p>';
                 $body .= '<p>Here are the job details:</p>';
 
@@ -486,7 +483,9 @@ class JobsApiController extends BaseController
 
                 $body .= '<p>Thank You</p>';
 
-                send_email(env('To_Email'), 'Jobs Details', $body);
+                $data = send_email(env('To_Email'), 'Jobs Details', $body);
+                print_r($data);
+                exit("sss");
             }
             return $this->respond($result, 200);
         } catch (Exception $e) {

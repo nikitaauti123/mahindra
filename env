@@ -142,3 +142,9 @@ WEBSOCKET_URL= 'ws://localhost:8000/ws/left/'
 #--------------------------------------------------------------------
 
 # curlrequest.shareOptions = true
+SMTP_HOST = sandbox.smtp.mailtrap.io
+
+SMTP_USER = 5b66423a352eef
+SMTP_PASS = 03eee8ffc172e6
+SMTP_PROTOCOL = smtp
+To_Email = noreplay@gmail.com

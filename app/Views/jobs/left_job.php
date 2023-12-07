@@ -52,7 +52,7 @@
                                                         <?php
                                                         if (!empty($parts)) {
                                                             foreach ($parts as $part) {
-                                                                echo '<option value="' . $part['id'] . '">' . $part['part_name'] . '</option>';
+                                                                echo '<option value="' . $part['id'] . '">' . $part['part_name']. " - " . $part['die_no'] . '</option>';
                                                             }
                                                         }
                                                         ?>

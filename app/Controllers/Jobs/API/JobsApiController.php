@@ -359,7 +359,9 @@ class JobsApiController extends BaseController
             $json_pins = json_encode($result); */
 
             $this->jobsModel->where('part_id', $part_id);
+            $this->jobsModel->orderBy('id', 'desc');
             $jobs =  $this->jobsModel->first();
+
             if (empty($jobs)) {
                 $data = [
                     'part_id' => $part_id,
@@ -410,7 +412,6 @@ class JobsApiController extends BaseController
             $user_id = $this->session->get('id') ? $this->session->get('id') : 1;
 
             if ($this->request->getVar('time') == 'start_time') {
-
                 $data = [
                     'part_id' => $this->request->getVar('part_id'),
                     'side' => $this->request->getVar('side'),
@@ -421,6 +422,16 @@ class JobsApiController extends BaseController
                 $result['id'] = $this->JobActionsModel->insert($data, false);
                 $result['msg'] = lang('Jobs.AddJobbActionSuccss');
                 $result['lastInsertid'] = $this->JobActionsModel->insertID();
+
+                $data = [
+                    'part_id' => $this->request->getVar('part_id'),
+                    'side' => $this->request->getVar('side'),
+                    'pins' => '',
+                    'created_by' => 1,
+                    'start_time' => date('Y-m-d H:i:s')
+                ];
+                $result_arr['id'] = $this->jobsModel->insert($data, true);
+
             } else {
                 $id  = $this->request->getVar('id');
               
@@ -690,13 +701,26 @@ $values = array_values($pin_states);
 
         $this->JobActionsModel = new JobActionsModel();
 
-        $result = $this->JobActionsModel
+        $side = $this->request->getVar('side');
+
+        if(!empty($side)) {
+            $result = $this->JobActionsModel
             ->select('id, part_id, side, start_time, end_time')
             ->orderBy('id', 'DESC')
             ->where('end_time IS NULL')
+            ->where('side', $side)
             //->limit(1) // Set the limit to 1 to fetch only o ne row
             ->get()
             ->getResult();
+        } else {
+            $result = $this->JobActionsModel
+                ->select('id, part_id, side, start_time, end_time')
+                ->orderBy('id', 'DESC')
+                ->where('end_time IS NULL')
+                //->limit(1) // Set the limit to 1 to fetch only o ne row
+                ->get()
+                ->getResult();
+        }    
 
         if ($result) {
             return $this->respond($result, 200);

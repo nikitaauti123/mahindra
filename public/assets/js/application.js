@@ -1422,15 +1422,15 @@ $(document).ready(function () {
                 $('#part_right_id').val('');
                 $("#display_part-details").hide();
             }).fail(function (data) {
-                $(btn_id).removeClass('button--loading').attr('disabled', false);
-                if (typeof data.responseJSON.messages === 'object') {
-                    for (let i in data.responseJSON.messages) {
-                        failMsg(data.responseJSON.messages[i]);
-                    }
-                } else {
-                    let msg = data.responseJSON.messages.msg;
-                    failMsg(msg);
-                }
+                // $(btn_id).removeClass('button--loading').attr('disabled', false);
+                // if (typeof data.responseJSON.messages === 'object') {
+                //     for (let i in data.responseJSON.messages) {
+                //         failMsg(data.responseJSON.messages[i]);
+                //     }
+                // } else {
+                //     let msg = data.responseJSON.messages.msg;
+                //     failMsg(msg);
+                // }
             });
         });
     }

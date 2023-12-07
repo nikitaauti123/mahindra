@@ -516,18 +516,18 @@ class JobsApiController extends BaseController
                 // Assuming $result_job->detail_pins is an associative array
                 $pin_states = $pins_detail->pins;
                 $pin_states = json_decode($pin_states);
-                $keys = array_keys($pin_states);
-$values = array_values($pin_states);
+//                 $keys = array_keys($pin_states);
+// $values = array_values($pin_states);
 
 // echo "Keys: ";
 // print_r($keys);
 
 // echo "Values: ";
 // print_r($values);
-                print_r($pin_states);exit;
+                
                 $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
                 $col_array = explode(" ", $alphabets);
-                
+              
                 for ($i = 1; $i <= 14; $i++) {
                    
                     for ($j = 0; $j < count($col_array); $j++) {
@@ -535,11 +535,11 @@ $values = array_values($pin_states);
                // print_r($pin_states);
                         // Check if pin_id exists in the array
                         if (isset($pin_states)) {
-                            
+                          
                             // If pin_id is not available, show gray pin
                             $pin_class = 'pin-box gray-pin';
                         }
-        
+                        //print_r($pin_id);exit;
                         // Concatenate the HTML string
                         $body .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' . $pin_id . '</div>';
                 
@@ -552,7 +552,7 @@ $values = array_values($pin_states);
                         $body .= '<div class="y-axis-line"></div>';
                     }
                 }
-               // print_r($body);exit;
+             
                 
                 $body .= '</div>
                 <div class="arrow-center">
@@ -562,6 +562,7 @@ $values = array_values($pin_states);
         </div>
     </div></td>';
                 
+   
                 // End of the table
                 $body .= '</table>';
                 

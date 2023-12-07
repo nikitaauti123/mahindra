@@ -505,7 +505,15 @@ class JobsApiController extends BaseController
                 // Assuming $result_job->detail_pins is an associative array
                 $pin_states = $pins_detail->pins;
                 $pin_states = json_decode($pin_states);
-               // print_r($pin_states);exit;
+                $keys = array_keys($pin_states);
+$values = array_values($pin_states);
+
+// echo "Keys: ";
+// print_r($keys);
+
+// echo "Values: ";
+// print_r($values);
+                print_r($pin_states);exit;
                 $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
                 $col_array = explode(" ", $alphabets);
                 

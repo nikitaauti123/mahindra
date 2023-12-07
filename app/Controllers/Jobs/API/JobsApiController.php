@@ -416,13 +416,14 @@ class JobsApiController extends BaseController
                     'side' => $this->request->getVar('side'),
                     'start_time' => date('Y-m-d H:i:s'),
                     'created_by' => $user_id,
+                    'detail_pins' => '',
                 ];
                 $result['id'] = $this->JobActionsModel->insert($data, false);
                 $result['msg'] = lang('Jobs.AddJobbActionSuccss');
                 $result['lastInsertid'] = $this->JobActionsModel->insertID();
             } else {
-
                 $id  = $this->request->getVar('id');
+              
                 $affected = $this->JobActionsModel->update_data($id, $this->request->getVar('side'), $user_id, date('Y-m-d H:i:s'));
                 if ($affected > 0) {
                     $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
@@ -430,33 +431,29 @@ class JobsApiController extends BaseController
                     throw new Exception("Not updated");
                 }
                 $result_job = $this->JobActionsModel
-                    ->select('parts.*,job_actions.id,job_actions.image_url, job_actions.part_id, job_actions.side, job_actions.start_time, job_actions.end_time,job_actions.correct_pins,job_actions.wrong_pins, parts.pins as total_pins')
-                    ->join('parts', 'parts.id = job_actions.part_id', 'left') // Assuming 'id' is the primary key in the 'parts' table and 'part_id' is the foreign key in the 'job_actions' table
-                    ->where('job_actions.id', $id)
-                    ->get()
-                    ->getFirstRow();
+                ->select('parts.*,job_actions.id,job_actions.part_id,job_actions.detail_pins,job_actions.image_url, job_actions.part_id, job_actions.side, job_actions.start_time, job_actions.end_time,job_actions.correct_pins,job_actions.wrong_pins, parts.pins as total_pins')
+                ->join('parts', 'parts.id = job_actions.part_id', 'left') // Assuming 'id' is the primary key in the 'parts' table and 'part_id' is the foreign key in the 'job_actions' table
+                ->where('job_actions.id', $id)
+                ->get()
+                ->getFirstRow();
 
-
+                $pins_detail = $this->jobsModel
+                ->select('jobs.pins')
+                ->where('jobs.part_id', $result_job->part_id)
+                ->get()
+                ->getFirstRow();
+                $details_pins = $pins_detail->pins;
+             
                 // print_r($result_job->pins);exit;
 
                 $body = '<p>Dear User,</p>';
                 $body .= '<p>Here are the job details:</p>';
-
-                $body .= '<div class="row">';
-
-                // Left Column
-                $body .= '<div class="col-6">';
-                $body .= '<p><strong>Part Name:</strong> ' . $result_job->part_name . '</p>';
-                $body .= '<p><strong>Part No:</strong> ' . $result_job->part_no . '</p>';
-                $body .= '<p><strong>Die No:</strong> ' . $result_job->die_no . '</p>';
-                // Convert start_time and end_time to DateTime objects
-                $startTime = new DateTime($result_job->start_time);
-                $endTime = new DateTime($result_job->end_time);
-
-                $body .= '<p><strong>Start Time:</strong> ' . $startTime->format('d-m-y H:i:s') . '</p>';
-                $body .= '<p><strong>End Time:</strong> ' . $endTime->format('d-m-y H:i:s') . '</p>';
-
-                $body .= '</div>';
+                
+                // Start of the table
+                $body .= '<table border="1">';
+                
+                // First row (Left and Right Columns)
+                $body .= '<tr>';
                 $totalTime = strtotime($result_job->end_time) - strtotime($result_job->start_time);
                 if ($result_job->correct_pins != 0 && $result_job->total_pins != 0) {
 
@@ -470,22 +467,174 @@ class JobsApiController extends BaseController
                 $defaultImagePath = FCPATH . 'assets/img/no_image_found.png';
                 $imageContent = isset($result_job->image_url) ? file_get_contents($result_job->image_url) : file_get_contents($defaultImagePath);
                 $base64Image = 'data:image/png;base64,' . base64_encode($imageContent);
+                $startTime = new DateTime($result_job->start_time);
+                $endTime = new DateTime($result_job->end_time);
+                $body .= '<th>Part Name</th>
+                <th>Part No</th>
+                <th>Die No</th>
+                <th>Start Time</th>
+                <th>End Time Name</th>
+                <th>Total Time</th>
+                <th>Ok Pins</th>
+                <th>Not Ok Pins</th>
+                <th>Total Pins</th>
+                <th>Correct Pins (%)</th>
+                <th>Image</th></tr><tr>';
+               
+                $body .= '<td>' . $result_job->part_name . '</td>';
+                $body .= '<td>' . $result_job->part_no . '</td>';
+                $body .= '<td>' . $result_job->die_no . '</td>';
+                $body .= '<td' . $result_job->part_no . '</td>';
+                $body .= '<td>' . $startTime->format('d-m-y h:i A') . '</td>';
+                $body .= '<td>' . $endTime->format('d-m-y h:i A') . '</td>';
+                $body .= '<td>' .  gmdate("H:i:s", $totalTime) . '</td>';
+                $body .= '<td>' . $result_job->correct_pins . '</td>';
+                $body .= '<td>' . $result_job->wrong_pins . '</td>';
+                $body .= '<td>' . $result_job->total_pins . '</td>';
+                $body .= '<td>' . $correct_pins_count_formatted . '</td>';
+               
+                $body .= '<td > <div class="">
+                <div class="col-12">
+                    <div class="pins-display-wrapper">
+                        <div class="arrow-center">
+                            <i>sd</i>
+                        </div>
+                        <div class="pins-display no-click">
+';
 
-                // Right Column
-                $body .= '<div class="col-6">';
-                $body .= '<p><strong>Total Time:</strong> ' . gmdate("H:i:s", $totalTime) . '</p>';
-                $body .= '<p><strong>Ok Pins:</strong> ' . $result_job->correct_pins . '</p>';
-                $body .= '<p><strong>Not Ok Pins:</strong> ' . $result_job->wrong_pins . '</p>';
-                $body .= '<p><strong>Total Pins:</strong> ' . $result_job->total_pins . '</p>';
-                $body .= '<p><strong>Correct Pins (%):</strong> ' . $correct_pins_count_formatted . '%</p>';
-                $body .= '<p><strong>Image:</strong></p>';
-                $body .= '<img src="' . $base64Image . '" alt="Job Image" style="max-width:100%;">';
-                $body .= '</div>';
-
-                $body .= '</div>';
-
-                $body .= '<p>Thank You</p>';
-
+                // Assuming $result_job->detail_pins is an associative array
+                $pin_states = $pins_detail->pins;
+                $pin_states = json_decode($pin_states);
+               // print_r($pin_states);exit;
+                $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
+                $col_array = explode(" ", $alphabets);
+                
+                for ($i = 1; $i <= 14; $i++) {
+                   
+                    for ($j = 0; $j < count($col_array); $j++) {
+                        $pin_id = $col_array[$j] . $i;
+               // print_r($pin_states);
+                        // Check if pin_id exists in the array
+                        if (isset($pin_states)) {
+                            
+                            // If pin_id is not available, show gray pin
+                            $pin_class = 'pin-box gray-pin';
+                        }
+        
+                        // Concatenate the HTML string
+                        $body .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' . $pin_id . '</div>';
+                
+                        if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
+                            $body .= '<div class="x-axis-line"></div>';
+                     }
+                     }
+                
+                    if (($i + 1) % 8 == 0) {
+                        $body .= '<div class="y-axis-line"></div>';
+                    }
+                }
+               // print_r($body);exit;
+                
+                $body .= '</div>
+                <div class="arrow-center">
+                    <i class="fa fa-arrow-alt-circle-up"></i>
+                </div>
+            </div>
+        </div>
+    </div></td>';
+                
+                // End of the table
+                $body .= '</table>';
+                
+                $body .= '<p>Thank You</p><style>
+                .pins-display .pin-box {
+                    float: left;
+                    width: 34px;
+                    height: 34px;
+                    margin: 2px;
+                    text-align: center;
+                    background-color: #ffffff;
+                    line-height: 14px;
+                    font-size: 6px;
+                    cursor: pointer;
+                    border-radius: 50%;
+                    color: rgba(255, 255, 255, 1);
+                }
+                .gray-pin{
+                    background: grey;
+                }
+                .pins-display {
+                    width: 1110px;
+                    overflow: hidden;
+                    margin: 0 auto;
+                    padding: 10px 10px 10px 17px;
+                    position: relative;
+                    background-color: #FFF;
+                }
+                .pins-display-wrapper {
+                    overflow: auto;
+                    width: 225%;
+                    position: relative;
+                }
+                .pins-display div.gray-pin {
+                    background-color: var(--gray);
+                    background: gray;
+                }
+                .arrow-center {
+                    margin: 0 auto;
+                    width: 1110px;
+                    text-align: center;
+                    background: #fff;
+                    padding: 10px;
+                }
+               
+                .col-12 {
+                  
+                    max-width: 50%;
+                }
+                
+                .pins-display div.gray-pin {
+                    background-color: var(--gray);
+                    background: gray;
+                }
+                .pins-display div.red-pin {
+                    background-color: var(--gray);
+                    background: red;
+                }
+                .pins-display div.green-pin {
+                    background-color: var(--gray);
+                    background: green;
+                }
+                *, ::after, ::before {
+                    box-sizing: border-box;
+                }
+                .dark-mode .card {
+                    background-color: #343a40;
+                    color: #fff;
+                }
+                .card {
+                   
+                    word-wrap: break-word;
+                    
+                }
+                .pins-display .x-axis-line {
+                    width: 3px;
+                    height: 30px;
+                    background-color: black;
+                    float: left;
+                    margin-bottom: -11px;
+                    margin: 0 3px;
+                }
+                .pins-display .y-axis-line {
+                    width: 99%;
+                    background-color: black;
+                    height: 3px;
+                    float: left;
+                    margin: 3px 0px;
+                }
+                </style>';
+                //print_r($body);exit;
+                
                 send_email(env('To_Email'), 'Jobs Details', $body);
             }
             return $this->respond($result, 200);

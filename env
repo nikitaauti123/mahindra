@@ -148,3 +148,6 @@ SMTP_USER = 5b66423a352eef
 SMTP_PASS = 03eee8ffc172e6
 SMTP_PROTOCOL = smtp
 To_Email = noreplay@gmail.com
+SMTP_PORT =  25
+FROM_EMAIL = your_email@example.com
+FROM_NAME = 'Your Name'

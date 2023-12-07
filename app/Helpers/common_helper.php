@@ -95,7 +95,7 @@ if (!function_exists('send_email')) {
             'SMTPUser' => env('SMTP_USER'),
             'SMTPPass' => env('SMTP_PASS'),
         ]);
-        $email->setFrom('your_email@example.com', 'Your Name');
+        $email->setFrom(env('FROM_EMAIL'), env('FROM_NAME'));
         $email->setTo($to);
         $email->setSubject($subject);
         $email->setMessage($message);

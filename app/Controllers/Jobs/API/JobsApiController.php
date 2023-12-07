@@ -417,7 +417,6 @@ class JobsApiController extends BaseController
                     'side' => $this->request->getVar('side'),
                     'start_time' => date('Y-m-d H:i:s'),
                     'created_by' => $user_id,
-                    'detail_pins' => '',
                 ];
                 $result['id'] = $this->JobActionsModel->insert($data, false);
                 $result['msg'] = lang('Jobs.AddJobbActionSuccss');
@@ -442,7 +441,7 @@ class JobsApiController extends BaseController
                     throw new Exception("Not updated");
                 }
                 $result_job = $this->JobActionsModel
-                ->select('parts.*,job_actions.id,job_actions.part_id,job_actions.detail_pins,job_actions.image_url, job_actions.part_id, job_actions.side, job_actions.start_time, job_actions.end_time,job_actions.correct_pins,job_actions.wrong_pins, parts.pins as total_pins')
+                ->select('parts.*,job_actions.id,job_actions.part_id,job_actions.image_url, job_actions.part_id, job_actions.side, job_actions.start_time, job_actions.end_time,job_actions.correct_pins,job_actions.wrong_pins, parts.pins as total_pins')
                 ->join('parts', 'parts.id = job_actions.part_id', 'left') // Assuming 'id' is the primary key in the 'parts' table and 'part_id' is the foreign key in the 'job_actions' table
                 ->where('job_actions.id', $id)
                 ->get()
@@ -455,7 +454,9 @@ class JobsApiController extends BaseController
                 ->getFirstRow();
                 $details_pins = $pins_detail->pins;
              
-                // print_r($result_job->pins);exit;
+                $array = explode(',', $result_job->total_pins);
+                $countedValues = array_count_values($array);
+                //print_r(count($countedValues));exit;
 
                 $body = '<p>Dear User,</p>';
                 $body .= '<p>Here are the job details:</p>';
@@ -501,7 +502,7 @@ class JobsApiController extends BaseController
                 $body .= '<td>' .  gmdate("H:i:s", $totalTime) . '</td>';
                 $body .= '<td>' . $result_job->correct_pins . '</td>';
                 $body .= '<td>' . $result_job->wrong_pins . '</td>';
-                $body .= '<td>' . $result_job->total_pins . '</td>';
+                $body .= '<td>' . count($countedValues) . '</td>';
                 $body .= '<td>' . $correct_pins_count_formatted . '</td>';
                
                 $body .= '<td > <div class="">
@@ -513,8 +514,7 @@ class JobsApiController extends BaseController
                         <div class="pins-display no-click">
 ';
 
-                // Assuming $result_job->detail_pins is an associative array
-                $pin_states = $pins_detail->pins;
+                  $pin_states = $pins_detail->pins;
                 $pin_states = json_decode($pin_states);
 //                 $keys = array_keys($pin_states);
 // $values = array_values($pin_states);
@@ -534,6 +534,8 @@ class JobsApiController extends BaseController
                         $pin_id = $col_array[$j] . $i;
                // print_r($pin_states);
                         // Check if pin_id exists in the array
+                     $pin_class = 'pin-box gray-pin';
+                    
                         if (isset($pin_states)) {
                           
                             // If pin_id is not available, show gray pin

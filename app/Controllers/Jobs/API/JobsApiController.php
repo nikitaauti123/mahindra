@@ -503,7 +503,7 @@ class JobsApiController extends BaseController
                 <div class="col-12">
                     <div class="pins-display-wrapper">
                         <div class="arrow-center">
-                            <i></i>
+                        <div class="front">Front</div>
                         </div>
                         <div class="pins-display no-click">
 ';

@@ -93,7 +93,7 @@
                                                                 ?>
                                                             </div>
                                                             <div class="arrow-center">
-                                                                <i class="fa fa-arrow-alt-circle-up"></i>
+                                                            <div class="front">Front</div>
                                                             </div>
                                                         </div>                                                        
                                                     </div>

@@ -457,14 +457,14 @@ class JobsApiController extends BaseController
                 $countedValues = array_count_values($array);
                 //print_r(count($countedValues));exit;
 
-                $body = '<p>Dear User,</p>';
+                $body = '<p>Dear Sir/Madam,</p>';
                 $body .= '<p>Here are the job details:</p>';
 
                 // Start of the table
                 $body .= '<table border="1">';
 
                 // First row (Left and Right Columns)
-                $body .= '<tr>';
+               
                 $totalTime = strtotime($result_job->end_time) - strtotime($result_job->start_time);
                 if ($result_job->correct_pins != 0 && $result_job->total_pins != 0) {
 
@@ -476,39 +476,34 @@ class JobsApiController extends BaseController
 
                 $correct_pins_count_formatted = number_format($correct_pins_count, 2); // Format to 2 decimal places
                 $defaultImagePath = FCPATH . 'assets/img/no_image_found.png';
-                $imageContent = isset($result_job->image_url) ? file_get_contents($result_job->image_url) : file_get_contents($defaultImagePath);
-                $base64Image = 'data:image/png;base64,' . base64_encode($imageContent);
-                $startTime = new DateTime($result_job->start_time);
+                 $startTime = new DateTime($result_job->start_time);
                 $endTime = new DateTime($result_job->end_time);
-                $body .= '<th>Part Name</th>
-                <th>Part No</th>
-                <th>Die No</th>
-                <th>Start Time</th>
-                <th>End Time Name</th>
-                <th>Total Time</th>
-                <th>Ok Pins</th>
-                <th>Not Ok Pins</th>
-                <th>Total Pins</th>
-                <th>Correct Pins (%)</th>
-                <th>Image</th></tr><tr>';
+                $body .= '<tr>
+                <td><b>Part Name</b></td>
+                <td>'. $result_job->part_name .'</td>
+                <td><b>Ok Pins</b></td>
+                <td>' . $result_job->correct_pins . '</td>
+                </tr>
+                <tr> 
+                <td><b>Part No.</b></td><td>'. $result_job->part_no .' </td>
+                <td><b>Not Ok Pins</b></td><td>'. $result_job->wrong_pins .'</td>
+                </tr>
+                <tr> <td><b>Die No.</b></td><td>'. $result_job->die_no .' </td>
+                <td><b> Total Pins</b></td><td>'. count($countedValues) .'</td>
+                </tr>
+                <tr><td><b> Start Time</b></td><td>'.$startTime->format('d-m-y h:i A') .'</td>
+                <td><b> Ok Pins(%)</b></td><td><b>'.$correct_pins_count_formatted .'</b></td>
+                </tr>
+                <tr>
+                <td><b> End Time</b></td><td>'.$endTime->format('d-m-y h:i A') .'</td>
+                <td><b> Total Time</b></td><td><b>'. gmdate("H:i:s", $totalTime) .'</b></td>               
+                </tr>';
 
-                $body .= '<td>' . $result_job->part_name . '</td>';
-                $body .= '<td>' . $result_job->part_no . '</td>';
-                $body .= '<td>' . $result_job->die_no . '</td>';
-                $body .= '<td' . $result_job->part_no . '</td>';
-                $body .= '<td>' . $startTime->format('d-m-y h:i A') . '</td>';
-                $body .= '<td>' . $endTime->format('d-m-y h:i A') . '</td>';
-                $body .= '<td>' .  gmdate("H:i:s", $totalTime) . '</td>';
-                $body .= '<td>' . $result_job->correct_pins . '</td>';
-                $body .= '<td>' . $result_job->wrong_pins . '</td>';
-                $body .= '<td>' . count($countedValues) . '</td>';
-                $body .= '<td>' . $correct_pins_count_formatted . '</td>';
-
-                $body .= '<td > <div class="">
+                $body .= '</table><div class="row">
                 <div class="col-12">
                     <div class="pins-display-wrapper">
                         <div class="arrow-center">
-                            <i>sd</i>
+                            <i></i>
                         </div>
                         <div class="pins-display no-click">
 ';
@@ -560,13 +555,17 @@ class JobsApiController extends BaseController
                 </div>
             </div>
         </div>
-    </div></td>';
+    </div>';
 
 
                 // End of the table
-                $body .= '</table>';
 
-                $body .= '<p>Thank You</p><style>
+                $body .= '<p>Thank You</p>';
+                $body .= '<p>
+==========================================================================
+Do no reply on this email, this is an automated email.
+</p>
+                <style>
                 .pins-display .pin-box {
                     float: left;
                     width: 34px;
@@ -574,26 +573,31 @@ class JobsApiController extends BaseController
                     margin: 2px;
                     text-align: center;
                     background-color: #ffffff;
-                    line-height: 14px;
-                    font-size: 6px;
+                    line-height: 35px;
+                    font-size: 10px;
                     cursor: pointer;
                     border-radius: 50%;
                     color: rgba(255, 255, 255, 1);
                 }
+                table{
+                    width: 1110px;
+                }
+                table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                  }
                 .gray-pin{
                     background: grey;
                 }
                 .pins-display {
                     width: 1110px;
                     overflow: hidden;
-                    margin: 0 auto;
-                    padding: 10px 10px 10px 17px;
+                  
                     position: relative;
                     background-color: #FFF;
                 }
                 .pins-display-wrapper {
                     overflow: auto;
-                    width: 225%;
                     position: relative;
                 }
                 .pins-display div.gray-pin {
@@ -608,10 +612,6 @@ class JobsApiController extends BaseController
                     padding: 10px;
                 }
                
-                .col-12 {
-                  
-                    max-width: 50%;
-                }
                 
                 .pins-display div.gray-pin {
                     background-color: var(--gray);
@@ -653,7 +653,7 @@ class JobsApiController extends BaseController
                     margin: 3px 0px;
                 }
                 </style>';
-
+// print_r($body);exit;
                 send_email(env('To_Email'), 'Jobs Details', $body);
             }
             return $this->respond($result, 200);

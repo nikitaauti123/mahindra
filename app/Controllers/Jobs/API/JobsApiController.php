@@ -589,6 +589,9 @@ Do no reply on this email, this is an automated email.
                 .gray-pin{
                     background: grey;
                 }
+                .green_color{
+                    background: #9add9a;
+                }
                 .pins-display {
                     width: 1110px;
                     overflow: hidden;

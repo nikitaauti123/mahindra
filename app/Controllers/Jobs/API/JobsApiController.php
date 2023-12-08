@@ -479,10 +479,10 @@ class JobsApiController extends BaseController
                  $startTime = new DateTime($result_job->start_time);
                 $endTime = new DateTime($result_job->end_time);
                 $body .= '<tr>
-                <td><b>Part Name</b></td>
-                <td>'. $result_job->part_name .'</td>
-                <td><b>Ok Pins</b></td>
-                <td>' . $result_job->correct_pins . '</td>
+                <td style="width: 25%;"><b>Part Name</b></td>
+                <td style="width: 25%;">'. $result_job->part_name .'</td>
+                <td style="width: 25%;"><b>Ok Pins</b></td>
+                <td style="width: 25%;">' . $result_job->correct_pins . '</td>
                 </tr>
                 <tr> 
                 <td><b>Part No.</b></td><td>'. $result_job->part_no .' </td>
@@ -492,11 +492,11 @@ class JobsApiController extends BaseController
                 <td><b> Total Pins</b></td><td>'. count($countedValues) .'</td>
                 </tr>
                 <tr><td><b> Start Time</b></td><td>'.$startTime->format('d-m-y h:i A') .'</td>
-                <td><b> Ok Pins(%)</b></td><td><b>'.$correct_pins_count_formatted .'</b></td>
+                <td class="green_color"><b> Ok Pins(%)</b></td><td class="green_color"><b>'.$correct_pins_count_formatted .'</b></td>
                 </tr>
                 <tr>
                 <td><b> End Time</b></td><td>'.$endTime->format('d-m-y h:i A') .'</td>
-                <td><b> Total Time</b></td><td><b>'. gmdate("H:i:s", $totalTime) .'</b></td>               
+                <td class="green_color"><b> Total Time</b></td><td class="green_color"><b>'. gmdate("H:i:s", $totalTime) .'</b></td>               
                 </tr>';
 
                 $body .= '</table><div class="row">
@@ -580,7 +580,7 @@ Do no reply on this email, this is an automated email.
                     color: rgba(255, 255, 255, 1);
                 }
                 table{
-                    width: 1110px;
+                    width: 1069px;
                 }
                 table, th, td {
                     border: 1px solid black;

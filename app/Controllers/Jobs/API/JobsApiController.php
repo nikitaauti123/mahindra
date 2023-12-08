@@ -430,10 +430,9 @@ class JobsApiController extends BaseController
                     'start_time' => date('Y-m-d H:i:s')
                 ];
                 $result_arr['id'] = $this->jobsModel->insert($data, true);
-
             } else {
                 $id  = $this->request->getVar('id');
-              
+
                 $affected = $this->JobActionsModel->update_data($id, $this->request->getVar('side'), $user_id, date('Y-m-d H:i:s'));
                 if ($affected > 0) {
                     $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
@@ -441,29 +440,29 @@ class JobsApiController extends BaseController
                     throw new Exception("Not updated");
                 }
                 $result_job = $this->JobActionsModel
-                ->select('parts.*,job_actions.id,job_actions.part_id,job_actions.image_url, job_actions.part_id, job_actions.side, job_actions.start_time, job_actions.end_time,job_actions.correct_pins,job_actions.wrong_pins, parts.pins as total_pins')
-                ->join('parts', 'parts.id = job_actions.part_id', 'left') // Assuming 'id' is the primary key in the 'parts' table and 'part_id' is the foreign key in the 'job_actions' table
-                ->where('job_actions.id', $id)
-                ->get()
-                ->getFirstRow();
+                    ->select('parts.*,job_actions.id,job_actions.part_id,job_actions.image_url, job_actions.part_id, job_actions.side, job_actions.start_time, job_actions.end_time,job_actions.correct_pins,job_actions.wrong_pins, parts.pins as total_pins')
+                    ->join('parts', 'parts.id = job_actions.part_id', 'left') // Assuming 'id' is the primary key in the 'parts' table and 'part_id' is the foreign key in the 'job_actions' table
+                    ->where('job_actions.id', $id)
+                    ->get()
+                    ->getFirstRow();
 
                 $pins_detail = $this->jobsModel
-                ->select('jobs.pins')
-                ->where('jobs.part_id', $result_job->part_id)
-                ->get()
-                ->getFirstRow();
+                    ->select('jobs.pins')
+                    ->where('jobs.part_id', $result_job->part_id)
+                    ->get()
+                    ->getFirstRow();
                 $details_pins = $pins_detail->pins;
-             
+
                 $array = explode(',', $result_job->total_pins);
                 $countedValues = array_count_values($array);
                 //print_r(count($countedValues));exit;
 
                 $body = '<p>Dear User,</p>';
                 $body .= '<p>Here are the job details:</p>';
-                
+
                 // Start of the table
                 $body .= '<table border="1">';
-                
+
                 // First row (Left and Right Columns)
                 $body .= '<tr>';
                 $totalTime = strtotime($result_job->end_time) - strtotime($result_job->start_time);
@@ -492,7 +491,7 @@ class JobsApiController extends BaseController
                 <th>Total Pins</th>
                 <th>Correct Pins (%)</th>
                 <th>Image</th></tr><tr>';
-               
+
                 $body .= '<td>' . $result_job->part_name . '</td>';
                 $body .= '<td>' . $result_job->part_no . '</td>';
                 $body .= '<td>' . $result_job->die_no . '</td>';
@@ -504,7 +503,7 @@ class JobsApiController extends BaseController
                 $body .= '<td>' . $result_job->wrong_pins . '</td>';
                 $body .= '<td>' . count($countedValues) . '</td>';
                 $body .= '<td>' . $correct_pins_count_formatted . '</td>';
-               
+
                 $body .= '<td > <div class="">
                 <div class="col-12">
                     <div class="pins-display-wrapper">
@@ -514,48 +513,47 @@ class JobsApiController extends BaseController
                         <div class="pins-display no-click">
 ';
 
-                  $pin_states = $pins_detail->pins;
-                $pin_states = json_decode($pin_states);
-//                 $keys = array_keys($pin_states);
-// $values = array_values($pin_states);
 
-// echo "Keys: ";
-// print_r($keys);
+                $pin_states = $pins_detail->pins;
+                $pin_states = json_decode($pin_states, true);
 
-// echo "Values: ";
-// print_r($values);
-                
+
                 $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
                 $col_array = explode(" ", $alphabets);
-              
+
+
                 for ($i = 1; $i <= 14; $i++) {
-                   
                     for ($j = 0; $j < count($col_array); $j++) {
                         $pin_id = $col_array[$j] . $i;
-               // print_r($pin_states);
+
                         // Check if pin_id exists in the array
-                     $pin_class = 'pin-box gray-pin';
-                    
-                        if (isset($pin_states)) {
-                          
-                            // If pin_id is not available, show gray pin
+                        if (isset($pin_states[$pin_id])) {
+                            // If pin_id is available, set pin_class based on the condition
+                            $pin_value = $pin_states[$pin_id];
+                            $pin_class = ($pin_value == 1) ? 'pin-box green-pin' : 'pin-box red-pin';
+                        } else {
+                            // If pin_id is not available, set pin_class to 'gray-pin'
                             $pin_class = 'pin-box gray-pin';
                         }
-                        //print_r($pin_id);exit;
+
                         // Concatenate the HTML string
                         $body .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' . $pin_id . '</div>';
-                
+
+                        // Add x-axis line after every 14th element in the row
                         if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
                             $body .= '<div class="x-axis-line"></div>';
-                     }
-                     }
-                
+                        }
+                    }
+
+                    // Add y-axis line after every 8 rows
                     if (($i + 1) % 8 == 0) {
                         $body .= '<div class="y-axis-line"></div>';
                     }
                 }
-             
-                
+
+
+
+
                 $body .= '</div>
                 <div class="arrow-center">
                     <i class="fa fa-arrow-alt-circle-up"></i>
@@ -563,11 +561,11 @@ class JobsApiController extends BaseController
             </div>
         </div>
     </div></td>';
-                
-   
+
+
                 // End of the table
                 $body .= '</table>';
-                
+
                 $body .= '<p>Thank You</p><style>
                 .pins-display .pin-box {
                     float: left;
@@ -655,8 +653,7 @@ class JobsApiController extends BaseController
                     margin: 3px 0px;
                 }
                 </style>';
-                //print_r($body);exit;
-                
+
                 send_email(env('To_Email'), 'Jobs Details', $body);
             }
             return $this->respond($result, 200);
@@ -706,15 +703,15 @@ class JobsApiController extends BaseController
 
         $side = $this->request->getVar('side');
 
-        if(!empty($side)) {
+        if (!empty($side)) {
             $result = $this->JobActionsModel
-            ->select('id, part_id, side, start_time, end_time')
-            ->orderBy('id', 'DESC')
-            ->where('end_time IS NULL')
-            ->where('side', $side)
-            //->limit(1) // Set the limit to 1 to fetch only o ne row
-            ->get()
-            ->getResult();
+                ->select('id, part_id, side, start_time, end_time')
+                ->orderBy('id', 'DESC')
+                ->where('end_time IS NULL')
+                ->where('side', $side)
+                //->limit(1) // Set the limit to 1 to fetch only o ne row
+                ->get()
+                ->getResult();
         } else {
             $result = $this->JobActionsModel
                 ->select('id, part_id, side, start_time, end_time')
@@ -723,7 +720,7 @@ class JobsApiController extends BaseController
                 //->limit(1) // Set the limit to 1 to fetch only o ne row
                 ->get()
                 ->getResult();
-        }    
+        }
 
         if ($result) {
             return $this->respond($result, 200);

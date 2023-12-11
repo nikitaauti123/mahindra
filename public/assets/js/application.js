@@ -2846,7 +2846,7 @@ function completed_jobs_tbl() {
                     "data": "image_url",
                     "render": function (data, type, row, meta) {
                         if (data && data != '-') {
-                            return '<a href="' + data + '" target="_blank"><img src="' + data + '" height="60px" width="80px" style="object-fit: cover;" /></a>';
+                            return data;
                         } else {
                             return '-';
                         }

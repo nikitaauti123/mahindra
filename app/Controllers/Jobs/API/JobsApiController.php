@@ -766,10 +766,10 @@ Do no reply on this email, this is an automated email.
             $this->JobActionsModel->where('job_actions.id', $this->request->getVar('job_Action_id'));
         }
 
-        $this->JobActionsModel->select('*');
+        $this->JobActionsModel->select('parts.*,job_actions.part_id,job_actions.side,job_actions.image_url,job_actions.wrong_pins,job_actions.correct_pins,job_actions.detail_pins,job_actions.start_time,job_actions.end_time,job_actions.created_by,job_actions.updated_by');
         $this->JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->JobActionsModel->findAll();
-
+       
         foreach ($result as $key => $result_arr) {
 
             if (isset($result_arr['start_time'])) {
@@ -779,13 +779,103 @@ Do no reply on this email, this is an automated email.
             if (isset($result_arr['end_time'])) {
                 $result[$key]['end_time'] = date("d-m-Y h:i A", strtotime($result_arr['end_time']));
             }
-
+          
             $startTime = strtotime($result_arr['start_time']);
             $endTime = strtotime($result_arr['end_time']);
             $timeDiffSeconds = $endTime - $startTime;
             $totalTime = gmdate('H:i:s', $timeDiffSeconds);
             $result[$key]['total_time'] = $totalTime;
-
+           
+            if($result_arr['part_id'] == ''){
+            
+                $result[$key]['image_url'] = '-';
+            }else{
+              ///  echo "not";
+                $pins_detail = $this->jobsModel
+                ->select('jobs.pins')
+                ->where('jobs.part_id', $result_arr['part_id'])
+                ->get()
+                ->getFirstRow();
+                if ($pins_detail !== null) {
+                    $pins = $pins_detail->pins;
+                
+            $result[$key]['image_url'] = '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#compl">
+           Check Image
+          </button>
+    
+          <!-- Modal -->
+          <div class="modal fade" id="compl" tabindex="-1" role="dialog" aria-labelledby="complLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered" role="document" style="max-width: 80%;">
+              <div class="modal-content mx-auto" >
+                <div class="modal-header">
+                  <h5 class="modal-title" id="complLabel">Pins</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="pins-display-wrapper">
+                            <div class="pins-display no-click">
+            ';
+         
+          $pin_states = $pins_detail->pins;        
+          
+           $pin_states = json_decode($pin_states, true);
+          
+            $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
+            $col_array = explode(" ", $alphabets);
+            
+            for ($i = 1; $i <= 14; $i++) {
+                 for ($j = 0; $j < count($col_array); $j++) {
+                  $pin_id = $col_array[$j] . $i;
+                  //print_r($pin_states);
+                    // Check if pin_id exists in the array
+                   if (isset($pin_states[$pin_id])) {
+                  
+                        $pin_value = $pin_states[$pin_id];                         
+                        $pin_class = ($pin_value == 1) ? 'pin-box green-pin' : 'pin-box red-pin';
+                  } else {
+                         // If pin_id is not available, set pin_class to 'gray-pin'
+                        $pin_class = 'pin-box gray-pin';
+                  }
+            
+                 // print_r($pin_class);
+                    // Output the HTML directly
+                    $result[$key]['image_url'] .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' . $pin_id . '</div>';
+            // print_r()
+                    // Add x-axis line after every 14th element in the row
+                    if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
+                        $result[$key]['image_url'] .= '<div class="x-axis-line"></div>';
+                    }
+             }
+            
+                // Add y-axis line after every 8 rows
+                if (($i + 1) % 8 == 0) {
+                    $result[$key]['image_url'] .= '<div class="y-axis-line"></div>';
+                 }
+            }
+        
+            $result[$key]['image_url'] .= ' </div>
+                            <div class="arrow-center">
+                                <i class="fa fa-arrow-alt-circle-up"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                            <!-- Your existing pins display HTML here -->
+                       
+              
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 </div>
+              </div>
+            </div>
+          </div>';
+          
             /* $partId = $result_arr['part_id']; // Assuming 'part_id' is a field in the jobs table.
             $this->PartsModel->where('id', $result_arr['part_id']);
             $partData = $this->PartsModel->first();
@@ -797,6 +887,8 @@ Do no reply on this email, this is an automated email.
                 $combinedResults[] = $combinedResult;
             } */
         }
+        }
+    }
 
         return $this->respond($result, 200);
     }

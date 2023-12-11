@@ -28,5 +28,6 @@ return [
     'AddJobbActionSuccss'=> 'Job started  successfully',
     'UpdateJobbActionSuccss'=>'Job stoped successfully',
     'ExportInExcel'=>'Export In Excel',
-    'ExportInPdf'=>'Export In Pdf'
+    'ExportInPdf'=>'Export In Pdf',
+    'JobDetailMailSuccess'=>'Job Detail Sent on Mail  successfully'
 ];

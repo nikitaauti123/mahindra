@@ -117,6 +117,8 @@ $routes->get('/api/jobs/export_completed_job', 'Jobs\\Api\\JobsApiController::ex
 $routes->get('/api/jobs/pdf_completed_job', 'Jobs\\Api\\JobsApiController::pdf_completed_job');
 
 $routes->get('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
+$routes->get('/jobs/send_part_details/(:num)', 'Jobs\\Api\\JobsApiController::send_part_details/$');
+
 
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');
 $routes->get('/admin/roles/add', 'Roles\\RolesController::Create');
@@ -143,6 +145,8 @@ $routes->post('/api/permissions/delete/(:num)', 'Permission\\Api\\PermissionApiC
 $routes->get('/api/permissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
 $routes->post('/api/permissions/update/(:num)', 'Permission\\Api\\PermissionApiController::update/$1');
 $routes->get('/api/pemissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
+
+$routes->get('/admin/cron/cron_completed_job/', 'Cron\\CronController::cron_completed_job');
 
 
 /*

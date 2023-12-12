@@ -28,50 +28,38 @@ class CronController extends BaseController
         
         $this->jobActionModel->select('parts.*,job_actions.part_id,job_actions.side,job_actions.image_url,job_actions.wrong_pins,job_actions.correct_pins,job_actions.detail_pins,job_actions.start_time,job_actions.end_time,job_actions.created_by,job_actions.updated_by, parts.pins as total_pins');
         $this->jobActionModel->join('parts', 'job_actions.part_id = parts.id');
-        $result = $this->jobActionModel->findAll();
-       // echo "ok";exit;
-     
+        $this->jobActionModel->where('job_actions.end_time >= NOW() - INTERVAL 10 MINUTE'); $result = $this->jobActionModel->findAll();  echo  "<pre>";
+
         foreach ($result as $key => $result_job) {
-            if($result_job['part_id'] != ''){
-            
-             
+            if($result_job['part_id'] != ''){                
             $pins_detail = $this->jobsModel
             ->select('jobs.pins')
             ->where('jobs.part_id', $result_job['part_id'])
             ->get()
             ->getFirstRow();
             if ($pins_detail !== null) {
-        $details_pins = $pins_detail->pins;
+           $details_pins = $pins_detail->pins;
             $array = explode(',', $result_job['total_pins']);
-            $countedValues = array_count_values($array);
-           
+            $countedValues = array_count_values($array);           
             $body = '<p>Dear Sir/Madam,</p>';
             $body .= '<p>Here are the job details:</p>';
-
-             // Start of the table
+                         // Start of the table
             $body .= '<table border="1">';
-
-
             $totalTime = strtotime($result_job['end_time']) - strtotime($result_job['start_time']);
             if ($result_job['correct_pins'] != 0 && $result_job['total_pins'] != 0) {
-
                 $correct_pins_count = ($result_job['correct_pins'] / $result_job['total_pins']) * 100;
             } else {
-
                 $correct_pins_count = 000; // or handle it in a way that makes sense for your application
-            }
-           
+            }          
 
             $correct_pins_count_formatted = number_format($correct_pins_count, 2); // Format to 2 decimal places
             $defaultImagePath = FCPATH . 'assets/img/no_image_found.png';
              $startTime = new DateTime($result_job['start_time']);
             $endTime = new DateTime($result_job['end_time']);
-
             $body .= '<tr>
             <td style="width: 25%;"><b>Part Name</b></td>
             <td style="width: 25%;">'. $result_job['part_name'] .'</td>
             <td style="width: 25%;"><b>Ok Pins</b></td>
-
             <td style="width: 25%;">' . $result_job['correct_pins'] . '</td>
             </tr>
             <tr> 
@@ -87,8 +75,7 @@ class CronController extends BaseController
             <tr>
             <td><b> End Time</b></td><td>'.$endTime->format('d-m-y h:i A') .'</td>
             <td class="green_color"><b> Total Time</b></td><td class="green_color"><b>'. gmdate("H:i:s", $totalTime) .'</b></td>               
-            </tr>';
-           
+            </tr>';           
 
             $body .= '</table><div class="row">
             <div class="col-12">
@@ -98,47 +85,28 @@ class CronController extends BaseController
                     </div>
                     <div class="pins-display no-click">
 ';
-
-
-            $pin_states = $pins_detail->pins;
+          $pin_states = $pins_detail->pins;
             $pin_states = json_decode($pin_states, true);
-
-
             $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
             $col_array = explode(" ", $alphabets);
-
-
             for ($i = 1; $i <= 14; $i++) {
                 for ($j = 0; $j < count($col_array); $j++) {
                     $pin_id = $col_array[$j] . $i;
-
-                    // Check if pin_id exists in the array
-                    if (isset($pin_states[$pin_id])) {
-                        // If pin_id is available, set pin_class based on the condition
+                     if (isset($pin_states[$pin_id])) {
                         $pin_value = $pin_states[$pin_id];
                         $pin_class = ($pin_value == 1) ? 'pin-box green-pin' : 'pin-box red-pin';
                     } else {
-                        // If pin_id is not available, set pin_class to 'gray-pin'
                         $pin_class = 'pin-box gray-pin';
                     }
-
-                    // Concatenate the HTML string
-                    $body .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' . $pin_id . '</div>';
-
-                    // Add x-axis line after every 14th element in the row
+                  $body .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' . $pin_id . '</div>';
                     if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
                         $body .= '<div class="x-axis-line"></div>';
                     }
                 }
-
-                // Add y-axis line after every 8 rows
-                if (($i + 1) % 8 == 0) {
+            if (($i + 1) % 8 == 0) {
                     $body .= '<div class="y-axis-line"></div>';
                 }
-            }
-
-
-       
+            }       
 
             $body .= '</div>
             <div class="arrow-center">
@@ -147,11 +115,6 @@ class CronController extends BaseController
         </div>
     </div>
 </div>';
-
-
-
-            // End of the table
-
             $body .= '<p>Thank You</p>';
             $body .= '<p>
 ==========================================================================
@@ -248,7 +211,6 @@ Do no reply on this email, this is an automated email.
                 margin: 3px 0px;
             }
             </style>';
-// print_r($body);exit;
            if( send_email(env('To_Email'), 'Jobs Details', $body)){
             echo "Job details sent through email";
            }

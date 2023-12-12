@@ -26,11 +26,16 @@ class CronController extends BaseController
     }
     public  function cron_completed_job(){
         
-        $this->jobActionModel->select('parts.*,job_actions.part_id,job_actions.side,job_actions.image_url,job_actions.wrong_pins,job_actions.correct_pins,job_actions.detail_pins,job_actions.start_time,job_actions.end_time,job_actions.created_by,job_actions.updated_by, parts.pins as total_pins');
+        $this->jobActionModel->select('parts.*,job_actions.id as job_action_id,job_actions.part_id,job_actions.side,job_actions.image_url,job_actions.wrong_pins,job_actions.correct_pins,job_actions.detail_pins,job_actions.start_time,job_actions.end_time,job_actions.created_by,job_actions.updated_by, parts.pins as total_pins');
         $this->jobActionModel->join('parts', 'job_actions.part_id = parts.id');
-        $this->jobActionModel->where('job_actions.end_time >= NOW() - INTERVAL 10 MINUTE'); $result = $this->jobActionModel->findAll();  echo  "<pre>";
+     //   $this->jobActionModel->where('job_actions.end_time >= NOW() - INTERVAL 111 Hour');
+        $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
+        $this->jobActionModel->where('job_actions.mail_send','0');
+      
+        $result = $this->jobActionModel->findAll();  
 
         foreach ($result as $key => $result_job) {
+          
             if($result_job['part_id'] != ''){                
             $pins_detail = $this->jobsModel
             ->select('jobs.pins')
@@ -211,10 +216,12 @@ Do no reply on this email, this is an automated email.
                 margin: 3px 0px;
             }
             </style>';
-           if( send_email(env('To_Email'), 'Jobs Details', $body)){
+           if(send_email(env('To_Email'), 'Jobs Details', $body)){
+            $data['mail_send'] =  '1';
+            $id = $result_job['job_action_id'];
+            $this->jobActionModel->update($id, $data);
             echo "Job details sent through email";
-           }
-        }
+           }        }
         }
        
         }

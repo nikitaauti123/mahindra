@@ -15,6 +15,7 @@ class JobsModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'part_id',
+        'job_action_id',
         'pins',
         'side',
         'start_time',

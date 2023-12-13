@@ -920,10 +920,10 @@ try{
         $startTime = new DateTime($result_job->start_time);
         $endTime = new DateTime($result_job->end_time);
         $body .= '<tr>
-    <td style="width: 25%;"><b>Part Name</b></td>
-    <td style="width: 25%;">' . $result_job->part_name . '</td>
-    <td style="width: 25%;"><b>Ok Pins</b></td>
-    <td style="width: 25%;">' . $result_job->correct_pins . '</td>
+    <td><b>Part Name</b></td>
+    <td>' . $result_job->part_name . '</td>
+    <td><b>Ok Pins</b></td>
+    <td>' . $result_job->correct_pins . '</td>
     </tr>
     <tr> 
     <td><b>Part No.</b></td><td>' . $result_job->part_no . ' </td>
@@ -944,7 +944,6 @@ try{
     <div class="col-12">
         <div class="pins-display-wrapper">
             <div class="arrow-center">
-            <div class="front">Front</div>
             </div>
             <div class="pins-display no-click">
 ';
@@ -974,7 +973,8 @@ try{
 
         $body .= '</div>
     <div class="arrow-center">
-        <i class="fa fa-arrow-alt-circle-up"></i>
+    <div class="front">Front</div>
+
     </div>
 </div>
 </div>
@@ -985,7 +985,7 @@ try{
 
         $body .= '<p>Thank You</p>';
         $body .= '<p>
-==========================================================================
+====================================================================================================================================================
 Do no reply on this email, this is an automated email.
 </p>
     <style>
@@ -1002,8 +1002,13 @@ Do no reply on this email, this is an automated email.
         border-radius: 50%;
         color: rgba(255, 255, 255, 1);
     }
-    table{
-        width: 1069px;
+   
+    .front {
+        font-size: 2vw;
+        font-weight: bold;
+        color: red;
+        position: relative;
+        left: -130px;
     }
     table, th, td {
         border: 1px solid black;

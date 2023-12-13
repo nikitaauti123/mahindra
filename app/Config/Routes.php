@@ -146,7 +146,7 @@ $routes->get('/api/permissions/get_one/(:num)', 'Permission\\Api\\PermissionApiC
 $routes->post('/api/permissions/update/(:num)', 'Permission\\Api\\PermissionApiController::update/$1');
 $routes->get('/api/pemissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
 
-$routes->get('/admin/cron/cron_completed_job/', 'Cron\\CronController::cron_completed_job');
+$routes->get('/cron/cron_completed_job/', 'Cron\\CronController::cron_completed_job');
 
 
 /*

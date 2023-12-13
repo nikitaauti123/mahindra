@@ -1,7 +1,7 @@
 {
-    "name": "quicsolv/insurance_verification_sysytem",
+    "name": "quicsolv/mahindra_press_bed_application",
     "type": "project",
-    "description": "Quicsolv Insurance Verification System",
+    "description": "Mahindra Press Bed Application",
     "homepage": "https://quicsolv.com",
     "license": "MIT",
     "require": {

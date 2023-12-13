@@ -423,6 +423,7 @@ class JobsApiController extends BaseController
                 $result['lastInsertid'] = $this->JobActionsModel->insertID();
 
                 $data = [
+                    'job_action_id' => $result['lastInsertid'],
                     'part_id' => $this->request->getVar('part_id'),
                     'side' => $this->request->getVar('side'),
                     'pins' => '',

@@ -29,7 +29,7 @@ class AddIndexes extends Migration
         $this->db->query('CREATE INDEX idx_roles_is_active ON roles (is_active)');
         $this->db->query('CREATE INDEX idx_roles_deleted_at ON roles (deleted_at)');
         $this->db->query('CREATE INDEX idx_roles_name ON roles (name)');
-       $this->db->query('CREATE INDEX idx_roles_permission_id ON roles_permission (id)');
+       $this->db->query('CREATE INDEX idx_roles_permission_role_id ON roles_permission (role_id)');
         $this->db->query('CREATE INDEX idx_users_id ON users (id)');
         $this->db->query('CREATE INDEX idx_users_is_active ON users (is_active)');
         $this->db->query('CREATE INDEX idx_users_deleted_at ON users (deleted_at)');
@@ -66,7 +66,7 @@ class AddIndexes extends Migration
         $this->forge->dropKey('roles','idx_roles_is_active'); 
         $this->forge->dropKey('roles','idx_roles_deleted_at');         
         $this->forge->dropKey('roles','idx_roles_name'); 
-        $this->forge->dropKey('roles_permission','idx_roles_permission_id');     
+        $this->forge->dropKey('roles_permission','idx_roles_permission_role_id');     
         $this->forge->dropKey('users','idx_users_id'); 
         $this->forge->dropKey('users','idx_users_is_active'); 
         $this->forge->dropKey('users','idx_users_deleted_at'); 

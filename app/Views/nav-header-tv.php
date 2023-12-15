@@ -25,19 +25,19 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto tv_nav">
         <li>
-            <div class="row" style="width:650px;">
-                <div class="col-4 col-md-8">
+            <div class="row" style="width:calc(100vw / 1.7);">
+                <div class="col-6 col-md-6">
                     <label for="">Part Name: </label>&nbsp;<span class="part_name">  </span>
                 </div>
-                <div class="col-4 col-md-4">
+                <div class="col-6 col-md-6">
                     <label for="">Die No: </label>&nbsp;<span class="die_no">  </span>
                 </div>
             </div>
             <div class="row">
-                <div class="col-4 col-md-8">
+                <div class="col-6 col-md-6">
                     <label for="">Model: </label>&nbsp;<span class="model">  </span>
                 </div>
-                <div class="col-4 col-md-4">
+                <div class="col-6 col-md-6">
                     <label for="">Part No: </label>&nbsp;<span class="part_no">  </span>
                 </div>
             </div>

@@ -22,7 +22,7 @@ class AddIndexes extends Migration
         $this->db->query('CREATE INDEX idx_parts_model ON parts (model)');
         $this->db->query('CREATE INDEX idx_parts_die_no ON parts (die_no)');
         $this->db->query('CREATE INDEX idx_parts_is_active ON parts (is_active)');
-        $this->db->query('CREATE INDEX idx_job_actions_id ON job_actions (role_id)');
+        $this->db->query('CREATE INDEX idx_job_actions_id ON job_actions (id)');
         $this->db->query('CREATE INDEX idx_permission_is_active ON permission (is_active)');
         $this->db->query('CREATE INDEX idx_permission_deleted_at ON permission (deleted_at)');
         $this->db->query('CREATE INDEX idx_permission_permission_id ON permission (permission_id)');

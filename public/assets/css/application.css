@@ -722,6 +722,7 @@ body .navbar-dark .navbar-nav .nav-link.active {
     width: calc((100vw - 250px) / 28 );
     height: calc((100vw - 250px) / 28 );
     line-height: calc((100vw - 250px) / 28 );
+    font-size: calc(100vw / 80);
 }
 
 .tv_screen .x-axis-line:after {
@@ -735,5 +736,6 @@ body .navbar-dark .navbar-nav .nav-link.active {
 }
 
 .tv_nav label, .tv_nav span {
-    font-size: 34px;
+    font-size: calc(100vw / 60);
+    line-height: calc(100vw / 60 + 2px);
 }

@@ -116,7 +116,7 @@ $routes->get('/api/jobs/completed_jobs_list', 'Jobs\\Api\\JobsApiController::com
 $routes->get('/api/jobs/export_completed_job', 'Jobs\\Api\\JobsApiController::exportCompletedJob');
 $routes->get('/api/jobs/pdf_completed_job', 'Jobs\\Api\\JobsApiController::pdfCompletedJob');
 
-$routes->get('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
+$routes->get('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::getApiData');
 $routes->get('/jobs/send_part_details/(:num)', 'Jobs\\Api\\JobsApiController::sendPartDetails/$');
 
 

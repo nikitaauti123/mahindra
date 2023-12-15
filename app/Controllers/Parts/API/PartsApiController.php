@@ -1,4 +1,15 @@
 <?php
+/**  
+ * PartsApiController file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category JobsApiController_Class
+ * @package  JobsApiController_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 
 namespace App\Controllers\Parts\Api;
 
@@ -11,40 +22,62 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Exception;
 use DateTime;
-
+/**  
+ * PartsApiController Class Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category JobsApiController_Class
+ * @package  JobsApiController_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 Class PartsApiController extends BaseController
 {
     use ResponseTrait;
-    private $partsModel;
-
+    private _$partsModel;
+    /**
+     * Constructor for the JobsController class.
+     */
     public function __construct()
     {
         $this->partsModel = new PartsModel();
     }
-
+    /**
+     * Method for handling list in the  JobsController.
+     * 
+     * @return text; 
+     */
     public function list()
     {
         $result = $this->partsModel->findAll();
         $combinedData = [];
-        foreach($result as $result_arr){
-           $created_at = new DateTime($result_arr['created_at']);
-             $formatted_date = $created_at->format('d-m-Y h:i A');
-             $result_arr['created_at'] =   $formatted_date;
+        foreach ($result as $result_arr) {
+            $created_at = new DateTime($result_arr['created_at']);
+                $formatted_date = $created_at->format('d-m-Y h:i A');
+                $result_arr['created_at'] =   $formatted_date;
 
-             $updated_at = new DateTime($result_arr['updated_at']);
-             $formatted_date_update = $updated_at->format('d-m-Y h:i A');
-             $result_arr['updated_at'] =   $formatted_date_update;
+                $updated_at = new DateTime($result_arr['updated_at']);
+                $formatted_date_update = $updated_at->format('d-m-Y h:i A');
+                $result_arr['updated_at'] =   $formatted_date_update;
 
-            $combinedData[] = $result_arr;
+                $combinedData[] = $result_arr;
         }
         return $this->respond($combinedData, 200);
     }
-
+    /**
+     * Method for getting single part details JobsController.
+     * 
+     * @param $id to get single part
+     * 
+     * @return text; 
+     */
     public function getOne($id)
     {
         try {
             $result = $this->partsModel->find($id);
-            if(!empty($result)) {
+            if (!empty($result)) {
                 return $this->respond($result, 200);
             } 
             return $this->respond((object)[], 200);
@@ -53,9 +86,13 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-
-    public function add(){
-       
+        /**
+         * Method for handling add operation.
+         *  
+         * @return text; 
+         */
+    public function add()
+    {       
         try {
             helper(['form']);
             
@@ -64,7 +101,7 @@ Class PartsApiController extends BaseController
                  'model'  => 'required|min_length[3]|max_length[100]',
                  ];
 
-            if(!$this->validate($rules)) {
+            if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
             $isactive = 0;
@@ -89,13 +126,20 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }    
     }
-
-    public function update($id){
+    /**
+     * Method for handling add operation.
+     *  
+     * @param $id part id for update records.
+     *  
+     * @return text; 
+     */
+    public function update($id)
+    {
 
         try {
             helper(['form']);
 
-            if(!$id) {
+            if (!$id) {
                 return $this->fail('Please provide valid id', 400, true);
             }
             
@@ -104,7 +148,7 @@ Class PartsApiController extends BaseController
                  'model'  => 'required|min_length[3]|max_length[100]',
             ];
 
-            if(!$this->validate($rules)) {
+            if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
             $isactive = 0;
@@ -129,13 +173,20 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }    
     }
-
-    public function delete($id){
+    /**
+     * Method for delete operation.
+     *  
+     * @param $id part id for update records.
+     *  
+     * @return view; 
+     */
+    public function delete($id)
+    {
 
         try {
             helper(['form']);
 
-            if(!$id) {
+            if (!$id) {
                 return $this->fail('Please provide valid id', 400, true);
             }
 

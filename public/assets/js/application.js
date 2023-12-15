@@ -535,7 +535,7 @@ if ($("#jobs_list_tbl").length > 0) {
         ]
     });
     $("#jobs_list_tbl tbody").on("click", ".job_active_inactive", function () {
-        var rowData = parts_table.row($(this).closest("tr")).data();
+        var rowData = jobs_table.row($(this).closest("tr")).data();
         job_active_inactive(rowData.id, rowData.is_active);
     });
 }
@@ -1269,7 +1269,6 @@ $(document).ready(function () {
         $(".start_time_left").on('click', function (e) {
             e.preventDefault();
             //clockUpdate();
-
             //if(interval != '') {
             //interval = setInterval(clockUpdate, 1000);
             var id = $('#part_left_id').val();

@@ -1,4 +1,18 @@
 <?php
+
+/**  
+ * CronController file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category CronController_Class
+ * @package  CronController_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
+
+
 namespace App\Controllers\Cron;
 
 use App\Controllers\BaseController;
@@ -9,12 +23,26 @@ use App\Models\jobsModel;
 
 use DateTime;
 
+/**
+ * CronController Class Doc Comment
+ * 
+ * CronController Class
+ * 
+ * @category CronController_Class
+ * @package  CronController_Class
+ * @author   Author <author@domain.com>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://localhost/
+ */
 class CronController extends BaseController
 {
     protected $partModel;
     protected $jobshistoryModel;
     protected $jobActionModel;
     protected $jobsModel;
+    /**
+     * Constructor for the CronController class.
+     */
     function __construct()
     {
         $this->partModel = new PartsModel();
@@ -23,19 +51,22 @@ class CronController extends BaseController
         $this->jobsModel = new JobsModel();
  
     }
-    public  function cron_completed_job()
+    /**
+     * Method for handling completed jobs in the cron controller.
+     * 
+     * @return bool; 
+     */
+    public function cronCompletedJob()
     {
         
         $this->jobActionModel->select('parts.*,jobs.job_action_id,jobs.pins,job_actions.id as job_action_id,job_actions.part_id,job_actions.side,job_actions.image_url,job_actions.wrong_pins,job_actions.correct_pins,job_actions.detail_pins,job_actions.start_time,job_actions.end_time,job_actions.created_by,job_actions.updated_by, parts.pins as total_pins');
         $this->jobActionModel->join('parts', 'job_actions.part_id = parts.id');
         $this->jobActionModel->join('jobs', 'job_actions.id = jobs.job_action_id');
        
-          //$this->jobActionModel->where('job_actions.end_time >= NOW() - INTERVAL 111 Hour');
-          $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
-         $this->jobActionModel->where('job_actions.mail_send', '0');
+         $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
+        // $this->jobActionModel->where('job_actions.mail_send', '0');
   
         $result = $this->jobActionModel->findAll();
-       // print_r($result);exit;
         foreach ($result as $key => $result_job) {       
                     $details_pins = $result_job['pins'];
                     $array = explode(',', $result_job['total_pins']);
@@ -44,12 +75,14 @@ class CronController extends BaseController
                     $body .= '<p>Here are the job details:</p>';
                     // Start of the table
                     $body .= '<table border="1">';
-                    $totalTime = strtotime($result_job['end_time']) - strtotime($result_job['start_time']);
-                    if ($result_job['correct_pins'] != 0 && $result_job['total_pins'] != 0) {
-                        $correct_pins_count = ($result_job['correct_pins'] / $result_job['total_pins']) * 100;
-                    } else {
-                        $correct_pins_count = 000; // or handle it in a way that makes sense for your application
-                    }          
+            $totalTime = strtotime($result_job['end_time'])
+             - strtotime($result_job['start_time']);
+            if ($result_job['correct_pins'] != 0 && $result_job['total_pins'] != 0) {
+                $correct_pins_count = ($result_job['correct_pins'] / 
+                $result_job['total_pins']) * 100;
+            } else {
+                $correct_pins_count = 000; // or handle it in a way that makes sense for your application
+            }          
 
                     $correct_pins_count_formatted = number_format($correct_pins_count, 2); // Format to 2 decimal places
                     $defaultImagePath = FCPATH . 'assets/img/no_image_found.png';
@@ -88,24 +121,24 @@ class CronController extends BaseController
                     $pin_states = json_decode($pin_states, true);
                     $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA AB';
                     $col_array = explode(" ", $alphabets);
-                    for ($i = 1; $i <= 14; $i++) {
-                        for ($j = 0; $j < count($col_array); $j++) {
-                            $pin_id = $col_array[$j] . $i;
-                            if (isset($pin_states[$pin_id])) {
-                                $pin_value = $pin_states[$pin_id];
-                                $pin_class = ($pin_value == 1) ? 'pin-box green-pin' : 'pin-box red-pin';
-                            } else {
-                                $pin_class = 'pin-box gray-pin';
-                            }
-                            $body .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' . $pin_id . '</div>';
-                            if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
-                                $body .= '<div class="x-axis-line"></div>';
-                            }
-                        }
-                        if (($i + 1) % 8 == 0) {
-                            $body .= '<div class="y-axis-line"></div>';
-                        }
-                    }       
+            for ($i = 1; $i <= 14; $i++) {
+                for ($j = 0; $j < count($col_array); $j++) {
+                    $pin_id = $col_array[$j] . $i;
+                    if (isset($pin_states[$pin_id])) {
+                        $pin_value = $pin_states[$pin_id];
+                        $pin_class = ($pin_value == 1) ? 'pin-box green-pin' : 'pin-box red-pin';
+                    } else {
+                        $pin_class = 'pin-box gray-pin';
+                    }
+                    $body .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' . $pin_id . '</div>';
+                    if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
+                        $body .= '<div class="x-axis-line"></div>';
+                    }
+                }
+                if (($i + 1) % 8 == 0) {
+                    $body .= '<div class="y-axis-line"></div>';
+                }
+            }       
 
                     $body .= '</div>
             <div class="arrow-center">
@@ -214,14 +247,14 @@ Do no reply on this email, this is an automated email.
                 margin: 3px 0px;
             }
             </style>';
-        //  print_r($body);exit;
-                    if (send_email(env('To_Email'), 'Jobs Details', $body)) {
-                        $data['mail_send'] =  '1';
-                        $id = $result_job['job_action_id'];
-                        $this->jobActionModel->update($id, $data);
-                        echo "Job details sent through email";
-                    }   
        
+            if (send_email(env('To_Email'), 'Jobs Details', $body)) {
+                $data['mail_send'] =  '1';
+                $id = $result_job['job_action_id'];
+                $this->jobActionModel->update($id, $data);
+                echo "Job details sent through email";
+            }   
+
         }
     }
 }

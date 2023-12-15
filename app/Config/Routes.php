@@ -77,47 +77,47 @@ $routes->get('/api/parts/get_api_url', 'Parts\\Api\\PartsApiController::get_api_
 $routes->post('/api/apiparts/add', 'Parts\\Api\\ApiPartsApiController::add');
 $routes->post('/api/apiparts/get_api_data', 'Parts\\Api\\ApiPartsApiController::get_api_data');
 
-$routes->get('/admin/jobs/list', 'Jobs\\JobsController::List');
-$routes->get('/admin/jobs/add', 'Jobs\\JobsController::Create');
-$routes->get('/admin/jobs/add_left', 'Jobs\\JobsController::Create_left');
-$routes->get('/admin/jobs/right_job', 'Jobs\\JobsController::Right_job');
-$routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::Left_job');
-$routes->get('/jobs/right_job', 'Jobs\\JobsController::Right_job');
-$routes->get('/jobs/left_job', 'Jobs\\JobsController::Left_job');
-$routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::Edit/$1');
-$routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completed_jobs');
-$routes->get('/admin/reports/completed_jobs_list', 'Jobs\\JobsController::completed_jobs_list');
-$routes->get('/admin/reports/completed_jobs_list/(:num)', 'Jobs\\JobsController::completed_jobs_list/$1');
-$routes->get('/admin/jobs/job_history', 'Jobs\\JobsController::job_history');
-$routes->get('/jobs/right_side_tv', 'Jobs\\JobsController::Right_side_tv');
-$routes->get('/jobs/left_side_tv', 'Jobs\\JobsController::Left_side_tv');
+$routes->get('/admin/jobs/list', 'Jobs\\JobsController::list');
+$routes->get('/admin/jobs/add', 'Jobs\\JobsController::create');
+$routes->get('/admin/jobs/add_left', 'Jobs\\JobsController::createLeft');
+$routes->get('/admin/jobs/right_job', 'Jobs\\JobsController::rightJob');
+$routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::leftJob');
+$routes->get('/jobs/right_job', 'Jobs\\JobsController::leftJob');
+$routes->get('/jobs/left_job', 'Jobs\\JobsController::leftJob');
+$routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::edit/$1');
+$routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completedJobs');
+$routes->get('/admin/reports/completed_jobs_list', 'Jobs\\JobsController::completedJobsList');
+$routes->get('/admin/reports/completed_jobs_list/(:num)', 'Jobs\\JobsController::completedJobsList/$1');
+$routes->get('/admin/jobs/job_history', 'Jobs\\JobsController::jobHistory');
+$routes->get('/jobs/right_side_tv', 'Jobs\\JobsController::rightSideTv');
+$routes->get('/jobs/left_side_tv', 'Jobs\\JobsController::leftSideTv');
 
-$routes->post('/api/jobs/update_is_active', 'jobs\\Api\\PartsApiController::update_is_active');
+$routes->post('/api/jobs/update_is_active', 'jobs\\Api\\JobsApiController::updateIsActive');
 
 $routes->get('/api/jobs/list', 'Jobs\\Api\\JobsApiController::list');
 $routes->post('/api/jobs/add', 'Jobs\\Api\\JobsApiController::add');
 $routes->post('/api/jobs/update/(:num)', 'Jobs\\Api\\JobsApiController::update/$1');
 $routes->post('/api/jobs/delete/(:num)', 'Jobs\\Api\\JobsApiController::delete/$1');
 $routes->get('/api/jobs/get_one/(:num)', 'Jobs\\Api\\JobsApiController::getOne/$1');
-$routes->get('/api/jobs/completed_list', 'Jobs\\Api\\JobsApiController::completed_list');
-$routes->get('/api/jobs/report_completed_list', 'Jobs\\Api\\JobsApiController::report_completed_list');
-$routes->get('/api/jobs/report_list_dashboard', 'Jobs\\Api\\JobsApiController::report_list_dashboard');
+$routes->get('/api/jobs/completed_list', 'Jobs\\Api\\JobsApiController::completedList');
+$routes->get('/api/jobs/report_completed_list', 'Jobs\\Api\\JobsApiController::reportCompletedList');
+$routes->get('/api/jobs/report_list_dashboard', 'Jobs\\Api\\JobsApiController::reportListDashboard');
 
-$routes->post('/api/jobs/update_image/(:num)', 'Jobs\\Api\\JobsApiController::update_image/$1');
+$routes->post('/api/jobs/update_image/(:num)', 'Jobs\\Api\\JobsApiController::updateImage/$1');
 
-$routes->post('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
-$routes->get('/api/jobs/history_list', 'Jobs\\Api\\JobsApiController::history_list');
-$routes->post('/api/jobs/set_api_jobs', 'Jobs\\Api\\JobsApiController::set_api_jobs');
+$routes->post('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::getApiData');
+$routes->get('/api/jobs/history_list', 'Jobs\\Api\\JobsApiController::historyList');
+$routes->post('/api/jobs/set_api_jobs', 'Jobs\\Api\\JobsApiController::setApiJobs');
 
-$routes->post('/api/jobs/add_job', 'Jobs\\Api\\JobsApiController::add_job');
-$routes->post('/api/jobs/set_job_actions', 'Jobs\\Api\\JobsApiController::set_job_actions');
-$routes->get('/api/jobs/get_job_status', 'Jobs\\Api\\JobsApiController::get_job_status');
+$routes->post('/api/jobs/add_job', 'Jobs\\Api\\JobsApiController::addJob');
+$routes->post('/api/jobs/set_job_actions', 'Jobs\\Api\\JobsApiController::setJobActions');
+$routes->get('/api/jobs/get_job_status', 'Jobs\\Api\\JobsApiController::getJobStatus');
 $routes->get('/api/jobs/completed_jobs_list', 'Jobs\\Api\\JobsApiController::completed_jobs_list');
-$routes->get('/api/jobs/export_completed_job', 'Jobs\\Api\\JobsApiController::export_completed_job');
-$routes->get('/api/jobs/pdf_completed_job', 'Jobs\\Api\\JobsApiController::pdf_completed_job');
+$routes->get('/api/jobs/export_completed_job', 'Jobs\\Api\\JobsApiController::exportCompletedJob');
+$routes->get('/api/jobs/pdf_completed_job', 'Jobs\\Api\\JobsApiController::pdfCompletedJob');
 
 $routes->get('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::get_api_data');
-$routes->get('/jobs/send_part_details/(:num)', 'Jobs\\Api\\JobsApiController::send_part_details/$');
+$routes->get('/jobs/send_part_details/(:num)', 'Jobs\\Api\\JobsApiController::sendPartDetails/$');
 
 
 $routes->get('/admin/roles/list', 'Roles\\RolesController::List');
@@ -146,7 +146,7 @@ $routes->get('/api/permissions/get_one/(:num)', 'Permission\\Api\\PermissionApiC
 $routes->post('/api/permissions/update/(:num)', 'Permission\\Api\\PermissionApiController::update/$1');
 $routes->get('/api/pemissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
 
-$routes->get('/cron/cron_completed_job/', 'Cron\\CronController::cron_completed_job');
+$routes->get('/cron/cron_completed_job/', 'Cron\\CronController::cronCompletedJob');
 
 
 /*

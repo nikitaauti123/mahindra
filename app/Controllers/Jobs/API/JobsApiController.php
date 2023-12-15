@@ -769,24 +769,23 @@ class JobsApiController extends BaseController
                 $this->request->getVar('job_Action_id')
             );
         }
-        $this->_JobActionsModel->select([
-            'parts.*',
-            'job_actions.part_id',
-            'job_actions.side',
-            'job_actions.image_url',
-            'job_actions.wrong_pins',
-            'job_actions.correct_pins',
-            'job_actions.detail_pins',
-            'job_actions.start_time',
-            'job_actions.end_time',
-            'job_actions.created_by',
-            'job_actions.updated_by'
-        ]);     
-        $this->_JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
-        $result = $this->_JobActionsModel->findAll();
-
+        $result =  $this->_JobActionsModel
+            ->select(
+                ['parts.*',
+                'job_actions.part_id',
+                'job_actions.side',
+                'job_actions.image_url',
+                'job_actions.wrong_pins',
+                'job_actions.correct_pins',
+                'job_actions.detail_pins',
+                'job_actions.start_time',
+                'job_actions.end_time',
+                'job_actions.created_by',
+                'job_actions.updated_by',]
+            )   
+            ->join('parts', 'job_actions.part_id = parts.id')
+            ->findAll();
         foreach ($result as $key => $result_arr) {
-
             if (isset($result_arr['start_time'])) {
                 $result[$key]['start_time'] = date(
                     "d-m-Y h:i A",
@@ -850,8 +849,8 @@ class JobsApiController extends BaseController
 
                     $pin_states = json_decode($pin_states, true);
 
-                    $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W X Y Z ' .
-                    'AA AB';
+                    $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W ' .
+                    'X Y Z AA AB';
                     $col_array = explode(" ", $alphabets);
 
                     for ($i = 1; $i <= 14; $i++) {
@@ -862,21 +861,21 @@ class JobsApiController extends BaseController
                             if (isset($pin_states[$pin_id])) {
 
                                 $pin_value = $pin_states[$pin_id];
-                                $pin_class = ($pin_value == 1) ? 'pin-box green-pin' : 'pin-box red-pin';
+                                $pin_class = ($pin_value == 1) 
+                                ? 'pin-box green-pin' : 'pin-box red-pin';
                             } else {
-                                // If pin_id is not available, set pin_class to 'gray-pin'
                                 $pin_class = 'pin-box gray-pin';
                             }
 
                             // print_r($pin_class);
                             // Output the HTML directly
-                            $result[$key]['image_url'] .= '<div id="' . $pin_id . '" ' .
-                            'title="' . $pin_id . '" ' .
+                            $result[$key]['image_url'] .= '<div id="' . $pin_id . 
+                            '" ' .'title="' . $pin_id . '" ' .
                             'class="' . $pin_class . '">' . $pin_id . '</div>';
 
-                        if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
+                            if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
                                 $result[$key]['image_url'] .= '<div
-                                 class="x-axis-line"></div>';
+                                    class="x-axis-line"></div>';
                             }
                         }
 
@@ -922,7 +921,12 @@ class JobsApiController extends BaseController
     public function reportListDashboard()
     {
         $result = $this->_JobActionsModel
-            ->select('parts.*,job_actions.id,job_actions.part_id,job_actions.end_time')
+            ->select(
+                'parts.*,
+                job_actions.id,
+                job_actions.part_id,
+                job_actions.end_time'
+            )
             ->join('parts', 'job_actions.part_id = parts.id')
             ->orderBy('job_actions.id', 'DESC')
             ->where('job_actions.end_time IS NOT NULL', null, false)
@@ -955,6 +959,7 @@ class JobsApiController extends BaseController
 
 
         $pdf_data['title'] = $file_name;
+       
         $pdf_data['file_name'] = $file_name . '_' . $from_date . '_to_' . $to_date .
          '.xlsx';
 
@@ -1026,10 +1031,21 @@ class JobsApiController extends BaseController
                     : " "
                 );
                                          
-                $data[$i][] = ((isset($row['part_name']) && !empty($row['part_name'])) ? $row['part_name'] : " ");
-                $data[$i][] = ((isset($row['model']) && !empty($row['model'])) ? $row['model'] : " ");
-                $data[$i][] = ((isset($row['die_no']) && !empty($row['die_no'])) ? $row['die_no'] : " ");
-
+                $data[$i][] = (
+                    (isset($row['part_name']) && !empty($row['part_name'])) 
+                    ? $row['part_name'] 
+                    : " "
+                );
+                $data[$i][] = (
+                    (isset($row['model']) && !empty($row['model']))
+                    ? $row['model'] 
+                    : " "
+                );
+                $data[$i][] = (
+                    (isset($row['die_no']) && !empty($row['die_no'])) 
+                    ? $row['die_no'] 
+                    : " "
+                );
                 $created_at = new DateTime($row['start_time']);
                 $formatted_date = $created_at->format('d-m-Y h:i A');
 
@@ -1039,13 +1055,26 @@ class JobsApiController extends BaseController
                 $endTime = strtotime($row['end_time']);
                 $timeDiffSeconds = $endTime - $startTime;
                 $totalTime = gmdate('H:i:s', $timeDiffSeconds);
-
-                $data[$i][] = ((isset($formatted_date) && !empty($formatted_date)) ? $formatted_date : " ");
-                $data[$i][] = ((isset($formatted_date_start) && !empty($formatted_date_start)) ? $formatted_date_start : " ");
-                $data[$i][] = ((isset($totalTime) && !empty($totalTime)) ? $totalTime : " ");
-
-                $data[$i][] = ((isset($row['image_url']) && !empty($row['image_url'])) ? $row['image_url'] : " ");
-
+                $data[$i][] = (
+                    (isset($formatted_date) && !empty($formatted_date))
+                    ? $formatted_date
+                    : " "
+                );                
+                $data[$i][] = (
+                    (isset($formatted_date_start) && !empty($formatted_date_start))
+                    ? $formatted_date_start
+                    : " "
+                );                
+                $data[$i][] = (
+                    (isset($totalTime) && !empty($totalTime))
+                    ? $totalTime
+                    : " "
+                );                
+                $data[$i][] = (
+                    (isset($row['image_url']) && !empty($row['image_url']))
+                    ? $row['image_url']
+                    : " "
+                );
                 $i++;
             }
         }
@@ -1062,14 +1091,14 @@ class JobsApiController extends BaseController
                 'color' =>     array('rgb' => 'FF0000')
             )
         );
-        $pdf_data['style_array'] = $style_array;
-        $this->_phpspreadsheet->set_data($pdf_data);
+          $pdf_data['style_array'] = $style_array;
+          $this->_phpspreadsheet->set_data($pdf_data);
     }
-    /**
-     * Method for pdf export for completed job.
-     * 
-     * @return string;
-     */
+     /**
+      * Method for pdf export for completed job.
+      * 
+      * @return string;
+      */
     public function pdfCompletedJob()
     {
         $pdf_data = array();
@@ -1079,14 +1108,26 @@ class JobsApiController extends BaseController
         $file_name = "completed_jobs";
         $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
         $pdf_data['title'] =  $file_name . '_' . $from_date . '_to_' . $to_date;
-        if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
-            $from_date = $this->request->getVar('from_date');
-            $f_date = $this->_changeDateFormat($from_date) . " 00:00:00";
-            $to_date = $this->request->getVar('to_date');
-            $t_date = $this->_changeDateFormat(($to_date)) . " 23:59:59";
-            $this->_JobActionsModel->where("start_time >= '" . $f_date . "'", null, false);
-            $this->_JobActionsModel->where("end_time <= '" . $t_date . "'", null, false);
+         
+        if ($this->request->getVar('from_date')) {
+            if ($this->request->getVar('to_date')) {
+                $from_date = $this->request->getVar('from_date');
+                $f_date = $this->_changeDateFormat($from_date) . " 00:00:00";
+                $to_date = $this->request->getVar('to_date');
+                $t_date = $this->_changeDateFormat(($to_date)) . " 23:59:59";
+                $this->_JobActionsModel->where(
+                    "start_time >= '" . $f_date . "'",
+                    null,
+                    false
+                );
+                $this->_JobActionsModel->where(
+                    "end_time <= '" . $t_date . "'",
+                    null,
+                    false
+                );
+            }
         }
+        
         if (!empty($this->request->getVar('part_name'))) {
             $this->_JobActionsModel->where(
                 'parts.part_name',
@@ -1114,7 +1155,7 @@ class JobsApiController extends BaseController
                 $this->request->getVar('die_no')
             );
         }
-        
+       
         $this->_JobActionsModel->select('*');
         $this->_JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->_JobActionsModel->findAll();
@@ -1204,20 +1245,19 @@ class JobsApiController extends BaseController
             </td>';      
             $htmlContent .= '<td style="width: 120px;">' . 
             (isset($row['image_url']) ? 
-                '<a href="' . base_url() . 'assets/img/' . $row['image_url'] . '" target="_blank">
-                <img src="' . FCPATH . 'assets/img/' . $row['image_url'] . '" height="120" width="120">
+                '<a href="' . base_url() . 'assets/img/' . $row['image_url'] . '" >
+                <img src="' . FCPATH . 'assets/img/' . $row['image_url'] . '">
                 </a>' : 
                 '<img src="' . $defalut_img . '" height="60" width="100">') . 
             '</td>';
             $htmlContent .= '</tr>';
         }
 
-        // print_r($htmlContent);exit;
+       
 
         $htmlContent .= '</tbody></table>';
         // print_r($htmlContent);exit;
         $pdf_data['pdfdata'] = $htmlContent;
-
         $this->_phpspreadsheet->set_pdf($pdf_data);
     }
     /**
@@ -1231,18 +1271,19 @@ class JobsApiController extends BaseController
     {
         try{
             $result_job = $this->_JobActionsModel
-                ->select([
-                'parts.*,
-                job_actions.id,
-                job_actions.part_id,
-                job_actions.image_url,
-                job_actions.part_id,
-                job_actions.side,
-                job_actions.start_time,
-                job_actions.end_time,
-                job_actions.correct_pins,
-                job_actions.wrong_pins,
-                parts.pins as total_pins'])
+                ->select(
+                    'parts.*',
+                    'job_actions.id',
+                    'job_actions.part_id',
+                    'job_actions.image_url',
+                    'job_actions.part_id',
+                    'job_actions.side',
+                    'job_actions.start_time',
+                    'job_actions.end_time',
+                    'job_actions.correct_pins',
+                    'job_actions.wrong_pins',
+                    'parts.pins as total_pins',
+                )            
                 ->join('parts', 'parts.id = job_actions.part_id', 'left') 
                 ->where('job_actions.id', $id)
                 ->get()
@@ -1259,14 +1300,21 @@ class JobsApiController extends BaseController
 
                 // Start of the table
                 $body .= '<table border="1">';
-                $totalTime = strtotime($result_job->end_time) - strtotime($result_job->start_time);
-                if ($result_job->correct_pins != 0 && $result_job->total_pins != 0) {
-                        $correct_pins_count = ($result_job->correct_pins / $result_job->total_pins) * 100;
-                } else {
-                        $correct_pins_count = 000; // or handle it in a way that makes sense for your application
-                }
+                $totalTime = strtotime($result_job->end_time) 
+            - strtotime($result_job->start_time);
+            if ($result_job->correct_pins != 0 && $result_job->total_pins != 0) {
+                $correct_pins_count = (
+                    $result_job->correct_pins / $result_job->total_pins
+                ) * 100;                 
+               
+            } else {
+                    $correct_pins_count = 000;
+            }
 
-                $correct_pins_count_formatted = number_format($correct_pins_count, 2); // Format to 2 decimal places
+                    $correct_pins_count_formatted = number_format(
+                        $correct_pins_count,
+                        2
+                    );
                 $defaultImagePath = FCPATH . 'assets/img/no_image_found.png';
                 $startTime = new DateTime($result_job->start_time);
                 $endTime = new DateTime($result_job->end_time);

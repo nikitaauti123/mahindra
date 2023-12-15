@@ -735,11 +735,7 @@ if ($("#update_parts_data").length > 0) {
 
         for (let i in pins_array) {
             var pin_address = pins_array[i];
-            $(".pins-display").find(".pin-box").each(function (index) {
-                if ($(this).attr('title') == pin_address) {
-                    $(this).addClass('green-pin');
-                }
-            });
+            $("#"+pin_address).addClass('green-pin');
         }
 
     }).fail(function (data) {
@@ -822,36 +818,57 @@ if ($("#update_parts_data").length > 0) {
     });
 }
 
+function elapsedMilliseconds(startTime)
+{
+    var n = new Date();
+    var s = n.getTime();
+    var diff = s - startTime;
+    return diff;
+}
+
+var ws = '';
 function websocket_call(data, side) {
     var event_part_id = '';
-    const ws = new WebSocket(data.WEBSOCKET_URL);
+    ws = new WebSocket(data.WEBSOCKET_URL);
     ws.onmessage = (event) => {
         //var date = new Date();
         //console.log("start time::", date);
         add_loader_el();
         var jsonData = JSON.parse(event.data);
-        //var pins_data = JSON.parse(jsonData.pins);
-        var pins_data = jsonData.pins;
+        if(typeof jsonData.pins == 'string') {
+            var pins_data = JSON.parse(jsonData.pins)  
+        } else {
+            var pins_data = jsonData.pins;
+        }
+
         var part_id = jsonData.id;
 
-        for (let i in pins_data) {
-            $(".pin-box[title=\""+i+"\"]").removeClass('green-pin');
-            $(".pin-box[title=\""+i+"\"]").removeClass('red-pin');
-            $(".pin-box[title=\""+i+"\"]").removeClass('orange-pin');
-            $(".pin-box[title=\""+i+"\"]").removeClass('gray-pin');
+        var change_pin_colors = true;
 
-            let style_class = 'gray-pin';
-            if(pins_data[i] == 0) {
-                style_class = 'green-pin';
-            } else if (pins_data[i] == 1) { 
-                style_class = 'red-pin';
-            } else if(pins_data[i] == 2) {
-                style_class = 'orange-pin';
-            } else if(pins_data[i] == 3) {
-                style_class = 'gray-pin';
+        if($(".digital-clock").length>0 && !$(".digital-clock").is(":visible")) {
+            change_pin_colors = false;
+        }
+
+
+        var startTime = new Date().getTime();
+        if(change_pin_colors == true) {
+            for (let i in pins_data) {
+                $("#"+i).removeClass('green-pin').removeClass('red-pin').removeClass('orange-pin').removeClass('gray-pin');
+
+                let style_class = 'gray-pin';
+                if(pins_data[i] == 0) {
+                    style_class = 'green-pin';
+                } else if (pins_data[i] == 1) { 
+                    style_class = 'red-pin';
+                } else if(pins_data[i] == 2) {
+                    style_class = 'orange-pin';
+                } else if(pins_data[i] == 3) {
+                    style_class = 'gray-pin';
+                }
+                $("#"+i).addClass(style_class);
             }
 
-            $(".pin-box[title=\""+i+"\"]").addClass(style_class);
+            console.log("time required::", elapsedMilliseconds(startTime));
         }
 
         if ( part_id != event_part_id ) {
@@ -870,6 +887,14 @@ function websocket_call(data, side) {
             });
         }
         remove_loader_el();
+
+        
+
+        if(jsonData.part_ok_status == true) {
+            $(".status_message").html("<div class='alert alert-success'>Current job status :: Ok</div>");
+        } else {
+            $(".status_message").html("<div class='alert alert-danger'>Current job status :: Not Ok</div>");
+        }
     }
 
     //ws.addEventListener("error", (event) => {
@@ -987,8 +1012,7 @@ function web_socket_init(side ='left') {
                             $(this).addClass(style_class);
                         }
                     }
-                });
- */
+                });*/
                 /* $.ajax({
                     type: 'POST', // or 'GET', depending on your needs
                     url: base_url + 'api/jobs/set_api_jobs',
@@ -1242,6 +1266,8 @@ if ($('.end_time_left').is(":visible")) {
     */
     web_socket_init('left');
     //leftInterval = setInterval(function () { web_socket_init('left'); }, 5000);
+    //clockUpdate();
+    leftInterval = setInterval(clockUpdate, 1000);
 }
 
 var rightInterval = '';
@@ -1251,6 +1277,8 @@ if ($('.end_time_right').is(":visible")) {
     //rightInterval = setInterval(function () { fetch_job_details_from_db('right', id) }, 5000);
     web_socket_init('right');
     //rightInterval = setInterval(function () { web_socket_init('right'); }, 5000);
+    //clockUpdate();
+    rightInterval = setInterval(clockUpdate, 1000);
 }
 
 
@@ -1277,53 +1305,60 @@ $(document).ready(function () {
                 return false;
             }
 
-            $.ajax({
-                url: base_url + 'api/jobs/set_job_actions',
-                method: "POST",
-                data: { 'side': 'left', part_id: id, time: 'start_time' },
-                dataType: "json",
-            }).done(function (data) {
-                successMsg(data.msg);
-                $('#update_id_left').val(data.lastInsertid);
-                $('#part_left_id').parent('div').hide();
-                $('.start_time_left').hide();
-                $('.end_time_left').show();
-                $("#display_part-details").show();
+            if($(this).attr('disabled') != 'disabled') {    
+                $(this).attr('disabled', true);         
+                timer = 0;
+                leftInterval = setInterval(clockUpdate, 1000);
+                var btn_id = $(this);
+                $.ajax({
+                    url: base_url + 'api/jobs/set_job_actions',
+                    method: "POST",
+                    data: { 'side': 'left', part_id: id, time: 'start_time' },
+                    dataType: "json",
+                }).done(function (data) {
+                    successMsg(data.msg);
+                    $('#update_id_left').val(data.lastInsertid);
+                    $('#part_left_id').parent('div').hide();
+                    $('.start_time_left').hide();
+                    $('.end_time_left').show();
+                    $('.digital-clock').show();
+                    $("#display_part-details").show();
 
-                if ($("#start_jobs_data_left").length > 0) {
+                    if ($("#start_jobs_data_left").length > 0) {
 
-                    $(".part_name").html('');
-                    $("#part_no").html('');
-                    $("#model").html('');
-                    $("#die_no").html('');
+                        $(".part_name").html('');
+                        $(".part_no").html('');
+                        $(".model").html('');
+                        $(".die_no").html('');
 
-                    // production code
-                    //fetch_job_details_from_db('left', id);
-                    /* leftInterval = setInterval(function(){                        
-                        fetch_job_details_from_db('left', id)},                         
-                        5000
-                    ); */
+                        // production code
+                        //fetch_job_details_from_db('left', id);
+                        /* leftInterval = setInterval(function(){                        
+                            fetch_job_details_from_db('left', id)},                         
+                            5000
+                        ); */
 
-                    web_socket_init('left');                    
-                }
-
-            }).fail(function (data) {
-                $(btn_id).removeClass('button--loading').attr('disabled', false);
-                if (typeof data.responseJSON.messages === 'object') {
-                    for (let i in data.responseJSON.messages) {
-                        failMsg(data.responseJSON.messages[i]);
+                        web_socket_init('left');                    
                     }
-                } else {
-                    let msg = data.responseJSON.messages.msg;
-                    failMsg(msg);
-                }
-            });
+
+                }).fail(function (data) {
+                    $(btn_id).removeClass('button--loading').attr('disabled', false);
+                    if (typeof data.responseJSON.messages === 'object') {
+                        for (let i in data.responseJSON.messages) {
+                            failMsg(data.responseJSON.messages[i]);
+                        }
+                    } else {
+                        let msg = data.responseJSON.messages.msg;
+                        failMsg(msg);
+                    }
+                });
+            }
         });
 
         $(".end_time_left").on('click', function (e) {
             e.preventDefault();
-            clearInterval(leftInterval);
             var id = $('#update_id_left').val();
+            var btn_id = $(this);
             $.ajax({
                 url: base_url + 'api/jobs/set_job_actions',
                 method: "POST",
@@ -1334,10 +1369,14 @@ $(document).ready(function () {
                 $('#part_left_id').parent('div').show();
                 $('.start_time_left').show();
                 $('.end_time_left').hide();
+                $('.digital-clock').hide();
                 $("#display_part-details").hide();
                 $('#part_left_id').val('');
+                timer = 0;
+                clearInterval(leftInterval);
+                $(".start_time_left").attr('disabled', false);
             }).fail(function (data) {
-                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                $(btn_id).attr('disabled', false);
                 if (typeof data.responseJSON.messages === 'object') {
                     for (let i in data.responseJSON.messages) {
                         failMsg(data.responseJSON.messages[i]);
@@ -1351,63 +1390,65 @@ $(document).ready(function () {
 
         $(".start_time_right").on('click', function (e) {
             e.preventDefault();
-            //clockUpdate();
-
-            //if(interval != '') {
-            // interval = setInterval(clockUpdate, 1000);
             var id = $('#part_right_id').val();
+            var btn_id = $(this);
             if (id == '') {
                 alert('please select part name first');
                 return false;
             }
-            $.ajax({
-                url: base_url + 'api/jobs/set_job_actions',
-                method: "POST",
-                data: { 'side': 'right', part_id: id, time: 'start_time' },
-                dataType: "json",
-            }).done(function (data) {
+            if($(this).attr('disabled') != 'disabled') {    
+                $(this).attr('disabled', true);        
+                timer = 0;
+                rightInterval = setInterval(clockUpdate, 1000);
+                $.ajax({
+                    url: base_url + 'api/jobs/set_job_actions',
+                    method: "POST",
+                    data: { 'side': 'right', part_id: id, time: 'start_time' },
+                    dataType: "json",
+                }).done(function (data) {
 
-                successMsg(data.msg);
-                $('#update_id_right').val(data.lastInsertid);
-                $('#part_right_id').parent('div').hide();
-                $('.start_time_right').hide();
-                $('.end_time_right').show();
-                $("#display_part-details").show();
+                    successMsg(data.msg);
+                    $('#update_id_right').val(data.lastInsertid);
+                    $('#part_right_id').parent('div').hide();
+                    $('.start_time_right').hide();
+                    $('.end_time_right').show();
+                    $("#display_part-details").show();
+                    $('.digital-clock').show();
 
-                if ($("#start_jobs_data_right").length > 0) {
+                    if ($("#start_jobs_data_right").length > 0) {
 
-                    $(".part_name").html('');
-                    $("#part_no").html('');
-                    $("#model").html('');
-                    $("#die_no").html('');
+                        $(".part_name").html('');
+                        $(".part_no").html('');
+                        $(".model").html('');
+                        $(".die_no").html('');
 
-                   /*  fetch_job_details_from_db('right', id);
-                    rightInterval = setTimeInterval(function () { 
-                        fetch_job_details_from_db('right', id) 
-                    }, 5000); */
-                    
-                    web_socket_init('right');
-                }
-
-            }).fail(function (data) {
-                $(btn_id).removeClass('button--loading').attr('disabled', false);
-                if (typeof data.responseJSON.messages === 'object') {
-                    for (let i in data.responseJSON.messages) {
-                        failMsg(data.responseJSON.messages[i]);
+                        /*  fetch_job_details_from_db('right', id);
+                        rightInterval = setTimeInterval(function () { 
+                            fetch_job_details_from_db('right', id) 
+                        }, 5000); */
+                        
+                        web_socket_init('right');
                     }
-                } else {
-                    let msg = data.responseJSON.messages.msg;
-                    failMsg(msg);
-                }
-            });
-            //}
+
+                }).fail(function (data) {
+                    $(btn_id).attr('disabled', false);
+                    if (typeof data.responseJSON.messages === 'object') {
+                        for (let i in data.responseJSON.messages) {
+                            failMsg(data.responseJSON.messages[i]);
+                        }
+                    } else {
+                        let msg = data.responseJSON.messages.msg;
+                        failMsg(msg);
+                    }
+                });
+            }
         });
 
         $(".end_time_right").on('click', function (e) {
             e.preventDefault();
-            //clearInterval(interval);
-            clearInterval(rightInterval);
+            
             let id = $('#update_id_right').val();
+            var btn_id = $(this);
             $.ajax({
                 url: base_url + 'api/jobs/set_job_actions',
                 method: "POST",
@@ -1418,10 +1459,14 @@ $(document).ready(function () {
                 $('#part_right_id').parent('div').show();
                 $('.start_time_right').show();
                 $('.end_time_right').hide();
+                $('.digital-clock').hide();
                 $('#part_right_id').val('');
                 $("#display_part-details").hide();
+                timer = 0;
+                clearInterval(rightInterval);
+                $(".start_time_right").attr('disabled', false);
             }).fail(function (data) {
-                $(btn_id).removeClass('button--loading').attr('disabled', false);
+                $(btn_id).attr('disabled', false);
                 if (typeof data.responseJSON.messages === 'object') {
                     for (let i in data.responseJSON.messages) {
                         failMsg(data.responseJSON.messages[i]);
@@ -1434,7 +1479,7 @@ $(document).ready(function () {
         });
     }
 });
-
+var timer = 0;
 function clockUpdate() {
     var date = new Date();
     //$('.digital-clock').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
@@ -1456,9 +1501,18 @@ function clockUpdate() {
         }
     }
 
-    var h = addZero(twelveHour(date.getHours()));
+   /*  var h = addZero(twelveHour(date.getHours()));
     var m = addZero(date.getMinutes());
-    var s = addZero(date.getSeconds());
+    var s = addZero(date.getSeconds()); */
+
+
+    var new_hr = Math.floor((timer / 3600));
+    var new_m = Math.floor((timer % 3600) / 60);
+    var h = new_hr>0?addZero(new_hr):addZero(0);
+    var m = new_m>0?addZero(new_m):addZero(0);
+    var s = addZero(Math.floor(timer % 60));
+
+    timer++;
 
     $('.digital-clock').text(h + ':' + m + ':' + s);
 }

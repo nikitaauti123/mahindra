@@ -1186,13 +1186,11 @@ class JobsApiController extends BaseController
                 // Start of the table
                 $body .= '<table border="1">';
                 $totalTime = strtotime($result_job->end_time) - strtotime($result_job->start_time);
-            if ($result_job->correct_pins != 0 && $result_job->total_pins != 0) {
-
-                     $correct_pins_count = ($result_job->correct_pins / $result_job->total_pins) * 100;
-            } else {
-
-                    $correct_pins_count = 000; // or handle it in a way that makes sense for your application
-            }
+                if ($result_job->correct_pins != 0 && $result_job->total_pins != 0) {
+                        $correct_pins_count = ($result_job->correct_pins / $result_job->total_pins) * 100;
+                } else {
+                        $correct_pins_count = 000; // or handle it in a way that makes sense for your application
+                }
 
                 $correct_pins_count_formatted = number_format($correct_pins_count, 2); // Format to 2 decimal places
                 $defaultImagePath = FCPATH . 'assets/img/no_image_found.png';

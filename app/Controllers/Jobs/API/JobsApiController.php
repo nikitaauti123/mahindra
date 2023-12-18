@@ -242,13 +242,13 @@ class JobsApiController extends BaseController
         if (!empty($part_id)) {
             $result = $this->_jobsModel
                 ->select(
-                    'jobs.pins',
-                    'jobs.side',
-                    'parts.id',
-                    'parts.die_no',
-                    'parts.part_name',
-                    'parts.part_no',
-                    'parts.model'
+                    'jobs.pins,
+                    jobs.side,
+                    parts.id,
+                    parts.die_no,
+                    parts.part_name,
+                    parts.part_no,
+                    parts.model'
                 )
                 ->join('parts', 'jobs.part_id = parts.id', 'right')
                 ->orderBy('jobs.id', 'DESC')
@@ -260,13 +260,13 @@ class JobsApiController extends BaseController
         } else {
             $result = $this->_jobsModel
                 ->select(
-                    'jobs.pins',
-                    'jobs.side',
-                    'parts.id',
-                    'parts.die_no',
-                    'parts.part_name',
-                    'parts.part_no',
-                    'parts.model'
+                    'jobs.pins,
+                    jobs.side,
+                    parts.id,
+                    parts.die_no,
+                    parts.part_name,
+                    parts.part_no,
+                    parts.model'
                 )
                 ->join('parts', 'jobs.part_id = parts.id', 'right')
                 ->orderBy('jobs.id', 'DESC')
@@ -769,19 +769,21 @@ class JobsApiController extends BaseController
                 $this->request->getVar('job_Action_id')
             );
         }
-        $this->_JobActionsModel->select([
-            'parts.*',
-            'job_actions.part_id',
-            'job_actions.side',
-            'job_actions.image_url',
-            'job_actions.wrong_pins',
-            'job_actions.correct_pins',
-            'job_actions.detail_pins',
-            'job_actions.start_time',
-            'job_actions.end_time',
-            'job_actions.created_by',
-            'job_actions.updated_by'
-        ]);     
+        $this->_JobActionsModel->select(
+            [ 
+                'parts.*',
+                'job_actions.part_id',
+                'job_actions.side',
+                'job_actions.image_url',
+                'job_actions.wrong_pins',
+                'job_actions.correct_pins',
+                'job_actions.detail_pins',
+                'job_actions.start_time',
+                'job_actions.end_time',
+                'job_actions.created_by',
+                'job_actions.updated_by'
+            ]
+        );     
         $this->_JobActionsModel->join('parts', 'job_actions.part_id = parts.id');
         $result = $this->_JobActionsModel->findAll();
 

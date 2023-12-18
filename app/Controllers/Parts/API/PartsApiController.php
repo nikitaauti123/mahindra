@@ -36,13 +36,13 @@ use DateTime;
 Class PartsApiController extends BaseController
 {
     use ResponseTrait;
-    private _$partsModel;
+    private $_partsModel;
     /**
      * Constructor for the JobsController class.
      */
     public function __construct()
     {
-        $this->partsModel = new PartsModel();
+        $this->_partsModel = new PartsModel();
     }
     /**
      * Method for handling list in the  JobsController.

@@ -51,7 +51,7 @@ Class PartsApiController extends BaseController
      */
     public function list()
     {
-        $result = $this->partsModel->findAll();
+        $result = $this->_partsModel->findAll();
         $combinedData = [];
         foreach ($result as $result_arr) {
             $created_at = new DateTime($result_arr['created_at']);
@@ -76,7 +76,7 @@ Class PartsApiController extends BaseController
     public function getOne($id)
     {
         try {
-            $result = $this->partsModel->find($id);
+            $result = $this->_partsModel->find($id);
             if (!empty($result)) {
                 return $this->respond($result, 200);
             } 
@@ -117,7 +117,7 @@ Class PartsApiController extends BaseController
             $data['die_no']      = $this->request->getVar('die_no');          
             $data['is_active']  = $isactive;
             $data['pins']      =  $this->request->getVar('selected_pins');
-            $result['id'] = $this->partsModel->insert($data, true);
+            $result['id'] = $this->_partsModel->insert($data, true);
             $result['msg'] = "Part added successfully!";
             return $this->respond($result, 200);
 
@@ -164,7 +164,7 @@ Class PartsApiController extends BaseController
             $data['is_active']  = $isactive;
             $data['pins']      =  $this->request->getVar('selected_pins');
             
-            $result['is_updated'] = $this->partsModel->update($id, $data);
+            $result['is_updated'] = $this->_partsModel->update($id, $data);
             $result['msg'] = "Part updated successfully!";
             return $this->respond($result, 200);
 
@@ -190,7 +190,7 @@ Class PartsApiController extends BaseController
                 return $this->fail('Please provide valid id', 400, true);
             }
 
-            $result['is_deleted'] = $this->partsModel->delete($id);
+            $result['is_deleted'] = $this->_partsModel->delete($id);
             $result['msg'] = "Part deleted successfully!";
             return $this->respond($result, 200);
 
@@ -210,7 +210,7 @@ Class PartsApiController extends BaseController
                 $data['is_active'] = '1';
             }
             $result['msg'] =   lang('Parts.StatusUpdateMsg');
-            $result['id'] = $this->partsModel->update($id, $data);
+            $result['id'] = $this->_partsModel->update($id, $data);
             return $this->respond($result, 200);
         } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();

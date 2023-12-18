@@ -236,19 +236,17 @@ class JobsApiController extends BaseController
      */
     public function getApiData()
     {
-
         $part_id = $this->request->getVar('part_id');
-
         if (!empty($part_id)) {
             $result = $this->_jobsModel
                 ->select(
-                    'jobs.pins',
-                    'jobs.side',
-                    'parts.id',
-                    'parts.die_no',
-                    'parts.part_name',
-                    'parts.part_no',
-                    'parts.model'
+                    'jobs.pins,
+                     jobs.side,
+                     parts.id,
+                     parts.die_no,
+                     parts.part_name,
+                     parts.part_no,
+                     parts.model'
                 )
                 ->join('parts', 'jobs.part_id = parts.id', 'right')
                 ->orderBy('jobs.id', 'DESC')
@@ -260,13 +258,13 @@ class JobsApiController extends BaseController
         } else {
             $result = $this->_jobsModel
                 ->select(
-                    'jobs.pins',
-                    'jobs.side',
-                    'parts.id',
-                    'parts.die_no',
-                    'parts.part_name',
-                    'parts.part_no',
-                    'parts.model'
+                    'jobs.pins,
+                    jobs.side,
+                    parts.id,
+                    parts.die_no,
+                    parts.part_name,
+                    parts.part_no,
+                    parts.model'
                 )
                 ->join('parts', 'jobs.part_id = parts.id', 'right')
                 ->orderBy('jobs.id', 'DESC')

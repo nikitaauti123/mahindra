@@ -38,14 +38,14 @@ Class PartsApiController extends BaseController
     use ResponseTrait;
     private $_partsModel;
     /**
-     * Constructor for the JobsController class.
+     * Constructor for the PartApiController class.
      */
     public function __construct()
     {
         $this->_partsModel = new PartsModel();
     }
     /**
-     * Method for handling list in the  JobsController.
+     * Method for handling list in the  PartApiController.
      * 
      * @return text; 
      */
@@ -67,7 +67,7 @@ Class PartsApiController extends BaseController
         return $this->respond($combinedData, 200);
     }
     /**
-     * Method for getting single part details JobsController.
+     * Method for getting single part details PartApiController.
      * 
      * @param $id to get single part
      * 

@@ -1,11 +1,11 @@
 <?php
 /**  
- * JobsApiController file Doc Comment
+ * JobsController file Doc Comment
  * 
  * PHP version 7
  *
- * @category JobsApiController_Class
- * @package  JobsApiController_Class
+ * @category JobsController_Class
+ * @package  JobsController_Class
  * @author   Author <author@domain.com>
  * @license  GPL License
  * @link     https://www.quicsolv.com/
@@ -19,10 +19,10 @@ use App\Models\JobActionsModel;
 /**
  * JobsController Class Doc Comment
  * 
- * JobsApiController Class
+ * JobsController Class
  * 
- * @category JobsApiController_Class
- * @package  JobsApiController_Class
+ * @category JobsController_Class
+ * @package  JobsController_Class
  * @author   Author <author@domain.com>
  * @license  https://opensource.org/licenses/MIT MIT License
  * @link     http://localhost/

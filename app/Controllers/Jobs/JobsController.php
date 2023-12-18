@@ -233,7 +233,13 @@ class JobsController extends BaseController
         }
          // exit;
         $all_parts = $this->partModel
-            ->select('parts.id, parts.die_no, parts.part_name, parts.part_no, parts.model')
+            ->select(
+                'parts.id, 
+                 parts.die_no,
+                 parts.part_name,
+                 parts.part_no, 
+                 parts.model'
+            )
             ->where('parts.is_active', '1')->findAll();
         $data['part'] = $all_parts;
         return view('jobs/completed_job_list', $data);

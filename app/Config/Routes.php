@@ -66,12 +66,12 @@ $routes->get('/admin/parts/view/(:num)', 'Parts\\PartsController::View/$1');
 
 $routes->get('/api/parts/list', 'Parts\\Api\\PartsApiController::list');
 $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');
-$routes->post('/api/parts/update_is_active', 'Parts\\Api\\PartsApiController::update_is_active');
+$routes->post('/api/parts/update_is_active', 'Parts\\Api\\PartsApiController::updateIsActive');
 
 $routes->post('/api/parts/update/(:num)', 'Parts\\Api\\PartsApiController::update/$1');
 $routes->post('/api/parts/delete/(:num)', 'Parts\\Api\\PartsApiController::delete/$1');
 $routes->get('/api/parts/get_one/(:num)', 'Parts\\Api\\PartsApiController::getOne/$1');
-$routes->get('/api/parts/get_api_url', 'Parts\\Api\\PartsApiController::get_api_url');
+$routes->get('/api/parts/get_api_url', 'Parts\\Api\\PartsApiController::getApiUrl');
 
 
 $routes->post('/api/apiparts/add', 'Parts\\Api\\ApiPartsApiController::add');

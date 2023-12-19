@@ -241,12 +241,12 @@ class JobsApiController extends BaseController
             $result = $this->_jobsModel
                 ->select(
                     'jobs.pins,
-                     jobs.side,
-                     parts.id,
-                     parts.die_no,
-                     parts.part_name,
-                     parts.part_no,
-                     parts.model'
+                    jobs.side,
+                    parts.id,
+                    parts.die_no,
+                    parts.part_name,
+                    parts.part_no,
+                    parts.model'
                 )
                 ->join('parts', 'jobs.part_id = parts.id', 'right')
                 ->orderBy('jobs.id', 'DESC')
@@ -769,17 +769,17 @@ class JobsApiController extends BaseController
         }
         $result =  $this->_JobActionsModel
             ->select(
-                ['parts.*',
-                'job_actions.part_id',
-                'job_actions.side',
-                'job_actions.image_url',
-                'job_actions.wrong_pins',
-                'job_actions.correct_pins',
-                'job_actions.detail_pins',
-                'job_actions.start_time',
-                'job_actions.end_time',
-                'job_actions.created_by',
-                'job_actions.updated_by',]
+                'parts.*,
+                job_actions.part_id,
+                job_actions.side,
+                job_actions.image_url,
+                job_actions.wrong_pins,
+                job_actions.correct_pins,
+                job_actions.detail_pins,
+                job_actions.start_time,
+                job_actions.end_time,
+                job_actions.created_by,
+                job_actions.updated_by'
             )   
             ->join('parts', 'job_actions.part_id = parts.id')
             ->findAll();

@@ -134,13 +134,13 @@ $routes->post('/api/roles/update/(:num)', 'Roles\\Api\\RolesApiController::updat
 
 
 
-$routes->get('/admin/permissions/list', 'Permission\\PermissionController::List');
-$routes->get('/admin/permissions/add', 'Permission\\PermissionController::Create');
-$routes->get('/admin/permissions/edit/(:num)', 'Permission\\PermissionController::Edit/$1');
+$routes->get('/admin/permissions/list', 'Permission\\PermissionController::list');
+$routes->get('/admin/permissions/add', 'Permission\\PermissionController::create');
+$routes->get('/admin/permissions/edit/(:num)', 'Permission\\PermissionController::edit/$1');
 
  $routes->get('/api/permissions/list', 'Permission\\Api\\PermissionApiController::list');
 $routes->post('/api/permissions/add', 'Permission\\Api\\PermissionApiController::add');
-$routes->post('/api/permissions/update_is_active', 'Permission\\Api\\PermissionApiController::update_is_active');
+$routes->post('/api/permissions/update_is_active', 'Permission\\Api\\PermissionApiController::updateIsActive');
 $routes->post('/api/permissions/delete/(:num)', 'Permission\\Api\\PermissionApiController::delete/$1');
 $routes->get('/api/permissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
 $routes->post('/api/permissions/update/(:num)', 'Permission\\Api\\PermissionApiController::update/$1');

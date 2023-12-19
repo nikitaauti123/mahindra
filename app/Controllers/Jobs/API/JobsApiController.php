@@ -242,7 +242,7 @@ class JobsApiController extends BaseController
         if (!empty($part_id)) {
             $result = $this->_jobsModel
                 ->select(
-                    'jobs.pins,
+                    'parts.pins,
                     jobs.side,
                     parts.id,
                     parts.die_no,
@@ -260,7 +260,7 @@ class JobsApiController extends BaseController
         } else {
             $result = $this->_jobsModel
                 ->select(
-                    'jobs.pins,
+                    'parts.pins,
                     jobs.side,
                     parts.id,
                     parts.die_no,
@@ -672,26 +672,25 @@ class JobsApiController extends BaseController
                 ->orderBy('id', 'DESC')
                 ->where('end_time IS NULL')
                 ->where('side', $side)
-                //->limit(1) // Set the limit to 1 to fetch only o ne row
+                ->limit(1) // Set the limit to 1 to fetch only o ne row
                 ->get()
-                ->getResult();
+                ->getRow();        //->getResult();
         } else {
             $result = $this->_JobActionsModel
                 ->select('id, part_id, side, start_time, end_time')
                 ->orderBy('id', 'DESC')
                 ->where('end_time IS NULL')
-                //->limit(1) // Set the limit to 1 to fetch only o ne row
+                ->limit(1) // Set the limit to 1 to fetch only o ne row
                 ->get()
-                ->getResult();
+                ->getRow();           //todo - change single row with multiple-   //->getResult();
         }
 
         if ($result) {
             return $this->respond($result, 200);
         }
         return $this->respond(
-            [
                 ['error' => true, 'message' => 'No job started']
-            ],
+            ,
             404
         );
     }

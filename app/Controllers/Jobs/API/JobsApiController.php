@@ -236,9 +236,7 @@ class JobsApiController extends BaseController
      */
     public function getApiData()
     {
-
         $part_id = $this->request->getVar('part_id');
-
         if (!empty($part_id)) {
             $result = $this->_jobsModel
                 ->select(

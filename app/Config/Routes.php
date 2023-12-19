@@ -53,25 +53,25 @@ $routes->post('/api/users/get_permission_names', 'Users\\Api\\UsersApiController
 $routes->post('/api/users/get_all_count', 'Users\\Api\\UsersApiController::get_all_count');
 
 
-$routes->get('/admin/parts/list', 'Parts\\PartsController::List');
-$routes->get('/admin/parts/add', 'Parts\\PartsController::Create');
-$routes->get('/admin/parts/import', 'Parts\\PartsController::Import');
-$routes->post('/admin/parts/bulk_import_parts', 'Parts\\PartsController::bulk_import_parts');
+$routes->get('/admin/parts/list', 'Parts\\PartsController::list');
+$routes->get('/admin/parts/add', 'Parts\\PartsController::create');
+$routes->get('/admin/parts/import', 'Parts\\PartsController::import');
+$routes->post('/admin/parts/bulk_import_parts', 'Parts\\PartsController::bulkImportParts');
 
-$routes->get('/admin/parts/export_part', 'Parts\\PartsController::export_part');
-$routes->get('/admin/parts/edit/(:num)', 'Parts\\PartsController::Edit/$1');
+$routes->get('/admin/parts/export_part', 'Parts\\PartsController::exportPart');
+$routes->get('/admin/parts/edit/(:num)', 'Parts\\PartsController::edit/$1');
 
 
-$routes->get('/admin/parts/view/(:num)', 'Parts\\PartsController::View/$1');
+$routes->get('/admin/parts/view/(:num)', 'Parts\\PartsController::view/$1');
 
 $routes->get('/api/parts/list', 'Parts\\Api\\PartsApiController::list');
 $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');
-$routes->post('/api/parts/update_is_active', 'Parts\\Api\\PartsApiController::update_is_active');
+$routes->post('/api/parts/update_is_active', 'Parts\\Api\\PartsApiController::updateIsActive');
 
 $routes->post('/api/parts/update/(:num)', 'Parts\\Api\\PartsApiController::update/$1');
 $routes->post('/api/parts/delete/(:num)', 'Parts\\Api\\PartsApiController::delete/$1');
 $routes->get('/api/parts/get_one/(:num)', 'Parts\\Api\\PartsApiController::getOne/$1');
-$routes->get('/api/parts/get_api_url', 'Parts\\Api\\PartsApiController::get_api_url');
+$routes->get('/api/parts/get_api_url', 'Parts\\Api\\PartsApiController::getApiUrl');
 
 
 $routes->post('/api/apiparts/add', 'Parts\\Api\\ApiPartsApiController::add');
@@ -134,13 +134,13 @@ $routes->post('/api/roles/update/(:num)', 'Roles\\Api\\RolesApiController::updat
 
 
 
-$routes->get('/admin/permissions/list', 'Permission\\PermissionController::List');
-$routes->get('/admin/permissions/add', 'Permission\\PermissionController::Create');
-$routes->get('/admin/permissions/edit/(:num)', 'Permission\\PermissionController::Edit/$1');
+$routes->get('/admin/permissions/list', 'Permission\\PermissionController::list');
+$routes->get('/admin/permissions/add', 'Permission\\PermissionController::create');
+$routes->get('/admin/permissions/edit/(:num)', 'Permission\\PermissionController::edit/$1');
 
  $routes->get('/api/permissions/list', 'Permission\\Api\\PermissionApiController::list');
 $routes->post('/api/permissions/add', 'Permission\\Api\\PermissionApiController::add');
-$routes->post('/api/permissions/update_is_active', 'Permission\\Api\\PermissionApiController::update_is_active');
+$routes->post('/api/permissions/update_is_active', 'Permission\\Api\\PermissionApiController::updateIsActive');
 $routes->post('/api/permissions/delete/(:num)', 'Permission\\Api\\PermissionApiController::delete/$1');
 $routes->get('/api/permissions/get_one/(:num)', 'Permission\\Api\\PermissionApiController::getOne/$1');
 $routes->post('/api/permissions/update/(:num)', 'Permission\\Api\\PermissionApiController::update/$1');

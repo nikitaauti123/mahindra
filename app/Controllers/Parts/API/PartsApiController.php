@@ -38,14 +38,14 @@ Class PartsApiController extends BaseController
     use ResponseTrait;
     private $_partsModel;
     /**
-     * Constructor for the JobsController class.
+     * Constructor for the PartApiController class.
      */
     public function __construct()
     {
         $this->_partsModel = new PartsModel();
     }
     /**
-     * Method for handling list in the  JobsController.
+     * Method for handling list in the  PartApiController.
      * 
      * @return text; 
      */
@@ -67,7 +67,7 @@ Class PartsApiController extends BaseController
         return $this->respond($combinedData, 200);
     }
     /**
-     * Method for getting single part details JobsController.
+     * Method for getting single part details PartApiController.
      * 
      * @param $id to get single part
      * 
@@ -199,8 +199,13 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }    
     }
-
-    public function update_is_active(){
+    /**
+     * Method for update active operation.
+     * 
+     * @return view; 
+     */
+    public function updateIsActive()
+    {
         try {
             $id = $this->request->getVar('id');
             $is_Active = $this->request->getVar('is_active');
@@ -217,12 +222,17 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-      
-    public  function  get_api_url(){   
+    /**
+     * Method for handling add right side tv page .
+     * 
+     * @return view; 
+     */
+    public  function getApiUrl()
+    {   
 
         $side = $this->request->getVar('side');
 
-        if($side == 'right') {
+        if ($side == 'right') {
             $envVariables = [
                 'WEBSOCKET_URL' => $_ENV['WEBSOCKET_URL_RIGHT'],          
             ];

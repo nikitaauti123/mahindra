@@ -109,8 +109,6 @@ Class PartsApiController extends BaseController
                
                 $isactive = 1;
             }
-
-
             $data['part_name']  = $this->request->getVar('part_name');
             $data['part_no']    = $this->request->getVar('part_no');
             $data['model']      = $this->request->getVar('model');

@@ -1,70 +1,114 @@
 <?php
+/**  
+ * UsersController file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category UsersController_Class
+ * @package  UsersController_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 
 namespace App\Controllers\Users;
 
 use App\Controllers\BaseController;
 use App\Models\RolesModel;
+/**  
+ * UsersController Class Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category UsersController_Class
+ * @package  UsersController_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 Class UsersController extends BaseController
 {
-    private $rolesModel;
+    private $_rolesModel;
+    /**
+     * Constructor for the UsersController class.
+     */
     function __construct()
     {
-        $this->rolesModel = new RolesModel();
+        $this->_rolesModel = new RolesModel();
         
     }
     /**
-     *  route - /
+     *  Route - /
      * 
      *  Display login page for all users
      * 
+     * @return view;
      */
-    public function Login() {
+    public function login() 
+    {
         return view('users/login');
     }
 
     /**
-     *  route - logout
+     *  Route - logout
      * 
      *  Logout users
      * 
+     * @return view 
      */
-    public function Logout() {
+    public function logout() 
+    {
         session()->destroy();
         return redirect()->to('/');
     }
 
     /**
-     *  route - admin/dashboard 
+     *  Route - admin/dashboard 
      *  
      *  Display dashboard page for admin users.
      * 
-     *  
+     * @return view;
      */
-    public function Dashboard() {
+    public function dashboard()
+    {
         return view('users/dashboard');
     }
 
     /**
-     *  route - admin/users/list
+     *  Route - admin/users/list
      *  
      *  Display list of users in the system
      * 
+     * @return view
      */
-    public function List() {
+    public function list() 
+    {
         $data['request'] = $this->request;
         return view('users/list', $data);
     }
-    public function Edit($id)
+    /**
+     * Method for handling edit page.
+     * 
+     * @param $id third url for edit page 
+     * 
+     * @return view; 
+     */  
+    public function edit($id)
     {
-        $data['role'] = $this->rolesModel->findAll(); // Access roles data
+        $data['role'] = $this->_rolesModel->findAll(); // Access roles data
       
         $data['request'] = $this->request;
         $data['id'] = $id;
         return view('users/edit', $data);
     }
-    public function Create()
+    /**
+     * Method for handling edit page.
+     * 
+     * @return view; 
+     */  
+    public function create()
     {
-        $data['role'] = $this->rolesModel->findAll(); // Access roles data
+        $data['role'] = $this->_rolesModel->findAll(); // Access roles data
       
         $data['request'] = $this->request;
         return view('users/add', $data);

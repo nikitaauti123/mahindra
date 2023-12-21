@@ -34,14 +34,14 @@ $routes->get('/logout', 'Users\\UsersController::logout');
 $routes->get('/admin/dashboard', 'Users\\UsersController::dashboard');
 
 $routes->get('/admin/users/list', 'Users\\UsersController::list');
-$routes->get('/admin/users/edit/(:num)', 'Users\\UsersController::Edit/$1');
-$routes->get('/admin/users/add', 'Users\\UsersController::Create/$1');
+$routes->get('/admin/users/edit/(:num)', 'Users\\UsersController::edit/$1');
+$routes->get('/admin/users/add', 'Users\\UsersController::create/$1');
 
-$routes->post('/api/user/login', 'Users\\Api\\UsersApiController::check_login');
+$routes->post('/api/user/login', 'Users\\Api\\UsersApiController::checkLogin');
 $routes->get('/api/users/list', 'Users\\Api\\UsersApiController::list');
 $routes->post('/api/users/add', 'Users\\Api\\UsersApiController::add');
-$routes->post('/api/users/update_is_active', 'Users\\Api\\UsersApiController::update_is_active');
-$routes->post('api/users/get_role_names', 'Users\\Api\\UsersApiController::get_role_names');
+$routes->post('/api/users/update_is_active', 'Users\\Api\\UsersApiController::updateIsActive');
+$routes->post('api/users/get_role_names', 'Users\\Api\\UsersApiController::getRoleNames');
 $routes->post('/api/users/update/(:num)', 'Users\\Api\\UsersApiController::update/$1');
 // $routes->post('/api/parts/add', 'Parts\\Api\\PartsApiController::add');
 $routes->get('/api/users/get_one/(:num)', 'Users\\Api\\UsersApiController::getOne/$1');
@@ -49,8 +49,8 @@ $routes->post('/api/users/delete/(:num)', 'Users\\Api\\UsersApiController::delet
 
 
 
-$routes->post('/api/users/get_permission_names', 'Users\\Api\\UsersApiController::get_permission_names');
-$routes->post('/api/users/get_all_count', 'Users\\Api\\UsersApiController::get_all_count');
+$routes->post('/api/users/get_permission_names', 'Users\\Api\\UsersApiController::getPermissionNames');
+$routes->post('/api/users/get_all_count', 'Users\\Api\\UsersApiController::getAllCount');
 
 
 $routes->get('/admin/parts/list', 'Parts\\PartsController::list');
@@ -120,13 +120,13 @@ $routes->get('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::getApiData
 $routes->get('/jobs/send_part_details/(:num)', 'Jobs\\Api\\JobsApiController::sendPartDetails/$');
 
 
-$routes->get('/admin/roles/list', 'Roles\\RolesController::List');
-$routes->get('/admin/roles/add', 'Roles\\RolesController::Create');
-$routes->get('/admin/roles/edit/(:num)', 'Roles\\RolesController::Edit/$1');
+$routes->get('/admin/roles/list', 'Roles\\RolesController::list');
+$routes->get('/admin/roles/add', 'Roles\\RolesController::create');
+$routes->get('/admin/roles/edit/(:num)', 'Roles\\RolesController::edit/$1');
 
 $routes->get('/api/roles/list', 'Roles\\Api\\RolesApiController::list');
 $routes->post('/api/roles/add', 'Roles\\Api\\RolesApiController::add');
-$routes->post('/api/roles/update_is_active', 'Roles\\Api\\RolesApiController::update_is_active');
+$routes->post('/api/roles/update_is_active', 'Roles\\Api\\RolesApiController::updateIsActive');
 $routes->post('/api/roles/delete/(:num)', 'Roles\\Api\\RolesApiController::delete/$1');
 $routes->get('/api/roles/get_one/(:num)', 'Roles\\Api\\RolesApiController::getOne/$1');
 $routes->post('/api/roles/update/(:num)', 'Roles\\Api\\RolesApiController::update/$1');

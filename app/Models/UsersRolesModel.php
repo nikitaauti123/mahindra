@@ -1,9 +1,29 @@
 <?php
-
+/**  
+ * UsersRolesModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category UsersRolesModel_Class
+ * @package  UsersRolesModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 namespace App\Models;
 
 use CodeIgniter\Model;
-
+/**  
+ * UsersRolesModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category UsersRolesModel_Class
+ * @package  UsersRolesModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 class UsersRolesModel extends Model
 {
     protected $DBGroup          = 'default';

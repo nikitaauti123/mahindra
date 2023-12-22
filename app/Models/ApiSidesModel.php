@@ -1,9 +1,29 @@
 <?php
-
+/**  
+ * ApiSidesModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category ApiSidesModel_Class
+ * @package  ApiSidesModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 namespace App\Models;
 
 use CodeIgniter\Model;
-
+/**  
+ * ApiSidesModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category ApiSidesModel_Class
+ * @package  ApiSidesModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 class ApiSidesModel extends Model
 {
     protected $DBGroup          = 'default';

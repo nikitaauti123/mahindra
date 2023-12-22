@@ -1,9 +1,29 @@
 <?php
-
+/**  
+ * PermissionModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category PermissionModel_Class
+ * @package  PermissionModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 namespace App\Models;
 
 use CodeIgniter\Model;
-
+/**  
+ * PermissionModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category PermissionModel_Class
+ * @package  PermissionModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 class PermissionModel extends Model
 {
     protected $DBGroup          = 'default';
@@ -46,7 +66,11 @@ class PermissionModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
+    /**
+     * Method for handling users.
+     * 
+     * @return string; 
+     */
     public function users()
     {
 
@@ -54,7 +78,7 @@ class PermissionModel extends Model
         $builder->select("*");
         $rows = $builder->get()->getResult($this->returnType);
         
-        foreach($rows as $k=>$data) {
+        foreach ($rows as $k=>$data) {
             $id = $this->returnType == 'object' ? $data->id : $data['id'];
             $builder->select("users.*");
             $builder->where('users_roles.role_id', $id);
@@ -62,7 +86,12 @@ class PermissionModel extends Model
             $builder->join('users', 'users_roles.user_id=users.id', 'INNER');
             $users = $builder->get()->getResult($this->returnType);
             
-            $this->returnType == 'object' ? $rows[$k]->users = $users : $rows[$k]['users'] = $users;
+            if ($this->returnType == 'object') {
+                $rows[$k]->users = $users;
+            } else {
+                $rows[$k]['users'] = $users;
+            }
+            
         }
         return $rows;
     }

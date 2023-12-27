@@ -708,6 +708,10 @@ body .navbar-dark .navbar-nav .nav-link.active {
     font-weight: bold;
 }
 
+.status_message .alert {
+    font-size: calc(100vw / 60);
+}
+
 .tv_screen .arrow-center {
     width: calc(100vw - 90px);
 }

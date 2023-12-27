@@ -891,9 +891,9 @@ function websocket_call(data, side) {
         
 
         if(jsonData.part_ok_status == true) {
-            $(".status_message").html("<div class='alert alert-success'>Current job status :: Ok</div>");
+            $(".status_message").html("<div class='alert alert-success'>Status :: Ok</div>");
         } else {
-            $(".status_message").html("<div class='alert alert-danger'>Current job status :: Not Ok</div>");
+            $(".status_message").html("<div class='alert alert-danger'>Status :: Not Ok</div>");
         }
     }
 

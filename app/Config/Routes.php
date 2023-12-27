@@ -82,7 +82,7 @@ $routes->get('/admin/jobs/add', 'Jobs\\JobsController::create');
 $routes->get('/admin/jobs/add_left', 'Jobs\\JobsController::createLeft');
 $routes->get('/admin/jobs/right_job', 'Jobs\\JobsController::rightJob');
 $routes->get('/admin/jobs/left_job', 'Jobs\\JobsController::leftJob');
-$routes->get('/jobs/right_job', 'Jobs\\JobsController::leftJob');
+$routes->get('/jobs/right_job', 'Jobs\\JobsController::rightJob');
 $routes->get('/jobs/left_job', 'Jobs\\JobsController::leftJob');
 $routes->get('/admin/jobs/edit/(:num)', 'Jobs\\JobsController::edit/$1');
 $routes->get('/admin/jobs/completed_jobs', 'Jobs\\JobsController::completedJobs');

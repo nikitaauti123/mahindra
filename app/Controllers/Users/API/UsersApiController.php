@@ -77,6 +77,9 @@ class UsersApiController extends BaseController
                 ->orWhere('email', $data['username'])
                 ->orWhere('phone', $data['username'])
                 ->first();
+
+           
+
             if (!$user) {
                 throw new Exception(lang('Login.FailMsg'));
             }

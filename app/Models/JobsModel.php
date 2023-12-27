@@ -1,9 +1,29 @@
 <?php
-
+/**  
+ * JobsModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category JobsModel_Class
+ * @package  JobsModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 namespace App\Models;
 
 use CodeIgniter\Model;
-
+/**  
+ * JobsModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category JobsModel_Class
+ * @package  JobsModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 class JobsModel extends Model
 {
     protected $DBGroup          = 'default';

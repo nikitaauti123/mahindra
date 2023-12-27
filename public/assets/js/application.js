@@ -671,9 +671,8 @@ if ($("#add_parts_data").length > 0) {
                 // If it's empty, prevent the form submission and show an error message
                 e.preventDefault();
                 alert('Please select at least one pin.');
-            } else {
-                // Continue with form submission or other actions
-            }
+                return false;
+            } 
         } else {
             return false;
         }

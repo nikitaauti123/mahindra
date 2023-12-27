@@ -1,9 +1,29 @@
 <?php
-
+/**  
+ * PartsModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category PartsModel_Class
+ * @package  PartsModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 namespace App\Models;
 
 use CodeIgniter\Model;
-
+/**  
+ * PartsModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category PartsModel_Class
+ * @package  PartsModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 class PartsModel extends Model
 {
     protected $DBGroup          = 'default';

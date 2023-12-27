@@ -1,9 +1,30 @@
 <?php
-
+/**  
+ * JobsHistory file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category JobsHistory_Class
+ * @package  JobsHistory_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 namespace App\Models;
 
 use CodeIgniter\Model;
 
+/**  
+ * JobsHistory file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category JobsHistory_Class
+ * @package  JobsHistory_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 class JobsHistoryModel extends Model
 {
     protected $DBGroup          = 'default';

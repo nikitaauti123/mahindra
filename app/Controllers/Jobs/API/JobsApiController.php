@@ -596,7 +596,7 @@ class JobsApiController extends BaseController
             } else {
                 $id  = $this->request->getVar('id');
 
-                $affected = $this->_JobActionsModel->update_data(
+                $affected = $this->_JobActionsModel->updateData(
                     $id,
                     $this->request->getVar('side'), 
                     $user_id, date('Y-m-d H:i:s')
@@ -680,15 +680,14 @@ class JobsApiController extends BaseController
                 ->where('end_time IS NULL')
                 ->limit(1) // Set the limit to 1 to fetch only o ne row
                 ->get()
-                ->getRow();           //todo - change single row with multiple-   //->getResult();
+                ->getRow(); 
         }
 
         if ($result) {
             return $this->respond($result, 200);
         }
         return $this->respond(
-                ['error' => true, 'message' => 'No job started']
-            ,
+            ['error' => true, 'message' => 'No job started'],
             404
         );
     }

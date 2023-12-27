@@ -1,9 +1,29 @@
 <?php
-
+/**  
+ * ApiPartsModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category ApiPartsModel_Class
+ * @package  ApiPartsModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 namespace App\Models;
 
 use CodeIgniter\Model;
-
+/**  
+ * ApiPartsModel file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category ApiPartsModel_Class
+ * @package  ApiPartsModel_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 class ApiPartsModel extends Model
 {
     protected $DBGroup          = 'default';

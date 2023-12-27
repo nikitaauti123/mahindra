@@ -1,5 +1,15 @@
 <?php
-
+/**  
+ * UsersApiController file Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category UsersApiController_Class
+ * @package  UsersApiController_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 namespace App\Controllers\Users\Api;
 
 use App\Controllers\BaseController;
@@ -14,33 +24,52 @@ use App\Models\JobActionsModel;
 use DateTime;
 
 use Exception;
-
+/**  
+ * UsersApiController Class Doc Comment
+ * 
+ * PHP version 7
+ *
+ * @category UsersApiController_Class
+ * @package  UsersApiController_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
 class UsersApiController extends BaseController
 {
     use ResponseTrait;
-    private $usersModel;
-    private $usersRoleModel;
-    private $rolespermissionModel;
-    private $roleModel;
-    private $jobsModel;
-    private $PartsModel;
-    private $jobactionsModel;
+    private $_usersModel;
+    private $_usersRoleModel;
+    private $_rolespermissionModel;
+    private $_roleModel;
+    private $_jobsModel;
+    private $_PartsModel;
+    private $_jobactionsModel;
 
-
+    /**
+     * Constructor for the UsersApiController class.
+     */
     public function __construct()
     {
-        $this->usersModel = new UsersModel();
-        $this->rolespermissionModel = new RolesPermissionModel();
-        $this->usersRoleModel = new UsersRolesModel();
-        $this->roleModel = new RolesModel();
-        $this->jobsModel = new jobsModel();
-        $this->PartsModel = new PartsModel();
-        $this->jobactionsModel = new JobActionsModel();
+        $this->_usersModel = new UsersModel();
+        $this->_rolespermissionModel = new RolesPermissionModel();
+        $this->_usersRoleModel = new UsersRolesModel();
+        $this->_roleModel = new RolesModel();
+        $this->_jobsModel = new jobsModel();
+        $this->_PartsModel = new PartsModel();
+        $this->_jobactionsModel = new JobActionsModel();
     }
+    /**
+     * Method for handling single  user in the user.
+     * 
+     * @param $id used to get single row details of role
+     * 
+     * @return text; 
+     */
     public function getOne($id)
     {
         try {
-            $result = $this->usersModel->find($id);
+            $result = $this->_usersModel->find($id);
             if (!empty($result)) {
                 return $this->respond($result, 200);
             }
@@ -50,8 +79,12 @@ class UsersApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-
-    public function check_login()
+    /**
+     * Method for handling checklogin in the user.
+     * 
+     * @return text; 
+     */
+    public function checkLogin()
     {
 
         try {
@@ -72,7 +105,7 @@ class UsersApiController extends BaseController
             $data['username'] = $this->request->getVar('username');
             $data['password'] = $this->request->getVar('password');
 
-            $user = $this->usersModel->Where('is_active', 1)
+            $user = $this->_usersModel->Where('is_active', 1)
                 ->Where('username', $data['username'])
                 ->orWhere('email', $data['username'])
                 ->orWhere('phone', $data['username'])
@@ -95,7 +128,7 @@ class UsersApiController extends BaseController
                 'id' =>  $user['id'],
                 'first_name' =>  $user['first_name'],
                 'email' =>  $user['email'],
-                'isLoggedIn' => TRUE
+                'isLoggedIn' => true
             ];
             $session->set($ses_data);
 
@@ -107,21 +140,25 @@ class UsersApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-
+    /**
+     * Method for handling list in the user.
+     * 
+     * @return text; 
+     */
     public function list()
     {
-        $users = $this->usersModel->findAll();
+        $users = $this->_usersModel->findAll();
 
         $combinedData = [];
         helper('common_helper');
         foreach ($users as $user) {
             $user_id = $user['id'];
-            $this->usersRoleModel->where('user_id', $user_id); // Filter by user_id
-            $userRoles = $this->usersRoleModel->findAll();
+            $this->_usersRoleModel->where('user_id', $user_id); // Filter by user_id
+            $userRoles = $this->_usersRoleModel->findAll();
             $roleNames = [];
             foreach ($userRoles as $userRole) {
                 $role_id = $userRole['role_id'];
-                $role = $this->roleModel->find($role_id);
+                $role = $this->_roleModel->find($role_id);
                 if ($role) {
                     $roleNames[] = $role['name'];
                 }
@@ -132,7 +169,7 @@ class UsersApiController extends BaseController
 
             $formatted_date = $created_at->format('d-m-Y h:i A');
             $formatted_date_updated = $updated_at->format('d-m-Y h:i A');
-
+            $user['user_id'] = $user['id'];
             $user['created_at'] =   $formatted_date;
             $user['updated_at'] =   $formatted_date_updated;
 
@@ -142,7 +179,11 @@ class UsersApiController extends BaseController
         return $this->respond($combinedData, 200);
         // return $this->respond($result, 200);
     }
-
+    /**
+     * Method for handling add operation in the user.
+     * 
+     * @return text; 
+     */
     public function add()
     {
         try {
@@ -156,18 +197,21 @@ class UsersApiController extends BaseController
             if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);
             }
-            $this->usersModel->where('is_active', '1');
-            $this->usersModel->where('deleted_at IS NULL');
-            $this->usersModel->where('email', $this->request->getVar('email'));
-            $resultuser = $this->usersModel->findAll();
+            $this->_usersModel->where('is_active', '1');
+            $this->_usersModel->where('deleted_at IS NULL');
+            $this->_usersModel->where('email', $this->request->getVar('email'));
+            $resultuser = $this->_usersModel->findAll();
             if (!empty($resultuser)) {
                 return $this->fail(lang('Users.DuplicateEmail'));
             }
 
-            $this->usersModel->where('is_active', '1');
-            $this->usersModel->where('deleted_at IS NULL');
-            $this->usersModel->where('username', $this->request->getVar('username'));
-            $result = $this->usersModel->findAll();
+            $this->_usersModel->where('is_active', '1');
+            $this->_usersModel->where('deleted_at IS NULL');
+            $this->_usersModel->where(
+                'username', 
+                $this->request->getVar('username')
+            );
+            $result = $this->_usersModel->findAll();
             if (!empty($result)) {
                 return $this->fail(lang('Users.DuplicateUsername'));
             }
@@ -186,12 +230,15 @@ class UsersApiController extends BaseController
             $data['is_active']       = $isactive;
             $user_role['role_id'] =  $this->request->getVar('role_id');
 
-            $data = array_filter($data, fn ($value) => !is_null($value) && $value !== '');
+            $data = array_filter(
+                $data,
+                fn ($value) => !is_null($value) && $value !== ''
+            );
             $result['msg'] = lang('Users.UsersSuccessMsg');
 
-            $result['id'] = $this->usersModel->insert($data, true);
+            $result['id'] = $this->_usersModel->insert($data, true);
             $user_role['user_id'] = $result['id'];
-            $result['role_id'] = $this->usersRoleModel->insert($user_role, true);
+            $result['role_id'] = $this->_usersRoleModel->insert($user_role, true);
 
             return $this->respond($result, 200);
         } catch (\Exception $e) {
@@ -199,7 +246,13 @@ class UsersApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-
+    /**
+     * Method for handling list in the permission.
+     * 
+     * @param $id is  update id for user
+     * 
+     * @return text; 
+     */
     public function update($id)
     {
 
@@ -215,21 +268,24 @@ class UsersApiController extends BaseController
             }
 
            
-            $this->usersModel->where('id !=', $id);
-            $this->usersModel->where('is_active', '1');
-            $this->usersModel->where('deleted_at IS NULL');
-            $this->usersModel->where('email', $this->request->getVar('email'));
-            $resultuser = $this->usersModel->findAll();
+            $this->_usersModel->where('id !=', $id);
+            $this->_usersModel->where('is_active', '1');
+            $this->_usersModel->where('deleted_at IS NULL');
+            $this->_usersModel->where('email', $this->request->getVar('email'));
+            $resultuser = $this->_usersModel->findAll();
             if (!empty($resultuser)) {
                 return $this->fail(lang('Users.DuplicateEmail'));
             }
 
             
-            $this->usersModel->where('id !=', $id);
-            $this->usersModel->where('is_active', '1');
-            $this->usersModel->where('deleted_at IS NULL');
-            $this->usersModel->where('username', $this->request->getVar('username'));
-            $result = $this->usersModel->findAll();
+            $this->_usersModel->where('id !=', $id);
+            $this->_usersModel->where('is_active', '1');
+            $this->_usersModel->where('deleted_at IS NULL');
+            $this->_usersModel->where(
+                'username',
+                $this->request->getVar('username')
+            );
+            $result = $this->_usersModel->findAll();
             if (!empty($result)) {
                 return $this->fail(lang('Users.DuplicateUsername'));
             }
@@ -249,13 +305,16 @@ class UsersApiController extends BaseController
             $data['is_active']       = $isactive;
             $user_role['role_id'] =  $this->request->getVar('role_id');
 
-            $data = array_filter($data, fn ($value) => !is_null($value) && $value !== '');
-
+            $data = array_filter(
+                $data,
+                fn($value) => !is_null($value) && $value !== ''
+            );
+            
             $user_role['user_id'] = $id;
-            $this->usersRoleModel->where('user_id', $id)->delete();
-            $result['role_id'] = $this->usersRoleModel->insert($user_role, true);
+            $this->_usersRoleModel->where('user_id', $id)->delete();
+            $result['role_id'] = $this->_usersRoleModel->insert($user_role, true);
 
-            $result['id'] = $this->usersModel->update($id, $data);
+            $result['id'] = $this->_usersModel->update($id, $data);
             $result['msg'] = lang('Users.UsersUpdateMsg');
             return $this->respond($result, 200);
         } catch (\Exception $e) {
@@ -263,7 +322,12 @@ class UsersApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-    public function update_is_active()
+    /**
+     * Method for handling list in the permission.
+     * 
+     * @return text; 
+     */
+    public function updateIsActive()
     {
         try {
             $id = $this->request->getVar('id');
@@ -274,13 +338,20 @@ class UsersApiController extends BaseController
                 $data['is_active'] = '1';
             }
             $result['msg'] =  lang('Users.StatusUpdateMsg');
-            $result['id'] = $this->usersModel->update($id, $data);
+            $result['id'] = $this->_usersModel->update($id, $data);
             return $this->respond($result, 200);
         } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);
         }
     }
+    /**
+     * Method for handling list in the permission.
+     * 
+     * @param $id for delete user
+     * 
+     * @return text; 
+     */
     public function delete($id)
     {
 
@@ -291,7 +362,7 @@ class UsersApiController extends BaseController
                 return $this->fail('Please provide valid id', 400, true);
             }
 
-            $result['is_deleted'] = $this->usersModel->delete($id);
+            $result['is_deleted'] = $this->_usersModel->delete($id);
             $result['msg'] = "Users deleted successfully!";
             return $this->respond($result, 200);
         } catch (\Exception $e) {
@@ -299,75 +370,130 @@ class UsersApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-
-    public function get_permission_names()
+    /**
+     * Method for handling list in the permission.
+     * 
+     * @return text; 
+     */
+    public function getPermissionNames()
     {
         $id = $this->request->getVar('role_id');
-        $this->rolespermissionModel->where('role_id', $id);
-        $result = $this->rolespermissionModel->findAll();
+        $this->_rolespermissionModel->where('role_id', $id);
+        $result = $this->_rolespermissionModel->findAll();
         return $this->respond($result, 200);
     }
-
-    public  function get_role_names()
+    /**
+     * Method for handling list in the permission.
+     * 
+     * @return text; 
+     */
+    public  function getRoleNames()
     {
         $id = $this->request->getVar('user_id');
 
 
-        $result['role_id']  = $this->usersRoleModel->Where('user_id', $id)
+        $result['role_id']  = $this->_usersRoleModel->Where('user_id', $id)
             ->first();
 
         if (isset($result['role_id']) && (!empty($result['role_id']))) {
-            $result['role_name']  = $this->roleModel->Where('id', $result['role_id']['role_id'])
+            $result['role_name']  = $this->_roleModel->Where(
+                'id',
+                $result['role_id']['role_id']
+            )
                 ->first();
         }
 
         return $this->respond($result, 200);
-    }
-
-    public function get_all_count()
+    } 
+    /**
+     * Method for handling list in the permission.
+     * 
+     * @return text; 
+     */
+    public function getAllCount()
     {
         try {
-            if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
-                $from_date = $this->request->getVar('from_date');
-                $f_date = $this->change_date_format($from_date) . " 00:00:00";
-                $to_date = $this->request->getVar('to_date');
-                $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
-                $this->jobactionsModel->where("start_time >= '" . $f_date . "'", null, false);
-                $this->jobactionsModel->where("end_time <= '" . $t_date . "'", null, false);
+            if ($this->request->getVar('from_date')) {
+                if ($this->request->getVar('to_date')) {
+                    $from_date = $this->request->getVar('from_date');
+                    $f_date = $this->_changeDateFormat($from_date) . " 00:00:00";
+                    $to_date = $this->request->getVar('to_date');
+                    $t_date = $this->_changeDateFormat(($to_date)) . " 23:59:59";
+                    $this->_jobactionsModel->where(
+                        "start_time >= '" . $f_date . "'",
+                        null, 
+                        false
+                    );
+                    $this->_jobactionsModel->where(
+                        "end_time <= '" . $t_date . "'",
+                        null,
+                        false
+                    );
+                }
             }
-            $this->jobactionsModel->where('end_time IS NOT NULL', null, false);
-            $this->jobactionsModel->join('parts', 'job_actions.part_id = parts.id');
-            $results_complted = $this->jobactionsModel->findAll();
+            $this->_jobactionsModel->where('end_time IS NOT NULL', null, false);
+            $this->_jobactionsModel->join('parts', 'job_actions.part_id = parts.id');
+            $results_complted = $this->_jobactionsModel->findAll();
             $result['total_completed_jobs'] = count($results_complted);
 
 
-            $result_left = $this->jobactionsModel->findAll();
+            $result_left = $this->_jobactionsModel->findAll();
 
-            $result_c = $this->jobactionsModel
-                ->select('parts.*,job_actions.side,job_actions.part_id,job_actions.id,job_actions.start_time,job_actions.end_time')
+            $result_c = $this->_jobactionsModel
+                ->select(
+                    'parts.*,
+                    job_actions.side,
+                    job_actions.part_id,
+                    job_actions.id,
+                    job_actions.start_time,
+                    job_actions.end_time'
+                )
                 ->join('parts', 'job_actions.part_id = parts.id')
                 ->orderBy('job_actions.id', 'DESC')
                 ->limit(10)
                 ->get()
                 ->getResult();;
             $result['completed_job'] = $result_c;
-
-
-
-            if ($this->request->getVar('from_date') && $this->request->getVar('to_date')) {
-                $from_date = $this->request->getVar('from_date');
-                $f_date = $this->change_date_format($from_date) . " 00:00:00";
-                $to_date = $this->request->getVar('to_date');
-                $t_date = $this->change_date_format(($to_date)) . " 23:59:59";
-                $this->jobactionsModel->where("start_time >= '" . $f_date . "'", null, false);
-                $this->jobactionsModel->where("end_time <= '" . $t_date . "'", null, false);
+            if ($this->request->getVar('from_date')) { 
+                if ($this->request->getVar('to_date')) {
+                    $from_date = $this->request->getVar('from_date');
+                    $f_date = $this->_changeDateFormat($from_date) . " 00:00:00";
+                    $to_date = $this->request->getVar('to_date');
+                    $t_date = $this->_changeDateFormat(($to_date)) . " 23:59:59";
+                    $this->_jobactionsModel->where(
+                        "start_time >= '" . $f_date . "'",
+                        null,
+                        false
+                    );
+                    $this->_jobactionsModel->where(
+                        "end_time <= '" . $t_date . "'",
+                        null,
+                        false
+                    );
+                }
             }
 
-            $this->jobactionsModel->select("AVG(TIMESTAMPDIFF(MINUTE, job_actions.start_time, job_actions.end_time)) as average_time", false);
-            $this->jobactionsModel->where('end_time IS NOT NULL', null, false);
+            $this->_jobactionsModel->select(
+                "AVG(
+                    TIMESTAMPDIFF(
+                        MINUTE, job_actions.start_time, job_actions.end_time
+                        )
+                    ) as average_time",
+                false
+            );
+            $this->_jobactionsModel->select(
+                "AVG(
+                    TIMESTAMPDIFF(
+                        MINUTE, job_actions.start_time, job_actions.end_time
+                        )
+                    ) as average_time",
+                false
+            );
+            
+            $this->_jobactionsModel->where('end_time IS NOT NULL', null, false);
            
-            $this->jobactionsModel->join('parts', 'job_actions.part_id=parts.id');
-            $av_result = $this->jobactionsModel->findAll();
+            $this->_jobactionsModel->join('parts', 'job_actions.part_id=parts.id');
+            $av_result = $this->_jobactionsModel->findAll();
             $totalTimeSum = 0;
             $totalCount = count($av_result);
             foreach ($av_result as $record) {
@@ -383,7 +509,14 @@ class UsersApiController extends BaseController
         } catch (Exception $e) {
         }
     }
-    private function change_date_format($str)
+    /**
+     * Method for handling list in the permission.
+     * 
+     * @param $str is string which pass as date \
+     * 
+     * @return text; 
+     */
+    private function _changeDateFormat($str)
     {
         $date_str = explode("/", $str);
         return $date_str[2] . "-" . $date_str[0] . "-" . $date_str[1];

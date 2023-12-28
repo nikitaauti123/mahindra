@@ -855,16 +855,14 @@ class JobsApiController extends BaseController
                 </button>
                 </div>
                 <div class="modal-body">
-                <div class="row">
-                    <div class="col-12">';
+                    <div class="row">
+                        <div class="col-12">';
 
                 helper('common');
 
                 $poup_html .= display_pins($pins_detail->pins);
 
-                $poup_html .= '<div class="arrow-center">
-                                <i class="fa fa-arrow-alt-circle-up"></i>
-                            </div>
+                $poup_html .= '
                         </div>
                     </div>
                 </div>

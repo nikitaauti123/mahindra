@@ -116,6 +116,9 @@ if(!function_exists('display_pins')) {
      */
     function display_pins($pins_details, $class="") {
         $html = '<div class="pins-display-wrapper '.$class.' ">';
+        $html .= '<div class="arrow-center">
+                    <i>sd</i>
+                </div>';
         $html .= '<div class="pins-display no-click">';
 
         $pin_states = json_decode($pins_details, true);
@@ -156,6 +159,9 @@ if(!function_exists('display_pins')) {
         }
         
         $html .= '</div>';
+        $html .= '<div class="arrow-center">
+                    <div class="front">Front</div>
+                </div>';
 
         return $html;
     }

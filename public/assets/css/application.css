@@ -177,7 +177,7 @@ body .os-viewport.os-viewport-native-scrollbars-overlaid {
 }
 
 .pins-display {
-    width: 1110px;
+    width: calc(100vw - 180px);
     overflow: hidden;
     margin: 0 auto;
     padding: 10px 10px 10px 17px;
@@ -442,7 +442,7 @@ input#cb-switch {
 
 .arrow-center {
     margin: 0 auto;
-    width: 1110px;
+    width: calc(100vw - 180px);
     text-align: center;
     background: #fff;
     padding: 10px;
@@ -703,7 +703,6 @@ body .navbar-dark .navbar-nav .nav-link.active {
     }
 }
 
-
 .status_message {
     font-weight: bold;
 }
@@ -726,11 +725,39 @@ body .navbar-dark .navbar-nav .nav-link.active {
     width: calc((100vw - 250px) / 28 );
     height: calc((100vw - 250px) / 28 );
     line-height: calc((100vw - 250px) / 28 );
-    font-size: calc(100vw / 80);
+    font-size: calc(100vw / 85);
 }
 
 .tv_screen .x-axis-line:after {
     height: calc((100vw - 250px) / 28 + 5px );
+}
+
+.pins-display .pin-box {
+    float: left;
+    width: calc((100vw - 340px) / 28 );
+    height: calc((100vw - 340px) / 28 );
+    line-height: calc((100vw - 340px) / 28 );
+    font-size: calc(100vw / 85);
+}
+
+.x-axis-line:after {
+    height: calc((100vw - 340px) / 28 + 5px );
+}
+
+.modal-content .pins-display .pin-box {
+    float: left;
+    width: calc((100vw - 485px) / 28 );
+    height: calc((100vw - 485px) / 28 );
+    line-height: calc((100vw - 485px) / 28 );
+    font-size: calc(100vw / 100);
+}
+
+.modal-content  .x-axis-line:after {
+    height: calc((100vw - 485px) / 28 + 5px );
+}
+
+.modal-content .pins-display, .modal-content .arrow-center {
+    width: calc(100vw - 310px);
 }
 
 .front {

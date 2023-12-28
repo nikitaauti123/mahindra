@@ -63,8 +63,8 @@ class CronController extends BaseController
         $this->jobActionModel->join('parts', 'job_actions.part_id = parts.id');
         $this->jobActionModel->join('jobs', 'job_actions.id = jobs.job_action_id');
        
-         $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
-        // $this->jobActionModel->where('job_actions.mail_send', '0');
+        $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
+        $this->jobActionModel->where('job_actions.mail_send', '0');
   
         $result = $this->jobActionModel->findAll();
         foreach ($result as $key => $result_job) {       

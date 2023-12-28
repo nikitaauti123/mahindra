@@ -817,9 +817,7 @@ class JobsApiController extends BaseController
 
                     $result[$key]['image_url'] = '
                     <button type="button" class="btn btn-primary" data-toggle="modal"
-                     data-target="#compl">
-           Check Image
-          </button>
+                     data-target="#compl">View</button>
     
           <!-- Modal -->
           <div class="modal fade" id="compl" tabindex="-1" 

@@ -106,3 +106,57 @@ if (!function_exists('send_email')) {
         }
     }
 }
+if(!function_exists('display_pins')) {
+    /**
+     * Display pins
+     * 
+     * @param String $pins_details Object should have each pin current status e.g '{"A":2, "B":0, "C":1}'
+     * 
+     * @return String html
+     */
+    function display_pins($pins_details, $class="") {
+        $html = '<div class="pins-display-wrapper '.$class.' ">';
+        $html .= '<div class="pins-display no-click">';
+
+        $pin_states = json_decode($pins_details, true);
+        
+        $col_array = array_merge(range('A', 'Z'), ['AA', 'AB']);
+        for ($i = 1; $i <= 14; $i++) {
+            for ($j = 0; $j < count($col_array); $j++) {
+
+                $pin_id = $col_array[$j] . $i;
+                
+                $pin_class = 'pin-box gray-pin';
+
+                if (isset($pin_states[$pin_id])) {
+                    $pin_value = $pin_states[$pin_id];    
+                    if ($pin_value == 0) {
+                        $pin_class = 'pin-box green-pin';
+                    } elseif ($pin_value == 1) {
+                        $pin_class = 'pin-box red-pin';
+                    } elseif ($pin_value == 2) {
+                        $pin_class = 'pin-box orange-pin';
+                    } elseif ($pin_value == 3) {
+                        $pin_class = 'pin-box gray-pin';
+                    }
+                } 
+                
+                $html .= '<div id="' . $pin_id . '" title="' . $pin_id . '" class="' . $pin_class . '">' 
+                . $pin_id . '</div>';
+
+                if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
+                    $html .= '<div class="x-axis-line"></div>';
+                }
+            }
+
+            // Add y-axis line after every 8 rows
+            if (($i + 1) % 8 == 0) {
+                $html .= '<div class="y-axis-line"></div>';
+            }
+        }
+        
+        $html .= '</div>';
+
+        return $html;
+    }
+}

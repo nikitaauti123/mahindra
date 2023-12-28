@@ -848,7 +848,6 @@ function websocket_call(data, side) {
             change_pin_colors = false;
         }
 
-
         var startTime = new Date().getTime();
         if(change_pin_colors == true) {
             for (let i in pins_data) {

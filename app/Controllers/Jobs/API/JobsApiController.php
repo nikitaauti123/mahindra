@@ -44,9 +44,9 @@ class JobsApiController extends BaseController
     private $_jobshistoryModel;
     private $_JobActionsModel;
     private $_phpspreadsheet;
-        /**
-         * Constructor for the JobsApiController class.
-         */
+    /**
+     * Constructor for the JobsApiController class.
+     */
     public function __construct()
     {
         $this->_jobsModel = new JobsModel();
@@ -736,8 +736,7 @@ class JobsApiController extends BaseController
                 $this->request->getVar('part_name')
             );
         }
-        
-      
+    
         if (!empty($this->request->getVar('part_no'))) {
             $this->_JobActionsModel->where(
                 'parts.part_no',
@@ -768,6 +767,7 @@ class JobsApiController extends BaseController
         $result =  $this->_JobActionsModel
             ->select(
                 'parts.*,
+                job_actions.id as job_action_id,
                 job_actions.part_id,
                 job_actions.side,
                 job_actions.image_url,
@@ -780,7 +780,13 @@ class JobsApiController extends BaseController
                 job_actions.updated_by'
             )   
             ->join('parts', 'job_actions.part_id = parts.id')
+            ->where(' job_actions.end_time IS NOT NULL')
             ->findAll();
+ 
+                /* helper('debug');
+                last_q();
+                exit("sss"); */
+
         foreach ($result as $key => $result_arr) {
             if (isset($result_arr['start_time'])) {
                 $result[$key]['start_time'] = date(
@@ -801,110 +807,78 @@ class JobsApiController extends BaseController
             $timeDiffSeconds = $endTime - $startTime;
             $totalTime = gmdate('H:i:s', $timeDiffSeconds);
             $result[$key]['total_time'] = $totalTime;
+            $result[$key]['image_url'] = '-'; 
 
             if ($result_arr['part_id'] == '') {
-
                 $result[$key]['image_url'] = '-';
             } else {
                 ///  echo "not";
                 $pins_detail = $this->_jobsModel
                     ->select('jobs.pins')
-                    ->where('jobs.part_id', $result_arr['part_id'])
+                    ->where('jobs.job_action_id', $result_arr['job_action_id'])
                     ->get()
                     ->getFirstRow();
                 if ($pins_detail !== null) {
-                    $pins = $pins_detail->pins;
+                    $result[$key]['image_url'] = $this->display_popup($key, $pins_detail);
+                    $result[$key]['json'] =  $pins_detail;
+                }
+            }
+        }
 
-                    $result[$key]['image_url'] = '
-                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                     data-target="#compl">View</button>
-    
-          <!-- Modal -->
-          <div class="modal fade" id="compl" tabindex="-1" 
-          role="dialog" aria-labelledby="complLabel" aria-hidden="true">
+        return $this->respond($result, 200);
+    }
+
+    /**
+     *  Display pins on popup
+     * 
+     * @param String $key           key
+     * @param Object $pins_detail  pins data
+     * 
+     * @return String html
+     */
+    private function display_popup($key, $pins_detail) 
+    {
+        $poup_html = 
+        '<button type="button" class="btn btn-primary" data-toggle="modal"
+            data-target="#compl-'.$key.'">View</button>
+        <!-- Modal -->
+        <div class="modal fade" id="compl-'.$key.'" tabindex="-1" 
+        role="dialog" aria-labelledby="complLabel" aria-hidden="true">
             <div class="modal-dialog
-              modal-dialog-centered" role="document" style="max-width: 80%;">
-              <div class="modal-content mx-auto" >
+            modal-dialog-centered" role="document" style="max-width: 80%;">
+            <div class="modal-content mx-auto" >
                 <div class="modal-header">
-                  <h5 class="modal-title" id="complLabel">Pins</h5>
-                  <button type="button" class="close" 
-                  data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="complLabel">Pins</h5>
+                <button type="button" class="close" 
+                data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                  </button>
+                </button>
                 </div>
                 <div class="modal-body">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="pins-display-wrapper">
-                            <div class="pins-display no-click">
-            ';
+                    <div class="col-12">';
 
-                    $pin_states = $pins_detail->pins;
+                helper('common');
 
-                    $pin_states = json_decode($pin_states, true);
+                $poup_html .= display_pins($pins_detail->pins);
 
-                    $alphabets = 'A B C D E F G H I J K L M N O P Q R S T U V W ' .
-                    'X Y Z AA AB';
-                    $col_array = explode(" ", $alphabets);
-
-                    for ($i = 1; $i <= 14; $i++) {
-                        for ($j = 0; $j < count($col_array); $j++) {
-                            $pin_id = $col_array[$j] . $i;
-                            //print_r($pin_states);
-                            // Check if pin_id exists in the array
-                            if (isset($pin_states[$pin_id])) {
-
-                                $pin_value = $pin_states[$pin_id];
-                                $pin_class = ($pin_value == 1) 
-                                ? 'pin-box green-pin' : 'pin-box red-pin';
-                            } else {
-                                $pin_class = 'pin-box gray-pin';
-                            }
-
-                            // print_r($pin_class);
-                            // Output the HTML directly
-                            $result[$key]['image_url'] .= '<div id="' . $pin_id . 
-                            '" ' .'title="' . $pin_id . '" ' .
-                            'class="' . $pin_class . '">' . $pin_id . '</div>';
-
-                            if (($j + 1) % 14 == 0 && ($j / 14) % 2 == 0) {
-                                $result[$key]['image_url'] .= '<div
-                                    class="x-axis-line"></div>';
-                            }
-                        }
-
-                        // Add y-axis line after every 8 rows
-                        if (($i + 1) % 8 == 0) {
-                            $result[$key]['image_url'] .= '<div
-                             class="y-axis-line"></div>';
-                        }
-                    }
-
-                    $result[$key]['image_url'] .= ' </div>
-                            <div class="arrow-center">
+                $poup_html .= '<div class="arrow-center">
                                 <i class="fa fa-arrow-alt-circle-up"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-                            <!-- Your existing pins display HTML here -->
-                       
-              
-                <div class="modal-footer">
+            <!-- Your existing pins display HTML here -->
+            <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" 
                   data-dismiss="modal">Close</button>
                  </div>
               </div>
             </div>
-          </div>';
+        </div>';
 
-                }
-            }
-        }
-
-        return $this->respond($result, 200);
+        return $poup_html;
     }
 
     /**

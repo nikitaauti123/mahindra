@@ -64,8 +64,7 @@ class CronController extends BaseController
         $this->jobActionModel->select('parts.*,jobs.job_action_id,jobs.pins,job_actions.id as job_action_id,job_actions.part_id,job_actions.side,job_actions.image_url,job_actions.wrong_pins,job_actions.correct_pins,job_actions.detail_pins,job_actions.start_time,job_actions.end_time,job_actions.created_by,job_actions.updated_by, parts.pins as total_pins');
         $this->jobActionModel->join('parts', 'job_actions.part_id = parts.id');
         $this->jobActionModel->join('jobs', 'job_actions.id = jobs.job_action_id');
-       
-         $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
+        // $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
         // $this->jobActionModel->where('job_actions.mail_send', '0');
   
         $result = $this->jobActionModel->findAll();
@@ -249,23 +248,24 @@ Do no reply on this email, this is an automated email.
                 margin: 3px 0px;
             }
             </style>';
-        // print_r($body);exit;
-     
-       $htmlContent = $body;
-       $pdf_data = array();
-       $date = date('Y-m-d H:i:s');
-       $from_date =  date('d_m_Y', strtotime($this->request->getVar('from_date')));
-       $file_name = "cron_jobs";
-       $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
-       $pdf_data['title'] = $file_name;
-       $pdf_data['part_name'] = $result_job['part_name'];
-       //$pdf_data['title'] =  $file_name . '_' . $from_date;
-       $pdf_data['pdfdata'] = $htmlContent;
-       $pdf_data['pdfFilename']= 'writable/uploads/'.date('Y-m-d').'/'.$pdf_data['part_name'].'.pdf';    
-       $this->_phpspreadsheet->set_pdf($pdf_data);
+            $htmlContent = $body;
+            $pdf_data = array();
+            $date = date('Y-m-d H:i:s');
+            $from_date =  date('d_m_Y', strtotime($this->request->getVar('from_date')));
+            $file_name = "cron_jobs";
+            $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
+            $pdf_data['title'] = $file_name;
+            $pdf_data['part_name'] = $result_job['part_name'];
+            //$pdf_data['title'] =  $file_name . '_' . $from_date;
+            $pdf_data['pdfdata'] = $htmlContent;
+            $pdf_data['pdfFilename']= 'writable/uploads/'.date('Y-m-d').'/'.$pdf_data['part_name'].'.pdf';    
+            $this->_phpspreadsheet->set_pdf($pdf_data);
+            $attachment = 'writable/uploads/'.date('Y-m-d').'/sandesh.pdf';
 
-       $attachment = 'writable/uploads/'.date('Y-m-d').'/'.$pdf_data['part_name'].'.pdf';
-            if (send_email(env('To_Email'), 'Jobs Details', $body, $attachment)) {
+       // print_r($attachment);exit;
+      // $attachment = 'writable/uploads/'.date('Y-m-d').'/'.$pdf_data['part_name'].'.pdf';
+    //    print_r( $pdf_data['pdfFilename']);exit;
+            if (send_email(env('To_Email'), 'Jobs Details', '',  $pdf_data['pdfFilename'])) {
                 $data['mail_send'] =  '1';
                 $id = $result_job['job_action_id'];
                 $this->jobActionModel->update($id, $data);

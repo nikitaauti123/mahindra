@@ -1266,6 +1266,7 @@ class JobsApiController extends BaseController
     public function sendPartDetails($id)
     {
         try{
+            //$id=71;
             $result_job = $this->_JobActionsModel
                 ->select('parts.*,
                 job_actions.id,
@@ -1283,6 +1284,7 @@ class JobsApiController extends BaseController
                 ->where('job_actions.id', $id)
                 ->get()
                 ->getFirstRow();
+                
                 $pins_detail = $this->_jobsModel
                     ->select('jobs.pins')
                     ->where('jobs.part_id', $result_job->part_id)
@@ -1485,10 +1487,10 @@ class JobsApiController extends BaseController
         margin: 3px 0px;
     }
     </style>';
-    // print_r($body);exit;
-            if (send_email(env('To_Email'), 'Jobs Details', $body)) {
+    //  print_r($body);exit;
+            if (send_email(env('To_Email'), 'Jobs Details', $body,'')) {
                     $result['msg'] = lang('Jobs.JobDetailMailSuccess');
-            }else{
+            } else {
                 $result['msg'] = 'mail failed';
         
             }

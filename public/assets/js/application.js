@@ -848,7 +848,6 @@ function websocket_call(data, side) {
             change_pin_colors = false;
         }
 
-
         var startTime = new Date().getTime();
         if(change_pin_colors == true) {
             for (let i in pins_data) {
@@ -890,9 +889,9 @@ function websocket_call(data, side) {
         
 
         if(jsonData.part_ok_status == true) {
-            $(".status_message").html("<div class='alert alert-success'>Current job status :: Ok</div>");
+            $(".status_message").html("<div class='alert alert-success'>Status :: Ok</div>");
         } else {
-            $(".status_message").html("<div class='alert alert-danger'>Current job status :: Not Ok</div>");
+            $(".status_message").html("<div class='alert alert-danger'>Status :: Not Ok</div>");
         }
     }
 

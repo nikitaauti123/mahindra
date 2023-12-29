@@ -20,6 +20,9 @@
         <li class="nav-item d-none d-sm-inline-block">
             <div class="loader"></div>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <div class="col-md-12 text-center"><div class="status_message"></div></div>
+        </li>
     </ul>
 
     <!-- Right navbar links -->

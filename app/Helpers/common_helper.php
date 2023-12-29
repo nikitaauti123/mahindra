@@ -85,7 +85,7 @@ if (!function_exists('websocket_js_code')) {
 
 
 if (!function_exists('send_email')) {
-    function send_email($to, $subject, $message)
+    function send_email($to, $subject, $message,$attachment)
     {
         $email = \Config\Services::email();
         $init =  $email->initialize([
@@ -99,6 +99,7 @@ if (!function_exists('send_email')) {
         $email->setTo($to);
         $email->setSubject($subject);
         $email->setMessage($message);
+        $email->attach($attachment);
         if ($email->send()) {
             return true;
         } else {

@@ -1267,19 +1267,18 @@ class JobsApiController extends BaseController
     {
         try{
             $result_job = $this->_JobActionsModel
-                ->select(
-                    'parts.*',
-                    'job_actions.id',
-                    'job_actions.part_id',
-                    'job_actions.image_url',
-                    'job_actions.part_id',
-                    'job_actions.side',
-                    'job_actions.start_time',
-                    'job_actions.end_time',
-                    'job_actions.correct_pins',
-                    'job_actions.wrong_pins',
-                    'parts.pins as total_pins',
-                )            
+                ->select('parts.*,
+                job_actions.id,
+                job_actions.part_id,
+                job_actions.image_url,
+                job_actions.part_id,
+                job_actions.side,
+                job_actions.start_time,
+                job_actions.end_time,
+                job_actions.correct_pins,
+                job_actions.wrong_pins,
+                parts.pins as total_pins
+                ')
                 ->join('parts', 'parts.id = job_actions.part_id', 'left') 
                 ->where('job_actions.id', $id)
                 ->get()
@@ -1289,6 +1288,7 @@ class JobsApiController extends BaseController
                     ->where('jobs.part_id', $result_job->part_id)
                     ->get()
                     ->getFirstRow();
+                  //  print_r($result_job);exit;
                 $array = explode(',', $result_job->total_pins);
                 $countedValues = array_count_values($array);
                 $body = '<p>Dear Sir/Madam,</p>';
@@ -1485,8 +1485,12 @@ class JobsApiController extends BaseController
         margin: 3px 0px;
     }
     </style>';
+    // print_r($body);exit;
             if (send_email(env('To_Email'), 'Jobs Details', $body)) {
                     $result['msg'] = lang('Jobs.JobDetailMailSuccess');
+            }else{
+                $result['msg'] = 'mail failed';
+        
             }
        
             return $this->respond($result, 200);

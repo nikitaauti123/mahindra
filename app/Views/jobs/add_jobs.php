@@ -1,6 +1,20 @@
-<?= $this->extend('theme-default') ?>
+<?php
 
-<?= $this->section('content') ?>
+/**  
+ * This is view file for add jobs
+ * 
+ * PHP version 7
+ *
+ * @category JobsApiController_Class
+ * @package  JobsApiController_Class
+ * @author   Author <author@domain.com>
+ * @license  GPL License
+ * @link     https://www.quicsolv.com/
+ */
+ echo $this->extend('theme-default'); ?>
+
+
+<?php  echo $this->section('content') ?>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -12,8 +26,12 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#"><?php echo lang('Left-sidebar.Menu.Home'); ?></a></li>
-                            <li class="breadcrumb-item active"><?php echo lang('Jobs.Add'); ?></li>
+                            <li class="breadcrumb-item"><a href="#">
+                                <?php echo lang('Left-sidebar.Menu.Home'); ?>
+                        </a></li>
+                            <li class="breadcrumb-item active">
+                                <?php echo lang('Jobs.Add'); ?>
+                        </li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->

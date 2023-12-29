@@ -165,14 +165,28 @@ class Phpspreadsheet
 
   function set_pdf($pdf_data)
   {
+   
+    if($pdf_data['title'] =='cron_jobs'){
+      
+      $pdf = new \Mpdf\Mpdf([ 'tempDir'=> __DIR__."/../../writable/tmp", 'mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial', 'allow_output_buffering' => true, 'allow_remote_images' => true]);
+      ob_end_clean();
+      $pdf->WriteHTML($pdf_data['pdfdata']);
+      $pdfFilename = $pdf_data['pdfFilename'];
+      if (!file_exists(dirname($pdfFilename))) {
+          mkdir(dirname($pdfFilename), 0777, true); // Create the directory if it doesn't exist
+      }     
+      $pdf->output($pdfFilename, 'F'); // Save the PDF file
+     
+    }else{
     $pdf = new \Mpdf\Mpdf([ 'tempDir'=> __DIR__."/../../writable/tmp", 'mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial', 'allow_output_buffering' => true, 'allow_remote_images' => true]);
     ob_end_clean();
     $pdf->SetFooter('{PAGENO}');
     $pdf->WriteHTML($pdf_data['pdfdata']);
-    $pdfData = $pdf->output($pdf_data['title'] . '.pdf', 'D'); // Generate PDF content
+    $pdfData = $pdf->output($pdf_data['title'] . '.pdf', 'F'); // Generate PDF content
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment; filename="' . $pdf_data['title'] . '.pdf"');
     echo $pdfData;
     exit;
+    }
   }
 }

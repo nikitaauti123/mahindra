@@ -168,15 +168,27 @@ class Phpspreadsheet
    
     if($pdf_data['title'] =='cron_jobs'){
       
-      $pdf = new \Mpdf\Mpdf([ 'tempDir'=> __DIR__."/../../writable/tmp", 'mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial', 'allow_output_buffering' => true, 'allow_remote_images' => true]);
-      ob_end_clean();
+      $pdf = new \Mpdf\Mpdf([
+        'tempDir' => __DIR__."/../../writable/tmp",
+    'mode' => 'utf-8',
+    'format' => [210, 297], // Width and height in millimeters
+    'default_font' => 'Arial',
+    'allow_output_buffering' => true,
+    'allow_remote_images' => true,
+    'autoScriptToLang' => true,
+    'autoLangToFont' => true,
+    ]);
+    
+    // $pdf->WriteHTML($stylesheet,1);
       $pdf->WriteHTML($pdf_data['pdfdata']);
       $pdfFilename = $pdf_data['pdfFilename'];
       if (!file_exists(dirname($pdfFilename))) {
           mkdir(dirname($pdfFilename), 0777, true); // Create the directory if it doesn't exist
       }     
-      $pdf->output($pdfFilename, 'F'); // Save the PDF file
-     
+      ob_end_clean();
+      
+      $output_path = $pdf->output($pdfFilename, 'F'); // Save the PDF file
+     return $pdfFilename ;
     }else{
     $pdf = new \Mpdf\Mpdf([ 'tempDir'=> __DIR__."/../../writable/tmp", 'mode' => 'utf-8', 'format' => 'A4', 'default_font' => 'Arial', 'allow_output_buffering' => true, 'allow_remote_images' => true]);
     ob_end_clean();

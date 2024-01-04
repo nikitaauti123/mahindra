@@ -80,25 +80,6 @@ class CronController extends BaseController
         ');
         $this->jobActionModel->join('parts', 'job_actions.part_id = parts.id');
         $this->jobActionModel->join('jobs', 'job_actions.id = jobs.job_action_id');
-<<<<<<< HEAD
-        // $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
-        // $this->jobActionModel->where('job_actions.mail_send', '0');
-  
-        $result = $this->jobActionModel->findAll();
-        foreach ($result as $key => $result_job) {       
-                    $details_pins = $result_job['pins'];
-                    $array = explode(',', $result_job['total_pins']);
-                    $countedValues = array_count_values($array);           
-                    $body = '<p>Dear Sir/Madam,</p>';
-                    $body .= '<p>Here are the job details:</p>';
-                    // Start of the table
-                    $body .= '<table border="1">';
-            $totalTime = strtotime($result_job['end_time'])
-             - strtotime($result_job['start_time']);
-            if ($result_job['correct_pins'] != 0 && $result_job['total_pins'] != 0) {
-                $correct_pins_count = ($result_job['correct_pins'] / 
-                $result_job['total_pins']) * 100;
-=======
         $this->jobActionModel->where('job_actions.end_time IS NOT NULL');
         $this->jobActionModel->where('job_actions.mail_send', '0');
         $result = $this->jobActionModel->findAll(1);
@@ -114,7 +95,6 @@ class CronController extends BaseController
             
             if (!empty($result_job['correct_pins']) && !empty($total_pin_count)) {
                 $correct_pins_count = ((int)$result_job['correct_pins'] / (int)$total_pin_count) * 100;
->>>>>>> bbda8fed109f8e9262a71485bb88575ed0219b43
             } else {
                 $correct_pins_count = 000; // or handle it in a way that makes sense for your application
             }          
@@ -175,46 +155,50 @@ class CronController extends BaseController
             }
             .pins-display .pin-box {
                 float: left;
-                width: 26px;
-                height: 26px;
-                margin: 2px;
+                width: 22px;
+                height: 20px;
+                // margin: 1px;
                 text-align: center;
                 background-color: #ffffff;
                 line-height: 26px;
-                font-size: 9px;
+                font-size: 6px;
                 cursor: pointer;
-                border-radius: 50%;
+                 border-radius: 50%;
+                 
                 color: rgba(255, 255, 255, 1);
             }        
             table, th, td {
                 border: 1px solid black;
                 border-collapse: collapse;
             }
-            .front {
-                font-size: 15px;
-                font-weight: bold;
-                color: red;
-                position: relative;
-            }
+           
             .green_color{
                 background: #9add9a;
             }
+
+           
             .pins-display {
+                width: 640px;
                 overflow: hidden;
                 position: relative;
                 background-color: #FFF;
             }
             .pins-display-wrapper {
                 overflow: auto;
+                width: 100%;
                 position: relative;
             }
+            
             .arrow-center {
+              
+                width: 640px;
                 text-align: center;
                 background: #fff;
                 padding: 10px;
             }
             .pins-display, .arrow-center {
-                width: 850px;
+                width: 640px;
+                z-index:111;
             }
             .pins-display div.gray-pin {
                 background-color: #808080;
@@ -238,49 +222,54 @@ class CronController extends BaseController
             .card {            
                 word-wrap: break-word;                
             }
-            .pins-display .x-axis-line {
-                width: 1.5px;
-                height: 30px;
-                background-color: black;
-                float: left;
-                margin-bottom: -11px;
-                margin: -2px 0px;
+            .front {
+                font-size: 15px;
+                font-weight: bold;
+                color: red;
+                position: relative;
             }
-            .pins-display .y-axis-line {
-                width: 99%;
-                background-color: black;
-                height: 2px;
-                float: left;
-                margin: 3px 0px;
+            .arrow-center {
+                width: 640px;
+                text-align: center;
+                background: #fff;
+                padding: 10px;
+            }
+            
+            *, ::after, ::before {
+                box-sizing: border-box;
+            }
+            .dark-mode .card {
+                background-color: #343a40;
+                color: #fff;
             }
             </style>';
+            
             $htmlContent = $body;
             $pdf_data = array();
             $date = date('Y-m-d H:i:s');
             $from_date =  date('d_m_Y', strtotime($this->request->getVar('from_date')));
             $file_name = "cron_jobs";
+            
             $file_name = preg_replace('/[^A-Za-z0-9\-]/', '_', $file_name);
             $pdf_data['title'] = $file_name;
+            
             $pdf_data['part_name'] = $result_job['part_name'];
             //$pdf_data['title'] =  $file_name . '_' . $from_date;
             $pdf_data['pdfdata'] = $htmlContent;
+            
             $pdf_data['pdfFilename']= 'writable/uploads/'.date('Y-m-d').'/'.$pdf_data['part_name'].'.pdf';    
-            $this->_phpspreadsheet->set_pdf($pdf_data);
+            
+            $new_path =  $this->_phpspreadsheet->set_pdf($pdf_data);
+           
             $attachment = 'writable/uploads/'.date('Y-m-d').'/sandesh.pdf';
-
-       // print_r($attachment);exit;
-      // $attachment = 'writable/uploads/'.date('Y-m-d').'/'.$pdf_data['part_name'].'.pdf';
-    //    print_r( $pdf_data['pdfFilename']);exit;
-            if (send_email(env('To_Email'), 'Jobs Details', '',  $pdf_data['pdfFilename'])) {
+            if (send_email(env('To_Email'), 'Jobs Details', '',  $new_path)) {
                 $data['mail_send'] =  '1';
                 $id = $result_job['job_action_id'];
                 $this->jobActionModel->update($id, $data);
                 echo "Job details sent through email";
-<<<<<<< HEAD
-=======
+                //exit;
                 sleep(30);
->>>>>>> bbda8fed109f8e9262a71485bb88575ed0219b43
             }
         }
-    }
+            }
 }

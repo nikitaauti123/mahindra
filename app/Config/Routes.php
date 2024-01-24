@@ -72,6 +72,7 @@ $routes->post('/api/parts/update/(:num)', 'Parts\\Api\\PartsApiController::updat
 $routes->post('/api/parts/delete/(:num)', 'Parts\\Api\\PartsApiController::delete/$1');
 $routes->get('/api/parts/get_one/(:num)', 'Parts\\Api\\PartsApiController::getOne/$1');
 $routes->get('/api/parts/get_api_url', 'Parts\\Api\\PartsApiController::getApiUrl');
+$routes->get('/api/parts/get_part_by_die_no', 'Parts\\Api\\PartsApiController::getPartByDieNo');
 
 
 $routes->post('/api/apiparts/add', 'Parts\\Api\\ApiPartsApiController::add');

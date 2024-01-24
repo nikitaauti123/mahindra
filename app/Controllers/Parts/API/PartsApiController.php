@@ -86,20 +86,44 @@ Class PartsApiController extends BaseController
             return $this->fail($result, 400, true);
         }
     }
-        /**
-         * Method for handling add operation.
-         *  
-         * @return text; 
-         */
+    /**
+     * Method for getting single part details PartApiController.
+     * 
+     * @param $id to get single part
+     * 
+     * @return text; 
+     */
+    public function getPartByDieNo()
+    {
+        try {
+            $result = $this->_partsModel->select('id as part_id')
+            ->where('die_no', $this->request->getVar('die_no'))
+            ->limit(1) // Set the limit to 1 to fetch only o ne row
+            ->get()
+            ->getRow();
+            if (!empty($result)) {
+                return $this->respond($result, 200);
+            } 
+            return $this->respond((object)[], 200);
+        } catch(\Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
+    }
+    /**
+     * Method for handling add operation.
+     *  
+     * @return text; 
+     */
     public function add()
     {       
         try {
             helper(['form']);
             
             $rules = [
-                'part_name'  => 'required|min_length[2]|max_length[100]',
-                 'model'  => 'required|min_length[3]|max_length[100]',
-                 ];
+                 'part_name'  => 'required|min_length[2]|max_length[100]',
+                 'model'      => 'required|min_length[3]|max_length[100]',
+                ];
 
             if (!$this->validate($rules)) {
                 return $this->fail($this->validator->getErrors(), 400, true);

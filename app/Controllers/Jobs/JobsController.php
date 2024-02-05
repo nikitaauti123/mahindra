@@ -13,9 +13,11 @@
 namespace App\Controllers\Jobs;
 
 use App\Controllers\BaseController;
+use App\Database\Migrations\Notification;
 use App\Models\PartsModel;
 use App\Models\JobsHistoryModel;
 use App\Models\JobActionsModel;
+use App\Models\NotificationModel;
 /**
  * JobsController Class Doc Comment
  * 
@@ -32,6 +34,7 @@ class JobsController extends BaseController
     protected $partModel;
     protected $jobshistoryModel;
     protected $jobActionModel;
+    protected $notificationsModel;
     /**
      * Constructor for the JobsController class.
      */
@@ -40,6 +43,7 @@ class JobsController extends BaseController
         $this->partModel = new PartsModel();
         $this->jobshistoryModel = new JobsHistoryModel();
         $this->jobActionModel = new JobActionsModel();
+        $this->notificationsModel = new NotificationModel();
     }
     /**
      * Method for handling list in the  JobsController.
@@ -84,6 +88,9 @@ class JobsController extends BaseController
         helper('WebSocketHelper');
         $partsModel = new PartsModel();
         $data['parts'] =$partsModel->where('is_active', '1')->findAll(); 
+        
+        $notification = new NotificationModel();
+        $data['notification'] = $notification->get()->getResult();
         $data['jobs'] = $this->jobActionModel
             ->where('end_time IS NULL')
             ->where('side', 'right')
@@ -102,8 +109,9 @@ class JobsController extends BaseController
     {
         helper('WebSocketHelper');
         $partsModel = new PartsModel();
-        $data['parts'] = $partsModel->where('is_active', '1')->findAll(); 
-
+        $data['parts'] = $partsModel->where('is_active', '1')->findAll();
+        $notification = new NotificationModel();
+        $data['notification'] = $notification->get()->getResult();
         $data['jobs'] = $this->jobActionModel
             ->where('end_time IS NULL')
             ->where('side', 'left')

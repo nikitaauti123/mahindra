@@ -19,6 +19,7 @@ use App\Models\JobsModel;
 use App\Models\PartsModel;
 use App\Models\JobsHistoryModel;
 use App\Models\JobActionsModel;
+use App\Models\NotificationModel;
 use Shuchkin\SimpleXLSX;
 use Shuchkin\SimpleXLS;
 use DateTime;
@@ -44,6 +45,7 @@ class JobsApiController extends BaseController
     private $_jobshistoryModel;
     private $_JobActionsModel;
     private $_phpspreadsheet;
+    private $_notificationModel;
     /**
      * Constructor for the JobsApiController class.
      */
@@ -55,6 +57,7 @@ class JobsApiController extends BaseController
         $this->_session = \Config\Services::session();
         $this->_JobActionsModel = new JobActionsModel();
         $this->_phpspreadsheet = new Phpspreadsheet();
+        $this->_notificationModel = new NotificationModel();
     }
     /**
      * Method for handling list in the  JobsController.
@@ -1467,6 +1470,37 @@ class JobsApiController extends BaseController
             }
        
             return $this->respond($result, 200);
+        } catch (\Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
+    }
+     /**
+     * Method for update notification status .
+     *  
+     * @return boolean  return update status result notification ;
+     */
+    public function changeNotificationStatus(){
+        $id=$this->request->getVar('id');
+        $data['status'] = "viewed";
+          try {
+             $this->_notificationModel->update($id, $data);
+            $result['msg'] = lang('Jobs.NotificationViewd');
+            return $this->respond($result, 200);
+        } catch (\Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
+    }
+     /**
+     * Method for getting all notification .
+     *  
+     * @return array  return all notification ;
+     */
+    public  function getAllNotification(){
+        try {
+            $result['notification'] = $this->_notificationModel->get()->getResult();
+           return $this->respond($result, 200);
         } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);

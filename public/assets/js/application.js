@@ -3261,3 +3261,76 @@ $("#completed-job-pdf").on('click', function () {
     var die_no = $("#cmp_part_die_no_filter").val();
 window.location.href = base_url + 'api/jobs/pdf_completed_job?part_no='+part_no+'&from_date='+from_date+"&to_date="+to_date+'&part_name='+part_name+'&model='+model+'&die_no='+die_no;
 });
+
+
+$(document).on('click', '#change_notifiction', function() {
+confirm('Do you Want to Confirm View this Notifiction')
+    {
+  let id = $(this).attr('data-id');
+    $.ajax({
+        url: base_url + "api/jobs/Change_notification_status",
+        method: "POST",
+        data: {id:id},
+        dataType: "json",
+        beforeSend: function (xhr) {
+            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+        },
+    }).done(function (data) {
+        successMsg(data.msg);
+        udpata_notifiction();
+        //location.href = base_url + 'admin/';
+    }).fail(function (data) {
+        if (typeof data.responseJSON.messages === 'object') {
+            for (let i in data.responseJSON.messages) {
+                failMsg(data.responseJSON.messages[i]);
+            }
+        } else {
+            let msg = data.responseJSON.messages.msg;
+            failMsg(msg);
+        }
+
+    });
+ }
+});
+
+function udpata_notifiction(){
+    $.ajax({
+        url: base_url + "api/jobs/get_all_notifiction",
+        method: "POST",
+        dataType: "json",
+        beforeSend: function (xhr) {
+            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+        },
+    }).done(function (data) {
+       var notification = data.notification
+        $('#Notification_section').empty();
+        var i =1;
+                // Display new notifications
+                $.each(notification, function (index, notificationItem) {
+                    if(notificationItem.status == 'pending'){             
+                         var notificationElement = $('<div/>', {
+                            'class': 'notification-item',                           
+                        }).append(
+                            $('<span/>', {'class': 'notification-msg', text: i++ + '. ' + notificationItem.msg}),
+                            $('<button/>', {'class': 'btn btn-info', 'data-id': notificationItem.id,text: 'Ok',id:"change_notifiction"})
+                        );
+                    
+                        $('#Notification_section').append(notificationElement);
+                    }
+                });
+                
+
+        //location.href = base_url + 'admin/';
+    }).fail(function (data) {
+        if (typeof data.responseJSON.messages === 'object') {
+            for (let i in data.responseJSON.messages) {
+                failMsg(data.responseJSON.messages[i]);
+            }
+        } else {
+            let msg = data.responseJSON.messages.msg;
+            failMsg(msg);
+        }
+
+    });
+
+}

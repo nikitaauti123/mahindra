@@ -29,5 +29,6 @@ return [
     'UpdateJobbActionSuccss'=>'Job stoped successfully',
     'ExportInExcel'=>'Export In Excel',
     'ExportInPdf'=>'Export In Pdf',
-    'JobDetailMailSuccess'=>'Job Detail Sent on Mail  successfully'
+    'JobDetailMailSuccess'=>'Job Detail Sent on Mail  successfully',
+    'NotificationViewd'=>'Notification Viewed'
 ];

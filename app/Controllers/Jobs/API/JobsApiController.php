@@ -567,7 +567,10 @@ class JobsApiController extends BaseController
     }
 
     /**
-     * Method for setting/adding api jobs .
+     * Method to start jobs and end jobs.
+     * 
+     * @param String $part_id - Part Id
+     * @param String $side - side
      *  
      * @return text;
      */
@@ -576,7 +579,21 @@ class JobsApiController extends BaseController
         try {
             $user_id = $this->_session->get('id') ? $this->_session->get('id') : 1;
 
-            if ($this->request->getVar('time') == 'start_time') {
+            if ($this->request->getVar('time') == 'end_time') {
+                $id  = $this->request->getVar('id');
+
+                $affected = $this->_JobActionsModel->updateData(
+                    $id,
+                    $this->request->getVar('side'), 
+                    $user_id, date('Y-m-d H:i:s')
+                );
+                if ($affected > 0) {
+                    $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
+                } else {
+                    throw new Exception("Not updated");
+                }
+            } else {
+
                 $data = [
                     'part_id' => $this->request->getVar('part_id'),
                     'side' => $this->request->getVar('side'),
@@ -596,19 +613,6 @@ class JobsApiController extends BaseController
                     'start_time' => date('Y-m-d H:i:s')
                 ];
                 $result_arr['id'] = $this->_jobsModel->insert($data, true);
-            } else {
-                $id  = $this->request->getVar('id');
-
-                $affected = $this->_JobActionsModel->updateData(
-                    $id,
-                    $this->request->getVar('side'), 
-                    $user_id, date('Y-m-d H:i:s')
-                );
-                if ($affected > 0) {
-                    $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
-                } else {
-                    throw new Exception("Not updated");
-                }
             }
             return $this->respond($result, 200);
         } catch (Exception $e) {

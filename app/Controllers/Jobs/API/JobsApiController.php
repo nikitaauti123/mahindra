@@ -580,7 +580,7 @@ class JobsApiController extends BaseController
             $user_id = $this->_session->get('id') ? $this->_session->get('id') : 1;
 
             if ($this->request->getVar('time') == 'end_time') {
-                $id  = $this->request->getVar('id');
+                $id  = $this->request->getVar('job_id')?$this->request->getVar('job_id'):$this->request->getVar('id');
 
                 $affected = $this->_JobActionsModel->updateData(
                     $id,

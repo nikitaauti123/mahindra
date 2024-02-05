@@ -42,15 +42,17 @@
                             }
                             ?>
                             <div class="row">
-                                <div class="col-8"></div>
-                                <div class="col-4 " id="Notification_section">
+                                <div class="col-4"></div>
+                                <div class="col-4 bg-danger" id="Notification_section">
                                     <?php 
                                      //print_r($notification);
                                      if (is_array($notification) && count($notification) > 0) {
                                         $i = 1;
                                         foreach($notification  as $notification_result){
                                             if($notification_result->status== 'pending'){?>
-                                               <?=$i++;?>. <span id="notification_status"><?=$notification_result->msg?></span> <button data-id=<?=$notification_result->id?> class="btn btn-info" id="change_notifiction">Ok</button><br>
+                                               <?=$i++;?>. <span id="notification_status"><?=$notification_result->msg?></span>
+                                                <button data-id=<?=$notification_result->id?> class="badge badge-info" id="change_notifiction">Ok</button>
+                                                <br>
                                          <?php   }
                                         }
                                      }

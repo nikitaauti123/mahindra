@@ -3277,7 +3277,7 @@ confirm('Do you Want to Confirm View this Notifiction')
         },
     }).done(function (data) {
         successMsg(data.msg);
-        udpata_notifiction();
+        udpate_notifiction();
         //location.href = base_url + 'admin/';
     }).fail(function (data) {
         if (typeof data.responseJSON.messages === 'object') {
@@ -3293,7 +3293,7 @@ confirm('Do you Want to Confirm View this Notifiction')
  }
 });
 
-function udpata_notifiction(){
+function udpate_notifiction(){
     $.ajax({
         url: base_url + "api/jobs/get_all_notifiction",
         method: "POST",
@@ -3312,7 +3312,7 @@ function udpata_notifiction(){
                             'class': 'notification-item',                           
                         }).append(
                             $('<span/>', {'class': 'notification-msg', text: i++ + '. ' + notificationItem.msg}),
-                            $('<button/>', {'class': 'btn btn-info', 'data-id': notificationItem.id,text: 'Ok',id:"change_notifiction"})
+                            $('<button/>', {'class': 'badge badge-info', 'data-id': notificationItem.id,text: 'Ok',id:"change_notifiction"})
                         );
                     
                         $('#Notification_section').append(notificationElement);

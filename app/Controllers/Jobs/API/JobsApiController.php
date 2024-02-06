@@ -669,6 +669,8 @@ class JobsApiController extends BaseController
     public function getJobStatus()
     {
 
+        ini_set('max_execution_time', 360);
+
         $this->_JobActionsModel = new JobActionsModel();
 
         $side = $this->request->getVar('side');
@@ -699,6 +701,77 @@ class JobsApiController extends BaseController
             ['error' => true, 'message' => 'No job started'],
             404
         );
+    }
+    /**
+     * Method for get job status by die no.
+     *  
+     * @return JSON;
+     */
+    public function getJobStatuByDieNo()
+    {
+
+        try {
+
+            $this->_JobActionsModel = new JobActionsModel();
+        
+            $die_no = $this->request->getVar('die_no');
+            if(empty($die_no)) {
+                throw new Exception("Die no is required");
+            }
+    
+            if (!empty($die_no)) {
+                $result = $this->_JobActionsModel
+                    ->select(
+                        'job_actions.id as job_id, 
+                        job_actions.part_id as part_id, 
+                        job_actions.side as side, 
+                        job_actions.start_time as start_time, 
+                        job_actions.end_time as end_time,
+                        job_actions.wrong_pins as wrong_pins,
+                        job_actions.correct_pins as correct_pins'
+                    )
+                    ->join('parts', 'job_actions.part_id = parts.id')
+                    ->where('parts.die_no', $die_no)
+                    ->orderBy('job_actions.id', 'DESC')
+                    ->limit(1) // Set the limit to 1 to fetch only o ne row
+                    ->get()
+                    ->getRow();
+            } else {
+                $result = $this->_JobActionsModel
+                    ->select(
+                        'job_actions.id as job_id, 
+                        job_actions.part_id as part_id, 
+                        job_actions.side as side, 
+                        job_actions.start_time as start_time, 
+                        job_actions.end_time as end_time,
+                        job_actions.wrong_pins as wrong_pins,
+                        job_actions.correct_pins as correct_pins'
+                    )
+                    ->join('parts', 'job_actions.part_id = parts.id')
+                    ->orderBy('job_actions.id', 'DESC')
+                    ->limit(1) // Set the limit to 1 to fetch only o ne row
+                    ->get()
+                    ->getRow(); 
+            }
+    
+            if ($result) {
+                return $this->respond($result, 200);
+            }
+            return $this->respond(
+                ['error' => true, 'message' => 'No job started'],
+                404
+            );
+
+        } catch(Exception $e) {
+            return $this->respond(
+                [
+                    'error' => true, 
+                    'message' => $e->getMessage()
+                ],
+                404
+            );
+        }
+
     }
     /**
      * Method for changing date formate .

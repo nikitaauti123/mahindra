@@ -121,6 +121,7 @@ $routes->get('/api/jobs/get_api_data', 'Jobs\\Api\\JobsApiController::getApiData
 $routes->post('/api/jobs/change_notification_status', 'Jobs\\Api\\JobsApiController::changeNotificationStatus');
 $routes->post('/api/jobs/get_all_notifiction', 'Jobs\\Api\\JobsApiController::getAllNotification');
 $routes->post('/api/jobs/add_notification', 'Jobs\\Api\\JobsApiController::addNotification');
+$routes->get('/api/jobs/get_job_status_by_die_no', 'Jobs\\Api\\JobsApiController::getJobStatuByDieNo');
 
 
 $routes->get('/jobs/send_part_details/(:num)', 'Jobs\\Api\\JobsApiController::sendPartDetails/$');

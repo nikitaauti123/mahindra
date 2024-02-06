@@ -729,6 +729,35 @@ body .navbar-dark .navbar-nav .nav-link.active {
     height: calc((100vw - 250px) / 28 + 5px );
 }
 
+
+.pins-display .pin-box {
+    float: left;
+    width: calc((100vw - 340px) / 28 );
+    height: calc((100vw - 340px) / 28 );
+    line-height: calc((100vw - 340px) / 28 );
+    font-size: calc(100vw / 85);
+}
+
+.x-axis-line:after {
+    height: calc((100vw - 340px) / 28 + 5px );
+}
+
+.modal-content .pins-display .pin-box {
+    float: left;
+    width: calc((100vw - 485px) / 28 );
+    height: calc((100vw - 485px) / 28 );
+    line-height: calc((100vw - 485px) / 28 );
+    font-size: calc(100vw / 100);
+}
+
+.modal-content  .x-axis-line:after {
+    height: calc((100vw - 485px) / 28 + 5px );
+}
+
+.modal-content .pins-display, .modal-content .arrow-center {
+    width: calc(100vw - 310px);
+}
+
 .front {
     font-size: 2vw;
     font-weight: bold;

@@ -652,7 +652,6 @@ class JobsApiController extends BaseController
             $data['image_url'] = $this->request->getVar('image_url');
             $data['wrong_pins'] = $this->request->getVar('wrong_pins');
             $data['correct_pins'] = $this->request->getVar('correct_pins');
-
             $result['is_updated'] = $this->_JobActionsModel->update($id, $data);
             $result['msg'] = lang('Jobs.JobsSuccessUpdateMsg');
             return $this->respond($result, 200);
@@ -801,12 +800,12 @@ class JobsApiController extends BaseController
                 $to_date = $this->request->getVar('to_date');
                 $t_date = $this->_changeDateFormat(($to_date)) . " 23:59:59";
                 $this->_JobActionsModel->where(
-                    "start_time >= '" . $f_date . "'",
+                    "job_actions.start_time >= '" . $f_date . "'",
                     null,
                     false
                 );
                 $this->_JobActionsModel->where(
-                    "end_time <= '" . $t_date . "'", 
+                    "job_actions.end_time <= '" . $t_date . "'", 
                     null, 
                     false
                 );
@@ -855,14 +854,15 @@ class JobsApiController extends BaseController
                 job_actions.image_url,
                 job_actions.wrong_pins,
                 job_actions.correct_pins,
-                job_actions.detail_pins,
+                jobs.pins as detail_pins,
                 job_actions.start_time,
                 job_actions.end_time,
                 job_actions.created_by,
                 job_actions.updated_by'
             )   
             ->join('parts', 'job_actions.part_id = parts.id')
-            ->where(' job_actions.end_time IS NOT NULL')
+            ->join('jobs', 'job_actions.id = jobs.job_action_id')    
+            ->where('job_actions.end_time IS NOT NULL')
             ->findAll();
  
                 /* helper('debug');

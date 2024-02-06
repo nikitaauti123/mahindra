@@ -41,7 +41,7 @@
                                 $hide_details = '';
                             }
                             ?>
-                            <div class="row">
+                            <!--<div class="row">
                                 <div class="col-4"></div>
                                 <div class="col-4 bg-danger" id="Notification_section">
                                     <?php 
@@ -58,7 +58,7 @@
                                      }
                                     ?>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="row d-flex align-items-center justify-content-center">
                                 <div class="col-4 text-center">
                                     <div class="row d-flex align-items-center justify-content-center">

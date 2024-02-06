@@ -42,12 +42,12 @@
                                 $hide_details = '';
                             }
                             ?>
-                             <div class="row">
+                             <!-- <div class="row">
                                 <div class="col-4"></div>
                                 <div class="col-4 bg-danger" id="Notification_section">
                                     <?php 
                                      //print_r($notification);
-                                     if (is_array($notification) && count($notification) > 0) {
+                                    if (is_array($notification) && count($notification) > 0) {
                                         $i = 1;
                                         foreach($notification  as $notification_result){
                                             if($notification_result->status== 'pending'){?>
@@ -55,10 +55,10 @@
                                                <button data-id=<?=$notification_result->id?> class="badge badge-info" id="change_notifiction">Ok</button><br>
                                          <?php   }
                                         }
-                                     }
+                                    }
                                     ?>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row d-flex align-items-center justify-content-center">
                                 <div class="col-4 text-center">
                                     <div class="row d-flex align-items-center justify-content-center">

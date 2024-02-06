@@ -3262,13 +3262,40 @@ $("#completed-job-pdf").on('click', function () {
 window.location.href = base_url + 'api/jobs/pdf_completed_job?part_no='+part_no+'&from_date='+from_date+"&to_date="+to_date+'&part_name='+part_name+'&model='+model+'&die_no='+die_no;
 });
 
+function closeNotification(id, die_no) {
+    confirm('Do you want to close this die_no ('+die_no+') notification permanently?')
+    {
+        $.ajax({
+            url: base_url + "api/jobs/change_notification_status",
+            method: "POST",
+            data: {id:id},
+            dataType: "json",
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            successMsg(data.msg);
+            udpate_notifiction();
+            //location.href = base_url + 'admin/';
+        }).fail(function (data) {
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+        });
+    }
+}
 
 $(document).on('click', '#change_notifiction', function() {
-confirm('Do you Want to Confirm View this Notifiction')
-    {
-  let id = $(this).attr('data-id');
+    //confirm('Do you Want to Confirm View this Notifiction')
+    // {
+    let id = $(this).attr('data-id');
     $.ajax({
-        url: base_url + "api/jobs/Change_notification_status",
+        url: base_url + "api/jobs/change_notification_status",
         method: "POST",
         data: {id:id},
         dataType: "json",
@@ -3290,9 +3317,14 @@ confirm('Do you Want to Confirm View this Notifiction')
         }
 
     });
- }
+    //}
 });
 
+udpate_notifiction();
+setInterval(
+    udpate_notifiction, 
+    5000
+);
 function udpate_notifiction(){
     $.ajax({
         url: base_url + "api/jobs/get_all_notifiction",
@@ -3308,19 +3340,16 @@ function udpate_notifiction(){
                 // Display new notifications
                 $.each(notification, function (index, notificationItem) {
                     if(notificationItem.status == 'pending'){             
-                         var notificationElement = $('<div/>', {
-                            'class': 'notification-item',                           
-                        }).append(
-                            $('<span/>', {'class': 'notification-msg', text: i++ + '. ' + notificationItem.msg}),
-                            $('<button/>', {'class': 'badge badge-info', 'data-id': notificationItem.id,text: 'Ok',id:"change_notifiction"})
-                        );
-                    
-                        $('#Notification_section').append(notificationElement);
+                        let toastr_obj;
+                        toastr_obj = failMsg(notificationItem.msg);    
+                        toastr_obj.options.onclick = function() { 
+                            closeNotification(notificationItem.id, notificationItem.die_no);
+                        }
                     }
                 });
-                
 
         //location.href = base_url + 'admin/';
+        
     }).fail(function (data) {
         if (typeof data.responseJSON.messages === 'object') {
             for (let i in data.responseJSON.messages) {

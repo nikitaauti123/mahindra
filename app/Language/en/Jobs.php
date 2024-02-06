@@ -30,5 +30,6 @@ return [
     'ExportInExcel'=>'Export In Excel',
     'ExportInPdf'=>'Export In Pdf',
     'JobDetailMailSuccess'=>'Job Detail Sent on Mail  successfully',
-    'NotificationViewd'=>'Notification Viewed'
+    'NotificationViewd'=>'Notification closed permanently.',
+    'NotificationAdded'=>'Notification added successfully!',
 ];

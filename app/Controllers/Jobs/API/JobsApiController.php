@@ -580,12 +580,14 @@ class JobsApiController extends BaseController
             $user_id = $this->_session->get('id') ? $this->_session->get('id') : 1;
 
             if ($this->request->getVar('time') == 'end_time') {
+             
                 $id  = $this->request->getVar('job_id')?$this->request->getVar('job_id'):$this->request->getVar('id');
-
+                
                 $affected = $this->_JobActionsModel->updateData(
                     $id,
                     $this->request->getVar('side'), 
-                    $user_id, date('Y-m-d H:i:s')
+                    $user_id, 
+                    date('Y-m-d H:i:s')
                 );
                 if ($affected > 0) {
                     $result['msg'] = lang('Jobs.UpdateJobbActionSuccss');
@@ -1485,10 +1487,13 @@ class JobsApiController extends BaseController
      * @return boolean  return update status result notification ;
      */
     public function changeNotificationStatus(){
-        $id=$this->request->getVar('id');
-        $data['status'] = "viewed";
-          try {
-             $this->_notificationModel->update($id, $data);
+        try {
+            $id=$this->request->getVar('id');
+            if(empty($id)) {
+                throw new Exception('id is required');
+            }
+            $data['status'] = "viewed";
+            $this->_notificationModel->update($id, $data);
             $result['msg'] = lang('Jobs.NotificationViewd');
             return $this->respond($result, 200);
         } catch (\Exception $e) {
@@ -1503,8 +1508,46 @@ class JobsApiController extends BaseController
      */
     public  function getAllNotification(){
         try {
-            $result['notification'] = $this->_notificationModel->get()->getResult();
+            $result['notification'] = $this->_notificationModel
+            ->select('*')
+            ->where('status', 'pending')
+            ->get()
+            ->getResult();
            return $this->respond($result, 200);
+        } catch (\Exception $e) {
+            $result['msg'] =  $e->getMessage();
+            return $this->fail($result, 400, true);
+        }
+    }
+
+    /**
+     * Method for handling add notifications.
+     * 
+     * @return text;
+     */
+    public function addNotification()
+    {
+
+        try {
+            helper(['form']);
+
+            $rules = [
+                'die_no'  => 'required|max_length[100]',
+            ];
+
+            if (!$this->validate($rules)) {
+                return $this->fail($this->validator->getErrors(), 400, true);
+            }
+
+            $data['die_no']    = $this->request->getVar('die_no');
+            $data['msg']       = 'Layout of die no ('.$data['die_no'].') is not configured in this system';
+            $data['status']    = 'pending';
+
+            $result['id'] = $this->_notificationModel->insert($data, true);
+            
+            $result['msg'] = lang('Jobs.NotificationAdded');
+
+            return $this->respond($result, 200);
         } catch (\Exception $e) {
             $result['msg'] =  $e->getMessage();
             return $this->fail($result, 400, true);

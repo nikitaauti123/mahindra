@@ -768,3 +768,22 @@ body .navbar-dark .navbar-nav .nav-link.active {
     font-size: calc(100vw / 60);
     line-height: calc(100vw / 60 + 2px);
 }
+#change_notifiction{
+    float:right;
+  }
+  .counter_notification{
+    padding-left: 20px;
+  }
+  .notification_anchor{
+    text-transform: none;
+    font-size: 20px;
+    position: relative;
+   
+    right: 17px;
+    list-style:none; 
+    display: block
+  }
+  .notification-calender{
+    position: relative;
+    right:60px;
+  }

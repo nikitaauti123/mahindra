@@ -80,6 +80,12 @@
                                 <p><?php echo lang('Left-sidebar.Menu.StartRightTV'); ?></p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url('/notification/notification'); ?>" class="nav-link <?php echo $current_page_url['path'] == 'jobs/notification'?'active':''; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p><?php echo lang('Left-sidebar.Menu.Notification'); ?></p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

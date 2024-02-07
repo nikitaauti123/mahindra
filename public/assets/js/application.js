@@ -3363,3 +3363,156 @@ function udpate_notifiction(){
     });
 
 }
+
+
+ if ($("#notification_form").length > 0) {
+        $("#notification_form #from_date_notification").daterangepicker({
+            clearBtn: true,
+            "showDropdowns": true,
+            locale: {
+                format: date_formate_com
+            },
+    
+            startDate: moment().subtract(1, 'month'),
+            endDate: new Date(),
+            maxDate: new Date(),
+        });
+    }
+    if ($("#notification_list_tbl").length > 0) {
+        // table
+        var from_to_date = $("#from_date_notification").val();
+        var dateParts = from_to_date.split(" - ");
+
+        var from_date_str = dateParts[0].trim();
+        var to_date_str = dateParts[1].trim();
+       var from_date = convertDateFormat(from_date_str);
+        var to_date = convertDateFormat(to_date_str);
+        var notification_table = $("#notification_list_tbl").DataTable({
+            "ordering": true,
+            'order': [[0, 'asc']],
+            'serverMethod': 'get',
+            'language': {
+                'loadingRecords': '&nbsp;',
+                'processing': 'Loading...',
+                "emptyTable": "There is no record to display"
+            },
+            "dom": 'Bfrtip',
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print"],
+            "lengthMenu": [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'All'],
+            ],
+            "ajax": {
+                "url": base_url + "api/notification/list?from_date=" + from_date + "&to_date=" + to_date,
+                "dataSrc": "",
+            },
+            "columns": [
+                {
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {
+                    "data": "die_no",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "msg",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },       
+                {
+                    "data": "created_date",
+                    "render": function (data, type, row, meta) {
+                        if (data && data != '-') {
+                            return moment(data).format('DD-MM-YYYY HH:mm:ss');
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        let html = '<a class="notification_update" data-id="'+row['id']+'"><i class="fa fa-window-close text-info"></i></a>';
+                        return html;
+                    }
+                }
+            ]
+        });
+        $("#notification_list_tbl tbody").on("click", ".notification_update", function () {
+            var rowData = notification_table.row($(this).closest("tr")).data();
+            udpate_notifiction_job(rowData.id, rowData.is_active);
+        });
+    }
+    function udpate_notifiction_job(id){
+        confirm('Do you Want to Confirm View this Notifiction')
+        {
+            
+        $.ajax({
+            url: base_url + "api/notification/update_notification",
+            method: "POST",
+            data: {id:id},
+            dataType: "json",
+            beforeSend: function (xhr) {
+                //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+            },
+        }).done(function (data) {
+            successMsg(data.msg);
+            $('#notification_list_tbl').DataTable().ajax.reload();
+            //location.href = base_url + 'admin/';
+        }).fail(function (data) {
+            if (typeof data.responseJSON.messages === 'object') {
+                for (let i in data.responseJSON.messages) {
+                    failMsg(data.responseJSON.messages[i]);
+                }
+            } else {
+                let msg = data.responseJSON.messages.msg;
+                failMsg(msg);
+            }
+    
+        });
+     }
+    }
+
+    
+    $('#from_date_notification').change(function () {
+        hide_show_notification();
+    });
+
+    function hide_show_notification() {
+        reload_notification_tbl();
+        $("#notification_list_tbl").show();
+    }
+    
+    $('#notification_form #from_date_notification').on('apply.daterangepicker', function (ev, picker) {
+        reload_notification_tbl();
+    
+    });
+    function reload_notification_tbl() {
+         var from_to_date = $("#from_date_notification").val();
+        var dateParts = from_to_date.split(" - ");
+    
+        var from_date_str = dateParts[0].trim();
+        var to_date_str = dateParts[1].trim();
+       var from_date = convertDateFormat(from_date_str);
+        var to_date = convertDateFormat(to_date_str);
+        notification_table.ajax.url(
+            base_url + "api/notification/list?" +
+            "from_date=" + from_date +
+            "&to_date=" + to_date ).load();
+    }

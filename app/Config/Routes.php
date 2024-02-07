@@ -156,6 +156,12 @@ $routes->get('/api/pemissions/get_one/(:num)', 'Permission\\Api\\PermissionApiCo
 $routes->get('/cron/cron_completed_job/', 'Cron\\CronController::cronCompletedJob');
 
 
+$routes->get('/notification/notification', 'Notification\\NotificationController::notification');
+$routes->get('/api/notification/list', 'Notification\\Api\\NotificationApiController::list');
+$routes->post('api/notification/update_notification', 'Notification\\Api\\NotificationApiController::updateNotification');
+
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

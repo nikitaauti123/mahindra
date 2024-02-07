@@ -19,5 +19,6 @@ return [
         'JobsCompleted'=>'Completed Jobs',
         'StartLeftTV' => 'Left Side TV',
         'StartRightTV' => 'Right Side TV',
+        'Notification' => 'Notification',
     ]
 ];

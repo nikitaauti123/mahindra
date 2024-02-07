@@ -60,7 +60,7 @@
                                 </div>
                             </div> -->
                             <div class="row d-flex align-items-center justify-content-center">
-                                <div class="col-4 text-center">
+                                <div class="col-5 text-center">
                                     <div class="row d-flex align-items-center justify-content-center">
                                         <div class="col-12">
                                             <div class="d-flex align-items-center justify-content-center">
@@ -90,11 +90,16 @@
                                                         Stop
                                                     </a>
                                                 </div>
+                                                <div class="m-1">
+                                                    <a href="javascript:void(0)" class="btn btn-success complete_right_job" id="complete_right_job" style="<?php echo $hide_stop; ?>">
+                                                        Complete
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-8 text-left">
+                                <div class="col-7 text-left">
                                     <div class="row" id="display_part-details" style="<?php echo  $hide_details; ?>">
                                         <div class="col-6">
                                             <div class="form-group1">

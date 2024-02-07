@@ -668,7 +668,7 @@ class JobsApiController extends BaseController
     public function getJobStatus()
     {
 
-        ini_set('max_execution_time', 360);
+        //ini_set('max_execution_time', 1200);
 
         $this->_JobActionsModel = new JobActionsModel();
 

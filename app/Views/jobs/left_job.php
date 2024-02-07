@@ -90,6 +90,11 @@
                                                         Stop
                                                     </a>
                                                 </div>
+                                                <div class="m-1">
+                                                    <a href="javascript:void(0)" class="btn btn-success complete_left_job" id="complete_left_job" style="<?php echo $hide_stop; ?>">
+                                                        Complete
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

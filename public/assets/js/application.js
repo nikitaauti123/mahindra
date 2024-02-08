@@ -3365,10 +3365,13 @@ function udpate_notifiction(){
         var notification = data.notification
         $.each(notification, function (index, notificationItem) {            
             let toastr_obj;
-            toastr_obj = failMsg(notificationItem.msg);    
-            toastr_obj.options.onclick = function() { 
+            let options = {};
+            options.positionClass = 'toast-bottom-right';
+            toastr_obj = failMsg(notificationItem.msg, options);   
+            ; 
+            /* toastr_obj.options.onclick = function() { 
                 closeNotification(notificationItem.id, notificationItem.die_no);
-            }
+            } */
         });
     }).fail(function (data) {
         if (typeof data.responseJSON.messages === 'object') {

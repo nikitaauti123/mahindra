@@ -1593,11 +1593,12 @@ class JobsApiController extends BaseController
      */
     public  function getAllNotification(){
         try {
+            $limit = $this->request->getVar('limit')?$this->request->getVar('limit'):1;
             $result['notification'] = $this->_notificationModel
             ->select('*')
             ->where('status', 'pending')
             ->orderBy('id', 'DESC')
-            ->limit(1)
+            ->limit($limit)
             ->get()
             ->getResult();
            return $this->respond($result, 200);

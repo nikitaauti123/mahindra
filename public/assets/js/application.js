@@ -3349,7 +3349,9 @@ $(document).on('click', '#change_notifiction', function() {
     //}
 });
 udpate_notifiction_page();
+
 udpate_notifiction();
+
 setInterval(
     udpate_notifiction, 
     20000
@@ -3359,26 +3361,15 @@ function udpate_notifiction(){
         url: base_url + "api/jobs/get_all_notifiction",
         method: "POST",
         dataType: "json",
-        beforeSend: function (xhr) {
-            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
-        },
     }).done(function (data) {
-       var notification = data.notification
-       // $('#Notification_section').empty();
-        var i =1;
-                // Display new notifications
-                $.each(notification, function (index, notificationItem) {
-                    if(notificationItem.status == 'pending'){             
-                        let toastr_obj;
-                      //  toastr_obj = failMsg(notificationItem.msg);    
-                        toastr_obj.options.onclick = function() { 
-                            closeNotification(notificationItem.id, notificationItem.die_no);
-                        }
-                    }
-                });
-
-        //location.href = base_url + 'admin/';
-        
+        var notification = data.notification
+        $.each(notification, function (index, notificationItem) {            
+            let toastr_obj;
+            toastr_obj = failMsg(notificationItem.msg);    
+            toastr_obj.options.onclick = function() { 
+                closeNotification(notificationItem.id, notificationItem.die_no);
+            }
+        });
     }).fail(function (data) {
         if (typeof data.responseJSON.messages === 'object') {
             for (let i in data.responseJSON.messages) {
@@ -3388,9 +3379,7 @@ function udpate_notifiction(){
             let msg = data.responseJSON.messages.msg;
             failMsg(msg);
         }
-
     });
-
 }
 
 

@@ -1596,6 +1596,8 @@ class JobsApiController extends BaseController
             $result['notification'] = $this->_notificationModel
             ->select('*')
             ->where('status', 'pending')
+            ->orderBy('id', 'DESC')
+            ->limit(1)
             ->get()
             ->getResult();
            return $this->respond($result, 200);

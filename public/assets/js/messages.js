@@ -2,7 +2,8 @@ export const  successMsg = function (msg){
     return toastr.success(msg);
 }
 
-export const failMsg = function (msg){
+export const failMsg = function (msg, options = {}){
+    toastr.options = options;
     toastr.error(msg);
     return toastr;
 }

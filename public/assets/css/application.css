@@ -524,7 +524,7 @@ input#cb-switch {
 .calender-icon {
     position: absolute;
     bottom: 23px;
-    left: 316px;
+    right: 10px;
 }
 
 .control:not(.form-control-navbar):not(.form-control-sidebar),

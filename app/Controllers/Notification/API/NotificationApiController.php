@@ -65,7 +65,6 @@ class NotificationApiController extends BaseController
         }
         
         $result = $this->_notificationModel
-        ->where('status','pending')
         ->get()->getResult();
         return $this->respond($result, 200);
     }

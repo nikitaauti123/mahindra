@@ -63,7 +63,8 @@
                                                         <th><?php echo lang('Notification.die_no'); ?> </th>
                                                         <th><?php echo lang('Notification.msg'); ?></th>
                                                         <th><?php echo lang('Notification.created_date'); ?></th>
-                                                        <th><?php echo lang('Notification.status'); ?></th>
+                                                        <th><?php echo lang('Notification.status'); ?></th>                                                        
+                                                        <th><?php echo lang('Notification.Action'); ?></th>
                                                     </tr>             
                                                 </thead>
                                                 <tbody>
@@ -75,8 +76,8 @@
                                                         <th><?php echo lang('Notification.die_no'); ?> </th>
                                                         <th><?php echo lang('Notification.msg'); ?></th>
                                                         <th><?php echo lang('Notification.created_date'); ?></th>
-                                                      
                                                         <th><?php echo lang('Notification.status'); ?></th>
+                                                        <th><?php echo lang('Notification.Action'); ?></th>
                                                      </tr>             
                                                 </tfoot>
                                             </table>

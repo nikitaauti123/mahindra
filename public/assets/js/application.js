@@ -3305,6 +3305,7 @@ $(document).on('click', '#change_notifiction', function() {
     }).done(function (data) {
         successMsg(data.msg);
         udpate_notifiction();
+        udpate_notifiction_page();
         //location.href = base_url + 'admin/';
     }).fail(function (data) {
         if (typeof data.responseJSON.messages === 'object') {
@@ -3335,13 +3336,13 @@ function udpate_notifiction(){
         },
     }).done(function (data) {
        var notification = data.notification
-        $('#Notification_section').empty();
+       // $('#Notification_section').empty();
         var i =1;
                 // Display new notifications
                 $.each(notification, function (index, notificationItem) {
                     if(notificationItem.status == 'pending'){             
                         let toastr_obj;
-                        toastr_obj = failMsg(notificationItem.msg);    
+                      //  toastr_obj = failMsg(notificationItem.msg);    
                         toastr_obj.options.onclick = function() { 
                             closeNotification(notificationItem.id, notificationItem.die_no);
                         }
@@ -3350,6 +3351,61 @@ function udpate_notifiction(){
 
         //location.href = base_url + 'admin/';
         
+    }).fail(function (data) {
+        if (typeof data.responseJSON.messages === 'object') {
+            for (let i in data.responseJSON.messages) {
+                failMsg(data.responseJSON.messages[i]);
+            }
+        } else {
+            let msg = data.responseJSON.messages.msg;
+            failMsg(msg);
+        }
+
+    });
+
+}
+
+
+
+function udpate_notifiction_page(){
+    $.ajax({
+        url: base_url + "api/jobs/get_all_notifiction",
+        method: "POST",
+        dataType: "json",
+        beforeSend: function (xhr) {
+            //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
+        },
+    }).done(function (data) {
+       var notification = data.notification
+        $('#Notification_section').empty();
+        var notificationHeader = $('<span/>', {
+            'class': 'dropdown-item dropdown-header',
+            text: 'Notification '+notification.length,
+        });
+        $('.navbar-notification-count').text(notification.length)
+        $('#Notification_section').append(notificationHeader);
+        
+        var i =1;
+                // Display new notifications
+                $.each(notification, function (index, notificationItem) {
+                    
+                    if(notificationItem.status == 'pending'){ 
+                        console.log(notification);            
+                         var notificationElement = $('<div/>', {                         
+                        }).append(
+                            $('<div/>', {'class': 'dropdown-divider', }),                         
+                            $('<span/>', {'class': 'counter_notification', text: i++ + '. '}),
+                         
+                            $('<span/>', {'class': 'notification-msg', text: notificationItem.msg}),
+                            $('<button/>', {'class': 'right badge badge-danger', 'data-id': notificationItem.id,text: 'Ok',id:"change_notifiction"})
+                        );
+                    
+                        $('#Notification_section').append(notificationElement);
+                    }
+                });
+                
+
+        //location.href = base_url + 'admin/';
     }).fail(function (data) {
         if (typeof data.responseJSON.messages === 'object') {
             for (let i in data.responseJSON.messages) {
@@ -3446,10 +3502,24 @@ function udpate_notifiction(){
                     }
                 },
                 {
+                    "data": "status",
+                    "render": function (data, type, row, meta) {
+                        if (data) {
+                            return data;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
                     "data": null,
                     "render": function (data, type, row, meta) {
-                        let html = '<a class="notification_update" data-id="'+row['id']+'"><i class="fa fa-window-close text-info"></i></a>';
-                        return html;
+                        if (row['status'] === 'pending') {
+                            let html = '<a class="notification_update" data-id="' + row['id'] + '"><i class="fa fa-window-close text-info"></i></a>';
+                            return html;
+                        } else {
+                            return '';
+                        }
                     }
                 }
             ]

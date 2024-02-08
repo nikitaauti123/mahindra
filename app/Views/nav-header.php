@@ -8,17 +8,77 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="<?php echo base_url('admin/dashboard'); ?>" class="nav-link"><?php echo lang('Left-sidebar.Menu.Dashboard'); ?></a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <?php if(session()->get('isLoggedIn')) { ?>
-            <a href="<?php echo base_url('/logout'); ?>" class="nav-link"><?php echo lang('Left-sidebar.Menu.Logout'); ?></a>
-            <?php } ?>
-        </li>
+        
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
-        <li class="nav-item">
+        <li class="nav-item d-none d-sm-inline-block">
+            <?php if(session()->get('isLoggedIn')) { ?>
+            <a href="<?php echo base_url('/logout'); ?>" class="nav-link"><i class='fas fa-sign-out-alt'></i></a>
+            <?php } ?>
+        </li>
+        <li class="nav-item dropdown show" style=" list-style-type: none;">
+                                        <a class="nav-link notification_anchor" data-toggle="dropdown" href="#" aria-expanded="true">
+                                        <i class="far fa-bell"></i>  
+                                        <span class="badge badge-warning navbar-badge navbar-notification-count">
+                                            <?php if(!empty($notification)){
+                                                $i=0;
+                                                foreach ($notification  as $notification_result) {
+                                                    if ($notification_result->status == 'pending') {
+                                                 $i++;
+                                                    } 
+                                                }
+                                                echo $i;
+                                            }?>
+                                        </span>    
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="Notification_section" style="left: inherit; right: 0px;">
+                                            <span class="dropdown-item dropdown-header" >
+                                                Notifications
+                                            </span>
+
+                                            <?php
+                                            //print_r($notification);
+                                            if (is_array($notification) && count($notification) > 0) {
+                                                $i = 1;
+                                                foreach ($notification  as $notification_result) {
+                                                    if ($notification_result->status == 'pending') { ?>
+                                                        <div class="dropdown-divider"></div>
+                                                        <span class="counter_notification"><?= $i++; ?>.</span> <span class=""><?= $notification_result->msg ?></span>
+                                                        <button data-id=<?= $notification_result->id ?> class="right badge badge-danger" id="change_notifiction">Ok</button>
+                                                        <br>
+                                            <?php   }
+                                                }
+                                            }
+                                            ?>
+                                            <div class="dropdown-divider"></div>
+
+                                            <div class="dropdown-divider"></div>
+
+                                        </div>
+                                    </li>
+            <!-- <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                <i class="fas fa-search"></i>
+            </a> -->
+            <div class="navbar-search-block">
+                <form class="form-inline">
+                    <div class="input-group input-group-sm">
+                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+        <!-- <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>
             </a>
@@ -37,7 +97,7 @@
                     </div>
                 </form>
             </div>
-        </li>
+        </li> -->
 
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">

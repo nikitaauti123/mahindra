@@ -651,17 +651,24 @@ class JobsApiController extends BaseController
 
             $data['image_url'] = $this->request->getVar('image_url');
 
-            if($this->request->getVar('wrong_pins')) {
-                $data['wrong_pins'] = $this->request->getVar('wrong_pins');
+            $wrong_pins = $this->request->getVar('correct_pins');
+            if(isset($wrong_pins) && $wrong_pins>=0) {
+                $data['wrong_pins'] = $wrong_pins;
             }
-            if($this->request->getVar('correct_pins')) {
-                $data['correct_pins'] = $this->request->getVar('correct_pins');
+
+            $correct_pins = $this->request->getVar('correct_pins');
+            if(isset($correct_pins) && $correct_pins>=0) {
+                $data['correct_pins'] = $correct_pins;
             }
-            if($this->request->getVar('pin_up_time')) {
-                $data['pin_up_time'] = $this->request->getVar('pin_up_time');
+
+            $pin_up_time = $this->request->getVar('pin_up_time');
+            if(isset($pin_up_time)) {
+                $data['pin_up_time'] = $pin_up_time;
             }
-            if($this->request->getVar('pin_down_time')) {    
-                $data['pin_down_time'] = $this->request->getVar('pin_down_time');
+
+            $pin_down_time = $this->request->getVar('pin_down_time');
+            if($pin_down_time) {    
+                $data['pin_down_time'] = $pin_down_time;
             }    
 
             $result['is_updated'] = $this->_JobActionsModel->update($id, $data);

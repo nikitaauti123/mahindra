@@ -524,7 +524,7 @@ input#cb-switch {
 .calender-icon {
     position: absolute;
     bottom: 23px;
-    right: 10px;
+    right: 20px;
 }
 
 .control:not(.form-control-navbar):not(.form-control-sidebar),
@@ -788,10 +788,10 @@ body .navbar-dark .navbar-nav .nav-link.active {
     list-style:none; 
     display: block
   }
-  .notification-calender{
+  /* .notification-calender{
     position: relative;
     right:60px;
-  }
+  } */
 
 @media screen and (min-width:1400px) {
     .pins-display, .arrow-center {

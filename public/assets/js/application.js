@@ -3570,9 +3570,8 @@ function udpate_notifiction_page(){
         });
     }
     function udpate_notifiction_job(id){
-        confirm('Do you Want to Confirm View this Notifiction')
-        {
-            
+        var r =  confirm('Do you want to dismiss this notification permanently?')
+        if (r == true) {            
         $.ajax({
             url: base_url + "api/notification/update_notification",
             method: "POST",

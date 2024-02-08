@@ -770,9 +770,14 @@ body .navbar-dark .navbar-nav .nav-link.active {
 }
 #change_notifiction{
     float:right;
+
   }
+ .notification_anchor_show_All{
+    text-transform: none;
+    color: white;
+    }
   .counter_notification{
-    padding-left: 20px;
+    padding-left: 10px;
   }
   .notification_anchor{
     text-transform: none;

@@ -3371,9 +3371,9 @@ function udpate_notifiction(){
                     if(notificationItem.status == 'pending'){             
                         let toastr_obj;
                       //  toastr_obj = failMsg(notificationItem.msg);    
-                        toastr_obj.options.onclick = function() { 
-                            closeNotification(notificationItem.id, notificationItem.die_no);
-                        }
+                        //toastr_obj.options.onclick = function() { 
+                        //    closeNotification(notificationItem.id, notificationItem.die_no);
+                        //}
                     }
                 });
 
@@ -3412,7 +3412,6 @@ function udpate_notifiction_page(){
         });
         $('.navbar-notification-count').text(notification.length)
         $('#Notification_section').append(notificationHeader);
-        
         var i =1;
                 // Display new notifications
                 $.each(notification, function (index, notificationItem) {
@@ -3425,12 +3424,33 @@ function udpate_notifiction_page(){
                             $('<span/>', {'class': 'counter_notification', text: i++ + '. '}),
                          
                             $('<span/>', {'class': 'notification-msg', text: notificationItem.msg}),
-                            $('<button/>', {'class': 'right badge badge-danger', 'data-id': notificationItem.id,text: 'Ok',id:"change_notifiction"})
+                            $('<button/>', {'class': 'btn-xs  btn btn-danger', 'data-id': notificationItem.id,text: 'Dismiss',id:"change_notifiction"})
                         );
                     
                         $('#Notification_section').append(notificationElement);
                     }
                 });
+
+                var notificationDivider = $('<div/>', {
+                    'class': 'dropdown-divider'
+                });
+                
+                $('#Notification_section').append(notificationDivider);
+
+                var notificationFooter = $('<span/>', {
+                    'class': 'dropdown-item dropdown-header'
+                });
+                
+                var link = $('<a/>', {
+                    href: '<a class="notification_anchor" href= "'+base_url+ 'notificaion/notification">Show All</a>', // Replace 'your_link_url' with the actual URL
+                    text: 'Show All',
+                    class:'notification_anchor_show_All'
+                    
+                });
+                
+                notificationFooter.append(link);
+                
+                $('#Notification_section').append(notificationFooter);
                 
 
         //location.href = base_url + 'admin/';
@@ -3543,7 +3563,7 @@ function udpate_notifiction_page(){
                     "data": null,
                     "render": function (data, type, row, meta) {
                         if (row['status'] === 'pending') {
-                            let html = '<a class="notification_update" data-id="' + row['id'] + '"><i class="fa fa-window-close text-info"></i></a>';
+                            let html = '<a class="notification_update btn btn-danger" data-id="' + row['id'] + '">Dismiss</a>';
                             return html;
                         } else {
                             return '';

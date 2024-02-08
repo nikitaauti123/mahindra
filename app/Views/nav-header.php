@@ -28,11 +28,12 @@
                                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="Notification_section" style="left: inherit; right: 0px;">
                                             <span class="dropdown-item dropdown-header" >
                                                 Notifications
-                                            </span>                             <div class="dropdown-divider"></div>
-
+                                            </span>
                                             <div class="dropdown-divider"></div>
-
+                                            <div class="dropdown-divider"></div>
+                                            
                                         </div>
+                                        <div class="Notification_show_all"></div>
                                     </li>
             <!-- <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>

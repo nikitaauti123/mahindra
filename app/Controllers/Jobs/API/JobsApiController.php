@@ -1577,7 +1577,7 @@ class JobsApiController extends BaseController
             if(empty($id)) {
                 throw new Exception('id is required');
             }
-            $data['status'] = "viewed";
+            $data['status'] = "dismissed";
             $this->_notificationModel->update($id, $data);
             $result['msg'] = lang('Jobs.NotificationViewd');
             return $this->respond($result, 200);

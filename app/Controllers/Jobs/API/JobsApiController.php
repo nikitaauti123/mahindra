@@ -640,7 +640,7 @@ class JobsApiController extends BaseController
             }
 
             $rules = [
-                'image_url'  => 'required|min_length[2]|max_length[255]'
+                'image_url'  => 'required|max_length[255]'
             ];
 
             if (!$this->validate($rules)) {
@@ -650,8 +650,20 @@ class JobsApiController extends BaseController
             $this->_JobActionsModel = new JobActionsModel();
 
             $data['image_url'] = $this->request->getVar('image_url');
-            $data['wrong_pins'] = $this->request->getVar('wrong_pins');
-            $data['correct_pins'] = $this->request->getVar('correct_pins');
+
+            if($this->request->getVar('wrong_pins')) {
+                $data['wrong_pins'] = $this->request->getVar('wrong_pins');
+            }
+            if($this->request->getVar('correct_pins')) {
+                $data['correct_pins'] = $this->request->getVar('correct_pins');
+            }
+            if($this->request->getVar('pin_up_time')) {
+                $data['pin_up_time'] = $this->request->getVar('pin_up_time');
+            }
+            if($this->request->getVar('pin_down_time')) {    
+                $data['pin_down_time'] = $this->request->getVar('pin_down_time');
+            }    
+
             $result['is_updated'] = $this->_JobActionsModel->update($id, $data);
             $result['msg'] = lang('Jobs.JobsSuccessUpdateMsg');
             return $this->respond($result, 200);

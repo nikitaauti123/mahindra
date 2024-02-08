@@ -32,4 +32,6 @@ return [
     'JobDetailMailSuccess'=>'Job Detail Sent on Mail  successfully',
     'NotificationViewd'=>'Notification closed permanently.',
     'NotificationAdded'=>'Notification added successfully!',
+    'nextJobAdded'=>'next job added successfully!',
+    'nextJobUpdated'=>'next job updated successfully!'
 ];

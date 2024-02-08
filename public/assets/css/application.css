@@ -787,3 +787,9 @@ body .navbar-dark .navbar-nav .nav-link.active {
     position: relative;
     right:60px;
   }
+
+@media screen and (min-width:1400px) {
+    .pins-display, .arrow-center {
+        width: calc(100vw - 182px);
+    }    
+}

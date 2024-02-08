@@ -23,37 +23,12 @@
                                         <a class="nav-link notification_anchor" data-toggle="dropdown" href="#" aria-expanded="true">
                                         <i class="far fa-bell"></i>  
                                         <span class="badge badge-warning navbar-badge navbar-notification-count">
-                                            <?php if(!empty($notification)){
-                                                $i=0;
-                                                foreach ($notification  as $notification_result) {
-                                                    if ($notification_result->status == 'pending') {
-                                                 $i++;
-                                                    } 
-                                                }
-                                                echo $i;
-                                            }?>
                                         </span>    
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="Notification_section" style="left: inherit; right: 0px;">
                                             <span class="dropdown-item dropdown-header" >
                                                 Notifications
-                                            </span>
-
-                                            <?php
-                                            //print_r($notification);
-                                            if (is_array($notification) && count($notification) > 0) {
-                                                $i = 1;
-                                                foreach ($notification  as $notification_result) {
-                                                    if ($notification_result->status == 'pending') { ?>
-                                                        <div class="dropdown-divider"></div>
-                                                        <span class="counter_notification"><?= $i++; ?>.</span> <span class=""><?= $notification_result->msg ?></span>
-                                                        <button data-id=<?= $notification_result->id ?> class="right badge badge-danger" id="change_notifiction">Ok</button>
-                                                        <br>
-                                            <?php   }
-                                                }
-                                            }
-                                            ?>
-                                            <div class="dropdown-divider"></div>
+                                            </span>                             <div class="dropdown-divider"></div>
 
                                             <div class="dropdown-divider"></div>
 

@@ -3391,6 +3391,7 @@ function udpate_notifiction_page(){
     $.ajax({
         url: base_url + "api/jobs/get_all_notifiction",
         method: "POST",
+        data:{limit:'10'},
         dataType: "json",
         beforeSend: function (xhr) {
             //xhr.setRequestHeader('Authorization', "Bearer " + getCookie('auth_token'));
@@ -3408,7 +3409,6 @@ function udpate_notifiction_page(){
                 // Display new notifications
                 $.each(notification, function (index, notificationItem) {
                     
-                    if(notificationItem.status == 'pending'){ 
                         console.log(notification);            
                          var notificationElement = $('<div/>', {                         
                         }).append(
@@ -3420,7 +3420,7 @@ function udpate_notifiction_page(){
                         );
                     
                         $('#Notification_section').append(notificationElement);
-                    }
+                    
                 });
 
                 var notificationDivider = $('<div/>', {
@@ -3434,8 +3434,7 @@ function udpate_notifiction_page(){
                 });
                 
                 var link = $('<a/>', {
-                    href: '<a class="notification_anchor" href= "'+base_url+ 'notificaion/notification">Show All</a>', // Replace 'your_link_url' with the actual URL
-                    text: 'Show All',
+                    href: base_url + 'notification/notification', text: 'Show All',
                     class:'notification_anchor_show_All'
                     
                 });

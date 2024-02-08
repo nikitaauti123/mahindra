@@ -1608,6 +1608,7 @@ class JobsApiController extends BaseController
         }
     }
 
+    
     /**
      * Method for handling add notifications.
      * 

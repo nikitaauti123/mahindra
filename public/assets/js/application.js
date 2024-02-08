@@ -1319,6 +1319,7 @@ $(document).ready(function () {
                     $('#part_left_id').parent('div').hide();
                     $('.start_time_left').hide();
                     $('.end_time_left').show();
+                    $('.complete_left_job').show();
                     $('.digital-clock').show();
                     $("#display_part-details").show();
 
@@ -1367,6 +1368,7 @@ $(document).ready(function () {
                 $('#part_left_id').parent('div').show();
                 $('.start_time_left').show();
                 $('.end_time_left').hide();
+                $('.complete_left_job').hide();
                 $('.digital-clock').hide();
                 $("#display_part-details").hide();
                 $('#part_left_id').val('');
@@ -1410,6 +1412,7 @@ $(document).ready(function () {
                     $('#part_right_id').parent('div').hide();
                     $('.start_time_right').hide();
                     $('.end_time_right').show();
+                    $('.complete_right_job').show();
                     $("#display_part-details").show();
                     $('.digital-clock').show();
 
@@ -1457,6 +1460,7 @@ $(document).ready(function () {
                 $('#part_right_id').parent('div').show();
                 $('.start_time_right').show();
                 $('.end_time_right').hide();
+                $('.complete_right_job').hide();
                 $('.digital-clock').hide();
                 $('#part_right_id').val('');
                 $("#display_part-details").hide();
@@ -1473,6 +1477,30 @@ $(document).ready(function () {
                     let msg = data.responseJSON.messages.msg;
                     failMsg(msg);
                 }
+            });
+        });
+
+        $(".complete_left_job").on("click",function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: base_url + '#',
+                method: "POST",
+                data: { 'side': 'right', id: id, time: 'end_time' },
+                dataType: "json",
+            }).done(function (data) {
+
+            });
+        });
+        
+        $(".complete_right_job").on("click",function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: base_url + '#',
+                method: "POST",
+                data: { 'side': 'right', id: id, time: 'end_time' },
+                dataType: "json",
+            }).done(function (data) {
+
             });
         });
     }
@@ -3323,7 +3351,7 @@ $(document).on('click', '#change_notifiction', function() {
 udpate_notifiction();
 setInterval(
     udpate_notifiction, 
-    5000
+    20000
 );
 function udpate_notifiction(){
     $.ajax({

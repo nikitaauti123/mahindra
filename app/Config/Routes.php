@@ -155,6 +155,10 @@ $routes->get('/api/pemissions/get_one/(:num)', 'Permission\\Api\\PermissionApiCo
 
 $routes->get('/cron/cron_completed_job/', 'Cron\\CronController::cronCompletedJob');
 
+$routes->get('/api/nextjobs/list', 'Jobs\\Api\\NextJobsApiController::list');
+$routes->post('/api/nextjobs/add', 'Jobs\\Api\\NextJobsApiController::add');
+$routes->post('/api/nextjobs/update/(:num)', 'Jobs\\Api\\NextJobsApiController::update/$1');
+$routes->post('/api/nextjobs/add_update', 'Jobs\\Api\\NextJobsApiController::add_update');
 
 /*
  * --------------------------------------------------------------------

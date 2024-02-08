@@ -40,9 +40,7 @@ class NotificationController  extends BaseController
         return view('notification/list', $data);
     }
     public function notification(){
-        $data['notification'] = $this->_notificationModel
-        ->get()->getResult();
-        return view('notification/notification',$data);
+        return view('notification/notification');
     }
     /**
      * Method for add page in the permission.

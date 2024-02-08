@@ -3410,7 +3410,8 @@ function udpate_notifiction_page(){
                 $.each(notification, function (index, notificationItem) {
                     
                         console.log(notification);            
-                         var notificationElement = $('<div/>', {                         
+                         var notificationElement = $('<div/>', { 
+                            'class': 'notification-div' // Add your class name here                        
                         }).append(
                             $('<div/>', {'class': 'dropdown-divider', }),                         
                             $('<span/>', {'class': 'counter_notification', text: i++ + '. '}),

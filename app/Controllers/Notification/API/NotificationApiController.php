@@ -97,7 +97,7 @@ class NotificationApiController extends BaseController
 
     public function updateNotification(){
         $id=$this->request->getVar('id');
-        $data['status'] = "viewed";
+        $data['status'] = "dismissed";
           try {
              $this->_notificationModel->update($id, $data);
             $result['msg'] = lang('Notification.NotificationSuccess');

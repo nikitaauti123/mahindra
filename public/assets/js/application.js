@@ -3410,7 +3410,8 @@ function udpate_notifiction_page(){
                 $.each(notification, function (index, notificationItem) {
                     
                         console.log(notification);            
-                         var notificationElement = $('<div/>', {                         
+                         var notificationElement = $('<div/>', { 
+                            'class': 'notification-div' // Add your class name here                        
                         }).append(
                             $('<div/>', {'class': 'dropdown-divider', }),                         
                             $('<span/>', {'class': 'counter_notification', text: i++ + '. '}),
@@ -3569,9 +3570,8 @@ function udpate_notifiction_page(){
         });
     }
     function udpate_notifiction_job(id){
-        confirm('Do you Want to Confirm View this Notifiction')
-        {
-            
+        var r =  confirm('Do you want to dismiss this notification permanently?')
+        if (r == true) {            
         $.ajax({
             url: base_url + "api/notification/update_notification",
             method: "POST",

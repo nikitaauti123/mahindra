@@ -812,24 +812,24 @@ class JobsApiController extends BaseController
     {
         $result = [];
         $this->_JobActionsModel = new JobActionsModel();
-        if ($this->request->getVar('from_date')) {
-            if ($this->request->getVar('to_date')) {
-                $from_date = $this->request->getVar('from_date');
-                $f_date = $this->_changeDateFormat($from_date) . " 00:00:00";
-                $to_date = $this->request->getVar('to_date');
-                $t_date = $this->_changeDateFormat(($to_date)) . " 23:59:59";
-                $this->_JobActionsModel->where(
-                    "job_actions.start_time >= '" . $f_date . "'",
-                    null,
-                    false
-                );
-                $this->_JobActionsModel->where(
-                    "job_actions.end_time <= '" . $t_date . "'", 
-                    null, 
-                    false
-                );
-            }
-        }
+        // if ($this->request->getVar('from_date')) {
+        //     if ($this->request->getVar('to_date')) {
+        //         $from_date = $this->request->getVar('from_date');
+        //         $f_date = $this->_changeDateFormat($from_date) . " 00:00:00";
+        //         $to_date = $this->request->getVar('to_date');
+        //         $t_date = $this->_changeDateFormat(($to_date)) . " 23:59:59";
+        //         $this->_JobActionsModel->where(
+        //             "job_actions.start_time >= '" . $f_date . "'",
+        //             null,
+        //             false
+        //         );
+        //         $this->_JobActionsModel->where(
+        //             "job_actions.end_time <= '" . $t_date . "'", 
+        //             null, 
+        //             false
+        //         );
+        //     }
+        // }
         if (!empty($this->request->getVar('part_name'))) {
             $this->_JobActionsModel->where(
                 'parts.part_name',
@@ -877,13 +877,17 @@ class JobsApiController extends BaseController
                 job_actions.start_time,
                 job_actions.end_time,
                 job_actions.created_by,
-                job_actions.updated_by'
+                job_actions.updated_by,
+                job_actions.pin_up_time,
+                job_actions.pin_down_time',
+
             )   
             ->join('parts', 'job_actions.part_id = parts.id')
-            ->join('jobs', 'job_actions.id = jobs.job_action_id')    
+            ->join('jobs', 'job_actions.id = jobs.job_action_id') 
+            ->orderBy('job_actions.id', 'DESC')  
             ->where('job_actions.end_time IS NOT NULL')
             ->findAll();
- 
+//  print_r($result);
                 /* helper('debug');
                 last_q();
                 exit("sss"); */
@@ -903,25 +907,43 @@ class JobsApiController extends BaseController
                 );
             }
 
-            $startTime = strtotime($result_arr['start_time']);
-            $endTime = strtotime($result_arr['end_time']);
+            if (isset($result_arr['pin_up_time'])) {
+                $result[$key]['pin_up_time'] = date(
+                    "d-m-Y h:i A",
+                    strtotime($result_arr['pin_up_time'])
+                );
+            }
+
+            if (isset($result_arr['pin_down_time'])) {
+                $result[$key]['pin_down_time'] = date(
+                    "d-m-Y h:i A",
+                    strtotime($result_arr['pin_down_time'])
+                );
+            }
+            $total_pins = json_decode($result_arr['detail_pins'], true);
+            if(!empty($result_arr['detail_pins'])){
+                $result[$key]['total_pins'] = count($total_pins);
+            }else{
+                $result[$key]['total_pins'] ='-';
+            }
+                
+            $startTime = strtotime($result_arr['pin_up_time']);
+            $endTime = strtotime($result_arr['pin_down_time']);
             $timeDiffSeconds = $endTime - $startTime;
             $totalTime = gmdate('H:i:s', $timeDiffSeconds);
             $result[$key]['total_time'] = $totalTime;
             $result[$key]['image_url'] = '-'; 
-
             if ($result_arr['part_id'] == '') {
                 $result[$key]['image_url'] = '-';
             } else {
-                ///  echo "not";
-                $pins_detail = $this->_jobsModel
-                    ->select('jobs.pins')
-                    ->where('jobs.job_action_id', $result_arr['job_action_id'])
-                    ->get()
-                    ->getFirstRow();
-                if ($pins_detail !== null) {
-                    $result[$key]['image_url'] = $this->display_popup($key, $pins_detail);
-                    $result[$key]['json'] =  $pins_detail;
+                // $pins_detail = $this->_jobsModel
+                //     ->select('jobs.pins')
+                //     ->where('jobs.job_action_id', $result_arr['job_action_id'])
+                //     ->get()
+                //     ->getFirstRow();
+                if (!empty($result_arr['detail_pins']) !== null) {
+                    $result[$key]['image_url'] = $this->display_popup($key, $result_arr['detail_pins']);
+                    $result[$key]['json'] =  $result_arr['detail_pins'];
                 }
             }
         }
@@ -939,6 +961,7 @@ class JobsApiController extends BaseController
      */
     private function display_popup($key, $pins_detail) 
     {
+    //print_r($pins_detail->pins);
         $poup_html = 
         '<button type="button" class="btn btn-primary" data-toggle="modal"
             data-target="#compl-'.$key.'">View</button>
@@ -961,7 +984,7 @@ class JobsApiController extends BaseController
 
                 helper('common');
 
-                $poup_html .= display_pins($pins_detail->pins);
+                $poup_html .= display_pins($pins_detail);
 
                 $poup_html .= '
                         </div>

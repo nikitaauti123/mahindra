@@ -32,6 +32,9 @@ return [
   'wrong_count' => 'Not Ok Pins',
   'correct_count' => 'Ok Pins',
   'total_pins' => 'Total Pins',  
-  'correct_per' => 'OK Pins (%)'
+  'correct_per' => 'OK Pins (%)',
+  'PinUpTime' => 'Pin Up Time',  
+  'PinDownTime' => 'Pin Down Time',
+  
 
 ];

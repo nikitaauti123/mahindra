@@ -144,6 +144,8 @@
                                                     <th><?php echo lang('Parts.DieNo'); ?></th>
                                                     <th><?php echo lang('Parts.StartTime'); ?></th>
                                                     <th><?php echo lang('Parts.EndTime'); ?></th>
+                                                    <th><?php echo lang('Parts.PinUpTime'); ?></th>
+                                                    <th><?php echo lang('Parts.PinDownTime'); ?></th>
                                                     <th><?php echo lang('Parts.TotalTime'); ?></th>
                                                     <th><?php echo lang('Parts.wrong_count'); ?></th>
                                                     <th><?php echo lang('Parts.correct_count'); ?></th>

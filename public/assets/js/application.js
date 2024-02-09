@@ -2867,6 +2867,27 @@ function completed_jobs_tbl() {
                     }
                 },
                 {
+                    "data": "pin_up_time",
+                    "render": function (data, type, row, meta) {
+                        if (data && data != '-') {
+                            return (data.replace(" ", "<br>"));
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    "data": "pin_down_time",
+                    "render": function (data, type, row, meta) {
+                        if (data && data != '-') {
+                            return (data.replace(" ", "<br>"));
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+
+                {
                     "data": "total_time",
                     "render": function (data, type, row, meta) {
                         if (data) {
@@ -2897,10 +2918,10 @@ function completed_jobs_tbl() {
                     }
                 },
                 {
-                    "data": "pins",
+                    "data": "total_pins",
                     "render": function (data, type, row, meta) {
                         if (data != '') {
-                            return data.split(",").length;
+                            return data;
                         } else {
                             return '-';
                         }

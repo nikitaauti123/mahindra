@@ -183,14 +183,19 @@ class NextJobsApiController extends BaseController
 
             $data['die_no']  = $this->request->getVar('die_no');
             $data['side']    = $this->request->getVar('side');
-            if($this->request->getVar('is_started')) {
-                $data['is_started'] = $this->request->getVar('is_started');
+            
+            $is_started = $this->request->getVar('is_started');
+            if(isset($is_started) &&  $is_started >= 0) {
+                $data['is_started'] = $is_started;
             }
-            if($this->request->getVar('start_time')) {
-                $data['start_time'] = $this->request->getVar('start_time');
+
+            $start_time = $this->request->getVar('start_time');
+            if(isset($start_time)) {
+                $data['start_time'] = $start_time;
             }
-            if($this->request->getVar('end_time')) {
-                $data['end_time']   =  $this->request->getVar('end_time');
+            $end_time = $this->request->getVar('end_time');
+            if(isset($end_time)) {
+                $data['end_time']   =  $end_time;
             }    
 
             $check_rows = $this->_nextjobsModel

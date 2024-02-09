@@ -801,7 +801,7 @@ body .navbar-dark .navbar-nav .nav-link.active {
     right:60px;
   } */
 
-@media screen and (min-width:1400px) {
+@media screen and (min-width:1000px) {
     .pins-display, .arrow-center {
         width: calc(100vw - 182px);
     }    
